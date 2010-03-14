@@ -1,0 +1,72 @@
+#!/bin/sh
+set -e
+#Fedora installer plugin for multicd.sh
+#version 5.0
+#Copyright (c) 2009 maybeway36
+#
+#Permission is hereby granted, free of charge, to any person obtaining a copy
+#of this software and associated documentation files (the "Software"), to deal
+#in the Software without restriction, including without limitation the rights
+#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#copies of the Software, and to permit persons to whom the Software is
+#furnished to do so, subject to the following conditions:
+#
+#The above copyright notice and this permission notice shall be included in
+#all copies or substantial portions of the Software.
+#
+#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+#THE SOFTWARE.
+if [ $1 = scan ];then
+	if [ -f fedora-boot.iso ];then
+		echo "Fedora netboot installer"
+	fi
+elif [ $1 = copy ];then
+	if [ -f fedora-boot.iso ];then
+		 echo "Copying Fedora netboot installer..."
+		if [ ! -d fedora-boot ];then
+			mkdir fedora-boot
+		fi
+		if grep -q "`pwd`/fedora-boot" /etc/mtab ; then
+			umount fedora-boot
+		fi
+		mount -o loop fedora-boot.iso fedora-boot/
+		mkdir multicd-working/boot/fedora
+		cp fedora-boot/isolinux/vmlinuz multicd-working/boot/fedora/vmlinuz
+		cp fedora-boot/isolinux/initrd.img multicd-working/boot/fedora/initrd.img
+		#Commenting out the below line will save about 100MB on the CD, but it will have to be downloaded when you install Fedora
+		cp -R fedora-boot/images multicd-working/
+		umount fedora-boot
+		rmdir fedora-boot
+	fi
+elif [ $1 = writecfg ];then
+if [ -f fedora-boot.iso ];then
+cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+label flinux
+  #TIP: If you change the method= entry in the append line, you can change the mirror and version installed.
+  menu label ^Install Fedora from mirrors.kernel.org (Fedora 11 only)
+  kernel /boot/fedora/vmlinuz
+  append initrd=/boot/fedora/initrd.img method=http://mirrors.kernel.org/fedora/releases/11/Fedora/i386/os
+label flinux
+  menu label ^Install or upgrade Fedora from another mirror
+  kernel /boot/fedora/vmlinuz
+  append initrd=/boot/fedora/initrd.img
+label ftext
+  menu label Install or upgrade Fedora (text mode)
+  kernel /boot/fedora/vmlinuz
+  append initrd=/boot/fedora/initrd.img text
+label frescue
+  menu label Rescue installed Fedora system
+  kernel /boot/fedora/vmlinuz
+  append initrd=/boot/fedora/initrd.img rescue
+EOF
+fi
+else
+	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Use only from within multicd.sh or a compatible script!"
+	echo "Don't use this plugin script on its own!"
+fi
