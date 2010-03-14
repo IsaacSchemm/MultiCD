@@ -1,7 +1,15 @@
 #!/bin/sh
-#combine.sh version 5.1
+#combine.sh version 5.1 - combine multicd.sh plugins into one script
 #Under MIT/X11 license - see multicd.sh
 set -e
+if [ ! -f multicd.sh ];then
+	echo "No multicd.sh!"
+	exit 1
+fi
+if [ ! -d plugins ];then
+	echo "No plugins!"
+	exit 1
+fi
 true > working.sh
 chmod +x working.sh
 sed -n '/#!\/bin\/bash/,/#START SCAN/p' multicd.sh >> working.sh
