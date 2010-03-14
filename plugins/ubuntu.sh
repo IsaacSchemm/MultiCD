@@ -52,22 +52,22 @@ cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
 label ubuntu-live
   menu label ^Try Ubuntu #1 without any change to your computer
   kernel /casper/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed boot=casper initrd=/casper/initrd.lz quiet splash --
+  append  file=/cdrom/preseed/ubuntu.seed boot=casper initrd=/casper/initrd.lz quiet splash ignore_uuid --
 label ubuntu-live-install
   menu label ^Install Ubuntu #1
   kernel /casper/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed boot=casper only-ubiquity initrd=/casper/initrd.lz quiet splash --
+  append  file=/cdrom/preseed/ubuntu.seed boot=casper only-ubiquity initrd=/casper/initrd.lz quiet splash ignore_uuid --
 EOF
 else
 cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
 label ubuntu-live
   menu label ^Try Ubuntu #1 without any change to your computer
   kernel /casper/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed boot=casper initrd=/casper/initrd.gz quiet splash --
+  append  file=/cdrom/preseed/ubuntu.seed boot=casper initrd=/casper/initrd.gz quiet splash ignore_uuid --
 label ubuntu-live-install
   menu label ^Install Ubuntu #1
   kernel /casper/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed boot=casper only-ubiquity initrd=/casper/initrd.gz quiet splash --
+  append  file=/cdrom/preseed/ubuntu.seed boot=casper only-ubiquity initrd=/casper/initrd.gz quiet splash ignore_uuid --
 EOF
 fi
 if [ -f tags/ubuntu1.name ];then

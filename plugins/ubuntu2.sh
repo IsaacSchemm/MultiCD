@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Ubuntu #2 plugin for multicd.sh
-#version 5.0.4
+#version 5.3
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -60,29 +60,16 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubuntu2.iso ];then
-if [ -f multicd-working/ubuntu2/initrd.lz ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
 label ubuntu2-live
   menu label ^Try Ubuntu #2 without any change to your computer
   kernel /ubuntu2/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed initrd=/ubuntu2/initrd.lz quiet splash --
+  append initrd=/ubuntu2/initrd.gz boot=casper quiet splash ignore_uuid --
 label ubuntu2-live-install
   menu label ^Install Ubuntu #2
   kernel /ubuntu2/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed only-ubiquity initrd=/ubuntu2/initrd.lz quiet splash --
+  append only-ubiquity initrd=/ubuntu2/initrd.gz boot=casper quiet splash ignore_uuid --
 EOF
-else
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label ubuntu2-live
-  menu label ^Try Ubuntu #2 without any change to your computer
-  kernel /ubuntu2/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed initrd=/ubuntu2/initrd.gz quiet splash --
-label ubuntu2-live-install
-  menu label ^Install Ubuntu #2
-  kernel /ubuntu2/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed only-ubiquity initrd=/ubuntu2/initrd.gz quiet splash --
-EOF
-fi
 if [ -f tags/ubuntu2.name ];then
 	perl -pi -e "s/Ubuntu\ \#2/$(cat tags/ubuntu2.name)/g" multicd-working/boot/isolinux/isolinux.cfg
 fi
