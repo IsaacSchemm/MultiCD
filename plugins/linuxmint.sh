@@ -23,7 +23,7 @@ set -e
 #THE SOFTWARE.
 if [ $1 = scan ];then
 	if [ -f linuxmint.iso ];then
-		if [ -f ubuntu.iso ];then
+		if [ -f linuxmint.iso ];then
 			echo "Linux Mint (8/Helena or newer)"
 		fi
 	fi
