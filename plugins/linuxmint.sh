@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Linux Mint plugin for multicd.sh
-#version 5.1?
+#version 5.3
 #Copyright (c) 2009 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,16 +24,11 @@ set -e
 if [ $1 = scan ];then
 	if [ -f linuxmint.iso ];then
 		if [ -f ubuntu.iso ];then
-			echo
-			echo "Ubuntu and Linux Mint both use casper. They can't be on the same CD without"
-			echo "initrd modifications, which this script does not support."
-			echo "Ignoring linuxmint.iso."
-		else
-			echo "Linux Mint"
+			echo "Linux Mint (8/Helena or newer)"
 		fi
 	fi
 elif [ $1 = copy ];then
-	if [ -f linuxmint.iso ] && [ ! -f ubuntu.iso ];then
+	if [ -f linuxmint.iso ];then
 		echo "Copying Linux Mint..."
 		if [ ! -d linuxmint ];then
 			mkdir linuxmint
@@ -42,24 +37,38 @@ elif [ $1 = copy ];then
 			umount linuxmint
 		fi
 		mount -o loop linuxmint.iso linuxmint/
-		cp -R linuxmint/casper multicd-working/ #Live system
+		cp -R linuxmint/casper multicd-working/linuxmint #Live system
 		if [ -d linuxmint/drivers ];then cp -R linuxmint/drivers multicd-working/;fi #Drivers added by the Mint team
-		cp -R linuxmint/preseed multicd-working/ #Tells the installer what to install
-		cp -R linuxmint/.disk multicd-working/ #A few more helper files
-		umount linuxmint
-		rmdir linuxmint
+		umount linuxmint;rmdir linuxmint
+		echo -n "Making initrd..."
+		if [ -f multicd-working/linuxmint/initrd.lz ];then
+			cp multicd-working/linuxmint/initrd.lz tmpinit.lzma
+			lzma -d tmpinit.lzma
+		else
+			echo "This plugin will only work with Linux Mint 8 or newer."
+			exit 1
+		fi
+		mkdir linuxmint-inittmp
+		cd linuxmint-inittmp
+		cpio -id < ../tmpinit
+		rm ../tmpinit
+		perl -pi -e 's/LIVE_MEDIA_PATH=casper/LIVE_MEDIA_PATH=linuxmint/g' scripts/casper
+		find . | cpio --create --format='newc' | lzma -c > ../multicd-working/linuxmint/initrd.lz
+		cd ..
+		rm -r linuxmint-inittmp
+		echo " done."	
 	fi
 elif [ $1 = writecfg ];then
-if [ -f linuxmint.iso ] && [ ! -f ubuntu.iso ];then
+if [ -f linuxmint.iso ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
 label mint-live
   menu label ^Try Linux Mint without any change to your computer
-  kernel /casper/vmlinuz
-  append  file=/cdrom/preseed/mint.seed boot=casper initrd=/casper/initrd.gz quiet splash --
+  kernel /linuxmint/vmlinuz
+  append boot=casper initrd=/linuxmint/initrd.lz quiet splash --
 label mint-live-install
   menu label ^Install Linux Mint
-  kernel /casper/vmlinuz
-  append  file=/cdrom/preseed/mint.seed boot=casper only-ubiquity initrd=/casper/initrd.gz quiet splash --
+  kernel /linuxmint/vmlinuz
+  append boot=casper only-ubiquity initrd=/linuxmint/initrd.lz quiet splash --
 EOF
 fi
 else

@@ -23,8 +23,7 @@ set -e
 #THE SOFTWARE.
 if [ $1 = scan ];then
 	if [ -f ubuntu2.iso ];then
-		echo "Ubuntu #2 (for using multiple versions on one disc)*"
-		echo "  *Note: this plugin only works with Ubuntu 9.10 or newer (or distros based on Ubuntu 9.10 or newer)."
+		echo "Ubuntu #2 (for using multiple versions on one disc - 9.10 or newer)"
 		echo > tags/ubuntu2
 	fi
 elif [ $1 = copy ];then
@@ -38,22 +37,21 @@ elif [ $1 = copy ];then
 		fi
 		mount -o loop ubuntu2.iso ubuntu2/
 		cp -R ubuntu2/casper multicd-working/ubuntu2 #Live system
-		#cp -R ubuntu2/.disk multicd-working/.disk-ubuntu2 #.disk
 		umount ubuntu2;rmdir ubuntu2
 		echo -n "Making initrd..."
 		if [ -f multicd-working/ubuntu2/initrd.lz ];then
 			cp multicd-working/ubuntu2/initrd.lz tmpinit.lzma
 			lzma -d tmpinit.lzma
 		else
-			gzip -cd multicd-working/ubuntu2/initrd.gz>tmpinit
+			echo "This plugin will only work with Ubuntu 9.10 or newer."
+			exit 1
 		fi
 		mkdir ubuntu2-inittmp
 		cd ubuntu2-inittmp
 		cpio -id < ../tmpinit
 		rm ../tmpinit
 		perl -pi -e 's/LIVE_MEDIA_PATH=casper/LIVE_MEDIA_PATH=ubuntu2/g' scripts/casper
-		find . | cpio --create --format='newc' | gzip -c > ../multicd-working/ubuntu2/initrd.gz
-		rm ../multicd-working/ubuntu2/initrd.lz||true
+		find . | cpio --create --format='newc' | lzma -c > ../multicd-working/ubuntu2/initrd.lz
 		cd ..
 		rm -r ubuntu2-inittmp
 		echo " done."
@@ -64,11 +62,11 @@ cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
 label ubuntu2-live
   menu label ^Try Ubuntu #2 without any change to your computer
   kernel /ubuntu2/vmlinuz
-  append initrd=/ubuntu2/initrd.gz boot=casper quiet splash ignore_uuid --
+  append initrd=/ubuntu2/initrd.lz boot=casper quiet splash ignore_uuid --
 label ubuntu2-live-install
   menu label ^Install Ubuntu #2
   kernel /ubuntu2/vmlinuz
-  append only-ubiquity initrd=/ubuntu2/initrd.gz boot=casper quiet splash ignore_uuid --
+  append only-ubiquity initrd=/ubuntu2/initrd.lz boot=casper quiet splash ignore_uuid --
 EOF
 if [ -f tags/ubuntu2.name ];then
 	perl -pi -e "s/Ubuntu\ \#2/$(cat tags/ubuntu2.name)/g" multicd-working/boot/isolinux/isolinux.cfg
