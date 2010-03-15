@@ -37,12 +37,12 @@ elif [ $1 = copy ];then
 			umount linuxmint
 		fi
 		mount -o loop linuxmint.iso linuxmint/
-		cp -R linuxmint/casper multicd-working/linuxmint #Live system
+		cp -R linuxmint/casper multicd-working/lnxmint #Live system
 		if [ -d linuxmint/drivers ];then cp -R linuxmint/drivers multicd-working/;fi #Drivers added by the Mint team
 		umount linuxmint;rmdir linuxmint
 		echo -n "Making initrd..."
-		if [ -f multicd-working/linuxmint/initrd.lz ];then
-			cp multicd-working/linuxmint/initrd.lz tmpinit.lzma
+		if [ -f multicd-working/lnxmint/initrd.lz ];then
+			cp multicd-working/lnxmint/initrd.lz tmpinit.lzma
 			lzma -d tmpinit.lzma
 		else
 			echo "This plugin will only work with Linux Mint 8 or newer."
@@ -52,8 +52,8 @@ elif [ $1 = copy ];then
 		cd linuxmint-inittmp
 		cpio -id < ../tmpinit
 		rm ../tmpinit
-		perl -pi -e 's/LIVE_MEDIA_PATH=casper/LIVE_MEDIA_PATH=linuxmint/g' scripts/casper
-		find . | cpio --create --format='newc' | lzma -c > ../multicd-working/linuxmint/initrd.lz
+		perl -pi -e 's/LIVE_MEDIA_PATH=casper/LIVE_MEDIA_PATH=lnxmint/g' scripts/casper
+		find . | cpio --create --format='newc' | lzma -c > ../multicd-working/lnxmint/initrd.lz
 		cd ..
 		rm -r linuxmint-inittmp
 		echo " done."	
@@ -63,12 +63,12 @@ if [ -f linuxmint.iso ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
 label mint-live
   menu label ^Try Linux Mint without any change to your computer
-  kernel /linuxmint/vmlinuz
-  append boot=casper initrd=/linuxmint/initrd.lz quiet splash --
+  kernel /lnxmint/vmlinuz
+  append boot=casper initrd=/lnxmint/initrd.lz quiet splash --
 label mint-live-install
   menu label ^Install Linux Mint
-  kernel /linuxmint/vmlinuz
-  append boot=casper only-ubiquity initrd=/linuxmint/initrd.lz quiet splash --
+  kernel /lnxmint/vmlinuz
+  append boot=casper only-ubiquity initrd=/lnxmint/initrd.lz quiet splash --
 EOF
 fi
 else
