@@ -50,8 +50,8 @@ menu label ^Clonezilla
 com32 vesamenu.c32
 append clonezil.cfg
 EOF
-perl -pi -e 's/\/live\/vmlinuz/\/clonezilla\/vmlinuz/g' multicd-working/boot/isolinux/clonezil.cfg
-perl -pi -e 's/\/live\/initrd/\/clonezilla\/initrd/g' multicd-working/boot/isolinux/clonezil.cfg
+perl -pi -e 's/\/live\/vmlinuz/\/boot\/clonezilla\/vmlinuz/g' multicd-working/boot/isolinux/clonezil.cfg
+perl -pi -e 's/\/live\/initrd/\/boot\/clonezilla\/initrd/g' multicd-working/boot/isolinux/clonezil.cfg
 perl -pi -e 's/append initrd=/append live-media-path=\/boot\/clonezilla initrd=/g' multicd-working/boot/isolinux/clonezil.cfg
 cat >> multicd-working/boot/isolinux/clonezil.cfg << "EOF"
 
