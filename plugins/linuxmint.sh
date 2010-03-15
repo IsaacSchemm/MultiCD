@@ -2,7 +2,7 @@
 set -e
 #Linux Mint plugin for multicd.sh
 #version 5.3
-#Copyright (c) 2009 maybeway36
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,7 @@ set -e
 #THE SOFTWARE.
 if [ $1 = scan ];then
 	if [ -f linuxmint.iso ];then
-		if [ -f linuxmint.iso ];then
-			echo "Linux Mint (8/Helena or newer)"
-		fi
+		echo "Linux Mint (8/Helena or newer)"
 	fi
 elif [ $1 = copy ];then
 	if [ -f linuxmint.iso ];then
@@ -37,12 +35,11 @@ elif [ $1 = copy ];then
 			umount linuxmint
 		fi
 		mount -o loop linuxmint.iso linuxmint/
-		cp -R linuxmint/casper multicd-working/lnxmint #Live system
-		if [ -d linuxmint/drivers ];then cp -R linuxmint/drivers multicd-working/;fi #Drivers added by the Mint team
+		cp -R linuxmint/casper multicd-working/mint #Live system
 		umount linuxmint;rmdir linuxmint
 		echo -n "Making initrd..."
-		if [ -f multicd-working/lnxmint/initrd.lz ];then
-			cp multicd-working/lnxmint/initrd.lz tmpinit.lzma
+		if [ -f multicd-working/mint/initrd.lz ];then
+			cp multicd-working/mint/initrd.lz tmpinit.lzma
 			lzma -d tmpinit.lzma
 		else
 			echo "This plugin will only work with Linux Mint 8 or newer."
@@ -52,23 +49,23 @@ elif [ $1 = copy ];then
 		cd linuxmint-inittmp
 		cpio -id < ../tmpinit
 		rm ../tmpinit
-		perl -pi -e 's/LIVE_MEDIA_PATH=casper/LIVE_MEDIA_PATH=lnxmint/g' scripts/casper
-		find . | cpio --create --format='newc' | lzma -c > ../multicd-working/lnxmint/initrd.lz
+		perl -pi -e 's/LIVE_MEDIA_PATH=casper/LIVE_MEDIA_PATH=mint/g' scripts/casper
+		find . | cpio --create --format='newc' | lzma -c > ../multicd-working/mint/initrd.lz
 		cd ..
 		rm -r linuxmint-inittmp
-		echo " done."	
+		echo " done."
 	fi
 elif [ $1 = writecfg ];then
 if [ -f linuxmint.iso ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label mint-live
+label linuxmint-live
   menu label ^Try Linux Mint without any change to your computer
-  kernel /lnxmint/vmlinuz
-  append boot=casper initrd=/lnxmint/initrd.lz quiet splash --
-label mint-live-install
+  kernel /mint/vmlinuz
+  append initrd=/mint/initrd.lz boot=casper quiet splash ignore_uuid --
+label linuxmint-live-install
   menu label ^Install Linux Mint
-  kernel /lnxmint/vmlinuz
-  append boot=casper only-ubiquity initrd=/lnxmint/initrd.lz quiet splash --
+  kernel /mint/vmlinuz
+  append only-ubiquity initrd=/mint/initrd.lz boot=casper quiet splash ignore_uuid --
 EOF
 fi
 else
