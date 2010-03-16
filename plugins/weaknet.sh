@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #WeakNet Linux plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 maybeway36
+#version 5.3
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,7 @@ set -e
 #THE SOFTWARE.
 if [ $1 = scan ];then
 	if [ -f weaknet.iso ];then
-		#if [ -f ubuntu.iso ] || [ -f linuxmint.iso ] || [ -f backtrack.iso ];then
-			#echo "WeakNet uses casper, so it can't be used with Ubuntu, Linux Mint or BackTrack right now. This feature will probably be added later."
-		#else
-			echo "WeakNet Linux"
-		#fi
+		echo "WeakNet Linux"
 	fi
 elif [ $1 = copy ];then
 	if [ -f weaknet.iso ];then
@@ -39,19 +35,18 @@ elif [ $1 = copy ];then
 			umount weaknet
 		fi
 		mount -o loop weaknet.iso weaknet/
-		mkdir multicd-working/weaknet
-		cp -R weaknet/casper/* multicd-working/weaknet/
-			echo -n "Making initrd..."
-			mkdir tmp
-			cd tmp
-			gzip -cd ../multicd-working/weaknet/initrd.gz|cpio -id
-			perl -pi -e 's/\$path\/casper/\$path\/weaknet/g' scripts/casper
-			perl -pi -e 's/\$path\/.disk\/casper-uuid/\$path\/.disk\/weaknet-uuid/g' scripts/casper
-			perl -pi -e 's/\$directory\/casper/\$directory\/weaknet/g' scripts/casper
-			find . | cpio --create --format='newc' | gzip -c > ../multicd-working/weaknet/initrd2.gz
-			cd ..
-			#rm -r tmp
-			echo " done."
+		mkdir multicd-working/boot/weaknet
+		cp -R weaknet/casper/* multicd-working/boot/weaknet/
+		echo -n "Making initrd..."
+		mkdir weaknet-inittmp
+		cd weaknet-inittmp
+		gzip -cd ../multicd-working/boot/weaknet/initrd.gz|cpio -id
+		perl -pi -e 's/\$path\/casper/\$path\/boot\/weaknet/g' scripts/casper
+		perl -pi -e 's/\$directory\/casper/\$directory\/boot\/weaknet/g' scripts/casper
+		find . | cpio --create --format='newc' | gzip -c > ../multicd-working/boot/weaknet/initrd.gz
+		cd ..
+		echo " done."
+		rm -r weaknet-inittmp
 		umount weaknet
 		rmdir weaknet
 	fi
@@ -60,16 +55,16 @@ if [ -f weaknet.iso ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
 LABEL live
   menu label ^WeakNet Linux (live)
-  kernel /weaknet/vmlinuz
-  append  file=/cdrom/preseed/custom.seed boot=casper initrd=/weaknet/initrd2.gz quiet splash --
+  kernel /boot/weaknet/vmlinuz
+  append  file=/cdrom/preseed/custom.seed boot=casper initrd=/boot/weaknet/initrd.gz quiet splash ignore_uuid --
 LABEL xforcevesa
   menu label WeakNet Linux (safe graphics mode)
-  kernel /weaknet/vmlinuz
-  append  file=/cdrom/preseed/custom.seed boot=casper xforcevesa initrd=/weaknet/initrd2.gz quiet splash --
+  kernel /boot/weaknet/vmlinuz
+  append  file=/cdrom/preseed/custom.seed boot=casper xforcevesa initrd=/boot/weaknet/initrd.gz quiet splash ignore_uuid --
 LABEL install
   menu label Install WeakNet Linux
-  kernel /weaknet/vmlinuz
-  append  file=/cdrom/preseed/custom.seed boot=casper only-ubiquity initrd=/weaknet/initrd2.gz quiet splash --
+  kernel /boot/weaknet/vmlinuz
+  append  file=/cdrom/preseed/custom.seed boot=casper only-ubiquity initrd=/boot/weaknet/initrd.gz quiet splash ignore_uuid --
 EOF
 fi
 else
