@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #Linux Mint plugin for multicd.sh
-#version 5.3
-#Copyright (c) 2010 maybeway36
+#version 5.4
+#Copyright (c) 2010 maybeway36, Zirafarafa
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -35,37 +35,34 @@ elif [ $1 = copy ];then
 			umount linuxmint
 		fi
 		mount -o loop linuxmint.iso linuxmint/
-		cp -R linuxmint/casper multicd-working/mint #Live system
+		cp -R linuxmint/casper multicd-working/boot/linuxmint #Live system
+	        #if [ -d linuxmint/drivers ];then cp -R linuxmint/drivers multicd-working/;fi #These don't exist anymore as of Mint 8
+	        cp -R linuxmint/preseed multicd-working/boot/linuxmint
+	        #cp -R linuxmint/.disk multicd-working/ #The UUID isn't needed when ignore_uuid is used
+	        cp -R linuxmint/isolinux/splash.jpg multicd-working/boot/isolinux/linuxmint.jpg #A few more helper files
+		# Fix the isolinux.cfg
+		cp linuxmint/isolinux/isolinux.cfg multicd-working/boot/linuxmint/linuxmint.cfg
+		sed -i 's@file=/cdrom/preseed/@file=/cdrom/boot/linuxmint/preseed/@g' multicd-working/boot/linuxmint/linuxmint.cfg
+		sed -i 's^initrd=/casper/^live-media-path=/boot/linuxmint ignore_uuid initrd=/boot/linuxmint/^g' multicd-working/boot/linuxmint/linuxmint.cfg
+		sed -i 's^kernel /casper/^kernel /boot/linuxmint/^g' multicd-working/boot/linuxmint/linuxmint.cfg
+		sed -i 's^splash.jpg^linuxmint.jpg^g' multicd-working/boot/linuxmint/linuxmint.cfg
 		umount linuxmint;rmdir linuxmint
-		echo -n "Making initrd..."
-		if [ -f multicd-working/mint/initrd.lz ];then
-			cp multicd-working/mint/initrd.lz tmpinit.lzma
-			lzma -d tmpinit.lzma
-		else
-			echo "This plugin will only work with Linux Mint 8 or newer."
-			exit 1
-		fi
-		mkdir linuxmint-inittmp
-		cd linuxmint-inittmp
-		cpio -id < ../tmpinit
-		rm ../tmpinit
-		perl -pi -e 's/LIVE_MEDIA_PATH=casper/LIVE_MEDIA_PATH=mint/g' scripts/casper
-		find . | cpio --create --format='newc' | lzma -c > ../multicd-working/mint/initrd.lz
-		cd ..
-		rm -r linuxmint-inittmp
-		echo " done."
 	fi
 elif [ $1 = writecfg ];then
 if [ -f linuxmint.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label linuxmint-live
-  menu label ^Try Linux Mint without any change to your computer
-  kernel /mint/vmlinuz
-  append initrd=/mint/initrd.lz boot=casper quiet splash ignore_uuid --
-label linuxmint-live-install
-  menu label ^Install Linux Mint
-  kernel /mint/vmlinuz
-  append only-ubiquity initrd=/mint/initrd.lz boot=casper quiet splash ignore_uuid --
+cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
+label linuxmint
+menu label --> Linux ^Mint Menu
+com32 vesamenu.c32
+append /boot/linuxmint/linuxmint.cfg
+
+EOF
+cat >> multicd-working/boot/linuxmint/linuxmint.cfg << EOF
+
+label back
+menu label Back to main menu
+com32 menu.c32
+append /boot/isolinux/isolinux.cfg
 EOF
 fi
 else

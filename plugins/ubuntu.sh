@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
-#Ubuntu plugin for multicd.sh
-#version 5.1
+#Ubuntu #2 plugin for multicd.sh
+#version 5.4
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,40 +36,33 @@ elif [ $1 = copy ];then
 			umount ubuntu
 		fi
 		mount -o loop ubuntu.iso ubuntu/
-		cp -R ubuntu/casper multicd-working/ #Live system
-		cp -R ubuntu/dists multicd-working/ #Other packages contained on CD
-		cp -R ubuntu/pool multicd-working/ #Other packages contained on CD
-		cp -R ubuntu/preseed multicd-working/ #Tells the installer what to install
-		cp -R ubuntu/README.diskdefines multicd-working/ #Goes along with dists and pool
-		#cp -R ubuntu/.disk multicd-working/ #A few more helper files
-		ln -s . multicd-working/ubuntu #Because the original disc had it
+		cp -R ubuntu/casper multicd-working/boot/ubuntu #Live system
+		cp -R ubuntu/preseed multicd-working/boot/ubuntu
+		# Fix the isolinux.cfg
+		cp ubuntu/isolinux/text.cfg multicd-working/boot/ubuntu/ubuntu.cfg
+		sed -i 's@default live@default menu.c32@g' multicd-working/boot/ubuntu/ubuntu.cfg
+		sed -i 's@file=/cdrom/preseed/@file=/cdrom/boot/ubuntu/preseed/@g' multicd-working/boot/ubuntu/ubuntu.cfg
+		sed -i 's^initrd=/casper/^live-media-path=/boot/ubuntu ignore_uuid initrd=/boot/ubuntu/^g' multicd-working/boot/ubuntu/ubuntu.cfg
+		sed -i 's^kernel /casper/^kernel /boot/ubuntu/^g' multicd-working/boot/ubuntu/ubuntu.cfg
+		sed -i 's^splash.jpg^linuxmint.jpg^g' multicd-working/boot/ubuntu/ubuntu.cfg
 		umount ubuntu;rmdir ubuntu
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubuntu.iso ];then
-if [ -f multicd-working/casper/initrd.lz ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label ubuntu-live
-  menu label ^Try Ubuntu #1 without any change to your computer
-  kernel /casper/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed boot=casper initrd=/casper/initrd.lz quiet splash ignore_uuid --
-label ubuntu-live-install
-  menu label ^Install Ubuntu #1
-  kernel /casper/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed boot=casper only-ubiquity initrd=/casper/initrd.lz quiet splash ignore_uuid --
+cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
+label ubuntu2
+menu label --> Ubuntu #1 Menu
+com32 menu.c32
+append /boot/ubuntu/ubuntu.cfg
+
 EOF
-else
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label ubuntu-live
-  menu label ^Try Ubuntu #1 without any change to your computer
-  kernel /casper/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed boot=casper initrd=/casper/initrd.gz quiet splash ignore_uuid --
-label ubuntu-live-install
-  menu label ^Install Ubuntu #1
-  kernel /casper/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed boot=casper only-ubiquity initrd=/casper/initrd.gz quiet splash ignore_uuid --
+cat >> multicd-working/boot/ubuntu/ubuntu.cfg << EOF
+
+label back
+menu label Back to main menu
+com32 menu.c32
+append /boot/isolinux/isolinux.cfg
 EOF
-fi
 if [ -f tags/ubuntu1.name ];then
 	perl -pi -e "s/Ubuntu\ \#1/$(cat tags/ubuntu1.name)/g" multicd-working/boot/isolinux/isolinux.cfg
 else
