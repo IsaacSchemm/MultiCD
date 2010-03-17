@@ -45,8 +45,8 @@ elif [ $1 = copy ];then
 			mkdir ubuntu2-inittmp
 			cd ubuntu2-inittmp
 			gzip -cd ../multicd-working/boot/backtrack/$i | cpio -id
-			perl -pi -e 's/$path\/casper/$path\/boot\/backtrack/g' scripts/casper
-			perl -pi -e 's/$directory\/casper/$directory\/boot\/backtrack/g' scripts/casper
+			perl -pi -e 's/path\/casper/path\/boot\/backtrack/g' scripts/casper
+			perl -pi -e 's/directory\/casper/directory\/boot\/backtrack/g' scripts/casper
 			find . | cpio --create --format='newc' | gzip -c > ../multicd-working/boot/backtrack/$i
 			cd ..
 			rm -r ubuntu2-inittmp

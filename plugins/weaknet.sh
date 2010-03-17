@@ -41,8 +41,8 @@ elif [ $1 = copy ];then
 		mkdir weaknet-inittmp
 		cd weaknet-inittmp
 		gzip -cd ../multicd-working/boot/weaknet/initrd.gz|cpio -id
-		perl -pi -e 's/\$path\/casper/\$path\/boot\/weaknet/g' scripts/casper
-		perl -pi -e 's/\$directory\/casper/\$directory\/boot\/weaknet/g' scripts/casper
+		perl -pi -e 's/path\/casper/path\/boot\/weaknet/g' scripts/casper
+		perl -pi -e 's/directory\/casper/directory\/boot\/weaknet/g' scripts/casper
 		find . | cpio --create --format='newc' | gzip -c > ../multicd-working/boot/weaknet/initrd.gz
 		cd ..
 		echo " done."
