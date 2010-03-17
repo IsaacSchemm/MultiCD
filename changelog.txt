@@ -48,4 +48,4 @@
 #v5.0.3 - Fixed a bug in many distros - ISO name is now hardcoded into the plugin routines. (Jan 8, 2010)
 #v5.1 - Fixed a naming bug in ubuntu.sh. Added PsynoKhi0's plugins for CDlinux and EFW. Made the script not ask you about Puppies if there is just one. (Feb 8, 2010)
 #v5.2 - Added PCLinuxOS and modified PCLinuxOS LXDE plugin (bugfix, changed folder). (Mar 6, 2010)
-#v5.3 - Added Finnix courtesy of Zirafarafa. Linux Mint, Backtrack and Weaknet now use their own directories. The ubuntu2.sh plugin for a second Ubuntu-based ISO was fixed and reintroduced. {Not yet released}
+#v5.3 - Added Finnix courtesy of Zirafarafa. Linux Mint, Backtrack and Weaknet now use their own directories. The ubuntu2.sh plugin for a second Ubuntu-based ISO was fixed and reintroduced. (Mar 16, 2010)
