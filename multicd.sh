@@ -8,7 +8,7 @@ if [ $(whoami) != "root" ];then
 	fi
 fi
 set -e
-#multicd.sh 5.3
+#multicd.sh 5.4
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy

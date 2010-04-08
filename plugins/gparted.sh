@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #GParted Live plugin for multicd.sh
-#version 5.3
+#version 5.4
 #Copyright (c) 2009 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -48,32 +48,32 @@ label GParted Live
   # MENU HIDE
   MENU LABEL ^GParted Live (Default settings)
   # MENU PASSWD
-  kernel /boot/gparted/vmlinuz1
-  append initrd=/boot/gparted/initrd1.img boot=live union=aufs live-media-path=/boot/gparted noswap vga=788 ip=frommedia
+  kernel /boot/gparted/vmlinuz
+  append initrd=/boot/gparted/initrd.img boot=live union=aufs live-media-path=/boot/gparted noswap vga=788 ip=frommedia
 
 label GParted Live (To RAM)
   # MENU DEFAULT
   # MENU HIDE
   MENU LABEL GParted Live (To RAM. Boot media can be removed later)
   # MENU PASSWD
-  kernel /boot/gparted/vmlinuz1
-  append initrd=/boot/gparted/initrd1.img boot=live union=aufs live-media-path=/boot/gparted noswap vga=788 toram ip=frommedia
+  kernel /boot/gparted/vmlinuz
+  append initrd=/boot/gparted/initrd.img boot=live union=aufs live-media-path=/boot/gparted noswap vga=788 toram ip=frommedia
 
 label GParted Live without framebuffer
   # MENU DEFAULT
   # MENU HIDE
   MENU LABEL GParted Live (Safe graphic settings, vga=normal)
   # MENU PASSWD
-  kernel /boot/gparted/vmlinuz1
-  append initrd=/boot/gparted/initrd1.img boot=live union=aufs live-media-path=/boot/gparted noswap ip=frommedia vga=normal
+  kernel /boot/gparted/vmlinuz
+  append initrd=/boot/gparted/initrd.img boot=live union=aufs live-media-path=/boot/gparted noswap ip=frommedia vga=normal
 
 label GParted Live failsafe mode
   # MENU DEFAULT
   # MENU HIDE
   MENU LABEL GParted Live (Failsafe mode)
   # MENU PASSWD
-  kernel /boot/gparted/vmlinuz1
-  append initrd=/boot/gparted/initrd1.img boot=live union=aufs live-media-path=/boot/gparted noswap acpi=off irqpoll noapic noapm nodma nomce nolapic nosmp ip=frommedia vga=normal
+  kernel /boot/gparted/vmlinuz
+  append initrd=/boot/gparted/initrd.img boot=live union=aufs live-media-path=/boot/gparted noswap acpi=off irqpoll noapic noapm nodma nomce nolapic nosmp ip=frommedia vga=normal
 EOF
 fi
 else
