@@ -49,4 +49,4 @@
 #v5.1 - Fixed a naming bug in ubuntu.sh. Added PsynoKhi0's plugins for CDlinux and EFW. Made the script not ask you about Puppies if there is just one. (Feb 8, 2010)
 #v5.2 - Added PCLinuxOS and modified PCLinuxOS LXDE plugin (bugfix, changed folder). (Mar 6, 2010)
 #v5.3 - Added Finnix courtesy of Zirafarafa. Linux Mint, Backtrack and Weaknet now use their own directories. The ubuntu2.sh plugin for a second Ubuntu-based ISO was fixed and reintroduced. (Mar 16, 2010)
-#v5.4 - Fixed GParted bug. Fixes for Linux Mint and Ubuntu. (not out yet)
+#v5.4 - Fixed GParted bug. Fixes for Linux Mint and Ubuntu. (April 16, 2010)
