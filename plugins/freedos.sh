@@ -53,7 +53,7 @@ elif [ $1 = copy ];then
 		rmdir freedos
 	fi
 elif [ $1 = writecfg ];then
-if [ -f freedos.iso ];then
+if [ -f fdfullcd.iso ] || [ -f fdbasecd.iso ]];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
 label fdos
 menu label ^FreeDOS 1.0
