@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #DSL plugin for multicd.sh
-#version 5.0
+#version 5.5
 #Copyright (c) 2009 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -44,8 +44,14 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 if [ -f dsl.iso ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+label dslopts
+menu label --> DSL
+com32 menu.c32
+append dsl.menu
+EOF
+cat >> multicd-working/boot/isolinux/dsl.menu << "EOF"
 LABEL dsl
-MENU LABEL ^DSL
+MENU LABEL DSL
 KERNEL /boot/isolinux/linux24
 APPEND ramdisk_size=100000 init=/etc/init lang=us apm=power-off vga=791 initrd=/boot/isolinux/minirt24.gz nomce noapic quiet BOOT_IMAGE=knoppix
 
@@ -93,6 +99,11 @@ APPEND ramdisk_size=100000 init=/etc/init lang=us apm=power-off vga=791 initrd=/
 #MENU LABEL DSL (failsafe)
 #KERNEL /boot/isolinux/linux24
 #APPEND ramdisk_size=100000 init=/etc/init 2 lang=us vga=normal atapicd nosound noscsi nousb nopcmcia nofirewire noagp nomce nodhcp xmodule=vesa initrd=/boot/isolinux/minirt24.gz BOOT_IMAGE=knoppix base norestore legacy
+
+label back
+menu label ^Back to main menu
+com32 menu.c32
+append isolinux.cfg
 EOF
 fi
 else
