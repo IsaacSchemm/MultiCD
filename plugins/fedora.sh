@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Fedora installer plugin for multicd.sh
-#version 5.0
+#version 5.5
 #Copyright (c) 2009 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,8 +38,13 @@ elif [ $1 = copy ];then
 		mkdir multicd-working/boot/fedora
 		cp fedora-boot/isolinux/vmlinuz multicd-working/boot/fedora/vmlinuz
 		cp fedora-boot/isolinux/initrd.img multicd-working/boot/fedora/initrd.img
-		#Commenting out the below line will save about 100MB on the CD, but it will have to be downloaded when you install Fedora
-		cp -R fedora-boot/images multicd-working/
+		if [ -d multicd-working/images ];then
+			echo "There is already an \"images\" folder on the multicd. You might have another Red Hat-based distro on it."
+			echo "Fedora's \"images\" folder won't be copied; instead, these files will be downloaded before the installer starts."
+		else
+			#Commenting out the below line will save about 100MB on the CD, but it will have to be downloaded when you install Fedora
+			cp -R fedora-boot/images multicd-working/
+		fi
 		umount fedora-boot
 		rmdir fedora-boot
 	fi
@@ -48,9 +53,9 @@ if [ -f fedora-boot.iso ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
 label flinux
   #TIP: If you change the method= entry in the append line, you can change the mirror and version installed.
-  menu label ^Install Fedora from mirrors.kernel.org (Fedora 11 only)
+  menu label ^Install Fedora from mirrors.kernel.org (Fedora 13 only)
   kernel /boot/fedora/vmlinuz
-  append initrd=/boot/fedora/initrd.img method=http://mirrors.kernel.org/fedora/releases/11/Fedora/i386/os
+  append initrd=/boot/fedora/initrd.img method=http://mirrors.kernel.org/fedora/releases/13/Fedora/i386/os
 label flinux
   menu label ^Install or upgrade Fedora from another mirror
   kernel /boot/fedora/vmlinuz
