@@ -1,0 +1,89 @@
+#!/bin/sh
+set -e
+#Elastix plugin for multicd.sh
+#version 5.5
+#Copyright (c) 2010 maybeway36
+#
+#Permission is hereby granted, free of charge, to any person obtaining a copy
+#of this software and associated documentation files (the "Software"), to deal
+#in the Software without restriction, including without limitation the rights
+#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#copies of the Software, and to permit persons to whom the Software is
+#furnished to do so, subject to the following conditions:
+#
+#The above copyright notice and this permission notice shall be included in
+#all copies or substantial portions of the Software.
+#
+#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+#THE SOFTWARE.
+if [ $1 = scan ];then
+	if [ -f elastix.iso ];then
+		echo "Elastix"
+	fi
+elif [ $1 = copy ];then
+	if [ -f elastix.iso ];then
+		 echo "Elastix..."
+		if [ ! -d elastix ];then
+			mkdir elastix
+		fi
+		if grep -q "`pwd`/elastix" /etc/mtab ; then
+			umount elastix
+		fi
+		mount -o loop elastix.iso elastix/
+		cp -r elastix/isolinux multicd-working/boot/elastix
+		cp -r elastix/Elastix multicd-working/
+		if [ -d multicd-working/images ];then
+			echo "There is already a folder called \"images\". Are you adding another Red Hat-based distro?"
+			echo "Copying anyway - be warned that on the final CD, something might not work properly."
+		fi
+		cp -r elastix/images multicd-working/
+		cp -r elastix/repodata multicd-working/
+		cp elastix/.discinfo multicd-working/
+		cp elastix/* multicd-working/ 2>/dev/null || true
+		umount elastix
+		rmdir elastix
+	fi
+elif [ $1 = writecfg ];then
+if [ -f elastix.iso ];then
+cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+label elastixmenu
+menu label --> ^Elastix
+config /boot/isolinux/elastix.cfg
+EOF
+cat > multicd-working/boot/isolinux/elastix.cfg << "EOF"
+default linux
+prompt 1
+timeout 600
+display /boot/elastix/boot.msg
+F1 /boot/elastix/boot.msg
+F2 /boot/elastix/options.msg
+F3 /boot/elastix/general.msg
+F4 /boot/elastix/param.msg
+F5 /boot/elastix/rescue.msg
+F7 /boot/elastix/snake.msg
+label advanced
+  kernel /boot/elastix/vmlinuz
+  append ks=cdrom:/ks_advanced.cfg initrd=/boot/elastix/initrd.img ramdisk_size=8192
+label elastix
+  kernel /boot/elastix/vmlinuz
+  append initrd=/boot/elastix/initrd.img ramdisk_size=8192
+label linux
+  kernel /boot/elastix/vmlinuz
+  append ks=cdrom:/ks.cfg initrd=/boot/elastix/initrd.img ramdisk_size=8192
+label rhinoraid
+  kernel /boot/elastix/vmlinuz
+  append ks=cdrom:/ks_rhinoraid.cfg initrd=/boot/elastix/initrd.img ramdisk_size=8192
+label local
+  localboot 1
+EOF
+fi
+else
+	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Use only from within multicd.sh or a compatible script!"
+	echo "Don't use this plugin script on its own!"
+fi
