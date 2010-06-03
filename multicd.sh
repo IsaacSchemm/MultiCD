@@ -358,12 +358,14 @@ if [ $VERBOSE != 0 ];then
  $GENERATOR -o multicd.iso \
  -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
  -no-emul-boot -boot-load-size 4 -boot-info-table \
- -r -J -l -V "$ISOLABEL" multicd-working/
+ -r -J -joliet-long -iso-level 4 -D \
+ -l -V "$ISOLABEL" multicd-working/
 else
  $GENERATOR -o multicd.iso \
  -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
  -no-emul-boot -boot-load-size 4 -boot-info-table \
- -r -J -l -quiet -V "$ISOLABEL" multicd-working/
+ -r -J -joliet-long -iso-level 4 -D \
+ -l -quiet -V "$ISOLABEL" multicd-working/
 fi
 rm -r multicd-working/
 chmod 666 multicd.iso

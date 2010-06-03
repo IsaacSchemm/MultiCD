@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #Ultimate Boot CD plugin for multicd.sh
-#version 5.3
-#Copyright (c) 2009 maybeway36
+#version 5.5
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -46,28 +46,29 @@ elif [ $1 = copy ];then
 			umount ubcd
 		fi
 		mount -o loop ubcd.iso ubcd/
-		mkdir -p multicd-working/boot/ubcd/
-        cp -r ubcd/dosapps multicd-working/boot/ubcd/
-        cp -r ubcd/images multicd-working/boot/ubcd/
-        cp -r ubcd/menus multicd-working/boot/ubcd/
-        sed -i 's^/boot/^/boot/ubcd/boot/^g' multicd-working/boot/ubcd/menus/*
-        sed -i 's^/menus/^/boot/ubcd/menus/^g' multicd-working/boot/ubcd/menus/*
-        sed -i 's^/images/^/boot/ubcd/images/^g' multicd-working/boot/ubcd/menus/*
-        cp -r ubcd/boot multicd-working/boot/ubcd/ #Some boot files needed for UBCD
-		cp ubcd/isolinux/sbm.cbt multicd-working/boot/isolinux/sbm.cbt #Smart Boot Manager
-		VERSION=$(head -n 1 ubcd/menus/defaults.cfg | awk '{ print $6 }')
-		echo "$VERSION" > multicd-working/boot/ubcd/version
+		cp -r ubcd/ubcd multicd-working/
+		cp -r ubcd/pmagic multicd-working/
+		cp -r ubcd/antivir multicd-working/
+		cp ubcd/license.txt multicd-working/ubcd-license.txt
+		cp ubcd/boot/syslinux/econfig.c32 multicd-working/boot/isolinux/
+		cp ubcd/boot/syslinux/reboot.c32 multicd-working/boot/isolinux/
+		for i in multicd-working/ubcd/menus/*/*.cfg multicd-working/ubcd/menus/*/*/*.cfg multicd-working/pmagic/boot/*/*.cfg;do
+			perl -pi -e 's/\/boot\/syslinux/\/boot\/isolinux/g' $i
+		done
+		head -n 1 ubcd/ubcd/menus/syslinux/defaults.cfg | awk '{ print $6 }'>ubcdver.tmp.txt
+		#echo "$VERSION" > multicd-working/boot/ubcd/version
 		umount ubcd
 		rmdir ubcd
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubcd.iso ];then
-VERSION=$(cat multicd-working/boot/ubcd/version)
+VERSION=$(cat ubcdver.tmp.txt)
+rm ubcdver.tmp.txt
 cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
 label ubcd
 menu label --> ^Ultimate Boot CD ($VERSION) - Main menu
 com32 menu.c32
-append /boot/ubcd/menus/main.cfg
+append /ubcd/menus/isolinux/main.cfg
 EOF
 fi
 else
