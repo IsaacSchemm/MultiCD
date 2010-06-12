@@ -50,4 +50,4 @@
 #v5.2 - Added PCLinuxOS and modified PCLinuxOS LXDE plugin (bugfix, changed folder). (Mar 6, 2010)
 #v5.3 - Added Finnix courtesy of Zirafarafa. Linux Mint, Backtrack and Weaknet now use their own directories. The ubuntu2.sh plugin for a second Ubuntu-based ISO was fixed and reintroduced. (Mar 16, 2010)
 #v5.4 - Fixed GParted bug. Fixes for Linux Mint and Ubuntu. (April 16, 2010)
-#v5.5 - Gave DSL a submenu with all the options. Added Elastix. Updated Fedora netboot to assume version 13 instead of 11. [Not yet released]
+#v5.5 - Gave DSL a submenu with all the options. Added Elastix. Updated Fedora netboot to assume version 13 instead of 11. (June 12, 2010)
