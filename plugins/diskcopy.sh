@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #EASEUS Disk Copy plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 maybeway36
+#version 5.6
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -42,10 +42,11 @@ elif [ $1 = copy ];then
 		if grep -q "`pwd`/diskcopy" /etc/mtab ; then
 			umount diskcopy
 		fi
+echo "Copying EASUS Disk Copy..."
 		mount -o loop diskcopy.iso diskcopy/
 		mkdir -p multicd-working/boot/diskcopy
-		cp diskcopy/boot/bzImage multicd-working/boot/diskcopy/bzImage
-		cp diskcopy/boot/initrd.img multicd-working/boot/diskcopy/initrd.img
+		cp diskcopy/bzImage multicd-working/boot/diskcopy/bzImage
+		cp diskcopy/initrd.img multicd-working/boot/diskcopy/initrd.img
 		umount diskcopy
 		rmdir diskcopy
 	fi

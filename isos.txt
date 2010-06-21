@@ -10,6 +10,7 @@
 #DeLi Linux	deli.iso
 #DSL	dsl.iso
 #EASEUS Disk Copy	diskcopy.iso
+#Elastix		elastix.iso
 #Endian Firewall	efw.iso
 #Feather	feather.iso
 #Fedora netboot	fedora-boot.iso

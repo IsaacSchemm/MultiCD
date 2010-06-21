@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #RIPLinuX plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 maybeway36
+#version 5.6
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f riplinux.iso ];then
 		if [ ! -d riplinux ];then
+echo "Copying RIP Linux..."
 			mkdir riplinux
 		fi
 		if grep -q "`pwd`/riplinux" /etc/mtab ; then
@@ -37,7 +38,7 @@ elif [ $1 = copy ];then
 		mkdir -p multicd-working/boot/riplinux
 		cp -r riplinux/boot/doc multicd-working/boot/ #Documentation
 		cp -r riplinux/boot/grub4dos multicd-working/boot/riplinux/ #GRUB4DOS :)
-		cp riplinux/boot/kernel multicd-working/boot/riplinux/kernel #32-bit kernel
+		cp riplinux/boot/kernel32 multicd-working/boot/riplinux/kernel32 #32-bit kernel
 		cp riplinux/boot/kernel64 multicd-working/boot/riplinux/kernel64 #64-bit kernel
 		cp riplinux/boot/rootfs.cgz multicd-working/boot/riplinux/rootfs.cgz #Initrd
 		perl -pi -e 's/\/boot\/kernel/\/boot\/riplinux\/kernel/g' multicd-working/boot/riplinux/grub4dos/menu.lst #Fix the menu.lst
@@ -59,19 +60,19 @@ PROMPT 0
 MENU TITLE RIPLinuX v6.7
 
 LABEL Boot Linux system! (32-bit kernel)
-KERNEL /boot/riplinux/kernel
+KERNEL /boot/riplinux/kernel32
 APPEND vga=normal initrd=/boot/riplinux/rootfs.cgz root=/dev/ram0 rw
 
 LABEL Boot Linux system! (skip keymap prompt)
-KERNEL /boot/riplinux/kernel
+KERNEL /boot/riplinux/kernel32
 APPEND vga=normal nokeymap initrd=/boot/riplinux/rootfs.cgz root=/dev/ram0 rw
 
 LABEL Boot Linux system to X! (32-bit kernel)
-KERNEL /boot/riplinux/kernel
+KERNEL /boot/riplinux/kernel32
 APPEND vga=normal xlogin initrd=/boot/riplinux/rootfs.cgz root=/dev/ram0 rw
 
 LABEL Boot Linux system to X! (skip keymap prompt)
-KERNEL /boot/riplinux/kernel
+KERNEL /boot/riplinux/kernel32
 APPEND vga=normal xlogin nokeymap initrd=/boot/riplinux/rootfs.cgz root=/dev/ram0 rw
 
 LABEL Boot Linux system! (64-bit kernel)

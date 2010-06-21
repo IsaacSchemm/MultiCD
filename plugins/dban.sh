@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #DBAN plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 maybeway36
+#version 5.6
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -35,13 +35,13 @@ elif [ $1 = copy ];then
 			umount dban
 		fi
 		mount -o loop dban.iso dban/
-		cp dban/dban*.ima /tmp/dban.ima #Get the floppy image from inside the CD image
+		cp dban/dban.bzi /tmp/dban.bzi #Get the floppy image from inside the CD image
 		umount dban
-		mount -o loop /tmp/dban.ima dban #Then mount that floppy image
+#		mount -o loop /tmp/dban.ima dban #Then mount that floppy image
 		mkdir -p multicd-working/boot/dban1
-		cp dban/kernel.bzi multicd-working/boot/dban1/kernel.bzi
-		cp dban/initrd.gz multicd-working/boot/dban1/initrd.gz
-		umount dban
+		cp /tmp/dban.bzi multicd-working/boot/dban1/dban.bzi
+#		cp dban/initrd.gz multicd-working/boot/dban1/initrd.gz
+#		umount dban
 		rmdir dban
 	fi
 elif [ $1 = writecfg ];then
@@ -53,8 +53,9 @@ cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
 
 LABEL  dban
 MENU LABEL ^DBAN
-KERNEL /boot/dban1/kernel.bzi
-APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke="dwipe" silent
+KERNEL /boot/dban1/dban.bzi
+APPEND nuke="dwipe --method prng --rounds 8 --verify off" floppy=0,16,cmos
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke="dwipe" silent
 
 LABEL  autonuke
 MENU HIDE
