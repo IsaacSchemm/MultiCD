@@ -19,6 +19,7 @@
 #GeeXboX	gbox.iso
 #GParted	gparted.iso
 #INSERT	insert.iso
+#IPCop		ipcop.iso
 #Knoppix 5	knoppix5.iso
 #Linux Mint	linuxmint.iso
 #Mandriva netboot	mandriva-boot.iso
@@ -39,6 +40,7 @@
 #Ubuntu live CD	ubuntu.iso
 #Ubuntu netboot	ubuntu-mini.iso
 #Ultimate Boot CD	ubcd.iso
+#Vyatta		vyatta.iso
 #Wolvix	wolvix.iso
 #Floppy images	ANYTHING.img or .imz (you can have several of these)
 #Images with games	games/ANYTHING.img or .imz (will create a submenu)
