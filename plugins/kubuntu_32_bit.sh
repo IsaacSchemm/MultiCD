@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #kubuntu_32_bit plugin for multicd.sh
-#version 5.4
+#version 5.6
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +24,6 @@ set -e
 if [ $1 = scan ];then
 	if [ -f kubuntu_32_bit.iso ];then
 		echo "kubuntu_32_bit"
-		echo > tags/kubuntu_32_bit1
 	fi
 elif [ $1 = copy ];then
 	if [ -f kubuntu_32_bit.iso ];then
@@ -63,11 +62,6 @@ menu label Back to main menu
 com32 menu.c32
 append /boot/isolinux/isolinux.cfg
 EOF
-if [ -f tags/kubuntu_32_bit1.name ];then
-	perl -pi -e "s/kubuntu_32_bit\ \#1/$(cat tags/kubuntu_32_bit1.name)/g" multicd-working/boot/isolinux/isolinux.cfg
-else
-	perl -pi -e "s/kubuntu_32_bit\ \#1/kubuntu_32_bit/g" multicd-working/boot/isolinux/isolinux.cfg
-fi
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

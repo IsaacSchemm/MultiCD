@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
-#Ubuntu #2 plugin for multicd.sh
-#version 5.4
+#Ubuntu Custom #2 plugin for multicd.sh
+#version 5.6
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,8 +23,8 @@ set -e
 #THE SOFTWARE.
 if [ $1 = scan ];then
 	if [ -f ubuntu2.iso ];then
-		echo "Ubuntu #2 (for using multiple versions on one disc - 9.10 or newer)"
-		echo > tags/ubuntu2
+		echo "Ubuntu Custom #2 (for using multiple versions on one disc - 9.10 or newer)"
+		echo > tags/ubuntu-custom2
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu2.iso ];then
@@ -51,7 +51,7 @@ elif [ $1 = writecfg ];then
 if [ -f ubuntu2.iso ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
 label ubuntu2
-menu label --> Ubuntu #2 Menu
+menu label --> Ubuntu Custom #2 Menu
 com32 menu.c32
 append /boot/ubuntu2/ubuntu2.cfg
 
@@ -63,8 +63,8 @@ menu label Back to main menu
 com32 menu.c32
 append /boot/isolinux/isolinux.cfg
 EOF
-if [ -f tags/ubuntu2.name ];then
-	perl -pi -e "s/Ubuntu\ \#2/$(cat tags/ubuntu2.name)/g" multicd-working/boot/isolinux/isolinux.cfg
+if [ -f tags/ubuntu-custom2.name ];then
+	perl -pi -e "s/Ubuntu\ Custom\ \#2/$(cat tags/ubuntu-custom2.name)/g" multicd-working/boot/isolinux/isolinux.cfg
 fi
 fi
 else
