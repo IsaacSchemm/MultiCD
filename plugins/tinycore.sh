@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #Tiny Core Linux plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 maybeway36
+#version 5.6
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -37,19 +37,32 @@ elif [ $1 = copy ];then
 		mount -o loop tinycore.iso tinycore/
 		mkdir multicd-working/boot/tinycore
 		cp tinycore/boot/bzImage multicd-working/boot/tinycore/bzImage #Linux kernel
-		cp tinycore/boot/tinycore.gz multicd-working/boot/tinycore/tinycore.gz #Entire Tiny Core image is in this file
+		cp tinycore/boot/*.gz multicd-working/boot/tinycore/ #Copy any initrd there may be - this works for microcore too
+		if [ -d tinycore/tce ];then cp -rv tinycore/tce multicd-working/;fi
 		umount tinycore
 		rmdir tinycore
 	fi
 elif [ $1 = writecfg ];then
 #BEGIN TINY CORE ENTRY#
 if [ -f tinycore.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label tinycore
+for i in $(ls multicd-working/boot/tinycore);do
+if [ $i = tinycore.gz ];then
+echo "label tinycore
 menu label ^Tiny Core Linux
 kernel /boot/tinycore/bzImage
-append quiet initrd=/boot/tinycore/tinycore.gz
-EOF
+append quiet initrd=/boot/tinycore/tinycore.gz">>multicd-working/boot/isolinux/isolinux.cfg
+elif [ $i = microcore.gz ];then
+echo "label microcore
+menu label Micro Core
+kernel /boot/tinycore/bzImage
+append quiet initrd=/boot/tinycore/microcore.gz">>multicd-working/boot/isolinux/isolinux.cfg
+else
+echo "label $i
+menu label $i
+kernel /boot/tinycore/bzImage
+append quiet initrd=/boot/tinycore/$i">>multicd-working/boot/isolinux/isolinux.cfg
+fi
+done
 fi
 #END TINY CORE ENTRY#
 else
