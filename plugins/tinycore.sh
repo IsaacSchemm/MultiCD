@@ -45,7 +45,7 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 #BEGIN TINY CORE ENTRY#
 if [ -f tinycore.iso ];then
-for i in $(ls multicd-working/boot/tinycore);do
+for i in $(ls multicd-working/boot/tinycore|grep ".gz");do
 if [ $i = tinycore.gz ];then
 echo "label tinycore
 menu label ^Tiny Core Linux
