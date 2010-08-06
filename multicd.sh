@@ -182,24 +182,22 @@ if [ -f grub.exe ];then
 fi
 
 echo "Downloading SYSLINUX..."
-if [ -f syslinux.tar.gz ];then
-	cp syslinux.tar.gz /tmp/syslinux.tar.gz
-else
+if [ ! -f syslinux.tar.gz ];then
 	if [ $VERBOSE != 0 ];then
-		wget -O /tmp/syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-*.tar.gz
+		wget -O syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.02.tar.gz
 	else
-		wget -qO /tmp/syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-*.tar.gz
+		wget -qO syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.02.tar.gz
 	fi
 fi
 if [ $? = 0 ];then
 	echo "Unpacking and copying files..."
-	tar -C /tmp -xzf /tmp/syslinux.tar.gz
+	tar -C /tmp -xzf syslinux.tar.gz
 	cp /tmp/syslinux-*/core/isolinux.bin multicd-working/boot/isolinux/
 	cp /tmp/syslinux-*/memdisk/memdisk multicd-working/boot/isolinux/
 	cp /tmp/syslinux-*/com32/menu/menu.c32 multicd-working/boot/isolinux/
 	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 multicd-working/boot/isolinux/
 	cp /tmp/syslinux-*/com32/modules/chain.c32 multicd-working/boot/isolinux/
-	rm -r /tmp/syslinux-*/ /tmp/syslinux.tar.gz
+	rm -r /tmp/syslinux-*/
 else
 	echo "Downloading of SYSLINUX failed."
 	exit 1
