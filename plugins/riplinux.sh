@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #RIPLinuX plugin for multicd.sh
-#version 5.6
+#version 5.6.1
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -41,8 +41,8 @@ echo "Copying RIP Linux..."
 		cp riplinux/boot/kernel32 multicd-working/boot/riplinux/kernel32 #32-bit kernel
 		cp riplinux/boot/kernel64 multicd-working/boot/riplinux/kernel64 #64-bit kernel
 		cp riplinux/boot/rootfs.cgz multicd-working/boot/riplinux/rootfs.cgz #Initrd
-		perl -pi -e 's/\/boot\/kernel/\/boot\/riplinux\/kernel/g' multicd-working/boot/riplinux/grub4dos/menu.lst #Fix the menu.lst
-		perl -pi -e 's/\/boot\/rootfs.cgz/\/boot\/riplinux\/rootfs.cgz/g' multicd-working/boot/riplinux/grub4dos/menu.lst #Fix it some more
+		perl -pi -e 's/\/boot\/kernel/\/boot\/riplinux\/kernel/g' multicd-working/boot/riplinux/grub4dos/menu-cd.lst #Fix the menu.lst
+		perl -pi -e 's/\/boot\/rootfs.cgz/\/boot\/riplinux\/rootfs.cgz/g' multicd-working/boot/riplinux/grub4dos/menu-cd.lst #Fix it some more
 		umount riplinux
 		rmdir riplinux
 	fi
@@ -105,7 +105,7 @@ APPEND -
 
 LABEL Boot GRUB bootloader!
 KERNEL /boot/riplinux/grub4dos/grub.exe
-APPEND --config-file=(cd)/boot/riplinux/grub4dos/menu.lst
+APPEND --config-file=(cd)/boot/riplinux/grub4dos/menu-cd.lst
 
 LABEL Boot MBR on first hard drive!
 KERNEL chain.c32

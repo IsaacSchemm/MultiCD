@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Tiny Core Linux plugin for multicd.sh
-#version 5.6
+#version 5.6.1
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,7 +38,7 @@ elif [ $1 = copy ];then
 		mkdir multicd-working/boot/tinycore
 		cp tinycore/boot/bzImage multicd-working/boot/tinycore/bzImage #Linux kernel
 		cp tinycore/boot/*.gz multicd-working/boot/tinycore/ #Copy any initrd there may be - this works for microcore too
-		if [ -d tinycore/tce ];then cp -rv tinycore/tce multicd-working/;fi
+		if [ -d tinycore/tce ];then cp -r tinycore/tce multicd-working/;fi
 		umount tinycore
 		rmdir tinycore
 	fi

@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #SystemRescueCd plugin for multicd.sh
-#version 5.3
-#Copyright (c) 2009 maybeway36
+#version 5.6.1
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f sysrcd.iso ];then
+	echo "Copying SystemRescueCd..."
 	if [ ! -d sysrcd ];then
 		mkdir sysrcd
 	fi
