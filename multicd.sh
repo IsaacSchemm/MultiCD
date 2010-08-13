@@ -209,9 +209,9 @@ if [ $MEMTEST = 1 ];then
  else
   echo "Downloading memtest86+ 2.11 from memtest.org..."
   if [ $VERBOSE != 0 ];then
-   wget -O- http://www.memtest.org/download/2.11/memtest86+-2.11.bin.gz|gzip -cd>multicd-working/boot/memtest
+   wget -O- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>multicd-working/boot/memtest
   else
-   wget -qO- http://www.memtest.org/download/2.11/memtest86+-2.11.bin.gz|gzip -cd>multicd-working/boot/memtest
+   wget -qO- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>multicd-working/boot/memtest
   fi
  fi
 fi
