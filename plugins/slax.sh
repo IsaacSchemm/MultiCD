@@ -82,8 +82,8 @@ APPEND initrd=/boot/slax/initrd.lz ramdisk_size=6666 root=/dev/ram0 rw vga=791 s
 
 LABEL lxde
 MENU LABEL Graphics mode (LXDE) (if available)
-KERNEL /boot/vmlinuz
-APPEND initrd=/boot/initrd.lz ramdisk_size=6666 root=/dev/ram0 rw vga=791 splash=silent quiet autoexec=lxde;xconf;telinit~4 changes=/slax/
+KERNEL /boot/slax/vmlinuz
+APPEND initrd=/boot/slax/initrd.lz ramdisk_size=6666 root=/dev/ram0 rw vga=791 splash=silent quiet autoexec=lxde;xconf;telinit~4 changes=/slax/
 
 LABEL copy2ram
 MENU LABEL Slax Graphics mode, Copy To RAM
