@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
-#Ubuntu plugin for multicd.sh
-#version 5.6
+#Damn Vulnerable Linux plugin for multicd.sh
+#version 5.7
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,45 +22,39 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = scan ];then
-	if [ -f ubuntu.iso ];then
-		echo "Ubuntu"
+	if [ -f dvl.iso ];then
+		echo "Damn Vulnerable Linux"
 	fi
 elif [ $1 = copy ];then
-	if [ -f ubuntu.iso ];then
-		echo "Copying Ubuntu..."
-		if [ ! -d ubuntu ];then
-			mkdir ubuntu
+	if [ -f dvl.iso ];then
+		echo "Copying Damn Vulnerable Linux..."
+		if [ ! -d dvl ];then
+			mkdir dvl
 		fi
-		if grep -q "`pwd`/ubuntu" /etc/mtab ; then
-			umount ubuntu
+		if grep -q "`pwd`/dvl" /etc/mtab ; then
+			umount dvl
 		fi
-		mount -o loop ubuntu.iso ubuntu/
-		cp -R ubuntu/casper multicd-working/boot/ubuntu #Live system
-		cp -R ubuntu/preseed multicd-working/boot/ubuntu
-		# Fix the isolinux.cfg
-		cp ubuntu/isolinux/text.cfg multicd-working/boot/ubuntu/ubuntu.cfg
-		sed -i 's@default live@default menu.c32@g' multicd-working/boot/ubuntu/ubuntu.cfg
-		sed -i 's@file=/cdrom/preseed/@file=/cdrom/boot/ubuntu/preseed/@g' multicd-working/boot/ubuntu/ubuntu.cfg
-		sed -i 's^initrd=/casper/^live-media-path=/boot/ubuntu ignore_uuid initrd=/boot/ubuntu/^g' multicd-working/boot/ubuntu/ubuntu.cfg
-		sed -i 's^kernel /casper/^kernel /boot/ubuntu/^g' multicd-working/boot/ubuntu/ubuntu.cfg
-		sed -i 's^splash.jpg^linuxmint.jpg^g' multicd-working/boot/ubuntu/ubuntu.cfg
-		umount ubuntu;rmdir ubuntu
+		mount -o loop dvl.iso dvl/
+		cp -r dvl/BT multicd-working/
+		mkdir multicd-working/boot/dvl
+		cp dvl/boot/vmlinuz multicd-working/boot/dvl/vmlinuz
+		cp dvl/boot/initrd.gz multicd-working/boot/dvl/initrd.gz
+		umount dvl;rmdir dvl
 	fi
 elif [ $1 = writecfg ];then
-if [ -f ubuntu.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
-label ubuntu2
-menu label --> Ubuntu #1 Menu
-com32 menu.c32
-append /boot/ubuntu/ubuntu.cfg
+if [ -f dvl.iso ];then
+cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+label dvl
+menu label Damn ^Vulnerable Linux
+kernel /boot/dvl/vmlinuz
+initrd /boot/dvl/initrd.gz
+append vga=0x317 max_loop=255 init=linuxrc load_ramdisk=1 prompt_ramdisk=0 ramdisk_size=4444 root=/dev/ram0 rw
 
-EOF
-cat >> multicd-working/boot/ubuntu/ubuntu.cfg << EOF
-
-label back
-menu label Back to main menu
-com32 menu.c32
-append /boot/isolinux/isolinux.cfg
+label dvlsafe
+menu label Damn Vulnerable Linux (dvlsafe)
+kernel /boot/dvl/vmlinuz
+initrd /boot/dvl/initrd.gz
+append vga=769 max_loop=255 init=linuxrc load_ramdisk=1 prompt_ramdisk=0 ramdisk_size=4444 root=/dev/ram0 rw
 EOF
 fi
 else
