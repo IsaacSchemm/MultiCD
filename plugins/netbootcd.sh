@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-#NetbootCD 3.x plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 maybeway36
+#NetbootCD 3.x/4.x plugin for multicd.sh
+#version 5.7
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -37,18 +37,29 @@ elif [ $1 = copy ];then
 		mount -o loop netbootcd.iso netbootcd/
 		mkdir -p multicd-working/boot/nbcd
 		cp netbootcd/isolinux/kexec.bzI multicd-working/boot/nbcd/kexec.bzI
-		cp netbootcd/isolinux/nbinit3.gz multicd-working/boot/nbcd/nbinit3.gz
+		cp netbootcd/isolinux/* multicd-working/boot/nbcd/
 		umount netbootcd;rmdir netbootcd
 	fi
 elif [ $1 = writecfg ];then
 #BEGIN NETBOOTCD ENTRY#
 if [ -f netbootcd.iso ];then
+if [ -f multicd-working/boot/nbcd/nbinit4.lz ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
 LABEL netbootcd
 MENU LABEL ^NetbootCD
 KERNEL /boot/nbcd/kexec.bzI
-APPEND quiet initrd=/boot/nbcd/nbinit3.gz
+initrd /boot/nbcd/nbinit4.lz
+APPEND quiet
 EOF
+else
+cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+LABEL netbootcd
+MENU LABEL ^NetbootCD
+KERNEL /boot/nbcd/kexec.bzI
+initrd /boot/nbcd/nbinit3.gz
+APPEND quiet
+EOF
+fi
 fi
 #END NETBOOTCD ENTRY#
 else
