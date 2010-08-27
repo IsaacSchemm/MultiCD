@@ -1,3 +1,4 @@
+23d1b66e2f5837dbbd5ec74bfc8b3e3f  plugins/0hello.sh
 083932cda7e28fa6aa0c2df18f76985b  plugins/antix.sh
 c5d3011630b217115bb3680a6a9756aa  plugins/archdual.sh
 33b504ef310d3217aad2345800ab819f  plugins/arch.sh
@@ -15,7 +16,6 @@ b549d23249e6384c55d0e17d61b0a911  plugins/debian-live.sh
 11d9c328a73ca7f347f2378e5129a766  plugins/dvl.sh
 cf5a5699bc3be048c5b199e1d616dcf3  plugins/efw.sh
 c830e24ca4e780ee7f9d2a9838da0f7a  plugins/elastix.sh
-23d1b66e2f5837dbbd5ec74bfc8b3e3f  plugins/fakeplugin.sh
 dd16faa6abdc8226ad6a0268e7cfef25  plugins/feather.sh
 cfe4ba49f00110f7f78f4f696107b067  plugins/fedora.sh
 dc3a19fa679bd375a75e3d72266db8a2  plugins/finnix.sh
