@@ -12,10 +12,11 @@ if [ ! -d plugins ];then
 fi
 true > working.sh
 chmod +x working.sh
-sed -n '/#!\/bin\/bash/,/#START SCAN/p' multicd.sh >> working.sh
+sed -n '/#!\/bin\/bash/,/#START PREPARE/p' multicd.sh >> working.sh
+sed -n '/#END PREPARE/,/#START SCAN/p' multicd.sh >> working.sh
 for i in plugins/*.sh;do
 	if ! grep -q "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM," $i;then
-		echo "Warning: $i may not be under the MIT license. Check its license terms and add them to combined-multicd.sh."
+		echo "Note: $i may not be under the MIT license. Check its license terms and add them to combined-multicd.sh."
 	fi
 	head -n 3 $i |tail -n 2 >> working.sh
 	sed -n '/\$1 = scan/,/\$1 = copy/p' $i|sed -e '1d' -e '$d' >> working.sh

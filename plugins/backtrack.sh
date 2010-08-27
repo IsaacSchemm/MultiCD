@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #BackTrack plugin for multicd.sh (designed for BackTrack 4)
-#version 5.3
+#version 5.7
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -42,6 +42,7 @@ elif [ $1 = copy ];then
 		rmdir backtrack
 		echo -n "Making initrd(s)..."
 		for i in initrd.gz initrd800.gz initrdfr.gz;do
+			if [ -d ubuntu2-inittmp ];then rm -r ubuntu2-inittmp;fi
 			mkdir ubuntu2-inittmp
 			cd ubuntu2-inittmp
 			gzip -cd ../multicd-working/boot/backtrack/$i | cpio -id
