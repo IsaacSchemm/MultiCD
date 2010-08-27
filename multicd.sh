@@ -8,7 +8,7 @@ if [ $(whoami) != "root" ];then
 	fi
 fi
 set -e
-#multicd.sh 5.6
+#multicd.sh 5.7
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -63,6 +63,14 @@ else
  MODULES=0
 fi
 
+UNKNOWNS="$(md5sum -c plugins.md5|grep FAILED|awk -F: '{print $1}') $(for i in plugins/*.sh;do grep -q $i plugins.md5||echo $i;done)"
+if [ "$UNKNOWNS" != " " ];then
+	echo
+	echo "Plugins that are not from the official release: $UNKNOWNS"
+	echo "Make sure you trust every script in the plugins folder - all these scripts will get root access!"
+	echo
+fi
+
 if [ $MODULES = 1 ];then
  if which dialog;then
   dialog --checklist "Slax modules to include:" 13 45 6 \
@@ -76,18 +84,28 @@ if [ $MODULES = 1 ];then
   cat ./slaxlist0|sed -e 's/"//g' -e 's/ /\n/g'>./slaxlist
   rm ./slaxlist0
  else
-  echo "Please install dialog to use the module selector."
+  echo "Please install dialog to use the Slax module selector."
   exit 1
  fi
 fi
 
-echo "List of boot options that will be included:"
-#START SCAN
+#Make the scripts executable.
 for i in plugins/*;do
 	[ ! -x $i ]&&chmod +x $i
+done
+
+#Now we run through the plugins first, as a non-root user.
+echo "List of boot options that will be included:"
+echo '#!/bin/sh
+#START SCAN
+for i in plugins/*;do
 	$i scan
 done
 #END SCAN
+'>/tmp/run-as-nobody.sh
+chmod +x /tmp/run-as-nobody.sh
+su nobody -c /tmp/run-as-nobody.sh
+rm /tmp/run-as-nobody.sh
 
 for i in *.im[agz]; do
  test -r "$i" || continue
