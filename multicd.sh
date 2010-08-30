@@ -31,6 +31,7 @@ set -e
 
 if [ -d tags ];then rm -r tags;fi
 mkdir -p tags/puppies
+chmod -R 777 tags
 
 if echo $* | grep -q "\bmd5\b";then
  MD5=1
@@ -371,20 +372,19 @@ if [ -d multicd-working/boot/trinity ];then
 else
  ISOLABEL=GNULinux
 fi
-echo "Building CD image..."
-if [ $VERBOSE != 0 ];then
- $GENERATOR -o multicd.iso \
- -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
- -no-emul-boot -boot-load-size 4 -boot-info-table \
- -r -J -joliet-long -iso-level 4 -D \
- -l -V "$ISOLABEL" multicd-working/
-else
- $GENERATOR -o multicd.iso \
- -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
- -no-emul-boot -boot-load-size 4 -boot-info-table \
- -r -J -joliet-long -iso-level 4 -D \
- -l -quiet -V "$ISOLABEL" multicd-working/
+EXTRAARGS=""
+if [ $VERBOSE = 0 ];then
+	EXTRAARGS="$EXTRAARGS -quiet"
 fi
+if [ ! -f tags/win9x ];then
+	EXTRAARGS="$EXTRAARGS -iso-level 4" #To ensure that Windows 9x installation CDs boot properly
+fi
+echo "Building CD image..."
+$GENERATOR -o multicd.iso \
+-b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
+-no-emul-boot -boot-load-size 4 -boot-info-table \
+-r -J -joliet-long $EXTRAARGS -D \
+-l -quiet -V "$ISOLABEL" multicd-working/
 rm -r multicd-working/
 chmod 666 multicd.iso
 rm -r tags
