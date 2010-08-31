@@ -267,12 +267,10 @@ echo "Writing isolinux.cfg..."
 
 #BEGIN HEADER#
 #Don't move this part. You can change the timeout and menu title, however.
-cat > multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-DEFAULT menu.c32
+echo "DEFAULT menu.c32
 TIMEOUT 0
 PROMPT 0
-menu title Welcome to GNU/Linux!
-EOF
+menu title $CDTITLE" > multicd-working/boot/isolinux/isolinux.cfg
 #END HEADER#
 
 #BEGIN COLOR CODE#
@@ -294,17 +292,15 @@ echo "	menu color screen 37;40
 	menu color timeout_msg 37;40
 	menu color timeout 1;37;40
 	menu color help 37;40
-	menu color msg07 37;40"|sed -e "s/44/$MENUCOLOR/g"
+	menu color msg07 37;40"|sed -e "s/44/$MENUCOLOR/g">>multicd-working/boot/isolinux/isolinux.cfg
 #END COLOR CODE#
 
 #BEGIN HD BOOT OPTION#
 #If this bugs you, get rid of it.
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label local
+echo "label local
 menu label Boot from ^hard drive
 kernel chain.c32
-append hd0
-EOF
+append hd0" >> multicd-working/boot/isolinux/isolinux.cfg
 #END HD BOOT OPTION#
 
 #START WRITE
@@ -328,38 +324,30 @@ done
 
 #BEGIN GRUB4DOS ENTRY#
 if [ -f multicd-working/boot/grub.exe ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label grub4dos
+echo "label grub4dos
 menu label ^GRUB4DOS
-kernel /boot/grub.exe
-EOF
+kernel /boot/grub.exe">>multicd-working/boot/isolinux/isolinux.cfg
 elif [ -f multicd-working/boot/riplinux/grub4dos/grub.exe ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label grub4dos
+echo "label grub4dos
 menu label ^GRUB4DOS
-kernel /boot/riplinux/grub4dos/grub.exe
-EOF
+kernel /boot/riplinux/grub4dos/grub.exe">>multicd-working/boot/isolinux/isolinux.cfg
 fi
 #END GRUB4DOS ENTRY#
 
 #BEGIN GAMES ENTRY#
 if [ $GAMES = 1 ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label games
+echo "label games
 menu label ^Games on disk images
 com32 menu.c32
-append games.cfg
-EOF
+append games.cfg">>multicd-working/boot/isolinux/isolinux.cfg
 fi
 #END GAMES ENTRY#
 
 #BEGIN MEMTEST ENTRY#
 if [ -f multicd-working/boot/memtest ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label memtest
-menu label ^Memtest86+ v2.01
-kernel /boot/memtest
-EOF
+echo "label memtest
+menu label ^Memtest86+
+kernel /boot/memtest">>multicd-working/boot/isolinux/isolinux.cfg
 fi
 #END MEMTEST ENTRY#
 ##END ISOLINUX MENU CODE##
@@ -380,12 +368,10 @@ for i in games/*.im[agz]; do
   echo append initrd=/boot/games/$k.img >> multicd-working/boot/isolinux/games.cfg
   k=$( expr $k + 1 )
 done
-cat >> multicd-working/boot/isolinux/games.cfg << "EOF"
-label back
+echo "label back
 menu label Back to main menu
 com32 menu.c32
-append isolinux.cfg
-EOF
+append isolinux.cfg">>multicd-working/boot/isolinux/games.cfg
 fi
 
 if [ -d includes ];then
@@ -412,11 +398,6 @@ else
  echo "Neither genisoimage nor mkisofs was found."
  exit 1
 fi
-if [ -d multicd-working/boot/trinity ];then
- ISOLABEL=TRK_3.3
-else
- ISOLABEL=GNULinux
-fi
 EXTRAARGS=""
 if [ $VERBOSE = 0 ];then
 	EXTRAARGS="$EXTRAARGS -quiet"
@@ -429,7 +410,7 @@ $GENERATOR -o multicd.iso \
 -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
 -no-emul-boot -boot-load-size 4 -boot-info-table \
 -r -J -joliet-long $EXTRAARGS -D \
--l -quiet -V "$ISOLABEL" multicd-working/
+-l -quiet -V "$CDLABEL" multicd-working/
 rm -r multicd-working/
 chmod 666 multicd.iso
 rm -r tags
