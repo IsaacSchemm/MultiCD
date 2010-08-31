@@ -56,5 +56,5 @@ fc97c4d36ebd89a1ea313085af275a88  plugins/ubuntu-inst.sh
 32e8086dfa622ab90bf430127f4cdae8  plugins/ubuntu.sh
 be4929a5acfa8b1b60cd8c6eb055a7b6  plugins/vyatta.sh
 4346853ac8a712015004c099cff087ec  plugins/weaknet.sh
-037d9f52b42553c3cb73676761d015cc  plugins/win98se.sh
+0f6bd5a94b9081f2146810a5a281da0d  plugins/win98se.sh
 a4488298cc78d148500ee1d9694959e9  plugins/wolvix.sh
