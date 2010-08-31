@@ -70,7 +70,7 @@ if [ $INTERACTIVE = 1 ];then
 		exit 1
 	fi
 	dialog --inputbox "What would you like the title of the CD's main menu to be?" 8 70 "MultiCD - Created $(date +"%b %d, %Y")" 2> /tmp/cdtitle
-	CDLTITLE=$(cat /tmp/cdtitle)
+	CDTITLE=$(cat /tmp/cdtitle)
 	rm /tmp/cdtitle
 	if [ -f trk.iso ];then
 		CDLABEL=TRK_3.3
@@ -79,10 +79,10 @@ if [ $INTERACTIVE = 1 ];then
 		CDLABEL=$(cat /tmp/cdlabel)
 		rm /tmp/cdlabel
 	fi
-	dialog --menu "What menu color would you like?" 0 0 0 40 black 41 red 42 green 43 brown 44 blue 45 magenta 46 cyan 47 white 2> /tmp/color
+	dialog --menu "What menu color would you like?" 0 0 0 40 black 41 red 42 green 43 brown 44 blue 45 magenta 46 cyan 2> /tmp/color
 	MENUCOLOR=$(cat /tmp/color)
+	echo $(echo -e "\r\033[0;$(cat /tmp/color)m")Color chosen.$(echo -e '\033[0;39m')
 	rm /tmp/color
-	echo $(echo -e "\r\033[0;$(cat color)m")Color chosen.$(echo '\033[0;39m')
 	if [ -f slax.iso ];then
 		dialog --checklist "Slax modules to include:" 13 45 6 \
 		002-xorg.lzm Xorg on \
@@ -253,10 +253,11 @@ if [ $MEMTEST = 1 ];then
  else
   echo "Downloading memtest86+ 2.11 from memtest.org..."
   if [ $VERBOSE != 0 ];then
-   wget -O- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>multicd-working/boot/memtest
+   wget -O- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
   else
-   wget -qO- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>multicd-working/boot/memtest
+   wget -qO- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
   fi
+  cp memtest multicd-working/boot/memtest
  fi
 fi
 
@@ -274,12 +275,12 @@ menu title $CDTITLE" > multicd-working/boot/isolinux/isolinux.cfg
 #END HEADER#
 
 #BEGIN COLOR CODE#
-if [ $MENUCOLOR = 47 ];then
-	FGCOLOR=30
-else
-	FGCOLOR=37
-fi
-echo "	menu color screen 37;40
+	if [ $MENUCOLOR = 40 ];then
+		BORDERCOLOR=37
+	else
+		BORDERCOLOR=30
+	fi
+	echo "	menu color screen 37;40
 	menu color border 30;44
 	menu color title 1;36;44
 	menu color unsel 37;44
@@ -297,7 +298,7 @@ echo "	menu color screen 37;40
 	menu color timeout_msg 37;40
 	menu color timeout 1;37;40
 	menu color help 37;40
-	menu color msg07 37;40"|sed -e "s/44/$MENUCOLOR/g"|sed -e "s/37/$FGCOLOR/g">>multicd-working/boot/isolinux/isolinux.cfg
+	menu color msg07 37;40"|sed -e "s/30/$BORDERCOLOR/g" -e "s/44/$MENUCOLOR/g">>multicd-working/boot/isolinux/isolinux.cfg
 #END COLOR CODE#
 
 #BEGIN HD BOOT OPTION#
