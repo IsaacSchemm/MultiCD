@@ -41,7 +41,7 @@ elif [ $1 = copy ];then
 		cp -r win98se/tools multicd-working/w98tools
 		umount win98se;rmdir win98se
 		dd if=win98se.iso bs=1 skip=43008 count=1474560 of=multicd-working/boot/win98se.img
-		if which mdel 2> /dev/null;then
+		if which mdel &> /dev/null;then
 			mdel -i multicd-working/boot/win98se.img ::JO.SYS #Disable HD/CD boot prompt - not needed, but a nice idea
 		fi
 	fi
