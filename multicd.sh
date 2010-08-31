@@ -274,6 +274,11 @@ menu title $CDTITLE" > multicd-working/boot/isolinux/isolinux.cfg
 #END HEADER#
 
 #BEGIN COLOR CODE#
+if [ $MENUCOLOR = 47 ];then
+	FGCOLOR=30
+else
+	FGCOLOR=37
+fi
 echo "	menu color screen 37;40
 	menu color border 30;44
 	menu color title 1;36;44
@@ -292,7 +297,7 @@ echo "	menu color screen 37;40
 	menu color timeout_msg 37;40
 	menu color timeout 1;37;40
 	menu color help 37;40
-	menu color msg07 37;40"|sed -e "s/44/$MENUCOLOR/g">>multicd-working/boot/isolinux/isolinux.cfg
+	menu color msg07 37;40"|sed -e "s/44/$MENUCOLOR/g"|sed -e "s/37/$FGCOLOR/g">>multicd-working/boot/isolinux/isolinux.cfg
 #END COLOR CODE#
 
 #BEGIN HD BOOT OPTION#
