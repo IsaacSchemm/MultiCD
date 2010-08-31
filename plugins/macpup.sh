@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #Macpup plugin for multicd.sh
-#version 5.0.1
-#Copyright (c) 2009 maybeway36
+#version 5.7
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f macpup.iso ];then
 		echo "Macpup"
-		echo>tags/puppies/macpup
+		touch tags/puppies/macpup
 	fi
 elif [ $1 = copy ];then
 	if [ -f macpup.iso ];then
