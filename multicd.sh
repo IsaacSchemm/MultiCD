@@ -95,6 +95,11 @@ if [ $INTERACTIVE = 1 ];then
 		cat ./slaxlist0|sed -e 's/"//g' -e 's/ /\n/g'>./slaxlist
 		rm ./slaxlist0
 	fi
+	if [ -f win98se.iso ] || [ -f winme.iso ];then
+		if dialog --yesno "Would you like to copy the \"tools\" and \"add-ons\" folders from the Windows 9x/Me CD?" 0 0;then
+			touch tags/9xextras
+		fi
+	fi
 else
 	CDTITLE="MultiCD - Created $(date +"%b %d, %Y")"
 	if [ -f trk.iso ];then
@@ -103,6 +108,7 @@ else
 		CDLABEL=MultiCD
 	fi
 	MENUCOLOR=44
+	touch tags/9xextras
 fi
 
 #START PREPARE#

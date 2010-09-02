@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-#Windows 98 SE Setup plugin for multicd.sh
+#Windows Me Setup plugin for multicd.sh
 #version 5.7
 #Copyright for this script (c) 2010 maybeway36
 #
@@ -22,40 +22,37 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = scan ];then
-	if [ -f win98se.iso ];then
-		echo "Windows 98 SE (Not open source - do not distribute)"
+	if [ -f winme.iso ];then
+		echo "Windows Me (Not open source - do not distribute)"
 		touch tags/win9x
 	fi
 elif [ $1 = copy ];then
-	if [ -f win98se.iso ];then
-		echo "Copying Windows 98 SE..."
-		if [ ! -d win98se ];then
-			mkdir win98se
+	if [ -f winme.iso ];then
+		echo "Copying Windows Me..."
+		if [ ! -d winme ];then
+			mkdir winme
 		fi
-		if grep -q "`pwd`/win98se" /etc/mtab ; then
-			umount win98se
+		if grep -q "`pwd`/winme" /etc/mtab ; then
+			umount winme
 		fi
-		mount -o loop win98se.iso win98se/
-		cp -r win98se/win98 multicd-working/
-		rm -r multicd-working/win98/ols
+		mount -o loop winme.iso winme/
+		cp -r winme/win9x multicd-working/
+		rm -r multicd-working/win9x/ols
 		if [ -f tags/9xextras ];then
-			cp -r win98se/add-ons multicd-working/win98/add-ons
-			cp -r win98se/tools multicd-working/win98/tools
+			cp -r winme/add-ons multicd-working/win9x/add-ons
+			cp -r winme/tools multicd-working/win9x/tools
 		fi
-		umount win98se;rmdir win98se
-		dd if=win98se.iso bs=43008 skip=1 count=35 of=/tmp/dat
-		dd if=/tmp/dat bs=1474560 count=1 of=multicd-working/boot/win98se.img
+		umount winme;rmdir winme
+		dd if=winme.iso bs=716800 skip=1 count=3 of=/tmp/dat
+		dd if=/tmp/dat bs=1474560 count=1 of=multicd-working/boot/winme.img
 		rm /tmp/dat
-		if which mdel > /dev/null;then
-			mdel -i multicd-working/boot/win98se.img ::JO.SYS #Disable HD/CD boot prompt - not needed, but a nice idea
-		fi
 	fi
 elif [ $1 = writecfg ];then
-if [ -f win98se.iso ];then
-echo "label win98se
-menu label ^Windows 98 Second Edition Setup
+if [ -f winme.iso ];then
+echo "label winme
+menu label ^Windows Me Setup
 kernel memdisk
-initrd /boot/win98se.img">>multicd-working/boot/isolinux/isolinux.cfg
+initrd /boot/winme.img">>multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
