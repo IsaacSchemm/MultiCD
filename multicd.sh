@@ -257,7 +257,7 @@ if [ $MEMTEST = 1 ];then
  if [ -f memtest ];then
   cp memtest multicd-working/boot/memtest
  else
-  echo "Downloading memtest86+ 2.11 from memtest.org..."
+  echo "Downloading memtest86+ 4.10 from memtest.org..."
   if [ $VERBOSE != 0 ];then
    wget -O- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
   else
