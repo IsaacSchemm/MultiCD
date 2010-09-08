@@ -8,7 +8,7 @@ if [ $(whoami) != "root" ];then
 	fi
 fi
 set -e
-#multicd.sh 5.7
+#multicd.sh 5.8
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -85,15 +85,17 @@ if [ $INTERACTIVE = 1 ];then
 	rm /tmp/color
 	if [ -f slax.iso ];then
 		dialog --checklist "Slax modules to include:" 13 45 6 \
-		002-xorg.lzm Xorg on \
-		003-desktop.lzm KDE on \
-		004-kdeapps.lzm "KDE applications" on \
-		005-koffice.lzm "KDE Office" on \
-		006-devel.lzm Development on \
+		002 Xorg on \
+		003 KDE on \
+		004 "KDE applications" on \
+		005 "KDE Office" on \
+		006 Development on \
+		007 Firefox on \
 		2> ./slaxlist0
 		echo >> ./slaxlist0
 		cat ./slaxlist0|sed -e 's/"//g' -e 's/ /\n/g'>./slaxlist
 		rm ./slaxlist0
+		if [ "$(wc -c slaxlist)" = "24 slaxlist" ];then rm slaxlist;fi #If they are all checked, delete the file
 	fi
 	if [ -f win98se.iso ] || [ -f winme.iso ];then
 		if dialog --yesno "Would you like to copy the \"tools\" and \"add-ons\" folders from the Windows 9x/Me CD?" 0 0;then

@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Slax 6 plugin for multicd.sh
-#version 5.7
+#version 5.8
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -35,20 +35,20 @@ elif [ $1 = copy ];then
 			umount slax
 		fi
 		mount -o loop slax.iso slax/
-		#if [ $MODULES = 1 ];then
-		#	mkdir multicd-working/slax
-		#	for i in `ls slax/slax|sed -e '/^base$/ d'`;do
-		#		cp -R slax/slax/$i multicd-working/slax/ #Copy everything but the base modules
-		#	done
-		#	mkdir multicd-working/slax/base
-		#	for i in `cat ./slaxlist`;do
-		#		cp slax/slax/base/$i multicd-working/slax/base/ #Copy only the modules you wanted
-		#	done
-		#	cp slax/slax/base/001-*.lzm multicd-working/slax/base/ #Don't forget the core module!
-		#	rm ./slaxlist
-		#else
+		if [ -f slaxlist ];then
+			mkdir multicd-working/slax
+			for i in `ls slax/slax|sed -e '/^base$/ d'`;do
+				cp -R slax/slax/$i multicd-working/slax/ #Copy everything but the base modules
+			done
+			mkdir multicd-working/slax/base
+			for i in `cat ./slaxlist`;do
+				cp slax/slax/base/${i}* multicd-working/slax/base/ #Copy only the modules you wanted
+			done
+			cp slax/slax/base/001-*.lzm multicd-working/slax/base/ #Don't forget the core module!
+			rm ./slaxlist
+		else
 			cp -R slax/slax multicd-working/ #Copy everything
-		#fi
+		fi
 		mkdir -p multicd-working/boot/slax
 		cp slax/boot/vmlinuz multicd-working/boot/slax/vmlinuz
 		if [ -f slax/boot/initrd.lz ];then
@@ -74,7 +74,7 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 #BEGIN SLAX ENTRY#
 if [ -f slax.iso ];then
-if [ -f multicd-working/slax/base/002-xorg.sq4.lzm ];then
+if [ -f multicd-working/slax/base/002-desktop.sq4.lzm ];then
 echo "LABEL xconf
 MENU LABEL ^Slax Graphics mode (KDE)
 KERNEL /boot/slax/vmlinuz
