@@ -43,7 +43,12 @@ elif [ $1 = copy ];then
 		# Filesystem
 		cp pclinuxos/livecd.sqfs multicd-working/pclosLXDE/livecd.sqfs
 		# Remove memtest and mediacheck
-		rm multicd-working/pclosLXDE/isolinux/memtest multicd-working/pclosLXDE/isolinux/mediacheck
+		if [ -f multicd-working/pclosLXDE/isolinux/memtest ];then
+			rm multicd-working/pclosLXDE/isolinux/memtest 
+		fi
+		if [ -f multicd-working/pclosLXDE/isolinux/mediacheck ];then
+			rm multicd-working/pclosLXDE/isolinux/mediacheck
+		fi
 		umount pclinuxos
 		rmdir pclinuxos
 	fi

@@ -39,7 +39,12 @@ elif [ $1 = copy ];then
 		cp -R ubuntu3/casper multicd-working/boot/ubuntu3 #Live system
 		cp -R ubuntu3/preseed multicd-working/boot/ubuntu3
 		# Fix the isolinux.cfg
-		cp ubuntu3/isolinux/text.cfg multicd-working/boot/ubuntu3/ubuntu3.cfg
+		if [ -f ubuntu3/isolinux/text.cfg ];then
+			cp ubuntu3/isolinux/text.cfg multicd-working/boot/ubuntu3/ubuntu3.cfg
+		fi
+		if [ -f ubuntu3/isolinux/txt.cfg ];then
+			cp ubuntu3/isolinux/txt.cfg multicd-working/boot/ubuntu3/ubuntu3.cfg
+		fi
 		sed -i 's@default live@default menu.c32@g' multicd-working/boot/ubuntu3/ubuntu3.cfg
 		sed -i 's@file=/cdrom/preseed/@file=/cdrom/boot/ubuntu3/preseed/@g' multicd-working/boot/ubuntu3/ubuntu3.cfg
 		sed -i 's^initrd=/casper/^live-media-path=/boot/ubuntu3 ignore_uuid initrd=/boot/ubuntu3/^g' multicd-working/boot/ubuntu3/ubuntu3.cfg

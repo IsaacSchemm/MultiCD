@@ -38,7 +38,12 @@ elif [ $1 = copy ];then
 		cp -R kubuntu/casper multicd-working/boot/kubuntu #Live system
 		cp -R kubuntu/preseed multicd-working/boot/kubuntu
 		# Fix the isolinux.cfg
-		cp kubuntu/isolinux/text.cfg multicd-working/boot/kubuntu/kubuntu.cfg
+		if [ -f kubuntu/isolinux/text.cfg ];then
+			cp kubuntu/isolinux/text.cfg multicd-working/boot/kubuntu/kubuntu.cfg
+		fi
+		if [ -f kubuntu/isolinux/txt.cfg ];then
+			cp kubuntu/isolinux/txt.cfg multicd-working/boot/kubuntu/kubuntu.cfg
+		fi
 		sed -i 's@default live@default menu.c32@g' multicd-working/boot/kubuntu/kubuntu.cfg
 		sed -i 's@file=/cdrom/preseed/@file=/cdrom/boot/kubuntu/preseed/@g' multicd-working/boot/kubuntu/kubuntu.cfg
 		sed -i 's^initrd=/casper/^live-media-path=/boot/kubuntu ignore_uuid initrd=/boot/kubuntu/^g' multicd-working/boot/kubuntu/kubuntu.cfg
