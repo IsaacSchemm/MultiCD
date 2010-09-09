@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #ophcrack plugin for multicd.sh
-#version 
-#Copyright (c) 2010 yogurt06, maybeway36
+#version 5.8
+#Copyright (c) 2010 yogurt06
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
