@@ -83,6 +83,7 @@ if [ $INTERACTIVE = 1 ];then
 	MENUCOLOR=$(cat /tmp/color)
 	echo $(echo -e "\r\033[0;$(cat /tmp/color)m")Color chosen.$(echo -e '\033[0;39m')
 	rm /tmp/color
+	dialog --inputbox "Enter the two-letter language code for the language you would like to use." 9 50 "en" 2> tags/lang
 	if [ -f slax.iso ];then
 		dialog --checklist "Slax modules to include:" 13 45 6 \
 		002 Xorg on \
@@ -110,6 +111,7 @@ else
 		CDLABEL=MultiCD
 	fi
 	MENUCOLOR=44
+	echo en > tags/lang
 	touch tags/9xextras
 fi
 
