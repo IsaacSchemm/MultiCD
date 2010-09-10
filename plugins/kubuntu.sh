@@ -48,7 +48,9 @@ elif [ $1 = copy ];then
 		sed -i 's@file=/cdrom/preseed/@file=/cdrom/boot/kubuntu/preseed/@g' multicd-working/boot/kubuntu/kubuntu.cfg
 		sed -i 's^initrd=/casper/^live-media-path=/boot/kubuntu ignore_uuid initrd=/boot/kubuntu/^g' multicd-working/boot/kubuntu/kubuntu.cfg
 		sed -i 's^kernel /casper/^kernel /boot/kubuntu/^g' multicd-working/boot/kubuntu/kubuntu.cfg
-		sed -i 's^splash.jpg^linuxmint.jpg^g' multicd-working/boot/kubuntu/kubuntu.cfg
+		if [ $(cat tags/lang) != en ];then
+			sed -i "s^--^-- debian-installer/language=$(cat tags/lang) console-setup/layoutcode?=$(cat tags/lang)^g" multicd-working/boot/ubuntu/ubuntu.cfg
+		fi
 		umount kubuntu;rmdir kubuntu
 	fi
 elif [ $1 = writecfg ];then

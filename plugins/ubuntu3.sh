@@ -49,7 +49,9 @@ elif [ $1 = copy ];then
 		sed -i 's@file=/cdrom/preseed/@file=/cdrom/boot/ubuntu3/preseed/@g' multicd-working/boot/ubuntu3/ubuntu3.cfg
 		sed -i 's^initrd=/casper/^live-media-path=/boot/ubuntu3 ignore_uuid initrd=/boot/ubuntu3/^g' multicd-working/boot/ubuntu3/ubuntu3.cfg
 		sed -i 's^kernel /casper/^kernel /boot/ubuntu3/^g' multicd-working/boot/ubuntu3/ubuntu3.cfg
-		sed -i 's^splash.jpg^linuxmint.jpg^g' multicd-working/boot/ubuntu3/ubuntu3.cfg
+		if [ $(cat tags/lang) != en ];then
+			sed -i "s^--^-- debian-installer/language=$(cat tags/lang) console-setup/layoutcode?=$(cat tags/lang)^g" multicd-working/boot/ubuntu/ubuntu.cfg
+		fi
 		umount ubuntu3;rmdir ubuntu3
 	fi
 elif [ $1 = writecfg ];then

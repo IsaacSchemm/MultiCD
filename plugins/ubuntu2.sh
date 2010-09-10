@@ -49,7 +49,9 @@ elif [ $1 = copy ];then
 		sed -i 's@file=/cdrom/preseed/@file=/cdrom/boot/ubuntu2/preseed/@g' multicd-working/boot/ubuntu2/ubuntu2.cfg
 		sed -i 's^initrd=/casper/^live-media-path=/boot/ubuntu2 ignore_uuid initrd=/boot/ubuntu2/^g' multicd-working/boot/ubuntu2/ubuntu2.cfg
 		sed -i 's^kernel /casper/^kernel /boot/ubuntu2/^g' multicd-working/boot/ubuntu2/ubuntu2.cfg
-		sed -i 's^splash.jpg^linuxmint.jpg^g' multicd-working/boot/ubuntu2/ubuntu2.cfg
+		if [ $(cat tags/lang) != en ];then
+			sed -i "s^--^-- debian-installer/language=$(cat tags/lang) console-setup/layoutcode?=$(cat tags/lang)^g" multicd-working/boot/ubuntu/ubuntu.cfg
+		fi
 		umount ubuntu2;rmdir ubuntu2
 	fi
 elif [ $1 = writecfg ];then
