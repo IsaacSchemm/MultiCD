@@ -48,7 +48,7 @@ if [ ! -z "$1" ] && [ -f $1.iso ];then
 	sed -i "s@default live@default menu.c32@g" multicd-working/boot/$1/$1.cfg #Show menu instead of boot: prompt
 	sed -i "s@file=/cdrom/preseed/@file=/cdrom/boot/$1/preseed/@g" multicd-working/boot/$1/$1.cfg #Preseed folder moved - not sure if ubiquity uses this
 	sed -i "s^initrd=/casper/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" multicd-working/boot/$1/$1.cfg #Initrd moved, ignore_uuid added
-	sed -i 's^kernel /casper/^kernel /boot/$1/^g' multicd-working/boot/$1/$1.cfg #Kernel moved
+	sed -i "s^kernel /casper/^kernel /boot/$1/^g" multicd-working/boot/$1/$1.cfg #Kernel moved
 	if [ $(cat tags/lang) != en ];then
 		sed -i "s^initrd=/casper/^debian-installer/language=$(cat tags/lang) console-setup/layoutcode?=$(cat tags/lang) initrd=/casper/^g" multicd-working/boot/$1/$1.cfg #Add language codes to cmdline - does not change keyboard AFAIK
 	fi
