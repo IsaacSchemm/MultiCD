@@ -34,7 +34,7 @@ elif [ $1 = writecfg ];then
 if [ -f ubuntu.iso ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
 label ubuntu2
-menu label --> Ubuntu #1 Menu
+menu label --> Ubuntu Menu
 com32 menu.c32
 append /boot/ubuntu/ubuntu.cfg
 
