@@ -64,6 +64,55 @@ else
  INTERACTIVE=0
 fi
 
+#START PREPARE#
+UNKNOWNS="$(md5sum -c plugins.md5|grep FAILED|awk -F: '{print $1}') $(for i in plugins/*.sh;do grep -q $i plugins.md5||echo $i;done)"
+if [ "$UNKNOWNS" != " " ];then
+	echo
+	echo "Plugins that are not from the official release: $UNKNOWNS"
+	echo "Make sure you trust every script in the plugins folder - all these scripts will get root access!"
+	echo
+fi
+
+#Make the scripts executable.
+for i in plugins/*;do
+	[ ! -x $i ]&&chmod +x $i
+done
+#END PREPARE#
+
+#Now we run through the plugins first, as a non-root user.
+echo "List of boot options that will be included:"
+echo '#!/bin/sh
+#START SCAN
+for i in plugins/*;do
+	$i scan
+done
+#END SCAN
+'>/tmp/run-as-nobody.sh
+chmod +x /tmp/run-as-nobody.sh
+su nobody -c /tmp/run-as-nobody.sh
+rm /tmp/run-as-nobody.sh
+
+for i in *.im[agz]; do
+ test -r "$i" || continue
+ echo $i|sed 's/\.im.//'
+done
+GAMES=0 #Will be changed if there are games
+for i in games/*.im[agz]; do
+ test -r "$i" || continue
+ echo Game: $(echo $i|sed 's/\.im.//'|sed 's/games\///')
+ GAMES=1
+done
+if [ -f grub.exe ];then
+ echo "GRUB4DOS"
+fi
+if [ $MEMTEST = 1 ];then
+ echo "Memtest86+"
+fi
+
+echo
+echo "Continuing in 3 seconds - press Ctrl+C to cancel"
+sleep 3
+
 if [ $INTERACTIVE = 1 ];then
 	if ! which dialog &> /dev/null;then
 		echo "You must install dialog to use the interactive options."
@@ -136,56 +185,6 @@ else
 		touch $(find tags/puppies -maxdepth 1 -type f|head -n 1) #The first one alphabetically will be in the root dir - now if only I could make this look nicer. Also, does lucid puppy still put its files here?
 	fi
 fi
-
-#START PREPARE#
-UNKNOWNS="$(md5sum -c plugins.md5|grep FAILED|awk -F: '{print $1}') $(for i in plugins/*.sh;do grep -q $i plugins.md5||echo $i;done)"
-if [ "$UNKNOWNS" != " " ];then
-	echo
-	echo "Plugins that are not from the official release: $UNKNOWNS"
-	echo "Make sure you trust every script in the plugins folder - all these scripts will get root access!"
-	echo
-fi
-
-#Make the scripts executable.
-for i in plugins/*;do
-	[ ! -x $i ]&&chmod +x $i
-done
-#END PREPARE#
-
-#Now we run through the plugins first, as a non-root user.
-echo "List of boot options that will be included:"
-echo '#!/bin/sh
-#START SCAN
-for i in plugins/*;do
-	$i scan
-done
-#END SCAN
-'>/tmp/run-as-nobody.sh
-chmod +x /tmp/run-as-nobody.sh
-su nobody -c /tmp/run-as-nobody.sh
-rm /tmp/run-as-nobody.sh
-
-for i in *.im[agz]; do
- test -r "$i" || continue
- echo $i|sed 's/\.im.//'
-done
-GAMES=0 #Will be changed if there are games
-for i in games/*.im[agz]; do
- test -r "$i" || continue
- echo Game: $(echo $i|sed 's/\.im.//'|sed 's/games\///')
- GAMES=1
-done
-if [ -f grub.exe ];then
- echo "GRUB4DOS"
-fi
-if [ $MEMTEST = 1 ];then
- echo "Memtest86+"
-fi
-
-echo
-echo "Continuing in 3 seconds - press Ctrl+C to cancel"
-sleep 3
-
 
 if [ -d multicd-working ];then
  rm -r multicd-working/*
