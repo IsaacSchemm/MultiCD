@@ -103,6 +103,25 @@ if [ $INTERACTIVE = 1 ];then
 			touch tags/9xextras
 		fi
 	fi
+	if [ $(find tags/puppies -maxdepth 1 -type f|wc -l) -gt 1 ] && which dialog &> /dev/null;then
+		echo "dialog --radiolist \"Which Puppy variant would you like to be installable to HD from the disc?\" 13 45 6 \\">puppychooser
+		for i in tags/puppies/*;do
+			echo $(echo $i|sed -e 's/tags\/puppies\///g') \"\" off \\ >> puppychooser
+		done
+		echo "2> puppyresult" >> puppychooser
+		sh puppychooser
+		touch tags/puppies/$(cat puppyresult).inroot
+		rm puppychooser puppyresult
+	fi
+	if [ $(find tags/puppies -maxdepth 1 -type f|wc -l) -eq 1 ];then
+		NAME=$(ls tags/puppies)
+		true>$(find tags/puppies -maxdepth 1 -type f).inroot
+	fi
+	if which dialog &> /dev/null;then
+		for i in $(find tags -maxdepth 1 -name ubuntu\*);do
+			dialog --inputbox "What would you like $(echo $i|sed -e 's/tags\///g') to be called on the CD boot menu? $(echo $i|sed -e 's/tags\///g')" 8 70 2> $i.name
+		done
+	fi
 else
 	CDTITLE="MultiCD - Created $(date +"%b %d, %Y")"
 	if [ -f trk.iso ];then
@@ -113,6 +132,9 @@ else
 	MENUCOLOR=44
 	echo en > tags/lang
 	touch tags/9xextras
+	if [ $(find tags/puppies -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
+		touch $(find tags/puppies -maxdepth 1 -type f|head -n 1) #The first one alphabetically will be in the root dir - now if only I could make this look nicer. Also, does lucid puppy still put its files here?
+	fi
 fi
 
 #START PREPARE#
@@ -164,25 +186,6 @@ echo
 echo "Continuing in 3 seconds - press Ctrl+C to cancel"
 sleep 3
 
-if [ $(find tags/puppies -maxdepth 1 -type f|wc -l) -gt 1 ] && which dialog &> /dev/null;then
-	echo "dialog --radiolist \"Which Puppy variant would you like to be installable to HD from the disc?\" 13 45 6 \\">puppychooser
-	for i in tags/puppies/*;do
-		echo $(echo $i|sed -e 's/tags\/puppies\///g') \"\" off \\ >> puppychooser
-	done
-	echo "2> puppyresult" >> puppychooser
-	sh puppychooser
-	echo>tags/puppies/$(cat puppyresult).inroot
-	rm puppychooser puppyresult
-fi
-if [ $(find tags/puppies -maxdepth 1 -type f|wc -l) -eq 1 ];then
-	NAME=$(ls tags/puppies)
-	true>$(find tags/puppies -maxdepth 1 -type f).inroot
-fi
-if which dialog &> /dev/null;then
-	for i in $(find tags -maxdepth 1 -name ubuntu\*);do
-		dialog --inputbox "What would you like $(echo $i|sed -e 's/tags\///g') to be called on the CD boot menu?" 8 70 2> $i.name
-	done
-fi
 
 if [ -d multicd-working ];then
  rm -r multicd-working/*
