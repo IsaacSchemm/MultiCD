@@ -50,7 +50,7 @@ if [ ! -z "$1" ] && [ -f $1.iso ];then
 	sed -i "s^initrd=/casper/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" multicd-working/boot/$1/$1.cfg #Initrd moved, ignore_uuid added
 	sed -i "s^kernel /casper/^kernel /boot/$1/^g" multicd-working/boot/$1/$1.cfg #Kernel moved
 	if [ $(cat tags/lang) != en ];then
-		sed -i "s^initrd=/casper/^debian-installer/language=$(cat tags/lang) console-setup/layoutcode?=$(cat tags/lang) initrd=/casper/^g" multicd-working/boot/$1/$1.cfg #Add language codes to cmdline - does not change keyboard AFAIK
+		sed -i "s^initrd=/boot/$1/^debian-installer/language=$(cat tags/lang) console-setup/layoutcode?=$(cat tags/lang) initrd=initrd=/boot/$1/^g" multicd-working/boot/$1/$1.cfg #Add language codes to cmdline - does not change keyboard AFAIK
 	fi
 	umount $1;rmdir $1
 else
