@@ -34,7 +34,7 @@ e00e5c1bdbbf781ddbddd2cd579bd519  plugins/mandriva.sh
 9565464f2cdf17689f68fe5835bf8caf  plugins/netbootcd.sh
 ca1ee9ddf3b37892802dbcb3012bb9db  plugins/ntpasswd.sh
 f156d8d5ebff334159a17ba7b115e9a3  plugins/opensuse.sh
-7595319c117dd3db1aaf7fa1dbba0c62  plugins/ophcrack.sh
+3f24f433dea22040d11b4d43e4351fcd  plugins/ophcrack.sh
 e1a195e6be67960bfc39f8b5cdefa23c  plugins/pclos.sh
 d57dc2111ab0a31b8d178233411ad524  plugins/pclx.sh
 da3ef9d5564868f2b719ef4c5ac9618b  plugins/ping.sh
@@ -53,7 +53,7 @@ e1d5356b399c5041c8d1ecee97ce2b09  plugins/ubcd.sh
 8499b5f0173d395e80e7f4e067934314  plugins/ubuntu_32_bit.sh
 135f795235c1f44d69b6447f177121ac  plugins/ubuntu3.sh
 8ea432c6485b594d40d5dbc777778bde  plugins/ubuntu_64_bit.sh
-3702a9da86da3026ba01b448af13cfea  plugins/ubuntu-common.sh
+c204433f7aa9861eb1c3bf71d5de5b07  plugins/ubuntu-common.sh
 fc97c4d36ebd89a1ea313085af275a88  plugins/ubuntu-inst.sh
 9917614d34c9d29bf5457bb21b339ca6  plugins/ubuntu.sh
 be4929a5acfa8b1b60cd8c6eb055a7b6  plugins/vyatta.sh
