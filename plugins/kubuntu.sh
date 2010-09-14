@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Kubuntu plugin for multicd.sh
-#version 5.6
+#version 5.8
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,36 +28,13 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f kubuntu.iso ];then
 		echo "Copying Kubuntu..."
-		if [ ! -d kubuntu ];then
-			mkdir kubuntu
-		fi
-		if grep -q "`pwd`/kubuntu" /etc/mtab ; then
-			umount kubuntu
-		fi
-		mount -o loop kubuntu.iso kubuntu/
-		cp -R kubuntu/casper multicd-working/boot/kubuntu #Live system
-		cp -R kubuntu/preseed multicd-working/boot/kubuntu
-		# Fix the isolinux.cfg
-		if [ -f kubuntu/isolinux/text.cfg ];then
-			cp kubuntu/isolinux/text.cfg multicd-working/boot/kubuntu/kubuntu.cfg
-		fi
-		if [ -f kubuntu/isolinux/txt.cfg ];then
-			cp kubuntu/isolinux/txt.cfg multicd-working/boot/kubuntu/kubuntu.cfg
-		fi
-		sed -i 's@default live@default menu.c32@g' multicd-working/boot/kubuntu/kubuntu.cfg
-		sed -i 's@file=/cdrom/preseed/@file=/cdrom/boot/kubuntu/preseed/@g' multicd-working/boot/kubuntu/kubuntu.cfg
-		sed -i 's^initrd=/casper/^live-media-path=/boot/kubuntu ignore_uuid initrd=/boot/kubuntu/^g' multicd-working/boot/kubuntu/kubuntu.cfg
-		sed -i 's^kernel /casper/^kernel /boot/kubuntu/^g' multicd-working/boot/kubuntu/kubuntu.cfg
-		if [ $(cat tags/lang) != en ];then
-			sed -i "s^--^-- debian-installer/language=$(cat tags/lang) console-setup/layoutcode?=$(cat tags/lang)^g" multicd-working/boot/ubuntu/ubuntu.cfg
-		fi
-		umount kubuntu;rmdir kubuntu
+		plugins/ubuntu-copy kubuntu
 	fi
 elif [ $1 = writecfg ];then
 if [ -f kubuntu.iso ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
 label kubuntu2
-menu label --> Kubuntu #1 Menu
+menu label --> Kubuntu Menu
 com32 menu.c32
 append /boot/kubuntu/kubuntu.cfg
 

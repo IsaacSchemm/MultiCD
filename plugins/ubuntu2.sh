@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Ubuntu Custom #2 plugin for multicd.sh
-#version 5.6
+#version 5.8
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,31 +28,8 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu2.iso ];then
-		echo "Copying Ubuntu #2..."
-		if [ ! -d ubuntu2 ];then
-			mkdir ubuntu2
-		fi
-		if grep -q "`pwd`/ubuntu2" /etc/mtab ; then
-			umount ubuntu2
-		fi
-		mount -o loop ubuntu2.iso ubuntu2/
-		cp -R ubuntu2/casper multicd-working/boot/ubuntu2 #Live system
-		cp -R ubuntu2/preseed multicd-working/boot/ubuntu2
-		# Fix the isolinux.cfg
-		if [ -f ubuntu2/isolinux/text.cfg ];then
-			cp ubuntu2/isolinux/text.cfg multicd-working/boot/ubuntu2/ubuntu2.cfg
-		fi
-		if [ -f ubuntu2/isolinux/txt.cfg ];then
-			cp ubuntu2/isolinux/txt.cfg multicd-working/boot/ubuntu2/ubuntu2.cfg
-		fi
-		sed -i 's@default live@default menu.c32@g' multicd-working/boot/ubuntu2/ubuntu2.cfg
-		sed -i 's@file=/cdrom/preseed/@file=/cdrom/boot/ubuntu2/preseed/@g' multicd-working/boot/ubuntu2/ubuntu2.cfg
-		sed -i 's^initrd=/casper/^live-media-path=/boot/ubuntu2 ignore_uuid initrd=/boot/ubuntu2/^g' multicd-working/boot/ubuntu2/ubuntu2.cfg
-		sed -i 's^kernel /casper/^kernel /boot/ubuntu2/^g' multicd-working/boot/ubuntu2/ubuntu2.cfg
-		if [ $(cat tags/lang) != en ];then
-			sed -i "s^--^-- debian-installer/language=$(cat tags/lang) console-setup/layoutcode?=$(cat tags/lang)^g" multicd-working/boot/ubuntu/ubuntu.cfg
-		fi
-		umount ubuntu2;rmdir ubuntu2
+		echo "Copying Ubuntu Custom #2..."
+		plugins/ubuntu-copy ubuntu2
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubuntu2.iso ];then
