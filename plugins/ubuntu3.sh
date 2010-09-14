@@ -48,7 +48,7 @@ com32 menu.c32
 append /boot/isolinux/isolinux.cfg
 EOF
 if [ -f tags/ubuntu3.name ] && [ "$(cat tags/ubuntu3.name)" != "" ];then
-	perl -pi -e "s/Ubuntu\ Custom\ \#3/$(cat tags/ubuntu-custom3.name)/g" multicd-working/boot/isolinux/isolinux.cfg
+	perl -pi -e "s/Ubuntu\ Custom\ \#3/$(cat tags/ubuntu3.name)/g" multicd-working/boot/isolinux/isolinux.cfg
 fi
 fi
 else
