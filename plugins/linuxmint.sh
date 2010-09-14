@@ -28,7 +28,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f linuxmint.iso ];then
 		echo "Copying Linux Mint..."
-		plugins/ubuntu-common linuxmint
+		plugins/ubuntu-common.sh linuxmint
 	fi
 elif [ $1 = writecfg ];then
 if [ -f linuxmint.iso ];then

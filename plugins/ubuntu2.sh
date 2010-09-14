@@ -29,7 +29,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f ubuntu2.iso ];then
 		echo "Copying Ubuntu Custom #2..."
-		plugins/ubuntu-copy ubuntu2
+		plugins/ubuntu-common.sh ubuntu2
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubuntu2.iso ];then
