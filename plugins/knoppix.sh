@@ -51,17 +51,20 @@ if [ -f knoppix.iso ];then
 echo "LABEL knoppix
 MENU LABEL Knoppix
 KERNEL /boot/knoppix/linux
-APPEND ramdisk_size=100000 lang=en vt.default_utf8=0 apm=power-off vga=791 initrd=minirt.gz nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6
+INITRD /boot/knoppix/minirt.gz
+APPEND ramdisk_size=100000 lang=$(cat tags/lang) vt.default_utf8=0 apm=power-off vga=791 nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6
 
 LABEL adriane
 MENU LABEL Adriane (Knoppix)
 KERNEL /boot/knoppix/linux
-APPEND ramdisk_size=100000 lang=en vt.default_utf8=0 apm=power-off vga=791 initrd=minirt.gz nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6 adriane
+INITRD /boot/knoppix/minirt.gz
+APPEND ramdisk_size=100000 lang=$(cat tags/lang) vt.default_utf8=0 apm=power-off vga=791 nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6 adriane
 
 LABEL knoppix-2
 MENU LABEL Knoppix (boot to command line)
 KERNEL /boot/knoppix/linux
-APPEND ramdisk_size=100000 lang=en vt.default_utf8=0 apm=power-off vga=791 initrd=minirt.gz nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6 2" >> multicd-working/boot/isolinux/isolinux.cfg
+INITRD /boot/knoppix/minirt.gz
+APPEND ramdisk_size=100000 lang=$(cat tags/lang) vt.default_utf8=0 apm=power-off vga=791 nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6 2" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
