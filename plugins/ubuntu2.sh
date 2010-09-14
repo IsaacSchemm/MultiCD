@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f ubuntu2.iso ];then
 		echo "Ubuntu Custom #2 (for using multiple versions on one disc - 9.10 or newer)"
-		echo > tags/ubuntu-custom2
+		echo > tags/ubuntu2
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu2.iso ];then
@@ -47,7 +47,7 @@ menu label Back to main menu
 com32 menu.c32
 append /boot/isolinux/isolinux.cfg
 EOF
-if [ -f tags/ubuntu-custom2.name ];then
+if [ -f tags/ubuntu2.name ] && [ ! -z "$(cat tags/ubuntu2.name)" ];then
 	perl -pi -e "s/Ubuntu\ Custom\ \#2/$(cat tags/ubuntu-custom2.name)/g" multicd-working/boot/isolinux/isolinux.cfg
 fi
 fi
