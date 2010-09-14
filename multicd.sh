@@ -168,7 +168,7 @@ if [ $INTERACTIVE = 1 ];then
 	fi
 	if which dialog &> /dev/null;then
 		for i in $(find tags -maxdepth 1 -name ubuntu\*);do
-			dialog --inputbox "What would you like $(echo $i|sed -e 's/tags\///g') to be called on the CD boot menu?" 8 70 $(echo $i|sed -e 's/tags\///g') 2> $i.name
+			dialog --inputbox "What would you like $(echo $i|sed -e 's/tags\///g') to be called on the CD boot menu?\n(Leave blank if you don't care.)" 10 70 2> $i.name
 		done
 	fi
 else
