@@ -24,7 +24,7 @@ db1abc00999f47dd023e8f3f2afc9f30  plugins/freedos.sh
 d551acacdb292e421740ae466441bfbc  plugins/gparted.sh
 2ebc5b388b52e06e2f2c8029ab41d61b  plugins/insert.sh
 7cb1d37abd916fb3e690a90217fd59c7  plugins/ipcop.sh
-d95049c62f027d0d24f3c2838ed37546  plugins/knoppix.sh
+3d748f85030047ff52c08ecf654e3263  plugins/knoppix.sh
 24288931fd0a77e0e65dd6599d2370bd  plugins/kubuntu_32_bit.sh
 3e353a14b07043f300775694a01fa597  plugins/kubuntu_64_bit.sh
 1f1102b32dc3f8a6c17c20ea9a72f394  plugins/kubuntu.sh
