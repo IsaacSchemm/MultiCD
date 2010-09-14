@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f ubuntu3.iso ];then
 		echo "Ubuntu custom #3 (for using multiple versions on one disc - 9.10 or newer)"
-		echo > tags/ubuntu-custom3
+		echo > tags/ubuntu3
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu3.iso ];then
@@ -70,7 +70,7 @@ menu label Back to main menu
 com32 menu.c32
 append /boot/isolinux/isolinux.cfg
 EOF
-if [ -f tags/ubuntu-custom3.name ];then
+if [ -f tags/ubuntu3.name ] && [ ! -z "$(cat tags/ubuntu3.name)" ];then
 	perl -pi -e "s/Ubuntu\ Custom\ \#3/$(cat tags/ubuntu-custom3.name)/g" multicd-working/boot/isolinux/isolinux.cfg
 fi
 fi
