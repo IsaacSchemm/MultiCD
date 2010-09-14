@@ -31,9 +31,7 @@ if [ $1 = scan ];then
 	if [ -f ophxp.iso ] && [ -f ophvista.iso ];then
 		echo "OPH Crack XP/Vista"
 	fi
-fi
-
-if [ $1 = copy ];then
+elif [ $1 = copy ];then
 	if [ -f ophxp.iso ];then
 		echo "Copying OPH Crack XP..."
 		if [ ! -d ophxp ];then
@@ -83,10 +81,7 @@ if [ $1 = copy ];then
 		umount ophvista
 		rmdir ophvista
 	fi
-fi
-
-
-if [ $1 = writecfg ];then
+elif [ $1 = writecfg ];then
 	name=""
 	if [ -f ophxp.iso ] && [ ! -f ophvista.iso ];then
 		name="XP"
@@ -114,11 +109,10 @@ if [ $1 = writecfg ];then
 
 		rm multicd-working/boot/ophcrack/ophcrack.cfg
 	fi
-fi
-if [ $1 = category ];then
+elif [ $1 = category ];then
 	echo "tools"
-#else
-#	echo "Usage: $0 {scan|copy|writecfg}"
-#	echo "Use only from within multicd.sh or a compatible script!"
-#	echo "Dont use this plugin script on its own!"
+else
+	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Use only from within multicd.sh or a compatible script!"
+	echo "Dont use this plugin script on its own!"
 fi
