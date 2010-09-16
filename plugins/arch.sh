@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Arch Linux installer plugin for multicd.sh
-#version 5.5
+#version 5.8
 #Copyright (c) 2010 maybeway36
 #Thanks to jerome_bc for updating this script for the newest Arch
 #
@@ -50,7 +50,7 @@ echo "
 label arch
 menu label Boot ArchLive
 kernel /boot/arch/vmlinuz26
-append lang=en locale=en_US.UTF-8 usbdelay=5 ramdisk_size=75% initrd=/boot/arch/archiso.img archisolabel=$ISOLABEL
+append lang=en locale=en_US.UTF-8 usbdelay=5 ramdisk_size=75% initrd=/boot/arch/archiso.img archisolabel=$(cat tags/cdlabel)
 " >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
