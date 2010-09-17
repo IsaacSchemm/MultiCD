@@ -38,7 +38,7 @@ elif [ $1 = copy ];then
 		mkdir -p multicd-working/boot/nbcd
 		cp netbootcd/isolinux/kexec.bzI multicd-working/boot/nbcd/kexec.bzI
 		cp netbootcd/isolinux/* multicd-working/boot/nbcd/
-		umount netbootcd;rmdir netbootcd
+		sleep 1;umount netbootcd;rmdir netbootcd
 	fi
 elif [ $1 = writecfg ];then
 #BEGIN NETBOOTCD ENTRY#

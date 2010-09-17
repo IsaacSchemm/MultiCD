@@ -39,8 +39,7 @@ elif [ $1 = copy ];then
 		cp tinycore/boot/bzImage multicd-working/boot/tinycore/bzImage #Linux kernel
 		cp tinycore/boot/*.gz multicd-working/boot/tinycore/ #Copy any initrd there may be - this works for microcore too
 		if [ -d tinycore/tce ];then cp -r tinycore/tce multicd-working/;fi
-		umount tinycore
-		rmdir tinycore
+		sleep 1;umount tinycore;rmdir tinycore
 	fi
 elif [ $1 = writecfg ];then
 #BEGIN TINY CORE ENTRY#
