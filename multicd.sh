@@ -79,18 +79,11 @@ for i in plugins/*;do
 done
 #END PREPARE#
 
-#Now we run through the plugins first, as a non-root user.
-echo "List of boot options that will be included:"
-echo '#!/bin/sh
 #START SCAN
 for i in plugins/*;do
 	$i scan
 done
 #END SCAN
-'>/tmp/run-as-nobody.sh
-chmod +x /tmp/run-as-nobody.sh
-su nobody -c /tmp/run-as-nobody.sh
-rm /tmp/run-as-nobody.sh
 
 for i in *.im[agz]; do
  test -r "$i" || continue
