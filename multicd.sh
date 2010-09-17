@@ -420,8 +420,8 @@ echo "Building CD image..."
 $GENERATOR -o multicd.iso \
 -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
 -no-emul-boot -boot-load-size 4 -boot-info-table \
--r -J -joliet-long $EXTRAARGS -D \
--l -V "$CDLABEL" multicd-working/
+-r -J $EXTRAARGS \
+-V "$CDLABEL" multicd-working/
 rm -r multicd-working/
 chmod 666 multicd.iso
 rm -r tags
