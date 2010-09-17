@@ -70,7 +70,9 @@ if [ "$UNKNOWNS" != " " ];then
 	echo
 	echo "Plugins that are not from the official release: $UNKNOWNS"
 	echo "Make sure you trust every script in the plugins folder - all these scripts will get root access!"
+	echo "Press Ctrl+C to cancel"
 	echo
+	sleep 2
 fi
 
 #Make the scripts executable.
@@ -103,8 +105,8 @@ if [ $MEMTEST = 1 ];then
 fi
 
 echo
-echo "Continuing in 3 seconds - press Ctrl+C to cancel"
-sleep 3
+echo "Continuing in 2 seconds - press Ctrl+C to cancel"
+sleep 2
 
 if [ $INTERACTIVE = 1 ];then
 	if ! which dialog &> /dev/null;then
