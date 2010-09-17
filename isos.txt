@@ -1,47 +1,52 @@
 #Filenames:	
-#antiX	antix.iso
-#Arch Linux	arch.iso
-#Austrumi	al.iso
-#CDlinux	cdl.iso
-#Clonezilla	clonezilla.iso
-#DBAN	dban.iso
-#Debian Live	binary.iso
-#Debian netboot	debian-mini.iso
-#DeLi Linux	deli.iso
-#DSL	dsl.iso
+#antiX			antix.iso
+#Arch Linux		arch.iso
+#Austrumi		al.iso
+#Caine			caine.iso
+#CDlinux		cdl.iso
+#Clonezilla		clonezilla.iso
+#DBAN			dban.iso
+#Debian Live		binary.iso
+#Debian netboot		debian-mini.iso
+#DeLi Linux		deli.iso
+#DSL			dsl.iso
+#Damn Vulnerable Linux	dvl.iso
 #EASEUS Disk Copy	diskcopy.iso
 #Elastix		elastix.iso
 #Endian Firewall	efw.iso
-#Feather	feather.iso
-#Fedora netboot	fedora-boot.iso
-#Finnix		finnix.iso
-#FreeDOS 1.0	fdbasecd.iso OR fdfullcd.iso
-#GeeXboX	gbox.iso
-#GParted	gparted.iso
-#INSERT	insert.iso
-#IPCop		ipcop.iso
-#Knoppix 5	knoppix5.iso
-#Linux Mint	linuxmint.iso
+#Feather		feather.iso
+#Fedora netboot		fedora-boot.iso
+#Finnix			finnix.iso
+#FreeDOS 1.0		fdbasecd.iso OR fdfullcd.iso
+#GeeXboX		gbox.iso
+#GParted		gparted.iso
+#INSERT			insert.iso
+#IPCop			ipcop.iso
+#Knoppix 5		knoppix5.iso
+#Linux Mint		linuxmint.iso
 #Mandriva netboot	mandriva-boot.iso
-#NetbootCD	netbootcd.iso
+#NetbootCD		netbootcd.iso
 #NT Pass. & Reg. Editor	ntpasswd.iso
 #openSUSE netboot	opensuse.iso
-#Parted Magic	pmagic.iso
-#PING	ping.iso
-#Puppy	puppy.iso
-#RIPLinux	riplinux.iso
-#Slax	slax.iso
-#Slax modules	ANYTHING.lzm (you can have several of these)
-#SliTaz	slitaz.iso
-#SystemRescueCd	sysrcd.iso
+#Parted Magic		pmagic.iso
+#PING			ping.iso
+#Puppy			puppy.iso
+#RIPLinux		riplinux.iso
+#Slax			slax.iso
+#Slax modules		ANYTHING.lzm (you can have several of these)
+#SliTaz			slitaz.iso
+#SystemRescueCd		sysrcd.iso
 #Tiny Core Linux	tinycore.iso
-#TinyMe	tinyme.iso
+#TinyMe			tinyme.iso
 #Trinity Rescue Kit	trk.iso
-#Ubuntu live CD	ubuntu.iso
-#Ubuntu netboot	ubuntu-mini.iso
+#Ubuntu live CD		ubuntu.iso
+#Ubuntu netboot		ubuntu-mini.iso
 #Ultimate Boot CD	ubcd.iso
-#Vyatta		vyatta.iso
-#Wolvix	wolvix.iso
-#Floppy images	ANYTHING.img or .imz (you can have several of these)
+#Vyatta			vyatta.iso
+#Windows 98 SE		win98se.iso
+#Windows Me		winme.iso
+#Windows7 Recovery Disk	win7recovery.iso
+#Wolvix			wolvix.iso
+#Floppy images		ANYTHING.img or .imz (you can have several of these)
 #Images with games	games/ANYTHING.img or .imz (will create a submenu)
-#GRUB4DOS	grub.exe
+#GRUB4DOS		grub.exe
