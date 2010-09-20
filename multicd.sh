@@ -202,6 +202,7 @@ j="0"
 for i in *.im[agz]; do
 	test -r "$i" || continue
 	cp "$i" multicd-working/boot/$j.img
+	echo -n Copying $(echo $i|sed 's/\.im.//')"... "
 	if [ $VERBOSE = 1 ];then
 		echo "Saved as "$j".img."
 	else
