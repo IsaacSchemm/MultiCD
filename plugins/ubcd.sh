@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Ultimate Boot CD plugin for multicd.sh
-#version 5.5
+#version 5.9
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -64,12 +64,10 @@ elif [ $1 = writecfg ];then
 if [ -f ubcd.iso ];then
 VERSION=$(cat ubcdver.tmp.txt)
 rm ubcdver.tmp.txt
-cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
-label ubcd
+echo "label ubcd
 menu label --> ^Ultimate Boot CD ($VERSION) - Main menu
 com32 menu.c32
-append /ubcd/menus/isolinux/main.cfg
-EOF
+append /ubcd/menus/isolinux/main.cfg" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
