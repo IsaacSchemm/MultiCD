@@ -144,9 +144,11 @@ if [ $INTERACTIVE = 1 ];then
 		007 Firefox on \
 		2> ./slaxlist0
 		echo >> ./slaxlist0
-		cat ./slaxlist0|sed -e 's/"//g' -e 's/ /\n/g'>./slaxlist
+		cat ./slaxlist0|sed -e 's/"//g' -e 's/ /\n/g'>tags/slaxlist
 		rm ./slaxlist0
-		if [ "$(wc -c slaxlist)" = "24 slaxlist" ];then rm slaxlist;fi #If they are all checked, delete the file
+		if wc -c tags/slaxlist|grep -q 24;then #24 bytes means they are all checked
+			rm tags/slaxlist #If they are all checked, delete the file
+		fi
 	fi
 	if [ -f win98se.iso ] || [ -f winme.iso ];then
 		if dialog --yesno "Would you like to copy the \"tools\" and \"add-ons\" folders from the Windows 9x/Me CD?" 0 0;then
@@ -183,7 +185,7 @@ else
 	echo en > tags/lang
 	touch tags/9xextras
 	if [ $(find tags/puppies -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
-		touch $(find tags/puppies -maxdepth 1 -type f|head -n 1) #The first one alphabetically will be in the root dir - now if only I could make this look nicer. Also, does lucid puppy still put its files here?
+		touch $(find tags/puppies -maxdepth 1 -type f|head -n 1) #The first one alphabetically will be in the root dir - now if only I could make this look nicer.
 	fi
 fi
 
