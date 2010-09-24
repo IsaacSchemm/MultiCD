@@ -62,8 +62,8 @@ echo "label hirens
 menu label --> ^$(cat tags/hirens.name) - main menu
 com32 menu.c32
 append /HBCD/isolinux.cfg" >> multicd-working/boot/isolinux/isolinux.cfg
-fi
 rm tags/hirens.name
+fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"

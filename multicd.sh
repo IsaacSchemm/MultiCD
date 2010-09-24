@@ -8,7 +8,7 @@ if [ $(whoami) != "root" ];then
 	fi
 fi
 set -e
-#multicd.sh 5.8
+#multicd.sh 5.9
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,6 +28,12 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
+
+#WORK: the directory that the eventual CD/DVD contents will be stored temporarily.
+export WORK=$(pwd)/multicd-working
+#MNT: the directory inside which new folders will be made to mount the ISO images.
+mkdir -p /tmp/multicd-$USER
+export MNT=/tmp/multicd-$USER
 
 if [ -d tags ];then rm -r tags;fi
 mkdir -p tags/puppies
@@ -181,14 +187,14 @@ else
 	fi
 fi
 
-if [ -d multicd-working ];then
- rm -r multicd-working/*
+if [ -d $WORK ];then
+ rm -r $WORK/*
 else
- mkdir multicd-working
+ mkdir $WORK
 fi
 
 #Make sure it exists, you need to put stuff there later
-mkdir -p multicd-working/boot/isolinux
+mkdir -p $WORK/boot/isolinux
 
 #START COPY
 for i in plugins/*;do
@@ -201,7 +207,7 @@ done
 j="0"
 for i in *.im[agz]; do
 	test -r "$i" || continue
-	cp "$i" multicd-working/boot/$j.img
+	cp "$i" $WORK/boot/$j.img
 	echo -n Copying $(echo $i|sed 's/\.im.//')"... "
 	if [ $VERBOSE = 1 ];then
 		echo "Saved as "$j".img."
@@ -214,11 +220,11 @@ done
 #This chunk copies floppy images in the "games" folder. They will have their own submenu.
 if [ $GAMES = 1 ];then
 	k="0"
-	mkdir -p multicd-working/boot/games
+	mkdir -p $WORK/boot/games
 	for i in games/*.im[agz]; do
 		test -r "$i" || continue
 		echo -n Copying $(echo $i|sed 's/\.im.//'|sed 's/games\///')"... "
-		cp "$i" multicd-working/boot/games/$k.img
+		cp "$i" $WORK/boot/games/$k.img
 		if [ $VERBOSE = 1 ];then
 			echo "Saved as games/"$k".img."
 		else
@@ -230,7 +236,7 @@ fi
 
 if [ -f grub.exe ];then
  echo "Copying GRUB4DOS..."
- cp grub.exe multicd-working/boot/grub.exe
+ cp grub.exe $WORK/boot/grub.exe
 fi
 
 echo "Downloading SYSLINUX..."
@@ -244,11 +250,11 @@ fi
 if [ $? = 0 ];then
 	echo "Unpacking and copying files..."
 	tar -C /tmp -xzf syslinux.tar.gz
-	cp /tmp/syslinux-*/core/isolinux.bin multicd-working/boot/isolinux/
-	cp /tmp/syslinux-*/memdisk/memdisk multicd-working/boot/isolinux/
-	cp /tmp/syslinux-*/com32/menu/menu.c32 multicd-working/boot/isolinux/
-	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 multicd-working/boot/isolinux/
-	cp /tmp/syslinux-*/com32/modules/chain.c32 multicd-working/boot/isolinux/
+	cp /tmp/syslinux-*/core/isolinux.bin $WORK/boot/isolinux/
+	cp /tmp/syslinux-*/memdisk/memdisk $WORK/boot/isolinux/
+	cp /tmp/syslinux-*/com32/menu/menu.c32 $WORK/boot/isolinux/
+	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 $WORK/boot/isolinux/
+	cp /tmp/syslinux-*/com32/modules/chain.c32 $WORK/boot/isolinux/
 	rm -r /tmp/syslinux-*/
 else
 	echo "Downloading of SYSLINUX failed."
@@ -257,7 +263,7 @@ fi
 
 if [ $MEMTEST = 1 ];then
  if [ -f memtest ];then
-  cp memtest multicd-working/boot/memtest
+  cp memtest $WORK/boot/memtest
  else
   echo "Downloading memtest86+ 4.10 from memtest.org..."
   if [ $VERBOSE != 0 ];then
@@ -265,7 +271,7 @@ if [ $MEMTEST = 1 ];then
   else
    wget -qO- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
   fi
-  cp memtest multicd-working/boot/memtest
+  cp memtest $WORK/boot/memtest
  fi
 fi
 
@@ -279,7 +285,7 @@ echo "Writing isolinux.cfg..."
 echo "DEFAULT menu.c32
 TIMEOUT 0
 PROMPT 0
-menu title $CDTITLE" > multicd-working/boot/isolinux/isolinux.cfg
+menu title $CDTITLE" > $WORK/boot/isolinux/isolinux.cfg
 #END HEADER#
 
 #BEGIN COLOR CODE#
@@ -306,7 +312,7 @@ menu title $CDTITLE" > multicd-working/boot/isolinux/isolinux.cfg
 	menu color timeout_msg 37;40
 	menu color timeout 1;37;40
 	menu color help 37;40
-	menu color msg07 37;40"|sed -e "s/30/$BORDERCOLOR/g" -e "s/44/$MENUCOLOR/g">>multicd-working/boot/isolinux/isolinux.cfg
+	menu color msg07 37;40"|sed -e "s/30/$BORDERCOLOR/g" -e "s/44/$MENUCOLOR/g">>$WORK/boot/isolinux/isolinux.cfg
 #END COLOR CODE#
 
 #BEGIN HD BOOT OPTION#
@@ -314,9 +320,8 @@ menu title $CDTITLE" > multicd-working/boot/isolinux/isolinux.cfg
 echo "label local
 menu label Boot from ^hard drive
 kernel chain.c32
-append hd0" >> multicd-working/boot/isolinux/isolinux.cfg
+append hd0" >> $WORK/boot/isolinux/isolinux.cfg
 #END HD BOOT OPTION#
-
 #START WRITE
 for i in plugins/*;do
 	[ ! -x $i ]&&chmod +x $i
@@ -329,22 +334,22 @@ j="0"
 for i in *.im[agz]; do
   test -r "$i" || continue
   BASICNAME=$(echo $i|sed 's/\.im.//')
-  echo label "$BASICNAME" >> multicd-working/boot/isolinux/isolinux.cfg
-  echo kernel memdisk >> multicd-working/boot/isolinux/isolinux.cfg
-  echo append initrd=/boot/$j.img >> multicd-working/boot/isolinux/isolinux.cfg
+  echo label "$BASICNAME" >> $WORK/boot/isolinux/isolinux.cfg
+  echo kernel memdisk >> $WORK/boot/isolinux/isolinux.cfg
+  echo append initrd=/boot/$j.img >> $WORK/boot/isolinux/isolinux.cfg
   j=$( expr $j + 1 )
 done
 #END DISK IMAGE ENTRY#
 
 #BEGIN GRUB4DOS ENTRY#
-if [ -f multicd-working/boot/grub.exe ];then
+if [ -f $WORK/boot/grub.exe ];then
 echo "label grub4dos
 menu label ^GRUB4DOS
-kernel /boot/grub.exe">>multicd-working/boot/isolinux/isolinux.cfg
-elif [ -f multicd-working/boot/riplinux/grub4dos/grub.exe ];then
+kernel /boot/grub.exe">>$WORK/boot/isolinux/isolinux.cfg
+elif [ -f $WORK/boot/riplinux/grub4dos/grub.exe ];then
 echo "label grub4dos
 menu label ^GRUB4DOS
-kernel /boot/riplinux/grub4dos/grub.exe">>multicd-working/boot/isolinux/isolinux.cfg
+kernel /boot/riplinux/grub4dos/grub.exe">>$WORK/boot/isolinux/isolinux.cfg
 fi
 #END GRUB4DOS ENTRY#
 
@@ -353,22 +358,22 @@ if [ $GAMES = 1 ];then
 echo "label games
 menu label ^Games on disk images
 com32 menu.c32
-append games.cfg">>multicd-working/boot/isolinux/isolinux.cfg
+append games.cfg">>$WORK/boot/isolinux/isolinux.cfg
 fi
 #END GAMES ENTRY#
 
 #BEGIN MEMTEST ENTRY#
-if [ -f multicd-working/boot/memtest ];then
+if [ -f $WORK/boot/memtest ];then
 echo "label memtest
 menu label ^Memtest86+
-kernel /boot/memtest">>multicd-working/boot/isolinux/isolinux.cfg
+kernel /boot/memtest">>$WORK/boot/isolinux/isolinux.cfg
 fi
 #END MEMTEST ENTRY#
 ##END ISOLINUX MENU CODE##
 
 if [ $GAMES = 1 ];then
 k="0"
-cat > multicd-working/boot/isolinux/games.cfg << "EOF"
+cat > $WORK/boot/isolinux/games.cfg << "EOF"
 default menu.c32
 timeout 300
 
@@ -377,30 +382,30 @@ EOF
 for i in games/*.im[agz]; do
   test -r "$i" || continue
   BASICNAME=$(echo $i|sed 's/\.im.//'|sed 's/games\///')
-  echo label "$BASICNAME" >> multicd-working/boot/isolinux/games.cfg
-  echo kernel memdisk >> multicd-working/boot/isolinux/games.cfg
-  echo append initrd=/boot/games/$k.img >> multicd-working/boot/isolinux/games.cfg
+  echo label "$BASICNAME" >> $WORK/boot/isolinux/games.cfg
+  echo kernel memdisk >> $WORK/boot/isolinux/games.cfg
+  echo append initrd=/boot/games/$k.img >> $WORK/boot/isolinux/games.cfg
   k=$( expr $k + 1 )
 done
 echo "label back
 menu label Back to main menu
 com32 menu.c32
-append isolinux.cfg">>multicd-working/boot/isolinux/games.cfg
+append isolinux.cfg">>$WORK/boot/isolinux/games.cfg
 fi
 
 if [ -d includes ];then
  echo "Copying includes..."
- cp -r includes/* multicd-working/
+ cp -r includes/* $WORK/
 fi
 
 if [ $MD5 = 1 ];then
  echo "Generating MD5 checksums..."
  if [ $VERBOSE != 0 ];then
-  find multicd-working/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin \
-  -exec md5sum '{}' \; | sed 's/multicd-working\///g' | tee multicd-working/md5sum.txt
+  find $WORK/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin \
+  -exec md5sum '{}' \; | sed "s^$WORK^^g" | tee $WORK/md5sum.txt
  else
-  find multicd-working/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin\
-  -exec md5sum '{}' \; | sed 's/multicd-working\///g' > multicd-working/md5sum.txt
+  find $WORK/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin\
+  -exec md5sum '{}' \; | sed "s^$WORK^^g" > $WORK/md5sum.txt
  fi
 fi
 
@@ -424,8 +429,8 @@ $GENERATOR -o multicd.iso \
 -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
 -no-emul-boot -boot-load-size 4 -boot-info-table \
 -r -J $EXTRAARGS \
--V "$CDLABEL" multicd-working/
-rm -r multicd-working/
+-V "$CDLABEL" $WORK/
+rm -r $WORK/
 chmod 666 multicd.iso
 rm -r tags
 #END SCRIPT

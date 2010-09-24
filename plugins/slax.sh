@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Slax 6 plugin for multicd.sh
-#version 5.8
+#version 5.9
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,44 +28,44 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f slax.iso ];then
 		echo "Copying Slax..."
-		if [ ! -d slax ];then
-			mkdir slax
+		if [ ! -d $MNT/slax ];then
+			mkdir $MNT/slax
 		fi
-		if grep -q "`pwd`/slax" /etc/mtab ; then
-			umount slax
+		if grep -q "$MNT/slax" /etc/mtab ; then
+			umount $MNT/slax
 		fi
-		mount -o loop slax.iso slax/
+		mount -o loop slax.iso $MNT/slax/
 		if [ -f slaxlist ];then
-			mkdir multicd-working/slax
-			for i in `ls slax/slax|sed -e '/^base$/ d'`;do
-				cp -R slax/slax/$i multicd-working/slax/ #Copy everything but the base modules
+			mkdir $WORK/$MNT/slax
+			for i in `ls $MNT/slax/slax|sed -e '/^base$/ d'`;do
+				cp -R $MNT/slax/slax/$i $WORK/slax/ #Copy everything but the base modules
 			done
-			mkdir multicd-working/slax/base
+			mkdir $WORK/slax/base
 			for i in `cat ./slaxlist`;do
-				cp slax/slax/base/${i}* multicd-working/slax/base/ #Copy only the modules you wanted
+				cp $MNT/slax/slax/base/${i}* $WORK/slax/base/ #Copy only the modules you wanted
 			done
-			cp slax/slax/base/001-*.lzm multicd-working/slax/base/ #Don't forget the core module!
+			cp $MNT/slax/slax/base/001-*.lzm $WORK/slax/base/ #Don't forget the core module!
 			rm ./slaxlist
 		else
-			cp -R slax/slax multicd-working/ #Copy everything
+			cp -R $MNT/slax/slax $WORK/ #Copy everything
 		fi
-		mkdir -p multicd-working/boot/slax
-		cp slax/boot/vmlinuz multicd-working/boot/slax/vmlinuz
-		if [ -f slax/boot/initrd.lz ];then
+		mkdir -p $WORK/boot/slax
+		cp $MNT/slax/boot/vmlinuz $WORK/boot/slax/vmlinuz
+		if [ -f $MNT/slax/boot/initrd.lz ];then
 			SUFFIX=lz
 		else
 			SUFFIX=gz
 		fi
-		cp slax/boot/initrd.$SUFFIX multicd-working/boot/slax/initrd.$SUFFIX
-		umount slax
-		rmdir slax
+		cp $MNT/slax/boot/initrd.$SUFFIX $WORK/boot/slax/initrd.$SUFFIX
+		umount $MNT/slax
+		rmdir $MNT/slax
 	fi
 
 	if [ "`ls -1 *.lzm 2> /dev/null;true`" != "" ] && [ -f slax.iso ]; then echo "Copying Slax modules..."; fi
 	
 	if [ -f slax.iso ];then
 		for i in `ls -1 *.lzm 2> /dev/null;true`; do
-		cp $i multicd-working/slax/modules/ #Copy the .lzm module to the modules folder
+		cp $i $WORK/slax/modules/ #Copy the .lzm module to the modules folder
 		if [ -f tags/verbose ];then
 			echo \(Copied $i\)
 		fi
@@ -74,7 +74,7 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 #BEGIN SLAX ENTRY#
 if [ -f slax.iso ];then
-if [ -f multicd-working/slax/base/002-desktop.sq4.lzm ];then
+if [ -f $WORK/slax/base/002-desktop.sq4.lzm ];then
 echo "LABEL xconf
 MENU LABEL ^Slax Graphics mode (KDE)
 KERNEL /boot/slax/vmlinuz
@@ -98,8 +98,8 @@ APPEND initrd=/boot/slax/initrd.lz ramdisk_size=6666 root=/dev/ram0 rw autoexec=
 LABEL slax
 MENU LABEL Slax Text mode
 KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.lz ramdisk_size=6666 root=/dev/ram0 rw  changes=/slax/" >> multicd-working/boot/isolinux/isolinux.cfg
-elif [ -f multicd-working/slax/base/002-xorg.lzm ];then
+APPEND initrd=/boot/slax/initrd.lz ramdisk_size=6666 root=/dev/ram0 rw  changes=/slax/" >> $WORK/boot/isolinux/isolinux.cfg
+elif [ -f $WORK/slax/base/002-xorg.lzm ];then
 echo "LABEL xconf
 MENU LABEL ^Slax Graphics mode (KDE)
 KERNEL /boot/slax/vmlinuz
@@ -118,7 +118,7 @@ APPEND initrd=/boot/slax/initrd.gz ramdisk_size=6666 root=/dev/ram0 rw autoexec=
 LABEL slax
 MENU LABEL Slax Text mode
 KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.gz ramdisk_size=6666 root=/dev/ram0 rw  changes=/slax/" >> multicd-working/boot/isolinux/isolinux.cfg
+APPEND initrd=/boot/slax/initrd.gz ramdisk_size=6666 root=/dev/ram0 rw  changes=/slax/" >> $WORK/boot/isolinux/isolinux.cfg
 else
 echo "LABEL slax
 MENU LABEL ^Slax Text mode
@@ -128,7 +128,7 @@ APPEND initrd=/boot/slax/initrd.$SUFFIX ramdisk_size=6666 root=/dev/ram0 rw  cha
 LABEL slax2ram
 MENU LABEL Slax Text mode, Copy To RAM
 KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.$SUFFIX ramdisk_size=6666 root=/dev/ram0 rw copy2ram" >> multicd-working/boot/isolinux/isolinux.cfg
+APPEND initrd=/boot/slax/initrd.$SUFFIX ramdisk_size=6666 root=/dev/ram0 rw copy2ram" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 fi
 #END SLAX ENTRY#
