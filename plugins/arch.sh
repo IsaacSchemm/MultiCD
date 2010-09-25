@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Arch Linux installer plugin for multicd.sh
-#version 5.8
+#version 5.9
 #Copyright (c) 2010 maybeway36
 #Thanks to jerome_bc for updating this script for the newest Arch
 #
@@ -29,29 +29,27 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f arch.iso ];then
 		echo "Copying Arch Linux..."
-		if [ ! -d arch ];then
-			mkdir arch
+		if [ ! -d $MNT/arch ];then
+			mkdir $MNT/arch
 		fi
-		if grep -q "`pwd`/arch" /etc/mtab ; then
-			umount arch
+		if grep -q "$MNT/arch" /etc/mtab ; then
+			umount $MNT/arch
 		fi
-		mount -o loop arch.iso arch/
-		mkdir multicd-working/boot/arch
-		cp arch/boot/vmlinuz26 multicd-working/boot/arch/vmlinuz26 #Kernel
-		cp arch/boot/archiso.img multicd-working/boot/arch/archiso.img #initrd
-		cp arch/*.sqfs multicd-working/ #Compressed filesystems
-		cp arch/isomounts multicd-working/ #Text file
-		umount arch
-		rmdir arch
+		mount -o loop arch.iso $MNT/arch/
+		mkdir $WORK/boot/arch
+		cp $MNT/arch/boot/vmlinuz26 $WORK/boot/arch/vmlinuz26 #Kernel
+		cp $MNT/arch/boot/archiso.img $WORK/boot/arch/archiso.img #initrd
+		cp $MNT/arch/*.sqfs $WORK/ #Compressed filesystems
+		cp $MNT/arch/isomounts $WORK/ #Text file
+		umount $MNT/arch;rmdir $MNT/arch
 	fi
 elif [ $1 = writecfg ];then
 if [ -f arch.iso ];then
-echo "
-label arch
+echo "label arch
 menu label Boot ArchLive
 kernel /boot/arch/vmlinuz26
 append lang=en locale=en_US.UTF-8 usbdelay=5 ramdisk_size=75% initrd=/boot/arch/archiso.img archisolabel=$(cat tags/cdlabel)
-" >> multicd-working/boot/isolinux/isolinux.cfg
+" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

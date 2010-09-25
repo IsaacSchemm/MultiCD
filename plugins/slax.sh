@@ -57,18 +57,16 @@ elif [ $1 = copy ];then
 			SUFFIX=gz
 		fi
 		cp $MNT/slax/boot/initrd.$SUFFIX $WORK/boot/slax/initrd.$SUFFIX
-		umount $MNT/slax
-		rmdir $MNT/slax
-	fi
-
-	if [ "`ls -1 *.lzm 2> /dev/null;true`" != "" ] && [ -f slax.iso ]; then echo "Copying Slax modules..."; fi
-	
-	if [ -f slax.iso ];then
-		for i in `ls -1 *.lzm 2> /dev/null;true`; do
-		cp $i $WORK/slax/modules/ #Copy the .lzm module to the modules folder
-		if [ -f tags/verbose ];then
-			echo \(Copied $i\)
+		umount $MNT/slax;rmdir $MNT/slax
+		##########
+		if [ "`ls -1 *.lzm 2> /dev/null;true`" != "" ];then
+			echo "Copying Slax modules..."
 		fi
+		for i in `ls -1 *.lzm 2> /dev/null;true`; do
+			cp $i $WORK/slax/modules/ #Copy the .lzm module to the modules folder
+			if [ -f tags/verbose ];then
+				echo \(Copied $i\)
+			fi
 		done
 	fi
 elif [ $1 = writecfg ];then

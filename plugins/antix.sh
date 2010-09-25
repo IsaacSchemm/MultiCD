@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #antiX Linux plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 maybeway36
+#version 5.9
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -27,30 +27,26 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f antix.iso ];then
-		if [ ! -d antix ];then
-			mkdir antix
+		if [ ! -d $MNT/antix ];then
+			mkdir $MNT/antix
 		fi
-		if grep -q "`pwd`/antix" /etc/mtab ; then
-			umount antix
+		if grep -q "$MNT/antix" /etc/mtab ; then
+			umount $MNT/antix
 		fi
-		mount -o loop antix.iso antix/
-		cp -r antix/mepis multicd-working/ #Everything in antiX but the kernel and initrd
-		mkdir -p multicd-working/boot/antix
-		cp antix/boot/vmlinuz multicd-working/boot/antix/vmlinuz #Kernel
-		cp antix/boot/initrd.gz multicd-working/boot/antix/initrd.gz #Initrd
-		umount antix
-		rmdir antix
+		mount -o loop antix.iso $MNT/antix/
+		cp -r $MNT/antix/mepis $WORK/ #Everything in antiX but the kernel and initrd
+		mkdir -p $WORK/boot/antix
+		cp $MNT/antix/boot/vmlinuz $WORK/boot/antix/vmlinuz #Kernel
+		cp $MNT/antix/boot/initrd.gz $WORK/boot/antix/initrd.gz #Initrd
+		umount $MNT/antix;rmdir $MNT/antix
 	fi
 elif [ $1 = writecfg ];then
 if [ -f antix.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label anitX
+echo "label anitX
 menu label ^antiX
 com32 menu.c32
-append antix.menu
-EOF
-cat > multicd-working/boot/isolinux/antix.menu << "EOF"
-DEFAULT menu.c32
+append antix.menu" >> $WORK/boot/isolinux/isolinux.cfg
+echo "DEFAULT menu.c32
 TIMEOUT 0
 PROMPT 0
 menu title AntiX Options
@@ -93,7 +89,7 @@ label back
 menu label ^Back to main menu
 com32 menu.c32
 append isolinux.cfg
-EOF
+" > $WORK/boot/isolinux/antix.menu
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
