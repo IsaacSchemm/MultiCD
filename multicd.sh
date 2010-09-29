@@ -43,9 +43,9 @@ if echo $* | grep -q "\bmd5\b";then
  MD5=1
 else
  if echo $* | grep -q "\bc\b";then
-  MD5=1
+	MD5=1
  else
-  MD5=0
+	MD5=0
  fi
 fi
 if echo $* | grep -q "\bm\b";then
@@ -196,7 +196,7 @@ else
 fi
 
 #Make sure it exists, you need to put stuff there later
-mkdir -p $WORK/boot/isolinux
+mkdir -p $WORK/boot/isolinux $WORK/boot/grub
 
 #START COPY
 for i in plugins/*;do
@@ -265,15 +265,15 @@ fi
 
 if [ $MEMTEST = 1 ];then
  if [ -f memtest ];then
-  cp memtest $WORK/boot/memtest
+	cp memtest $WORK/boot/memtest
  else
-  echo "Downloading memtest86+ 4.10 from memtest.org..."
-  if [ $VERBOSE != 0 ];then
-   wget -O- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
-  else
-   wget -qO- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
-  fi
-  cp memtest $WORK/boot/memtest
+	echo "Downloading memtest86+ 4.10 from memtest.org..."
+	if [ $VERBOSE != 0 ];then
+	 wget -O- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
+	else
+	 wget -qO- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
+	fi
+	cp memtest $WORK/boot/memtest
  fi
 fi
 
@@ -288,6 +288,8 @@ echo "DEFAULT menu.c32
 TIMEOUT 0
 PROMPT 0
 menu title $CDTITLE" > $WORK/boot/isolinux/isolinux.cfg
+echo "default 0
+timeout 0" > $WORK/boot/grub/menu.lst
 #END HEADER#
 
 #BEGIN COLOR CODE#
@@ -323,6 +325,8 @@ echo "label local
 menu label Boot from ^hard drive
 kernel chain.c32
 append hd0" >> $WORK/boot/isolinux/isolinux.cfg
+echo "title Boot from hard drive
+chainloader (hd0)+1" >> $WORK/boot/grub/menu.lst
 #END HD BOOT OPTION#
 #START WRITE
 for i in plugins/*;do
@@ -334,12 +338,15 @@ done
 #BEGIN DISK IMAGE ENTRY#
 j="0"
 for i in *.im[agz]; do
-  test -r "$i" || continue
-  BASICNAME=$(echo $i|sed 's/\.im.//')
-  echo label "$BASICNAME" >> $WORK/boot/isolinux/isolinux.cfg
-  echo kernel memdisk >> $WORK/boot/isolinux/isolinux.cfg
-  echo append initrd=/boot/$j.img >> $WORK/boot/isolinux/isolinux.cfg
-  j=$( expr $j + 1 )
+	test -r "$i" || continue
+	BASICNAME=$(echo $i|sed 's/\.im.//')
+	echo label "$BASICNAME" >> $WORK/boot/isolinux/isolinux.cfg
+	echo kernel memdisk >> $WORK/boot/isolinux/isolinux.cfg
+	echo initrd /boot/$j.img >> $WORK/boot/isolinux/isolinux.cfg
+	echo title "$BASICNAME" >> $WORK/boot/grub/menu.lst
+	echo kernel /boot/isolinux/memdisk >> $WORK/boot/grub/menu.lst
+	echo initrd /boot/$j.img >> $WORK/boot/grub/menu.lst
+	j=$( expr $j + 1 )
 done
 #END DISK IMAGE ENTRY#
 
@@ -361,6 +368,8 @@ echo "label games
 menu label ^Games on disk images
 com32 menu.c32
 append games.cfg">>$WORK/boot/isolinux/isolinux.cfg
+echo "title Games on disk images
+configfile /boot/games.cfg">>$WORK/boot/grub/menu.lst
 fi
 #END GAMES ENTRY#
 
@@ -369,6 +378,8 @@ if [ -f $WORK/boot/memtest ];then
 echo "label memtest
 menu label ^Memtest86+
 kernel /boot/memtest">>$WORK/boot/isolinux/isolinux.cfg
+echo "title ^Memtest86+
+kernel /boot/memtest">>$WORK/boot/grub/menu.lst
 fi
 #END MEMTEST ENTRY#
 ##END ISOLINUX MENU CODE##
@@ -382,17 +393,22 @@ timeout 300
 menu title "Choose a game to play:"
 EOF
 for i in games/*.im[agz]; do
-  test -r "$i" || continue
-  BASICNAME=$(echo $i|sed 's/\.im.//'|sed 's/games\///')
-  echo label "$BASICNAME" >> $WORK/boot/isolinux/games.cfg
-  echo kernel memdisk >> $WORK/boot/isolinux/games.cfg
-  echo append initrd=/boot/games/$k.img >> $WORK/boot/isolinux/games.cfg
-  k=$( expr $k + 1 )
+	test -r "$i" || continue
+	BASICNAME=$(echo $i|sed 's/\.im.//'|sed 's/games\///')
+	echo label "$BASICNAME" >> $WORK/boot/isolinux/games.cfg
+	echo kernel memdisk >> $WORK/boot/isolinux/games.cfg
+	echo initrd /boot/games/$k.img >> $WORK/boot/isolinux/games.cfg
+	echo title "$BASICNAME" >> $WORK/boot/grub/games.lst
+	echo kernel /boot/memdisk >> $WORK/boot/grub/games.lst
+	echo initrd /boot/games/$k.img >> $WORK/boot/grub/games.lst
+	k=$( expr $k + 1 )
 done
 echo "label back
 menu label Back to main menu
 com32 menu.c32
 append isolinux.cfg">>$WORK/boot/isolinux/games.cfg
+echo "title Back to main menu
+configfile /boot/grub/menu.lst">>$WORK/boot/grub/games.lst
 fi
 
 if [ -d includes ];then
@@ -403,11 +419,11 @@ fi
 if [ $MD5 = 1 ];then
  echo "Generating MD5 checksums..."
  if [ $VERBOSE != 0 ];then
-  find $WORK/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin \
-  -exec md5sum '{}' \; | sed "s^$WORK^^g" | tee $WORK/md5sum.txt
+	find $WORK/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin \
+	-exec md5sum '{}' \; | sed "s^$WORK^^g" | tee $WORK/md5sum.txt
  else
-  find $WORK/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin\
-  -exec md5sum '{}' \; | sed "s^$WORK^^g" > $WORK/md5sum.txt
+	find $WORK/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin\
+	-exec md5sum '{}' \; | sed "s^$WORK^^g" > $WORK/md5sum.txt
  fi
 fi
 
