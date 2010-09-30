@@ -46,6 +46,8 @@ echo "label anitX
 menu label ^antiX
 com32 menu.c32
 append antix.menu" >> $WORK/boot/isolinux/isolinux.cfg
+echo "title antiX
+configfile /boot/grub/antix.lst" >> $WORK/boot/grub/menu.lst
 echo "DEFAULT menu.c32
 TIMEOUT 0
 PROMPT 0
@@ -89,6 +91,40 @@ label back
 menu label ^Back to main menu
 com32 menu.c32
 append isolinux.cfg
+" > $WORK/boot/isolinux/antix.menu
+echo "default 0
+timeout 30
+
+title antiX-Default
+kernel /boot/antix/vmlinuz SELINUX_INIT=NO init=/etc/init quiet nosplash vga=791 aufs
+initrd /boot/antix/initrd.gz
+
+title antiX-Lite-noNet
+kernel /boot/antix/vmlinuz SELINUX_INIT=NO init=/etc/init quiet nosplash vga=791 aufs mean lean
+initrd /boot/antix/initrd.gz
+
+title antiX-Vesa (display problem or virtualbox)
+kernel /boot/antix/vmlinuz SELINUX_INIT=NO init=/etc/init vga=normal quiet nosplash drvr=vesa aufs lean
+initrd /boot/antix/initrd.gz
+
+title antiX-UltraLite-Vesa (Fast boot)
+kernel /boot/antix/vmlinuz SELINUX_INIT=NO init=/etc/init vga=normal quiet nosplash drvr=vesa aufs lean Xtralean 
+initrd /boot/antix/initrd.gz
+
+title antiX-Failsafe (minimum options, small display)
+kernel /boot/antix/vmlinuz SELINUX_INIT=NO init=/etc/init quiet nosplash vga=normal nosound noapic noscsi nodma noapm nousb nopcmcia nofirewire noagp nomce nodhcp nodbus nocpufreq nobluetooth drvr=fbdev aufs res=800x600v
+initrd /boot/antix/initrd.gz
+
+title antiX-60Hz (force monitor to 58-62 Hz)
+kernel /boot/antix/vmlinuz SELINUX_INIT=NO init=/etc/init vga=791 quiet nosplash vsync=58-62 aufs
+initrd /boot/antix/initrd.gz
+
+title antiX-75Hz (force monitor to 73-77 Hz)
+kernel /boot/antix/vmlinuz SELINUX_INIT=NO init=/etc/init vga=791 quiet nosplash vsync=73-77 aufs
+initrd /boot/antix/initrd.gz
+
+title Back to main menu
+configfile /boot/grub/menu.lst
 " > $WORK/boot/isolinux/antix.menu
 fi
 else
