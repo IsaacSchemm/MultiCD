@@ -29,6 +29,8 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 
+#MCDDIR: directory where plugins.md5 and plugins folder are expected to be.
+MCDDIR=$(pwd)
 #WORK: the directory that the eventual CD/DVD contents will be stored temporarily.
 export WORK=$(pwd)/multicd-working
 #MNT: the directory inside which new folders will be made to mount the ISO images.
@@ -71,7 +73,8 @@ else
 fi
 
 #START PREPARE#
-UNKNOWNS="$(md5sum -c plugins.md5|grep FAILED|awk -F: '{print $1}') $(for i in plugins/*.sh;do grep -q $i plugins.md5||echo $i;done)"
+#One parenthesis is for md5sums that don't match; the other is for plugins that are not listed in plugins.md5
+UNKNOWNS="$(md5sum -c $MCDDIR/plugins.md5|grep FAILED|awk -F: '{print $1}') $(for i in $MCDDIR/plugins/*.sh;do grep -q $(basename $i) $MCDDIR/plugins.md5||echo $i;done)"
 if [ "$UNKNOWNS" != " " ];then
 	echo
 	echo "Plugins that are not from the official release: $UNKNOWNS"
@@ -82,13 +85,13 @@ if [ "$UNKNOWNS" != " " ];then
 fi
 
 #Make the scripts executable.
-for i in plugins/*;do
+for i in $MCDDIR/plugins/*;do
 	[ ! -x $i ]&&chmod +x $i
 done
 #END PREPARE#
 
 #START SCAN
-for i in plugins/*;do
+for i in $MCDDIR/plugins/*;do
 	$i scan
 done
 #END SCAN
@@ -199,7 +202,7 @@ fi
 mkdir -p $WORK/boot/isolinux
 
 #START COPY
-for i in plugins/*;do
+for i in $MCDDIR/plugins/*;do
 	[ ! -x $i ]&&chmod +x $i
 	$i copy
 done
@@ -330,7 +333,7 @@ kernel chain.c32
 append hd0" >> $WORK/boot/isolinux/isolinux.cfg
 #END HD BOOT OPTION#
 #START WRITE
-for i in plugins/*;do
+for i in $MCDDIR/plugins/*;do
 	[ ! -x $i ]&&chmod +x $i
 	$i writecfg
 done
