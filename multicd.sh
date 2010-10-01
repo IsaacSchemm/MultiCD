@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ $(whoami) != "root" ];then
-	if uname|grep -qi CYGWIN;then
-		echo "Cygwin is not supported at the moment."
+	if !(uname|grep -q Linux);then
+		echo "Only Linux kernels are supported at the moment (due to heavy use of \"-o loop\")."
 	else
 		echo "This script must be run as root, so it can mount ISO images on the filesystem during the building process."
 		exit 1
@@ -241,15 +241,21 @@ if [ -f grub.exe ];then
  cp grub.exe $WORK/boot/grub.exe
 fi
 
-echo "Downloading SYSLINUX..."
-if [ ! -f syslinux.tar.gz ];then
-	if [ $VERBOSE != 0 ];then
-		wget -O syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.02.tar.gz
-	else
-		wget -qO syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.02.tar.gz
+echo "Downloading SYSLINUX..." #Option 1 is to use an already present syslinux.tar.gz
+if [ ! -f syslinux.tar.gz ] && [ -d /usr/lib/syslinux ];then #Option 2: Use installed syslinux
+	cp /usr/lib/syslinux/isolinux.bin $WORK/boot/isolinux/
+	cp /usr/lib/syslinux/memdisk $WORK/boot/isolinux/
+	cp /usr/lib/syslinux/menu.c32 $WORK/boot/isolinux/
+	cp /usr/lib/syslinux/vesamenu.c32 $WORK/boot/isolinux/
+	cp /usr/lib/syslinux/chain.c32 $WORK/boot/isolinux/
+else
+	if [ ! -f syslinux.tar.gz ];then
+		if [ $VERBOSE != 0 ];then #Option 3: Get syslinux.tar.gz and save it here
+			wget -O syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.02.tar.gz
+		else
+			wget -qO syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.02.tar.gz
+		fi
 	fi
-fi
-if [ $? = 0 ];then
 	echo "Unpacking and copying files..."
 	tar -C /tmp -xzf syslinux.tar.gz
 	cp /tmp/syslinux-*/core/isolinux.bin $WORK/boot/isolinux/
@@ -258,23 +264,22 @@ if [ $? = 0 ];then
 	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 $WORK/boot/isolinux/
 	cp /tmp/syslinux-*/com32/modules/chain.c32 $WORK/boot/isolinux/
 	rm -r /tmp/syslinux-*/
-else
-	echo "Downloading of SYSLINUX failed."
-	exit 1
 fi
 
 if [ $MEMTEST = 1 ];then
- if [ -f memtest ];then
-	cp memtest $WORK/boot/memtest
- else
-	echo "Downloading memtest86+ 4.10 from memtest.org..."
-	if [ $VERBOSE != 0 ];then
-	 wget -O- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
+	if [ -f memtest ];then
+		cp memtest $WORK/boot/memtest
+	elif [ -f /boot/memtest86+.bin ];then
+		cp /boot/memtest86+.bin $WORK/boot/memtest
 	else
-	 wget -qO- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
+		echo "Downloading memtest86+ 4.10 from memtest.org..."
+		if [ $VERBOSE != 0 ];then
+			wget -O- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
+		else
+			wget -qO- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
+		fi
+		cp memtest $WORK/boot/memtest
 	fi
-	cp memtest $WORK/boot/memtest
- fi
 fi
 
 echo "Writing isolinux.cfg..."
