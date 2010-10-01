@@ -196,7 +196,7 @@ else
 fi
 
 #Make sure it exists, you need to put stuff there later
-mkdir -p $WORK/boot/isolinux $WORK/boot/grub
+mkdir -p $WORK/boot/isolinux
 
 #START COPY
 for i in plugins/*;do
@@ -288,8 +288,6 @@ echo "DEFAULT menu.c32
 TIMEOUT 0
 PROMPT 0
 menu title $CDTITLE" > $WORK/boot/isolinux/isolinux.cfg
-echo "default 0
-timeout 0" > $WORK/boot/grub/menu.lst
 #END HEADER#
 
 #BEGIN COLOR CODE#
@@ -325,8 +323,6 @@ echo "label local
 menu label Boot from ^hard drive
 kernel chain.c32
 append hd0" >> $WORK/boot/isolinux/isolinux.cfg
-echo "title Boot from hard drive
-chainloader (hd0)+1" >> $WORK/boot/grub/menu.lst
 #END HD BOOT OPTION#
 #START WRITE
 for i in plugins/*;do
@@ -343,9 +339,6 @@ for i in *.im[agz]; do
 	echo label "$BASICNAME" >> $WORK/boot/isolinux/isolinux.cfg
 	echo kernel memdisk >> $WORK/boot/isolinux/isolinux.cfg
 	echo initrd /boot/$j.img >> $WORK/boot/isolinux/isolinux.cfg
-	echo title "$BASICNAME" >> $WORK/boot/grub/menu.lst
-	echo kernel /boot/isolinux/memdisk >> $WORK/boot/grub/menu.lst
-	echo initrd /boot/$j.img >> $WORK/boot/grub/menu.lst
 	j=$( expr $j + 1 )
 done
 #END DISK IMAGE ENTRY#
@@ -368,8 +361,6 @@ echo "label games
 menu label ^Games on disk images
 com32 menu.c32
 append games.cfg">>$WORK/boot/isolinux/isolinux.cfg
-echo "title Games on disk images
-configfile /boot/games.cfg">>$WORK/boot/grub/menu.lst
 fi
 #END GAMES ENTRY#
 
@@ -378,8 +369,6 @@ if [ -f $WORK/boot/memtest ];then
 echo "label memtest
 menu label ^Memtest86+
 kernel /boot/memtest">>$WORK/boot/isolinux/isolinux.cfg
-echo "title ^Memtest86+
-kernel /boot/memtest">>$WORK/boot/grub/menu.lst
 fi
 #END MEMTEST ENTRY#
 ##END ISOLINUX MENU CODE##
@@ -398,17 +387,12 @@ for i in games/*.im[agz]; do
 	echo label "$BASICNAME" >> $WORK/boot/isolinux/games.cfg
 	echo kernel memdisk >> $WORK/boot/isolinux/games.cfg
 	echo initrd /boot/games/$k.img >> $WORK/boot/isolinux/games.cfg
-	echo title "$BASICNAME" >> $WORK/boot/grub/games.lst
-	echo kernel /boot/memdisk >> $WORK/boot/grub/games.lst
-	echo initrd /boot/games/$k.img >> $WORK/boot/grub/games.lst
 	k=$( expr $k + 1 )
 done
 echo "label back
 menu label Back to main menu
 com32 menu.c32
 append isolinux.cfg">>$WORK/boot/isolinux/games.cfg
-echo "title Back to main menu
-configfile /boot/grub/menu.lst">>$WORK/boot/grub/games.lst
 fi
 
 if [ -d includes ];then

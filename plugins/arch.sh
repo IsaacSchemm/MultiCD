@@ -51,10 +51,6 @@ kernel /boot/arch/vmlinuz26
 append lang=en locale=en_US.UTF-8 usbdelay=5 ramdisk_size=75% archisolabel=$(cat tags/cdlabel)
 initrd /boot/arch/archiso.img
 " >> $WORK/boot/isolinux/isolinux.cfg
-echo "title Boot ArchLive
-kernel /boot/arch/vmlinuz26 lang=en locale=en_US.UTF-8 usbdelay=5 ramdisk_size=75% archisolabel=$(cat tags/cdlabel)
-initrd /boot/arch/archiso.img
-" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
