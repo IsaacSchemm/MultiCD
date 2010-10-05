@@ -27,18 +27,12 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f antix.iso ];then
-		if [ ! -d $MNT/antix ];then
-			mkdir $MNT/antix
-		fi
-		if grep -q "$MNT/antix" /etc/mtab ; then
-			umount $MNT/antix
-		fi
-		mount -o loop antix.iso $MNT/antix/
+		mcdmount antix
 		cp -r $MNT/antix/mepis $WORK/ #Everything in antiX but the kernel and initrd
 		mkdir -p $WORK/boot/antix
 		cp $MNT/antix/boot/vmlinuz $WORK/boot/antix/vmlinuz #Kernel
 		cp $MNT/antix/boot/initrd.gz $WORK/boot/antix/initrd.gz #Initrd
-		umount $MNT/antix;rmdir $MNT/antix
+		umcdmount antix
 	fi
 elif [ $1 = writecfg ];then
 if [ -f antix.iso ];then

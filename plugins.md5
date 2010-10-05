@@ -1,9 +1,9 @@
 23d1b66e2f5837dbbd5ec74bfc8b3e3f  plugins/0hello.sh
-27147e5462e4345349cdd18ebdf90c9a  plugins/antix.sh
-2a261de318713bf9980a51c29d2fbecf  plugins/archdual.sh
-48d45561fae8b79333391378ae9f5a76  plugins/arch.sh
-4edbdcaa2aa3dda39349c1d2afcfb9bc  plugins/austrumi.sh
-3574154793dee77134fbfa0e6bfdcd77  plugins/backtrack.sh
+0afb71e3cf596237c5b20f5d93d60fdb  plugins/antix.sh
+70297dcc1e2800039bcd431424135d01  plugins/archdual.sh
+34883ea1faae483b97f1ee96fa1d57c8  plugins/arch.sh
+c21e10126512e66034a39d50cef91b42  plugins/austrumi.sh
+cc0536cb9771a764e667e75389e78b44  plugins/backtrack.sh
 a2bd12f9bb087ae28089f2452e5cd611  plugins/caine.sh
 3d356f3ef7a68fc713123b6aab3d4a42  plugins/cdlinux.sh
 2d1598495939819d100dc9d6a559de5d  plugins/clonezilla.sh

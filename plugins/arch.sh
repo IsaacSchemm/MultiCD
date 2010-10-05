@@ -29,19 +29,13 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f arch.iso ];then
 		echo "Copying Arch Linux..."
-		if [ ! -d $MNT/arch ];then
-			mkdir $MNT/arch
-		fi
-		if grep -q "$MNT/arch" /etc/mtab ; then
-			umount $MNT/arch
-		fi
-		mount -o loop arch.iso $MNT/arch/
+		mcdmount arch
 		mkdir $WORK/boot/arch
 		cp $MNT/arch/boot/vmlinuz26 $WORK/boot/arch/vmlinuz26 #Kernel
 		cp $MNT/arch/boot/archiso.img $WORK/boot/arch/archiso.img #initrd
 		cp $MNT/arch/*.sqfs $WORK/ #Compressed filesystems
 		cp $MNT/arch/isomounts $WORK/ #Text file
-		umount $MNT/arch;rmdir $MNT/arch
+		umcdmount arch
 	fi
 elif [ $1 = writecfg ];then
 if [ -f arch.iso ];then

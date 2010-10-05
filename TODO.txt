@@ -1,5 +1,5 @@
 *Have plugins use $MNT and $WORK instead of current dir and multicd-working, respectively
+*Have plugins use new "mcdmount" and "mcdumount" functions included in multicd.sh
 *Use echo instead of cat for writing to isolinux.cfg
-*Add menu.lst entries in plugins (if possible) [grub branch in git]
 *Use "initrd" isolinux command instead of putting initrd in append (new usage)
 

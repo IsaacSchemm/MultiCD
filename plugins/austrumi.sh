@@ -27,20 +27,13 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f austrumi.iso ];then
-		echo "Copying Austrumi..."
-		if [ ! -d $MNT/austrumi ];then
-			mkdir $MNT/austrumi
-		fi
-		if grep -q "$MNT/austrumi" /etc/mtab ; then
-			umount $MNT/austrumi
-		fi
-		mount -o loop austrumi.iso $MNT/austrumi/
+		mcdmount austrumi
 		cp -r $MNT/austrumi/austrumi $WORK/ #This folder also has the kernel and initrd
 		cp $MNT/austrumi/isolinux.cfg $WORK/boot/isolinux/al.menu
 		#These files were moved in 1.9.3
 		#cp $MNT/austrumi/boot/austrumi.fs $WORK/boot/austrumi.fs
 		#cp $MNT/austrumi/boot/austrumi.tgz $WORK/boot/austrumi.tgz
-		umount $MNT/austrumi;$MNT/rmdir austrumi
+		umcdmount austrumi
 	fi
 elif [ $1 = writecfg ];then
 if [ -f austrumi.iso ];then

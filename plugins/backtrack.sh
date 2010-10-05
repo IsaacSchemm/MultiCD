@@ -28,35 +28,28 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f backtrack.iso ];then
 		echo "Copying BackTrack..."
-		if [ ! -d backtrack ];then
-			mkdir backtrack
-		fi
-		if grep -q "`pwd`/backtrack" /etc/mtab ; then
-			umount backtrack
-		fi
-		mount -o loop backtrack.iso backtrack/
-		cp -R backtrack/casper multicd-working/boot/backtrack
-		cp backtrack/boot/vmlinuz multicd-working/boot/backtrack/
-		cp backtrack/boot/initrd* multicd-working/boot/backtrack/
-		umount backtrack
-		rmdir backtrack
-		echo -n "Making initrd(s)..."
+		mcdmount backtrack
+		cp -R $MNT/backtrack/casper $WORK/boot/backtrack
+		cp $MNT/backtrack/boot/vmlinuz $WORK/boot/backtrack/
+		cp $MNT/backtrack/boot/initrd* $WORK/boot/backtrack/
+		umcdmount backtrack
+		echo -n "Making initrd(s)..." #This initrd code is common to distros using old versions of casper
 		for i in initrd.gz initrd800.gz initrdfr.gz;do
-			if [ -d ubuntu2-inittmp ];then rm -r ubuntu2-inittmp;fi
-			mkdir ubuntu2-inittmp
-			cd ubuntu2-inittmp
-			gzip -cd ../multicd-working/boot/backtrack/$i | cpio -id
+			if [ -d $MNT/initrd-tmp-mount ];then rm -r $MNT/initrd-tmp-mount;fi
+			mkdir $MNT/initrd-tmp-mount
+			cd $MNT/initrd-tmp-mount
+			gzip -cd $WORK/boot/backtrack/$i | cpio -id
 			perl -pi -e 's/path\/casper/path\/boot\/backtrack/g' scripts/casper
 			perl -pi -e 's/directory\/casper/directory\/boot\/backtrack/g' scripts/casper
-			find . | cpio --create --format='newc' | gzip -c > ../multicd-working/boot/backtrack/$i
-			cd ..
-			rm -r ubuntu2-inittmp
+			find . | cpio --create --format='newc' | gzip -c > ../$WORK/boot/backtrack/$i
+			cd -
+			rm -r $MNT/initrd-tmp-mount
 		done
 		echo " done."
 	fi
 elif [ $1 = writecfg ];then
 if [ -f backtrack.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+cat >> $WORK/boot/isolinux/isolinux.cfg << "EOF"
 label			backtrack1024
 menu label		Start ^BackTrack FrameBuffer (1024x768)
 kernel			/boot/backtrack/vmlinuz

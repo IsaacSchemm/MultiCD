@@ -29,13 +29,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f archdual.iso ];then
 		echo "Copying Arch Linux Dual..."
-		if [ ! -d $MNT/archdual ];then
-			mkdir $MNT/archdual
-		fi
-		if grep -q "$MNT/archdual" /etc/mtab ; then
-			umount $MNT/archdual
-		fi
-		mount -o loop archdual.iso $MNT/archdual
+		mcdmount archdual
 		mkdir -p $WORK/boot/arch/i686
 		mkdir -p $WORK/boot/arch/x86_64
 		mkdir $WORK/i686
@@ -47,7 +41,7 @@ elif [ $1 = copy ];then
 		cp $MNT/archdual/i686/*.sqfs $WORK/i686 #i686 Compressed filesystems
 		cp $MNT/archdual/x86_64/*.sqfs $WORK/x86_64 #x86_64 Compressed filesystems
 		cp $MNT/archdual/isomounts $WORK/ #Text file
-		umount $MNT/archdual;rmdir $MNT/archdual
+		umcdmount archdual
 	fi
 elif [ $1 = writecfg ];then
 if [ -f archdual.iso ];then
