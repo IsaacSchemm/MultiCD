@@ -44,11 +44,11 @@ menu label --> ^Trinity Rescue Kit
 com32 vesamenu.c32
 append trk.menu
 " >> $WORK/boot/isolinux/isolinux.cfg
-sed -e 's^kernel kernel.trk^kernel /boot/trinity/kernel.trk^g' $WORK/boot/trinity/trk.menu
-sed -e 's^initrd=initrd.trk^initrd=/boot/trinity/initrd.trk^g' $WORK/boot/trinity/trk.menu
-sed '/label t/d' $WORK/boot/trinity/trk.menu
-sed '/Memory tester/d' $WORK/boot/trinity/trk.menu
-sed '/memtest/d' $WORK/boot/trinity/trk.menu
+sed -i '' -e 's^kernel kernel.trk^kernel /boot/trinity/kernel.trk^g' $WORK/boot/trinity/trk.menu
+sed -i '' -e 's^initrd=initrd.trk^initrd=/boot/trinity/initrd.trk^g' $WORK/boot/trinity/trk.menu
+sed -i '' '/label t/d' $WORK/boot/trinity/trk.menu
+sed -i '' '/Memory tester/d' $WORK/boot/trinity/trk.menu
+sed -i '' '/memtest/d' $WORK/boot/trinity/trk.menu
 echo "
 label back
 menu label ^Back to main menu
