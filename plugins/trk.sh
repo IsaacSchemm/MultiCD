@@ -32,7 +32,7 @@ elif [ $1 = copy ];then
 		mcdmount trk
 		cp -r $MNT/trk/trk3 $WORK/ #TRK files
 		mkdir $WORK/boot/trinity
-		cp $MNT/trk/isolinux.cfg $WORK/boot/trinity/trk.menu
+		cp $MNT/trk/isolinux.cfg $WORK/boot/isolinux/trk.menu
 		cp $MNT/trk/kernel.trk $WORK/boot/trinity/kernel.trk
 		cp $MNT/trk/initrd.trk $WORK/boot/trinity/initrd.trk
 		cp $MNT/trk/bootlogo.jpg $WORK/boot/isolinux/trklogo.jpg #Boot logo
@@ -46,16 +46,18 @@ com32 vesamenu.c32
 append trk.menu
 " >> $WORK/boot/isolinux/isolinux.cfg
 #REQUIRES GNU sed to work (usage of -i option.)
-sed -i -e 's^kernel kernel.trk^kernel /boot/trinity/kernel.trk^g' $WORK/boot/trinity/trk.menu
-sed -i -e 's^initrd=initrd.trk^initrd=/boot/trinity/initrd.trk^g' $WORK/boot/trinity/trk.menu
-sed -i '/label t/d' $WORK/boot/trinity/trk.menu
-sed -i '/Memory tester/d' $WORK/boot/trinity/trk.menu
-sed -i '/memtest/d' $WORK/boot/trinity/trk.menu
+sed -i -e 's^bootlogo.jpg^trklogo.jpg^g' $WORK/boot/isolinux/trk.menu
+sed -i -e 's^kernel kernel.trk^kernel /boot/trinity/kernel.trk^g' $WORK/boot/isolinux/trk.menu
+sed -i -e "s^initrd=initrd.trk^initrd=/boot/trinity/initrd.trk vollabel=$CDLABEL^g" $WORK/boot/isolinux/trk.menu #This line both changes the initrd path and adds the volume label argument ($CDLABEL is set [exported] in multicd.sh)
+sed -i '/^label t$/d' $WORK/boot/isolinux/trk.menu #Remove memtest part1
+sed -i '/Memory tester/d' $WORK/boot/isolinux/trk.menu #Remove memtest part2
+sed -i '/memtest/d' $WORK/boot/isolinux/trk.menu #Remove memtest part3
 echo "
 label back
 menu label ^Back to main menu
 com32 menu.c32
-append isolinux.cfg" >> $WORK/boot/trinity/trk.menu
+append isolinux.cfg" >> $WORK/boot/isolinux/trk.menu
+cp $WORK/boot/isolinux/trk.menu /tmp/ASDF
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

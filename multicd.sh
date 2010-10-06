@@ -125,13 +125,9 @@ if [ $INTERACTIVE = 1 ];then
 	dialog --inputbox "What would you like the title of the CD's main menu to be?" 8 70 "MultiCD - Created $(date +"%b %d, %Y")" 2> /tmp/cdtitle
 	CDTITLE=$(cat /tmp/cdtitle)
 	rm /tmp/cdtitle
-	if [ -f trk.iso ];then
-		CDLABEL=TRK_3.3
-	else
-		dialog --inputbox "What would you like the CD label to be?" 9 40 "MultiCD" 2> /tmp/cdlabel
-		CDLABEL=$(cat /tmp/cdlabel)
-		rm /tmp/cdlabel
-	fi
+	dialog --inputbox "What would you like the CD label to be?" 9 40 "MultiCD" 2> /tmp/cdlabel
+	export CDLABEL=$(cat /tmp/cdlabel)
+	rm /tmp/cdlabel
 	dialog --menu "What menu color would you like?" 0 0 0 40 black 41 red 42 green 43 brown 44 blue 45 magenta 46 cyan 2> /tmp/color
 	MENUCOLOR=$(cat /tmp/color)
 	echo $(echo -e "\r\033[0;$(cat /tmp/color)m")Color chosen.$(echo -e '\033[0;39m')
@@ -179,11 +175,7 @@ if [ $INTERACTIVE = 1 ];then
 	fi
 else
 	CDTITLE="MultiCD - Created $(date +"%b %d, %Y")"
-	if [ -f trk.iso ];then
-		CDLABEL=TRK_3.3
-	else
-		CDLABEL=MultiCD
-	fi
+	export CDLABEL=MultiCD
 	MENUCOLOR=44
 	echo en > tags/lang
 	touch tags/9xextras
