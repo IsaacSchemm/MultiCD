@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Trinity Rescue Kit plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 maybeway36
+#version 5.9
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -44,11 +45,12 @@ menu label --> ^Trinity Rescue Kit
 com32 vesamenu.c32
 append trk.menu
 " >> $WORK/boot/isolinux/isolinux.cfg
-sed -i '' -e 's^kernel kernel.trk^kernel /boot/trinity/kernel.trk^g' $WORK/boot/trinity/trk.menu
-sed -i '' -e 's^initrd=initrd.trk^initrd=/boot/trinity/initrd.trk^g' $WORK/boot/trinity/trk.menu
-sed -i '' '/label t/d' $WORK/boot/trinity/trk.menu
-sed -i '' '/Memory tester/d' $WORK/boot/trinity/trk.menu
-sed -i '' '/memtest/d' $WORK/boot/trinity/trk.menu
+#REQUIRES GNU sed to work (usage of -i option.)
+sed -i -e 's^kernel kernel.trk^kernel /boot/trinity/kernel.trk^g' $WORK/boot/trinity/trk.menu
+sed -i -e 's^initrd=initrd.trk^initrd=/boot/trinity/initrd.trk^g' $WORK/boot/trinity/trk.menu
+sed -i '/label t/d' $WORK/boot/trinity/trk.menu
+sed -i '/Memory tester/d' $WORK/boot/trinity/trk.menu
+sed -i '/memtest/d' $WORK/boot/trinity/trk.menu
 echo "
 label back
 menu label ^Back to main menu

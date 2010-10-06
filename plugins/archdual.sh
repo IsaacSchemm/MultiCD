@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Arch Linux (dual i686/x86_64) installer plugin for multicd.sh
 #version 5.9
 #Copyright (c) 2010 maybeway36

@@ -1,9 +1,9 @@
 23d1b66e2f5837dbbd5ec74bfc8b3e3f  plugins/0hello.sh
-0afb71e3cf596237c5b20f5d93d60fdb  plugins/antix.sh
-70297dcc1e2800039bcd431424135d01  plugins/archdual.sh
-34883ea1faae483b97f1ee96fa1d57c8  plugins/arch.sh
-c21e10126512e66034a39d50cef91b42  plugins/austrumi.sh
-cc0536cb9771a764e667e75389e78b44  plugins/backtrack.sh
+f34f0812dd9b1bb60f033b1f57fa9e00  plugins/antix.sh
+bb65f7d26f6a71cff6abf99b85b55cff  plugins/archdual.sh
+de5cb26b596363b5e102e6316fcab5f1  plugins/arch.sh
+9db6c90b61942ce45f775314075e87fa  plugins/austrumi.sh
+f3506abf6b76436dec04d5250fd5b73c  plugins/backtrack.sh
 a2bd12f9bb087ae28089f2452e5cd611  plugins/caine.sh
 3d356f3ef7a68fc713123b6aab3d4a42  plugins/cdlinux.sh
 2d1598495939819d100dc9d6a559de5d  plugins/clonezilla.sh
@@ -49,7 +49,7 @@ da3ef9d5564868f2b719ef4c5ac9618b  plugins/ping.sh
 bbb19a57a5d9415c7ab56e64ea8b635f  plugins/tcnet.sh
 05331926ea5bdebc7e0228547f405ccd  plugins/tinycore.sh
 fe598de986f823b71c66c3acbaf128d5  plugins/tinyme.sh
-ee48c23edde9ca533deaaf3353436541  plugins/trk.sh
+23c06ae2693855c0157ec2408fbf291e  plugins/trk.sh
 b9ff570f980e9ae2e5cfe75b4858ff72  plugins/ubcd.sh
 81a84c8c7867302571e54f6ff2bda39e  plugins/ubuntu2.sh
 8499b5f0173d395e80e7f4e067934314  plugins/ubuntu_32_bit.sh

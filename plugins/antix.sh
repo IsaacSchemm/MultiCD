@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #antiX Linux plugin for multicd.sh
 #version 5.9
 #Copyright (c) 2010 maybeway36
@@ -27,6 +28,7 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f antix.iso ];then
+		echo "Copying AntiX..."
 		mcdmount antix
 		cp -r $MNT/antix/mepis $WORK/ #Everything in antiX but the kernel and initrd
 		mkdir -p $WORK/boot/antix
