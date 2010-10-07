@@ -12,6 +12,7 @@ if [ ! -d plugins ];then
 fi
 rm working*.sh 2>/dev/null ||true
 sed -n '/#!\/bin\/bash/,/#START PREPARE/p' multicd.sh > working0.sh
+cat functions.sh >> working0.sh #mcdmount and umcdmount
 sed -n '/#END PREPARE/,/#START SCAN/p' multicd.sh >> working0.sh
 sed -n '/#END SCAN/,/#START COPY/p' multicd.sh > working2.sh
 sed -n '/#END COPY/,/#START WRITE/p' multicd.sh > working4.sh
