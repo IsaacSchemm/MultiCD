@@ -2,7 +2,7 @@
 f34f0812dd9b1bb60f033b1f57fa9e00  plugins/antix.sh
 bb65f7d26f6a71cff6abf99b85b55cff  plugins/archdual.sh
 de5cb26b596363b5e102e6316fcab5f1  plugins/arch.sh
-9db6c90b61942ce45f775314075e87fa  plugins/austrumi.sh
+de85c584447721eb741a9f3db405bf81  plugins/austrumi.sh
 f3506abf6b76436dec04d5250fd5b73c  plugins/backtrack.sh
 a2bd12f9bb087ae28089f2452e5cd611  plugins/caine.sh
 3d356f3ef7a68fc713123b6aab3d4a42  plugins/cdlinux.sh
@@ -21,7 +21,7 @@ cfe4ba49f00110f7f78f4f696107b067  plugins/fedora.sh
 dc3a19fa679bd375a75e3d72266db8a2  plugins/finnix.sh
 db1abc00999f47dd023e8f3f2afc9f30  plugins/freedos.sh
 10559ab40c24e994d70488e7db131f19  plugins/geexbox.sh
-d551acacdb292e421740ae466441bfbc  plugins/gparted.sh
+9fa4c688ca3866a0631a4814705defad  plugins/gparted.sh
 e5e937de53ba2e2977a0b99b35657c78  plugins/hirens.sh
 2ebc5b388b52e06e2f2c8029ab41d61b  plugins/insert.sh
 7cb1d37abd916fb3e690a90217fd59c7  plugins/ipcop.sh
@@ -49,7 +49,7 @@ da3ef9d5564868f2b719ef4c5ac9618b  plugins/ping.sh
 bbb19a57a5d9415c7ab56e64ea8b635f  plugins/tcnet.sh
 05331926ea5bdebc7e0228547f405ccd  plugins/tinycore.sh
 fe598de986f823b71c66c3acbaf128d5  plugins/tinyme.sh
-23c06ae2693855c0157ec2408fbf291e  plugins/trk.sh
+0fc357d3da0a56583a3016e14046390d  plugins/trk.sh
 b9ff570f980e9ae2e5cfe75b4858ff72  plugins/ubcd.sh
 81a84c8c7867302571e54f6ff2bda39e  plugins/ubuntu2.sh
 8499b5f0173d395e80e7f4e067934314  plugins/ubuntu_32_bit.sh

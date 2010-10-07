@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #GParted Live plugin for multicd.sh
-#version 5.4
+#version 5.9
 #Copyright (c) 2009 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,53 +29,62 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f gparted.iso ];then
 		echo "Copying GParted Live..."
-		if [ ! -d gparted ];then
-			mkdir gparted
-		fi
-		if grep -q "`pwd`/gparted" /etc/mtab ; then
-			umount gparted
-		fi
-		mount -o loop gparted.iso gparted/
-		cp -R gparted/live multicd-working/boot/gparted #Compressed filesystem and kernel/initrd
-		rm multicd-working/boot/gparted/memtest #Remember how we needed to do this with Debian Live? They use the same framework
-		umount gparted
-		rmdir gparted
+		mcdmount gparted
+		cp -R $MNT/gparted/live $WORK/boot/gparted #Compressed filesystem and kernel/initrd
+		rm $WORK/boot/gparted/memtest || true #Remember how we needed to do this with Debian Live? They use the same framework
+		umcdmount gparted
 	fi
 elif [ $1 = writecfg ];then
 if [ -f gparted.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+echo "# Since no network setting in the squashfs image, therefore if ip=frommedia, the network is disabled. That's what we want.
 label GParted Live
-  # MENU DEFAULT
   # MENU HIDE
-  MENU LABEL ^GParted Live (Default settings)
+  MENU LABEL GParted Live (Default settings)
   # MENU PASSWD
-  kernel /boot/gparted/vmlinuz
-  append initrd=/boot/gparted/initrd.img boot=live union=aufs live-media-path=/boot/gparted noswap vga=788 ip=frommedia
+  kernel /boot/gparted/vmlinuz1
+  append initrd=/boot/gparted/initrd1.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset vga=788 ip=frommedia nosplash live-media-path=/boot/gparted
+  TEXT HELP
+  * GParted live version: 0.6.4-1. Live version maintainer: Steven Shiau
+  * Disclaimer: GParted live comes with ABSOLUTELY NO WARRANTY
+  ENDTEXT
 
+MENU BEGIN Other modes of GParted Live
 label GParted Live (To RAM)
   # MENU DEFAULT
   # MENU HIDE
   MENU LABEL GParted Live (To RAM. Boot media can be removed later)
   # MENU PASSWD
-  kernel /boot/gparted/vmlinuz
-  append initrd=/boot/gparted/initrd.img boot=live union=aufs live-media-path=/boot/gparted noswap vga=788 toram ip=frommedia
+  kernel /boot/gparted/vmlinuz1
+  append initrd=/boot/gparted/initrd1.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset noprompt vga=788 toram=filesystem.squashfs live-media-path=/boot/gparted ip=frommedia  nosplash
+  TEXT HELP
+  All the programs will be copied to RAM, so you can
+  remove boot media (CD or USB flash drive) later
+  ENDTEXT
 
 label GParted Live without framebuffer
   # MENU DEFAULT
   # MENU HIDE
   MENU LABEL GParted Live (Safe graphic settings, vga=normal)
   # MENU PASSWD
-  kernel /boot/gparted/vmlinuz
-  append initrd=/boot/gparted/initrd.img boot=live union=aufs live-media-path=/boot/gparted noswap ip=frommedia vga=normal
+  kernel /boot/gparted/vmlinuz1
+  append initrd=/boot/gparted/initrd1.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset ip=frommedia vga=normal nosplash live-media-path=/boot/gparted
+  TEXT HELP
+  Disable console frame buffer support
+  ENDTEXT
 
 label GParted Live failsafe mode
   # MENU DEFAULT
   # MENU HIDE
   MENU LABEL GParted Live (Failsafe mode)
   # MENU PASSWD
-  kernel /boot/gparted/vmlinuz
-  append initrd=/boot/gparted/initrd.img boot=live union=aufs live-media-path=/boot/gparted noswap acpi=off irqpoll noapic noapm nodma nomce nolapic nosmp ip=frommedia vga=normal
-EOF
+  kernel /boot/gparted/vmlinuz1
+  append initrd=/boot/gparted/initrd1.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset acpi=off irqpoll noapic noapm nodma nomce nolapic nosmp ip=frommedia vga=normal nosplash live-media-path=/boot/gparted
+  TEXT HELP
+  acpi=off irqpoll noapic noapm nodma nomce nolapic 
+  nosmp vga=normal nosplash
+  ENDTEXT
+MENU END
+" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

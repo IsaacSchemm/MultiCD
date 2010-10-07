@@ -57,7 +57,6 @@ label back
 menu label ^Back to main menu
 com32 menu.c32
 append isolinux.cfg" >> $WORK/boot/isolinux/trk.menu
-cp $WORK/boot/isolinux/trk.menu /tmp/ASDF
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

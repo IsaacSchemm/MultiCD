@@ -31,9 +31,6 @@ elif [ $1 = copy ];then
 		mcdmount austrumi
 		cp -r $MNT/austrumi/austrumi $WORK/ #This folder also has the kernel and initrd
 		cp $MNT/austrumi/isolinux.cfg $WORK/boot/isolinux/al.menu
-		#These files were moved in 1.9.3
-		#cp $MNT/austrumi/boot/austrumi.fs $WORK/boot/austrumi.fs
-		#cp $MNT/austrumi/boot/austrumi.tgz $WORK/boot/austrumi.tgz
 		umcdmount austrumi
 	fi
 elif [ $1 = writecfg ];then

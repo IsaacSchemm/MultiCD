@@ -20,6 +20,7 @@
 #FreeDOS 1.0		fdbasecd.iso OR fdfullcd.iso
 #GeeXboX		gbox.iso
 #GParted		gparted.iso
+#Hiren's boot CD	hirens.iso
 #INSERT			insert.iso
 #IPCop			ipcop.iso
 #Knoppix 5		knoppix5.iso
