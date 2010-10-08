@@ -24,18 +24,18 @@ set -e
 if [ $1 = scan ];then
 	if [ -f hirens.iso ];then
 		echo "Hiren's BootCD (Not open source - do not distribute)"
-	fi
-	DUPLICATES=false #Initialize variable
-	for i in riplinux dban konboot ntpasswd;do
-		if [ -f $i.iso ];then
+		DUPLICATES=false #Initialize variable
+		for i in riplinux dban konboot ntpasswd;do
+			if [ -f $i.iso ];then
+				echo
+				echo "Note: Hiren's BootCD already includes $i."
+				DUPLICATES=true
+			fi
+		done
+		if $DUPLICATES;then
+			echo "Continuing anyway."
 			echo
-			echo "Note: Hiren's BootCD already includes $i."
-			DUPLICATES=true
 		fi
-	done
-	if $DUPLICATES;then
-		echo "Continuing anyway."
-		echo
 	fi
 elif [ $1 = copy ];then
 	if [ -f hirens.iso ];then
