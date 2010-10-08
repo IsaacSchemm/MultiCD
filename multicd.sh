@@ -423,9 +423,9 @@ if [ ! -f tags/win9x ];then
 	EXTRAARGS="$EXTRAARGS -iso-level 4" #To ensure that Windows 9x installation CDs boot properly
 fi
 if $WAIT;then
-	echo "Dropping to root prompt. Type \"exit\" to build the ISO image."
-	echo "Don't do anything hasty."
-	echo "PS1=\"mcd waiting# \"">/tmp/mcdprompt
+	echo "    Dropping to root prompt. Type \"exit\" to build the ISO image."
+	echo "    Don't do anything hasty."
+	echo "PS1=\"    mcd waiting# \"">/tmp/mcdprompt
 	bash --rcfile /tmp/mcdprompt || sh
 	rm /tmp/mcdprompt || true
 fi
