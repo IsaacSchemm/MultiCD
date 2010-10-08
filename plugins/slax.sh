@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Slax 6 plugin for multicd.sh
-#version 5.9
+#version 6.0
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -64,7 +64,7 @@ elif [ $1 = copy ];then
 		fi
 		for i in `ls -1 *.lzm 2> /dev/null;true`; do
 			cp $i $WORK/slax/modules/ #Copy the .lzm module to the modules folder
-			if [ -f tags/verbose ];then
+			if $VERBOSE;then
 				echo \(Copied $i\)
 			fi
 		done

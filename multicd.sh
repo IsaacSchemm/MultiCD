@@ -8,7 +8,7 @@ if [ $(whoami) != "root" ];then
 	fi
 fi
 set -e
-#multicd.sh 5.9
+#multicd.sh 6.0
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,7 +34,6 @@ MCDDIR=$(pwd)
 #WORK: the directory that the eventual CD/DVD contents will be stored temporarily.
 export WORK=$(pwd)/multicd-working
 #MNT: the directory inside which new folders will be made to mount the ISO images.
-#This folder is also used for some small text files at certain points.
 mkdir -p /tmp/multicd-$USER
 export MNT=/tmp/multicd-$USER
 
@@ -43,30 +42,24 @@ mkdir -p tags/puppies
 chmod -R 777 tags
 
 if ( echo $* | grep -q "\bmd5\b" ) || ( echo $* | grep -q "\bc\b" );then
-	MD5=1
+	MD5=true
 else
-	MD5=0
+	MD5=false
 fi
 if echo $* | grep -q "\bm\b";then
-	MEMTEST=0
+	MEMTEST=false
 else
-	MEMTEST=1
+	MEMTEST=true
 fi
 if echo $* | grep -q "\bv\b";then
-	VERBOSE=1
-	echo > tags/verbose
+	export VERBOSE=true
 else
-	VERBOSE=0
-fi
-if echo $* | grep -q "\bcondeb\b";then
-	CONDEB=1
-else
-	CONDEB=0
+	export VERBOSE=false
 fi
 if echo $* | grep -q "\bi\b";then
-	INTERACTIVE=1
+	INTERACTIVE=true
 else
-	INTERACTIVE=0
+	INTERACTIVE=false
 fi
 if ( echo $* | grep -q "\bw\b" ) || ( echo $* | grep -q "\bwait\b" );then
 	WAIT=true
@@ -111,7 +104,7 @@ done
 if [ -f grub.exe ];then
  echo "GRUB4DOS"
 fi
-if [ $MEMTEST = 1 ];then
+if $MEMTEST;then
  echo "Memtest86+"
 fi
 
@@ -119,7 +112,7 @@ echo
 echo "Continuing in 2 seconds - press Ctrl+C to cancel"
 sleep 2
 
-if [ $INTERACTIVE = 1 ];then
+if $INTERACTIVE;then
 	if ! which dialog &> /dev/null;then
 		echo "You must install dialog to use the interactive options."
 		exit 1
@@ -208,7 +201,7 @@ for i in *.im[agz]; do
 	test -r "$i" || continue
 	cp "$i" $WORK/boot/$j.img
 	echo -n Copying $(echo $i|sed 's/\.im.//')"... "
-	if [ $VERBOSE = 1 ];then
+	if $VERBOSE;then
 		echo "Saved as "$j".img."
 	else
 		echo
@@ -224,7 +217,7 @@ if [ $GAMES = 1 ];then
 		test -r "$i" || continue
 		echo -n Copying $(echo $i|sed 's/\.im.//'|sed 's/games\///')"... "
 		cp "$i" $WORK/boot/games/$k.img
-		if [ $VERBOSE = 1 ];then
+		if $VERBOSE;then
 			echo "Saved as games/"$k".img."
 		else
 			echo
@@ -247,7 +240,7 @@ if [ ! -f syslinux.tar.gz ] && [ -d /usr/lib/syslinux ];then #Option 2: Use inst
 	cp /usr/lib/syslinux/chain.c32 $WORK/boot/isolinux/
 else
 	if [ ! -f syslinux.tar.gz ];then
-		if [ $VERBOSE != 0 ];then #Option 3: Get syslinux.tar.gz and save it here
+		if $VERBOSE ;then #Option 3: Get syslinux.tar.gz and save it here
 			wget -O syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.02.tar.gz
 		else
 			wget -qO syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.02.tar.gz
@@ -260,18 +253,18 @@ else
 	cp /tmp/syslinux-*/com32/menu/menu.c32 $WORK/boot/isolinux/
 	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 $WORK/boot/isolinux/
 	cp /tmp/syslinux-*/com32/modules/chain.c32 $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/utils/isohybrid /tmp/isohybrid #This is a program we need to run; let's copy it to /tmp
+	cp /tmp/syslinux-*/utils/isohybrid tags/isohybrid; PATH=$PATH:$(pwd)/tags
 	rm -r /tmp/syslinux-*/
 fi
 
-if [ $MEMTEST = 1 ];then
+if $MEMTEST;then
 	if [ -f memtest ];then
 		cp memtest $WORK/boot/memtest
 	elif [ -f /boot/memtest86+.bin ];then
 		cp /boot/memtest86+.bin $WORK/boot/memtest
 	else
 		echo "Downloading memtest86+ 4.10 from memtest.org..."
-		if [ $VERBOSE != 0 ];then
+		if $VERBOSE;then
 			wget -O- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
 		else
 			wget -qO- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
@@ -403,9 +396,9 @@ if [ -d includes ];then
  cp -r includes/* $WORK/
 fi
 
-if [ $MD5 = 1 ];then
+if $MD5;then
  echo "Generating MD5 checksums..."
- if [ $VERBOSE != 0 ];then
+ if $VERBOSE;then
 	find $WORK/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin \
 	-exec md5sum '{}' \; | sed "s^$WORK^^g" | tee $WORK/md5sum.txt
  else
@@ -423,7 +416,7 @@ else
  exit 1
 fi
 EXTRAARGS=""
-if [ $VERBOSE = 0 ];then
+if $VERBOSE;then
 	EXTRAARGS="$EXTRAARGS -quiet"
 fi
 if [ ! -f tags/win9x ];then
@@ -442,13 +435,8 @@ $GENERATOR -o multicd.iso \
 -no-emul-boot -boot-load-size 4 -boot-info-table \
 -r -J $EXTRAARGS \
 -V "$CDLABEL" $WORK/
-if [ -f /tmp/isohybrid ];then
-	/tmp/isohybrid multicd.iso
-	rm /tmp/isohybrid
-else
-	isohybrid multicd.iso
-fi
 rm -r $WORK/
+isohybrid multicd.iso
 chmod 666 multicd.iso
 rm -r tags
 #END SCRIPT
