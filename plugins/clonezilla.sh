@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Clonezilla plugin for multicd.sh
-#version 5.3
-#Copyright (c) 2009 maybeway36
+#version 6.0
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -28,37 +29,28 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f clonezilla.iso ];then
 		echo "Copying Clonezilla..."
-		if [ ! -d clonezilla ];then
-			mkdir clonezilla
-		fi
-		if grep -q "`pwd`/clonezilla" /etc/mtab ; then
-			umount clonezilla
-		fi
-		mount -o loop clonezilla.iso clonezilla/
-		cp clonezilla/isolinux/ocswp.png multicd-working/boot/isolinux/ocswp.png #Boot menu logo
-		cp -R clonezilla/live multicd-working/boot/clonezilla #Another Debian Live-based ISO
-		sed '/MENU BEGIN Memtest/,/MENU END/d' clonezilla/isolinux/isolinux.cfg > multicd-working/boot/isolinux/clonezil.cfg #Remove FreeDOS and Memtest
-		umount clonezilla
-		rmdir clonezilla
-		rm multicd-working/boot/clonezilla/memtest
+		mcdmount clonezilla
+		cp $MNT/clonezilla/isolinux/ocswp.png $WORK/boot/isolinux/ocswp.png #Boot menu logo
+		cp -R $MNT/clonezilla/live $WORK/boot/clonezilla #Another Debian Live-based ISO
+		sed '/MENU BEGIN Memtest/,/MENU END/d' $MNT/clonezilla/isolinux/isolinux.cfg > $WORK/boot/isolinux/clonezil.cfg #Remove FreeDOS and Memtest
+		umcdmount clonezilla
+		rm $WORK/boot/clonezilla/memtest
 	fi
 elif [ $1 = writecfg ];then
 if [ -f clonezilla.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label clonezilla
+echo "label clonezilla
 menu label ^Clonezilla
 com32 vesamenu.c32
 append clonezil.cfg
-EOF
-perl -pi -e 's/\/live\//\/boot\/clonezilla\//g' multicd-working/boot/isolinux/clonezil.cfg #Change directory to /boot/clonezilla
-perl -pi -e 's/append initrd=/append live-media-path=\/boot\/clonezilla initrd=/g' multicd-working/boot/isolinux/clonezil.cfg #Tell the kernel we moved it
-cat >> multicd-working/boot/isolinux/clonezil.cfg << "EOF"
-
-label back
+" >> $WORK/boot/isolinux/isolinux.cfg
+#GNU sed syntax
+sed -i -e 's/\/live\//\/boot\/clonezilla\//g' multicd-working/boot/isolinux/clonezil.cfg #Change directory to /boot/clonezilla
+sed -i -e 's/append initrd=/append live-media-path=\/boot\/clonezilla initrd=/g' multicd-working/boot/isolinux/clonezil.cfg #Tell the kernel we moved it
+echo "label back
 menu label Back to main menu
 com32 menu.c32
 append isolinux.cfg
-EOF
+" >> $WORK/boot/isolinux/clonezil.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

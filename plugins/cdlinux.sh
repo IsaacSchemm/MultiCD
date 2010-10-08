@@ -37,7 +37,7 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 if [ -f cdl.iso ];then
 #CDLinux uses country codes longer than two letters, so I don't think I'll get much out of $TAGS/lang here.
-echo "menu begin ^CDlinux Menu
+echo "menu begin ^CDlinux
 
 label cdlinux-en_US
 	menu label ^CDlinux (en_US) English
@@ -104,7 +104,7 @@ label back
 	com32 menu.c32
 	append isolinux.cfg
 menu end
-" >> multicd-working/boot/isolinux/isolinux.cfg
+" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
