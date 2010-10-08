@@ -4,8 +4,8 @@ f34f0812dd9b1bb60f033b1f57fa9e00  plugins/antix.sh
 f39bc9c7db07a832cda71f706eedfa7c  plugins/arch.sh
 de85c584447721eb741a9f3db405bf81  plugins/austrumi.sh
 3cc33c4fc0daa66feebb228ae58707a6  plugins/backtrack.sh
-a2bd12f9bb087ae28089f2452e5cd611  plugins/caine.sh
-3d356f3ef7a68fc713123b6aab3d4a42  plugins/cdlinux.sh
+6f5190db2a97bb55e6eaddf66cb9a173  plugins/caine.sh
+c0935b56ff692e4b73ccfe33f9141aa6  plugins/cdlinux.sh
 2d1598495939819d100dc9d6a559de5d  plugins/clonezilla.sh
 070d0db887dbf7cc48ae45a3278d9e55  plugins/dban.sh
 b8e8784dfaa00922fd55561262128b17  plugins/debian-inst.sh
