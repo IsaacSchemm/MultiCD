@@ -42,7 +42,7 @@ elif [ $1 = copy ];then
 			gzip -cd $WORK/boot/backtrack/$i | cpio -id
 			perl -pi -e 's/path\/casper/path\/boot\/backtrack/g' scripts/casper
 			perl -pi -e 's/directory\/casper/directory\/boot\/backtrack/g' scripts/casper
-			find . | cpio --create --format='newc' | gzip -c > ../$WORK/boot/backtrack/$i
+			find . | cpio --create --format='newc' | gzip -c > $WORK/boot/backtrack/$i
 			cd -
 			rm -r $MNT/initrd-tmp-mount
 		done
