@@ -34,6 +34,7 @@ MCDDIR=$(pwd)
 #WORK: the directory that the eventual CD/DVD contents will be stored temporarily.
 export WORK=$(pwd)/multicd-working
 #MNT: the directory inside which new folders will be made to mount the ISO images.
+#This folder is also used for some small text files at certain points.
 mkdir -p /tmp/multicd-$USER
 export MNT=/tmp/multicd-$USER
 
@@ -41,35 +42,36 @@ if [ -d tags ];then rm -r tags;fi
 mkdir -p tags/puppies
 chmod -R 777 tags
 
-if echo $* | grep -q "\bmd5\b";then
- MD5=1
-else
- if echo $* | grep -q "\bc\b";then
+if ( echo $* | grep -q "\bmd5\b" ) || ( echo $* | grep -q "\bc\b" );then
 	MD5=1
- else
+else
 	MD5=0
- fi
 fi
 if echo $* | grep -q "\bm\b";then
- MEMTEST=0
+	MEMTEST=0
 else
- MEMTEST=1
+	MEMTEST=1
 fi
 if echo $* | grep -q "\bv\b";then
- VERBOSE=1
- echo > tags/verbose
+	VERBOSE=1
+	echo > tags/verbose
 else
- VERBOSE=0
+	VERBOSE=0
 fi
 if echo $* | grep -q "\bcondeb\b";then
- CONDEB=1
+	CONDEB=1
 else
- CONDEB=0
+	CONDEB=0
 fi
 if echo $* | grep -q "\bi\b";then
- INTERACTIVE=1
+	INTERACTIVE=1
 else
- INTERACTIVE=0
+	INTERACTIVE=0
+fi
+if ( echo $* | grep -q "\bw\b" ) || ( echo $* | grep -q "\bwait\b" );then
+	WAIT=true
+else
+	WAIT=false
 fi
 
 #START PREPARE#
@@ -258,6 +260,7 @@ else
 	cp /tmp/syslinux-*/com32/menu/menu.c32 $WORK/boot/isolinux/
 	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 $WORK/boot/isolinux/
 	cp /tmp/syslinux-*/com32/modules/chain.c32 $WORK/boot/isolinux/
+	cp /tmp/syslinux-*/utils/isohybrid /tmp/isohybrid #This is a program we need to run; let's copy it to /tmp
 	rm -r /tmp/syslinux-*/
 fi
 
@@ -426,12 +429,25 @@ fi
 if [ ! -f tags/win9x ];then
 	EXTRAARGS="$EXTRAARGS -iso-level 4" #To ensure that Windows 9x installation CDs boot properly
 fi
+if $WAIT;then
+	echo "Dropping to root prompt. Type \"exit\" to build the ISO image."
+	echo "Don't do anything hasty."
+	echo "PS1=\"mcd waiting# \"">/tmp/mcdprompt
+	bash --rcfile /tmp/mcdprompt || sh
+	rm /tmp/mcdprompt || true
+fi
 echo "Building CD image..."
 $GENERATOR -o multicd.iso \
 -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
 -no-emul-boot -boot-load-size 4 -boot-info-table \
 -r -J $EXTRAARGS \
 -V "$CDLABEL" $WORK/
+if [ -f /tmp/isohybrid ];then
+	/tmp/isohybrid multicd.iso
+	rm /tmp/isohybrid
+else
+	isohybrid multicd.iso
+fi
 rm -r $WORK/
 chmod 666 multicd.iso
 rm -r tags
