@@ -35,17 +35,17 @@ elif [ $1 = copy ];then
 			umount $MNT/slax
 		fi
 		mount -o loop slax.iso $MNT/slax/
-		if [ -f tags/slaxlist ];then
+		if [ -f $TAGS/slaxlist ];then
 			mkdir $WORK/$MNT/slax
 			for i in `ls $MNT/slax/slax|sed -e '/^base$/ d'`;do
 				cp -R $MNT/slax/slax/$i $WORK/slax/ #Copy everything but the base modules
 			done
 			mkdir $WORK/slax/base
-			for i in `cat tags/slaxlist`;do
+			for i in `cat $TAGS/slaxlist`;do
 				cp $MNT/slax/slax/base/${i}* $WORK/slax/base/ #Copy only the modules you wanted
 			done
 			cp $MNT/slax/slax/base/001-*.lzm $WORK/slax/base/ #Don't forget the core module!
-			rm tags/slaxlist
+			rm $TAGS/slaxlist
 		else
 			cp -R $MNT/slax/slax $WORK/ #Copy everything
 		fi

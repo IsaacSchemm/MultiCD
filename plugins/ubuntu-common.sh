@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Ubuntu/casper common functions for multicd.sh
-#version 5.8
+#version 6.0
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -49,8 +49,8 @@ if [ ! -z "$1" ] && [ -f $1.iso ];then
 	sed -i "s@file=/cdrom/preseed/@file=/cdrom/boot/$1/preseed/@g" multicd-working/boot/$1/$1.cfg #Preseed folder moved - not sure if ubiquity uses this
 	sed -i "s^initrd=/casper/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" multicd-working/boot/$1/$1.cfg #Initrd moved, ignore_uuid added
 	sed -i "s^kernel /casper/^kernel /boot/$1/^g" multicd-working/boot/$1/$1.cfg #Kernel moved
-	if [ $(cat tags/lang) != en ];then
-		sed -i "s^initrd=/boot/$1/^debian-installer/language=$(cat tags/lang) console-setup/layoutcode?=$(cat tags/lang) initrd=/boot/$1/^g" multicd-working/boot/$1/$1.cfg #Add language codes to cmdline - does not change keyboard AFAIK
+	if [ $(cat $TAGS/lang) != en ];then
+		sed -i "s^initrd=/boot/$1/^debian-installer/language=$(cat $TAGS/lang) console-setup/layoutcode?=$(cat $TAGS/lang) initrd=/boot/$1/^g" multicd-working/boot/$1/$1.cfg #Add language codes to cmdline
 	fi
 	umount $1;rmdir $1
 else

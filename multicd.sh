@@ -36,10 +36,13 @@ export WORK=$(pwd)/multicd-working
 #MNT: the directory inside which new folders will be made to mount the ISO images.
 mkdir -p /tmp/multicd-$USER
 export MNT=/tmp/multicd-$USER
+#TAGS: used to store small text files (temporary)
+export TAGS=$MNT/tags
 
-if [ -d tags ];then rm -r tags;fi
-mkdir -p tags/puppies
-chmod -R 777 tags
+if [ -d $TAGS ];then rm -r $TAGS;fi
+mkdir -p $TAGS
+mkdir $TAGS/puppies
+chmod -R 777 $TAGS
 
 if ( echo $* | grep -q "\bmd5\b" ) || ( echo $* | grep -q "\bc\b" );then
 	MD5=true
@@ -127,7 +130,7 @@ if $INTERACTIVE;then
 	MENUCOLOR=$(cat /tmp/color)
 	echo $(echo -e "\r\033[0;$(cat /tmp/color)m")Color chosen.$(echo -e '\033[0;39m')
 	rm /tmp/color
-	dialog --inputbox "Enter the two-letter language code for the language you would like to use." 9 50 "en" 2> tags/lang
+	dialog --inputbox "Enter the two-letter language code for the language you would like to use." 9 50 "en" 2> $TAGS/lang
 	if [ -f slax.iso ];then
 		dialog --checklist "Slax modules to include:" 13 45 6 \
 		002 Xorg on \
@@ -138,44 +141,44 @@ if $INTERACTIVE;then
 		007 Firefox on \
 		2> ./slaxlist0
 		echo >> ./slaxlist0
-		cat ./slaxlist0|sed -e 's/"//g' -e 's/ /\n/g'>tags/slaxlist
+		cat ./slaxlist0|sed -e 's/"//g' -e 's/ /\n/g'>$TAGS/slaxlist
 		rm ./slaxlist0
-		if wc -c tags/slaxlist|grep -q 24;then #24 bytes means they are all checked
-			rm tags/slaxlist #If they are all checked, delete the file
+		if wc -c $TAGS/slaxlist|grep -q 24;then #24 bytes means they are all checked
+			rm $TAGS/slaxlist #If they are all checked, delete the file
 		fi
 	fi
 	if [ -f win98se.iso ] || [ -f winme.iso ];then
 		if dialog --yesno "Would you like to copy the \"tools\" and \"add-ons\" folders from the Windows 9x/Me CD?" 0 0;then
-			touch tags/9xextras
+			touch $TAGS/9xextras
 		fi
 	fi
-	if [ $(find tags/puppies -maxdepth 1 -type f|wc -l) -gt 1 ] && which dialog &> /dev/null;then
+	if [ $(find $TAGS/puppies -maxdepth 1 -type f|wc -l) -gt 1 ] && which dialog &> /dev/null;then
 		echo "dialog --radiolist \"Which Puppy variant would you like to be installable to HD from the disc?\" 13 45 6 \\">puppychooser
-		for i in tags/puppies/*;do
-			echo $(echo $i|sed -e 's/tags\/puppies\///g') \"\" off \\ >> puppychooser
+		for i in $TAGS/puppies/*;do
+			echo $(echo $i|sed -e "s/$TAGS\/puppies\///g") \"\" off \\ >> puppychooser
 		done
 		echo "2> puppyresult" >> puppychooser
 		sh puppychooser
-		touch tags/puppies/$(cat puppyresult).inroot
+		touch $TAGS/puppies/$(cat puppyresult).inroot
 		rm puppychooser puppyresult
 	fi
-	if [ $(find tags/puppies -maxdepth 1 -type f|wc -l) -eq 1 ];then
-		NAME=$(ls tags/puppies)
-		true>$(find tags/puppies -maxdepth 1 -type f).inroot
+	if [ $(find $TAGS/puppies -maxdepth 1 -type f|wc -l) -eq 1 ];then
+		NAME=$(ls $TAGS/puppies)
+		true>$(find $TAGS/puppies -maxdepth 1 -type f).inroot
 	fi
 	if which dialog &> /dev/null;then
-		for i in $(find tags -maxdepth 1 -name ubuntu\*);do
-			dialog --inputbox "What would you like $(echo $i|sed -e 's/tags\///g') to be called on the CD boot menu?\n(Leave blank if you don't care.)" 10 70 2> $i.name
+		for i in $(find $TAGS -maxdepth 1 -name ubuntu\*);do
+			dialog --inputbox "What would you like $(echo $i|sed -e "s/$TAGS\///g") to be called on the CD boot menu?\n(Leave blank if you don't care.)" 10 70 2> $i.name
 		done
 	fi
 else
 	CDTITLE="MultiCD - Created $(date +"%b %d, %Y")"
 	export CDLABEL=MultiCD
 	MENUCOLOR=44
-	echo en > tags/lang
-	touch tags/9xextras
-	if [ $(find tags/puppies -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
-		touch $(find tags/puppies -maxdepth 1 -type f|head -n 1) #The first one alphabetically will be in the root dir - now if only I could make this look nicer.
+	echo en > $TAGS/lang
+	touch $TAGS/9xextras
+	if [ $(find $TAGS/puppies -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
+		touch $(find $TAGS/puppies -maxdepth 1 -type f|head -n 1) #This way, the first one alphabetically will be in the root dir
 	fi
 fi
 
@@ -253,7 +256,7 @@ else
 	cp /tmp/syslinux-*/com32/menu/menu.c32 $WORK/boot/isolinux/
 	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 $WORK/boot/isolinux/
 	cp /tmp/syslinux-*/com32/modules/chain.c32 $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/utils/isohybrid tags/isohybrid; PATH=$PATH:$(pwd)/tags
+	cp /tmp/syslinux-*/utils/isohybrid $TAGS/isohybrid; PATH=$PATH:$TAGS
 	rm -r /tmp/syslinux-*/
 fi
 
@@ -419,7 +422,7 @@ EXTRAARGS=""
 if $VERBOSE;then
 	EXTRAARGS="$EXTRAARGS -quiet"
 fi
-if [ ! -f tags/win9x ];then
+if [ ! -f $TAGS/win9x ];then
 	EXTRAARGS="$EXTRAARGS -iso-level 4" #To ensure that Windows 9x installation CDs boot properly
 fi
 if $WAIT;then
@@ -438,5 +441,5 @@ $GENERATOR -o multicd.iso \
 rm -r $WORK/
 isohybrid multicd.iso
 chmod 666 multicd.iso
-rm -r tags
+rm -r $TAGS
 #END SCRIPT

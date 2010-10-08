@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Hiren's BootCD (11.0) plugin for multicd.sh
-#version 5.9
+#version 6.0
 #Copyright for this script (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -59,7 +59,7 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 if [ -f hirens.iso ];then
 echo "label hirens
-menu label --> ^$(cat tags/hirens.name) - main menu
+menu label --> ^$(cat $TAGS/hirens.name) - main menu
 com32 menu.c32
 append /HBCD/isolinux.cfg" >> multicd-working/boot/isolinux/isolinux.cfg
 rm tags/hirens.name

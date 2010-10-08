@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Knoppix plugin for multicd.sh
-#version 5.8
+#version 6.0
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -52,19 +52,19 @@ echo "LABEL knoppix
 MENU LABEL Knoppix
 KERNEL /boot/knoppix/linux
 INITRD /boot/knoppix/minirt.gz
-APPEND ramdisk_size=100000 lang=$(cat tags/lang) vt.default_utf8=0 apm=power-off vga=791 nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6
+APPEND ramdisk_size=100000 lang=$(cat $TAGS/lang) vt.default_utf8=0 apm=power-off vga=791 nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6
 
 LABEL adriane
 MENU LABEL Adriane (Knoppix)
 KERNEL /boot/knoppix/linux
 INITRD /boot/knoppix/minirt.gz
-APPEND ramdisk_size=100000 lang=$(cat tags/lang) vt.default_utf8=0 apm=power-off vga=791 nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6 adriane
+APPEND ramdisk_size=100000 lang=$(cat $TAGS/lang) vt.default_utf8=0 apm=power-off vga=791 nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6 adriane
 
 LABEL knoppix-2
 MENU LABEL Knoppix (boot to command line)
 KERNEL /boot/knoppix/linux
 INITRD /boot/knoppix/minirt.gz
-APPEND ramdisk_size=100000 lang=$(cat tags/lang) vt.default_utf8=0 apm=power-off vga=791 nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6 2" >> multicd-working/boot/isolinux/isolinux.cfg
+APPEND ramdisk_size=100000 lang=$(cat $TAGS/lang) vt.default_utf8=0 apm=power-off vga=791 nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6 2" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

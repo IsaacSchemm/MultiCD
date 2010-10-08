@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #Arch Linux (dual i686/x86_64) installer plugin for multicd.sh
-#version 5.9
+#version 6.0
 #Copyright (c) 2010 maybeway36
 #Thanks to jerome_bc for updating this script for the newest Arch
 #
@@ -49,13 +49,13 @@ if [ -f archdual.iso ];then
 echo "label arch1
 menu label Boot ArchLive i686
 kernel /boot/arch/i686/vmlinuz26
-append lang=en locale=en_US.UTF-8 usbdelay=5 ramdisk_size=75% archisolabel=$(cat tags/cdlabel)
+append lang=en locale=en_US.UTF-8 usbdelay=5 ramdisk_size=75% archisolabel=$(cat $TAGS/cdlabel)
 initrd /boot/arch/i686/archiso.img
 
 label arch2
 menu label Boot ArchLive x86_64
 kernel /boot/arch/x86_64/vmlinuz26
-append lang=en locale=en_US.UTF-8 usbdelay=5 ramdisk_size=75% archisolabel=$(cat tags/cdlabel)
+append lang=en locale=en_US.UTF-8 usbdelay=5 ramdisk_size=75% archisolabel=$(cat $TAGS/cdlabel)
 initrd /boot/arch/x86_64/archiso.img
 " >> $WORK/boot/isolinux/isolinux.cfg
 fi

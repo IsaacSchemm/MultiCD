@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Ubuntu Custom #3 plugin for multicd.sh
-#version 5.8
+#version 6.0
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f ubuntu3.iso ];then
 		echo "Ubuntu custom #3 (for using multiple versions on one disc - 9.10 or newer)"
-		echo > tags/ubuntu3
+		echo > $TAGS/ubuntu3
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu3.iso ];then
@@ -47,8 +47,8 @@ menu label Back to main menu
 com32 menu.c32
 append /boot/isolinux/isolinux.cfg
 EOF
-if [ -f tags/ubuntu3.name ] && [ "$(cat tags/ubuntu3.name)" != "" ];then
-	perl -pi -e "s/Ubuntu\ Custom\ \#3/$(cat tags/ubuntu3.name)/g" multicd-working/boot/isolinux/isolinux.cfg
+if [ -f $TAGS/ubuntu3.name ] && [ "$(cat $TAGS/ubuntu3.name)" != "" ];then
+	perl -pi -e "s/Ubuntu\ Custom\ \#3/$(cat $TAGS/ubuntu3.name)/g" multicd-working/boot/isolinux/isolinux.cfg
 fi
 fi
 else

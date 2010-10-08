@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Ubuntu plugin for multicd.sh
-#version 5.8
+#version 6.0
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f ubuntu.iso ];then
 		echo "Ubuntu"
-		echo > tags/ubuntu
+		echo > $TAGS/ubuntu
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu.iso ];then
@@ -47,8 +47,8 @@ menu label Back to main menu
 com32 menu.c32
 append /boot/isolinux/isolinux.cfg
 EOF
-if [ -f tags/ubuntu.name ] && [ "$(cat tags/ubuntu.name)" != "" ];then
-	perl -pi -e "s/Ubuntu\ \#1/$(cat tags/ubuntu.name)/g" multicd-working/boot/isolinux/isolinux.cfg
+if [ -f $TAGS/ubuntu.name ] && [ "$(cat $TAGS/ubuntu.name)" != "" ];then
+	perl -pi -e "s/Ubuntu\ \#1/$(cat $TAGS/ubuntu.name)/g" multicd-working/boot/isolinux/isolinux.cfg
 else
 	perl -pi -e "s/Ubuntu\ \#1/Ubuntu/g" multicd-working/boot/isolinux/isolinux.cfg
 fi

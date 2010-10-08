@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Windows Me Setup plugin for multicd.sh
-#version 5.7
+#version 6.0
 #Copyright for this script (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,7 +38,7 @@ elif [ $1 = copy ];then
 		mount -o loop winme.iso winme/
 		cp -r winme/win9x multicd-working/
 		rm -r multicd-working/win9x/ols
-		if [ -f tags/9xextras ];then
+		if [ -f $TAGS/9xextras ];then
 			cp -r winme/add-ons multicd-working/win9x/add-ons
 			cp -r winme/tools multicd-working/win9x/tools
 		fi

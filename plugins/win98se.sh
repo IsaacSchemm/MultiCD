@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Windows 98 SE Setup plugin for multicd.sh
-#version 5.7
+#version 6.0
 #Copyright for this script (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,7 +38,7 @@ elif [ $1 = copy ];then
 		mount -o loop win98se.iso win98se/
 		cp -r win98se/win98 multicd-working/
 		rm -r multicd-working/win98/ols
-		if [ -f tags/9xextras ];then
+		if [ -f $TAGS/9xextras ];then
 			cp -r win98se/add-ons multicd-working/win98/add-ons
 			cp -r win98se/tools multicd-working/win98/tools
 		fi

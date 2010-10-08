@@ -43,7 +43,7 @@ if [ -f arch.iso ];then
 echo "label arch
 menu label Boot ArchLive
 kernel /boot/arch/vmlinuz26
-append lang=en locale=en_US.UTF-8 usbdelay=5 ramdisk_size=75% archisolabel=$(cat tags/cdlabel)
+append lang=en locale=en_US.UTF-8 usbdelay=5 ramdisk_size=75% archisolabel=$(cat $TAGS/cdlabel)
 initrd /boot/arch/archiso.img
 " >> $WORK/boot/isolinux/isolinux.cfg
 fi

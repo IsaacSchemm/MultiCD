@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f macpup.iso ];then
 		echo "Macpup"
-		touch tags/puppies/macpup
+		touch $TAGS/puppies/macpup
 	fi
 elif [ $1 = copy ];then
 	if [ -f macpup.iso ];then
