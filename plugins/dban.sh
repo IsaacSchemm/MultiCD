@@ -32,7 +32,7 @@ elif [ $1 = copy ];then
 		mcdmount dban
 		mkdir -p $WORK/boot/dban1
 		cp $MNT/dban/dban.bzi $WORK/boot/dban1/dban.bzi
-		umcdmount $MNT/dban
+		umcdmount dban
 	fi
 elif [ $1 = writecfg ];then
 #BEGIN DBAN ENTRY#
@@ -43,87 +43,87 @@ echo "#Most of the DBAN options are commented out on the menu because they're so
 LABEL  dban
 MENU LABEL ^DBAN
 KERNEL /boot/dban1/dban.bzi
-APPEND nuke="dwipe --method prng --rounds 8 --verify off" floppy=0,16,cmos
+APPEND nuke=\"dwipe --method prng --rounds 8 --verify off\" floppy=0,16,cmos
 
 #LABEL  autonuke
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke="dwipe --autonuke" silent
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke=\"dwipe --autonuke\" silent
 #
 #LABEL  dod
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke="dwipe --autonuke --method dod522022m" silent
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke=\"dwipe --autonuke --method dod522022m\" silent
 #
 #LABEL  dod3pass
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke="dwipe --autonuke --method dod3pass" silent
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke=\"dwipe --autonuke --method dod3pass\" silent
 #
 #LABEL  dodshort
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke="dwipe --autonuke --method dodshort" silent
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke=\"dwipe --autonuke --method dodshort\" silent
 #
 #LABEL  gutmann
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke="dwipe --autonuke --method gutmann" silent
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke=\"dwipe --autonuke --method gutmann\" silent
 #
 #LABEL  ops2
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke="dwipe --autonuke --method ops2" silent
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke=\"dwipe --autonuke --method ops2\" silent
 #
 #LABEL  paranoid
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke="dwipe --autonuke --method prng --rounds 8 --verify all" silent
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke=\"dwipe --autonuke --method prng --rounds 8 --verify all\" silent
 #
 #LABEL  prng
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke="dwipe --autonuke --method prng --rounds 8" silent
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke=\"dwipe --autonuke --method prng --rounds 8\" silent
 #
 #LABEL  quick
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke="dwipe --autonuke --method quick" silent
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke=\"dwipe --autonuke --method quick\" silent
 #
 #LABEL  zero
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke="dwipe --autonuke --method zero" silent
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke=\"dwipe --autonuke --method zero\" silent
 #
 #LABEL  nofloppy
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke="dwipe" floppy=0,16,cmos
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke=\"dwipe\" floppy=0,16,cmos
 #
 #LABEL  nosilent
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke="dwipe"
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke=\"dwipe\"
 #
 #LABEL  noverify
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke="dwipe --verify off"
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc quiet nuke=\"dwipe --verify off\"
 #
 #LABEL  debug
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke="exec ash" debug
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke=\"exec ash\" debug
 #
 #LABEL  shell
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke="exec ash"
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke=\"exec ash\"
 #
 #LABEL  verbose
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
-#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke="dwipe --method quick"
+#APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke=\"dwipe --method quick\"
 " >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 #END DBAN ENTRY#
