@@ -43,8 +43,9 @@ if [ -f binary.iso ];then
 echo "label debian-live
 menu label >> ^Debian Live
 com32 menu.c32
-append dlive.cfg" >> $WORK/boot/isolinux/dlive.cfg
-sed -i '/memtest/d' '/Memory test/d' $WORK/boot/isolinux/dlive.cfg
+append dlive.cfg" >> $WORK/boot/isolinux/isolinux.cfg
+sed '/memtest/d' $WORK/boot/isolinux/dlive.cfg | sed '/Memory test/d' > /tmp/dlive.cfg
+mv /tmp/dlive.cfg $WORK/boot/isolinux/dlive.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
