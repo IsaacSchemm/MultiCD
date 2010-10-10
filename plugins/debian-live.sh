@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Debian Live plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 maybeway36
+#version 6.0
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -28,26 +29,22 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f binary.iso ];then
 		echo "Copying Debian Live..."
-		if [ ! -d dlive ];then
-			mkdir dlive
-		fi
-		if grep -q "`pwd`/dlive" /etc/mtab ; then
-			umount dlive
-		fi
-		mount -o loop binary.iso dlive/
-		cp dlive/isolinux/live.cfg /tmp/live.cfg #Copy the menu so we can read it later
-		cp -r dlive/live multicd-working/ #Copy live folder - usually all that is needed
+		mcdmount binary
+		cp $MNT/binary/isolinux/live.cfg $WORK/boot/isolinux/dlive.cfg
+		cp -r $MNT/binary/live $WORK/ #Copy live folder - usually all that is needed
 		if [ -d dlive/install ];then
-			cp -r dlive/install multicd-working/ #Doesn't hurt to check
+			cp -r $MNT/binary/install $WORK/ #Doesn't hurt to check
 		fi
-		umount dlive
-		rmdir dlive
-		rm multicd-working/live/memtest||true #We don't need this now; we'll get it later
+		umcdmount binary
+		rm $WORK/live/memtest||true
 	fi
 elif [ $1 = writecfg ];then
 if [ -f binary.iso ];then
-cat /tmp/live.cfg|grep -v memtest|grep -v "Memory test">>multicd-working/boot/isolinux/isolinux.cfg
-rm /tmp/live.cfg
+echo "label debian-live
+menu label >> ^Debian Live
+com32 menu.c32
+append dlive.cfg" >> $WORK/boot/isolinux/dlive.cfg
+sed -i '/memtest/d' '/Memory test/d' $WORK/boot/isolinux/dlive.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

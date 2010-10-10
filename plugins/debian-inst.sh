@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Debian installer plugin for multicd.sh
-#version 5.0.3
-#Copyright (c) 2009 maybeway36
+#version 6.0
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -28,23 +29,15 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f debian-mini.iso ];then
 		echo "Copying Debian netboot installer..."
-		if [ ! -d debian-mini ];then
-			mkdir debian-mini
-		fi
-		if grep -q "`pwd`/debian-mini" /etc/mtab ; then
-			umount debian-mini
-		fi
-		mount -o loop debian-mini.iso debian-mini/
-		mkdir multicd-working/boot/debian
-		cp debian-mini/linux multicd-working/boot/debian/linux
-		cp debian-mini/initrd.gz multicd-working/boot/debian/initrd.gz
-		umount debian-mini
-		rmdir debian-mini
+		mcdmount debian-mini
+		mkdir $WORK/boot/debian
+		cp $MNT/debian-mini/linux $WORK/boot/debian/linux
+		cp $MNT/debian-mini/initrd.gz $WORK/boot/debian/initrd.gz
+		umcdmount debian-mini
 	fi
 elif [ $1 = writecfg ];then
 if [ -f debian-mini.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-LABEL dinstall
+echo "LABEL dinstall
 menu label ^Install Debian
 	kernel /boot/debian/linux
 	append vga=normal initrd=/boot/debian/initrd.gz -- quiet 
@@ -52,7 +45,7 @@ LABEL dexpert
 menu label Install Debian - expert mode
 	kernel /boot/debian/linux
 	append priority=low vga=normal initrd=/boot/debian/initrd.gz -- 
-EOF
+" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Damn Vulnerable Linux plugin for multicd.sh
-#version 5.7
+#version 6.0
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,23 +29,16 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f dvl.iso ];then
 		echo "Copying Damn Vulnerable Linux..."
-		if [ ! -d dvl ];then
-			mkdir dvl
-		fi
-		if grep -q "`pwd`/dvl" /etc/mtab ; then
-			umount dvl
-		fi
-		mount -o loop dvl.iso dvl/
-		cp -r dvl/BT multicd-working/
-		mkdir multicd-working/boot/dvl
-		cp dvl/boot/vmlinuz multicd-working/boot/dvl/vmlinuz
-		cp dvl/boot/initrd.gz multicd-working/boot/dvl/initrd.gz
-		umount dvl;rmdir dvl
+		mcdmount dvl
+		cp -r $MNT/dvl/BT $WORK/
+		mkdir $WORK/boot/dvl
+		cp $MNT/dvl/boot/vmlinuz $WORK/boot/dvl/vmlinuz
+		cp $MNT/boot/initrd.gz $WORK/boot/dvl/initrd.gz
+		umcdmount dvl
 	fi
 elif [ $1 = writecfg ];then
 if [ -f dvl.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label dvl
+echo "label dvl
 menu label Damn ^Vulnerable Linux
 kernel /boot/dvl/vmlinuz
 initrd /boot/dvl/initrd.gz
@@ -55,7 +49,7 @@ menu label Damn Vulnerable Linux (dvlsafe)
 kernel /boot/dvl/vmlinuz
 initrd /boot/dvl/initrd.gz
 append vga=769 max_loop=255 init=linuxrc load_ramdisk=1 prompt_ramdisk=0 ramdisk_size=4444 root=/dev/ram0 rw
-EOF
+" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

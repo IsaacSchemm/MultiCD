@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #DeLi Linux plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 maybeway36
+#version 6.0
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -28,22 +29,14 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f deli.iso ];then
 		echo "Copying DeLi Linux..."
-		if [ ! -d deli ];then
-			mkdir deli
-		fi
-		if grep -q "`pwd`/deli" /etc/mtab ; then
-			umount deli
-		fi
-		mount -o loop deli.iso deli/
-		cp -r deli/isolinux multicd-working/ #Kernel and filesystem
-		cp -r deli/pkg multicd-working/ #Packages
-		umount deli
-		rmdir deli
+		mcdmount deli
+		cp -r $MNT/deli/isolinux $WORK/ #Kernel and filesystem
+		cp -r $MNT/deli/pkg $WORK/ #Packages
+		umcdmount deli
 	fi
 elif [ $1 = writecfg ];then
 if [ -f deli.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label deli-ide
+echo "label deli-ide
 	menu label ^DeLi Linux
 	kernel /isolinux/bzImage
 	append initrd=/isolinux/initrd.gz load_ramdisk=1 prompt_ramdisk=0 ramdisk_size=6464 rw root=/dev/ram
@@ -51,8 +44,7 @@ label deli-ide
 label deli-scsi
 	menu label ^DeLi Linux - SCSI
 	kernel /isolinux/scsi
-	append initrd=/isolinux/initrd.gz load_ramdisk=1 prompt_ramdisk=0 ramdisk_size=6464 rw root=/dev/ram
-EOF
+	append initrd=/isolinux/initrd.gz load_ramdisk=1 prompt_ramdisk=0 ramdisk_size=6464 rw root=/dev/ram" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

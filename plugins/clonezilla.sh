@@ -39,7 +39,7 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 if [ -f clonezilla.iso ];then
 echo "label clonezilla
-menu label ^Clonezilla
+menu label --> ^Clonezilla
 com32 vesamenu.c32
 append clonezil.cfg
 " >> $WORK/boot/isolinux/isolinux.cfg

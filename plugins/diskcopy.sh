@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #EASEUS Disk Copy plugin for multicd.sh
-#version 5.6
+#version 6.0
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,40 +25,23 @@ set -e
 if [ $1 = scan ];then
 	if [ -f diskcopy.iso ];then
 		echo "EASEUS Disk Copy"
-		DCISO=1
-	else
-		if [ -f DC2.iso ];then
-			ln -s DC2.iso diskcopy.iso
-			echo "EASEUS Disk Copy (note: made link from DC2.iso to diskcopy.iso)"
-			DCISO=1
-		else
-			DCISO=0
-		fi
 	fi
 elif [ $1 = copy ];then
 	if [ -f diskcopy.iso ];then
-		if [ ! -d diskcopy ];then
-			mkdir diskcopy
-		fi
-		if grep -q "`pwd`/diskcopy" /etc/mtab ; then
-			umount diskcopy
-		fi
-echo "Copying EASUS Disk Copy..."
-		mount -o loop diskcopy.iso diskcopy/
-		mkdir -p multicd-working/boot/diskcopy
-		cp diskcopy/bzImage multicd-working/boot/diskcopy/bzImage
-		cp diskcopy/initrd.img multicd-working/boot/diskcopy/initrd.img
-		umount diskcopy
-		rmdir diskcopy
+		echo "Copying EASUS Disk Copy..."
+		mcdmount diskcopy
+		mkdir -p $WORK/boot/diskcopy
+		cp $MNT/diskcopy/bzImage $WORK/boot/diskcopy/bzImage
+		cp $MNT/diskcopy/initrd.img $WORK/boot/diskcopy/initrd.img
+		umcdmount diskcopy
 	fi
 elif [ $1 = writecfg ];then
 if [ -f diskcopy.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label diskcopy
+echo "label diskcopy
 menu label ^EASEUS Disk Copy
 kernel /boot/diskcopy/bzImage
 append initrd=/boot/diskcopy/initrd.img
-EOF
+" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
