@@ -31,7 +31,7 @@ elif [ $1 = copy ];then
 		echo "Copying DBAN..."
 		mcdmount dban
 		mkdir -p $WORK/boot/dban1
-		cp dban/dban.bzi $WORK/boot/dban1/dban.bzi
+		cp $MNT/dban/dban.bzi $WORK/boot/dban1/dban.bzi
 		umcdmount $MNT/dban
 	fi
 elif [ $1 = writecfg ];then

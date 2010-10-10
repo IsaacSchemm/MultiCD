@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Puppy Linux plugin for multicd.sh
-#version 5.7
+#version 6.0
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -58,15 +58,15 @@ cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
 label puppy
 menu label ^Puppy Linux
 kernel /puppy/vmlinuz
-append initrd=/puppy/initrd.gz pmedia=cd pdir=puppy
+append initrd=/puppy/initrd.gz pmedia=cd psubdir=puppy
 #label puppy-nox
 #menu label Puppy Linux (boot to command line)
 #kernel /puppy/vmlinuz
-#append initrd=/puppy/initrd.gz pmedia=cd pfix=nox pdir=puppy
+#append initrd=/puppy/initrd.gz pmedia=cd pfix=nox psubdir=puppy
 #label puppy-noram
 #menu label Puppy Linux (don't load to RAM)
 #kernel /puppy/vmlinuz
-#append initrd=/puppy/initrd.gz pmedia=cd pfix=noram pdir=puppy
+#append initrd=/puppy/initrd.gz pmedia=cd pfix=noram psubdir=puppy
 EOF
 else
 cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"

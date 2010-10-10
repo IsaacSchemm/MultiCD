@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Macpup plugin for multicd.sh
-#version 5.7
+#version 6.0
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -58,15 +58,15 @@ cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
 label macpup
 menu label ^Macpup
 kernel /macpup/vmlinuz
-append initrd=/macpup/initrd.gz pmedia=cd pdir=macpup
+append initrd=/macpup/initrd.gz pmedia=cd psubdir=macpup
 #label macpup-nox
 #menu label Macpup (boot to command line)
 #kernel /macpup/vmlinuz
-#append initrd=/macpup/initrd.gz pmedia=cd pfix=nox pdir=macpup
+#append initrd=/macpup/initrd.gz pmedia=cd pfix=nox psubdir=macpup
 #label macpup-noram
 #menu label Macpup (don't load to RAM)
 #kernel /macpup/vmlinuz
-#append initrd=/macpup/initrd.gz pmedia=cd pfix=noram pdir=macpup
+#append initrd=/macpup/initrd.gz pmedia=cd pfix=noram psubdir=macpup
 EOF
 else
 cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
