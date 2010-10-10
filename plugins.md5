@@ -9,7 +9,7 @@ de85c584447721eb741a9f3db405bf81  plugins/austrumi.sh
 dc8af425fdd93fe5ec906b261f184d49  plugins/clonezilla.sh
 36d0ec0a464a687566a187a2717885e2  plugins/dban.sh
 fb18f372271cb0b9ac353da764abfbd8  plugins/debian-inst.sh
-7e03bd01445174cc9c983c616bf41177  plugins/debian-live.sh
+3f33dcb98944f04c5ae89a602bda3144  plugins/debian-live.sh
 443cf34824c338597f1d50425efa53e9  plugins/deli.sh
 ef1004254f86cbc555fb485a2162f2e1  plugins/diskcopy.sh
 faa7d3dd9457a80c54c84670311cb283  plugins/dsl.sh
