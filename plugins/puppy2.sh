@@ -45,19 +45,19 @@ if [ -d $WORK/puppy2 ];then
 fi
 echo "label puppy2
 menu label ^$PUPNAME
-kernel /puppy/vmlinuz
+kernel /puppy2/vmlinuz
 append pmedia=cd $EXTRAARGS
-initrd /puppy/initrd.gz
+initrd /puppy2/initrd.gz
 #label puppy2-nox
 #menu label $PUPNAME (boot to command line)
-#kernel /puppy/vmlinuz
+#kernel /puppy2/vmlinuz
 #append pmedia=cd pfix=nox $EXTRAARGS
-#initrd /puppy/initrd.gz
+#initrd /puppy2/initrd.gz
 #label puppy2-noram
 #menu label $PUPNAME (don't load to RAM)
-#kernel /puppy/vmlinuz
+#kernel /puppy2/vmlinuz
 #append pmedia=cd pfix=noram $EXTRAARGS
-#initrd /puppy/initrd.gz
+#initrd /puppy2/initrd.gz
 " >> $WORK/boot/isolinux/isolinux.cfg
 fi
 #END PUPPY2 ENTRY#

@@ -155,7 +155,7 @@ if $INTERACTIVE;then
 	if [ $(find $TAGS/puppies -maxdepth 1 -type f|wc -l) -gt 1 ] && which dialog &> /dev/null;then
 		echo "dialog --radiolist \"Which Puppy variant would you like to be installable to HD from the disc?\" 13 45 6 \\">puppychooser
 		for i in $TAGS/puppies/*;do
-			echo $(echo $i|sed -e "s/$TAGS\/puppies\///g") \"\" off \\ >> puppychooser
+			echo $(basename $i) \"\" off \\ >> puppychooser
 		done
 		echo "2> puppyresult" >> puppychooser
 		sh puppychooser
@@ -168,7 +168,7 @@ if $INTERACTIVE;then
 	fi
 	if which dialog &> /dev/null;then
 		for i in $(find $TAGS -maxdepth 1 -name \*.needsname);do
-			dialog --inputbox "What would you like $(basename $i) to be called on the CD boot menu?\n(Leave blank for the default.)" 10 70 \
+			dialog --inputbox "What would you like $(basename $i|sed -e 's/\.needsname//g') to be called on the CD boot menu?\n(Leave blank for the default.)" 10 70 \
 			2> $(echo $i|sed -e 's/needsname/name/g')
 		done
 	fi

@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f tinycore2.iso ];then
 		echo "Tiny Core Linux"
-		touch tags/tinycore2.needsname
+		touch $TAGS/tinycore2.needsname
 	fi
 elif [ $1 = copy ];then
 	if [ -f tinycore2.iso ];then
