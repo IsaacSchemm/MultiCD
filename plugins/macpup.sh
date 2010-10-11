@@ -37,7 +37,7 @@ elif [ $1 = copy ];then
 		fi
 		mount -o loop macpup.iso macpup/
 		#The installer will only work if Macpup is in the root dir of the disc
-		if [ ! -f tags/puppies/macpup.inroot ];then
+		if [ ! -f $TAGS/puppies/macpup.inroot ];then
 			mkdir multicd-working/macpup
 			cp macpup/*.sfs multicd-working/macpup/
 			cp macpup/vmlinuz multicd-working/macpup/vmlinuz

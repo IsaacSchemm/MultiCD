@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f puppy.iso ];then
 		echo "Puppy Linux"
-		touch tags/puppies/puppy
+		touch $TAGS/puppies/puppy
 	fi
 elif [ $1 = copy ];then
 	if [ -f puppy.iso ];then
@@ -37,7 +37,7 @@ elif [ $1 = copy ];then
 		fi
 		mount -o loop puppy.iso puppy/
 		#The installer will only work if Puppy is in the root dir of the disc
-		if [ ! -f tags/puppies/puppy.inroot ];then
+		if [ ! -f $TAGS/puppies/puppy.inroot ];then
 			mkdir multicd-working/puppy
 			cp puppy/*.sfs multicd-working/puppy/
 			cp puppy/vmlinuz multicd-working/puppy/vmlinuz

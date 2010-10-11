@@ -30,7 +30,7 @@ db1abc00999f47dd023e8f3f2afc9f30  plugins/freedos.sh
 3e353a14b07043f300775694a01fa597  plugins/kubuntu_64_bit.sh
 1f1102b32dc3f8a6c17c20ea9a72f394  plugins/kubuntu.sh
 f5f7593e3fd7c905be71004d92652e21  plugins/linuxmint.sh
-7065d69f1534446130aa05c868f1efeb  plugins/macpup.sh
+314870ee4912315a60e9c62d87f3a29a  plugins/macpup.sh
 e00e5c1bdbbf781ddbddd2cd579bd519  plugins/mandriva.sh
 95bba8cfa1811517b3a41319ad58d739  plugins/mintdebian.sh
 18bfabdd9b76100c3dce3c6a7dcade0d  plugins/netbootcd.sh
@@ -41,7 +41,7 @@ e1a195e6be67960bfc39f8b5cdefa23c  plugins/pclos.sh
 d57dc2111ab0a31b8d178233411ad524  plugins/pclx.sh
 da3ef9d5564868f2b719ef4c5ac9618b  plugins/ping.sh
 1b90bd4db4b4a7cea06c454578c2f722  plugins/pmagic.sh
-7bf70cc4ff2f317eed7797d4672e9b44  plugins/puppy.sh
+e5947cdc50bc9b284ee83b58c371791b  plugins/puppy.sh
 13de89b3e91b94db0cd5e31101b424bb  plugins/riplinux.sh
 7f567c0d5832ea867cadfd152a258805  plugins/slax.sh
 3aa6e6bf178be98d2d80326363b5c098  plugins/slitaz.sh
