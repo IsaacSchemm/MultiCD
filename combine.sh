@@ -2,12 +2,8 @@
 #combine.sh version 5.9 - combine multicd.sh plugins into one script
 #Under MIT/X11 license - see multicd.sh
 set -e
-if [ ! -f multicd.sh ];then
-	echo "No multicd.sh!"
-	exit 1
-fi
-if [ ! -d plugins ];then
-	echo "No plugins!"
+if [ ! -f multicd.sh ] || [ ! -d plugins ] || [ -d functions.sh ];then
+	echo "The files multicd.sh and functions.sh and the plugins folder must be present."
 	exit 1
 fi
 rm working*.sh 2>/dev/null ||true
@@ -27,7 +23,7 @@ for i in $(echo plugins/*.sh);do
 		sed -n '/\$1 = copy/,/\$1 = writecfg/p' $i|sed -e '1d' -e '$d' >> working3.sh #Copy portion
 		sed -n '/\$1 = writecfg/,/scan|copy|writecfg/p' $i|sed -e '1d' -e 'N;$!P;$!D;$d' >> working5.sh #isolinux.cfg portion
 	else
-		echo "Note: $i not being included."
+		echo "Note: $i not being included (it doesn't seem to be a real plugin, because it doesn't contain the string \"scan|copy|writecfg\".)"
 	fi
 done
 cat working[0123456].sh > combined-multicd.sh

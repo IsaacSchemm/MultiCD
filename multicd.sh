@@ -168,7 +168,7 @@ if $INTERACTIVE;then
 	fi
 	if which dialog &> /dev/null;then
 		for i in $(find $TAGS -maxdepth 1 -name \*.needsname);do
-			dialog --inputbox "What would you like $(basename $i) to be called on the CD boot menu?\n(Leave blank if you don't care.)" 10 70 \
+			dialog --inputbox "What would you like $(basename $i) to be called on the CD boot menu?\n(Leave blank for the default.)" 10 70 \
 			2> $(echo $i|sed -e 's/needsname/name/g')
 		done
 	fi
