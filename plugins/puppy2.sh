@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-#Puppy Linux plugin for multicd.sh
+#Puppy Linux #2 plugin for multicd.sh
 #version 6.0
 #Copyright (c) 2010 maybeway36
 #
@@ -22,39 +22,39 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = scan ];then
-	if [ -f puppy.iso ];then
-		echo "Puppy Linux"
-		touch $TAGS/puppies/puppy
-		touch $TAGS/puppy.needsname
+	if [ -f puppy2.iso ];then
+		echo "Puppy Linux #2"
+		touch $TAGS/puppies/puppy2
+		touch $TAGS/puppy2.needsname
 	fi
 elif [ $1 = copy ];then
-	if [ -f puppy.iso ];then
-		plugins/puppy-common.sh puppy
+	if [ -f puppy2.iso ];then
+		plugins/puppy-common.sh puppy2
 	fi
 elif [ $1 = writecfg ];then
-#BEGIN PUPPY ENTRY#
-if [ -f puppy.iso ];then
-if [ -d $WORK/puppy ];then
-	EXTRAARGS="psubdir=puppy"
+#BEGIN PUPPY2 ENTRY#
+if [ -f puppy2.iso ];then
+if [ -d $WORK/puppy2 ];then
+	EXTRAARGS="psubdir=puppy2"
 fi
-echo "label puppy
-menu label ^Puppy Linux
+echo "label puppy2
+menu label ^Puppy Linux #2
 kernel /puppy/vmlinuz
 append pmedia=cd $EXTRAARGS
 initrd /puppy/initrd.gz
-#label puppy-nox
-#menu label Puppy Linux (boot to command line)
+#label puppy2-nox
+#menu label Puppy Linux #2 (boot to command line)
 #kernel /puppy/vmlinuz
 #append pmedia=cd pfix=nox $EXTRAARGS
 #initrd /puppy/initrd.gz
-#label puppy-noram
-#menu label Puppy Linux (don't load to RAM)
+#label puppy2-noram
+#menu label Puppy Linux #2 (don't load to RAM)
 #kernel /puppy/vmlinuz
 #append pmedia=cd pfix=noram $EXTRAARGS
 #initrd /puppy/initrd.gz
 " >> $WORK/boot/isolinux/isolinux.cfg
 fi
-#END PUPPY ENTRY#
+#END PUPPY2 ENTRY#
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"

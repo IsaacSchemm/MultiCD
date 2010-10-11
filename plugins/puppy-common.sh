@@ -1,6 +1,7 @@
 #!/bin/sh
 set -e
-#Puppy Linux plugin for multicd.sh
+. ./functions.sh
+#Puppy Linux common functions for multicd.sh
 #version 6.0
 #Copyright (c) 2010 maybeway36
 #
@@ -21,42 +22,24 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
-	if [ -f puppy.iso ];then
-		echo "Puppy Linux"
-		touch $TAGS/puppies/puppy
-		touch $TAGS/puppy.needsname
-	fi
-elif [ $1 = copy ];then
-	if [ -f puppy.iso ];then
-		plugins/puppy-common.sh puppy
-	fi
-elif [ $1 = writecfg ];then
-#BEGIN PUPPY ENTRY#
-if [ -f puppy.iso ];then
-if [ -d $WORK/puppy ];then
-	EXTRAARGS="psubdir=puppy"
+if [ $1 = scan ] || [ $1 = copy ] || [ $1 = writecfg ] || [ $1 = category ];then
+	exit 0 #This is not a plugin itself
 fi
-echo "label puppy
-menu label ^Puppy Linux
-kernel /puppy/vmlinuz
-append pmedia=cd $EXTRAARGS
-initrd /puppy/initrd.gz
-#label puppy-nox
-#menu label Puppy Linux (boot to command line)
-#kernel /puppy/vmlinuz
-#append pmedia=cd pfix=nox $EXTRAARGS
-#initrd /puppy/initrd.gz
-#label puppy-noram
-#menu label Puppy Linux (don't load to RAM)
-#kernel /puppy/vmlinuz
-#append pmedia=cd pfix=noram $EXTRAARGS
-#initrd /puppy/initrd.gz
-" >> $WORK/boot/isolinux/isolinux.cfg
-fi
-#END PUPPY ENTRY#
+if [ ! -z "$1" ] && [ -f $1.iso ];then
+	mcdmount $1
+	#The installer will only work if Puppy is in the root dir of the disc
+	if [ -f $TAGS/puppies/$1.inroot ];then
+		cp $MNT/$1/*.sfs $WORK/
+		cp $MNT/$1/vmlinuz $WORK/vmlinuz
+		cp $MNT/$1/initrd.gz $WORK/initrd.gz
+	else
+		mkdir $WORK/$1
+		cp $MNT/$1/*.sfs $WORK/$1/
+		cp $MNT/$1/vmlinuz $WORK/$1/vmlinuz
+		cp $MNT/$1/initrd.gz $WORK/$1/initrd.gz
+	fi
+	umcdmount $1
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
-	echo "Use only from within multicd.sh or a compatible script!"
-	echo "Don't use this plugin script on its own!"
+	echo "$0: \"$1\" is empty or not an ISO"
+	exit 1
 fi
