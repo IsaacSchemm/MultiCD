@@ -25,7 +25,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f binary.iso ];then
 		echo "Debian Live"
-		touch plugins/debian-live.needsname #Comment out this line and multicd.sh won't ask for a custom name for this ISO
+		touch $TAGS/debian-live.needsname #Comment out this line and multicd.sh won't ask for a custom name for this ISO
 	fi
 elif [ $1 = copy ];then
 	if [ -f binary.iso ];then
