@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Ubuntu/casper common functions for multicd.sh
 #version 6.0
 #Copyright (c) 2010 maybeway36
@@ -25,34 +26,28 @@ if [ $1 = scan ] || [ $1 = copy ] || [ $1 = writecfg ] || [ $1 = category ];then
 	exit 0 #This is not a plugin itself
 fi
 if [ ! -z "$1" ] && [ -f $1.iso ];then
-	if [ ! -d $1 ];then
-		mkdir $1
-	fi
-	if grep -q "`pwd`/$1" /etc/mtab ; then
-		umount $1
-	fi
-	mount -o loop $1.iso $1/
-	cp -R $1/casper multicd-working/boot/$1 #Live system
-	if [ -d $1/preseed ];then
-		cp -R $1/preseed multicd-working/boot/$1
+	mcdmount $1
+	cp -R $MNT/$1/casper $WORK/boot/$1 #Live system
+	if [ -d $MNT/$1/preseed ];then
+		cp -R $MNT/$1/preseed $WORK/boot/$1
 	fi
 	# Fix the isolinux.cfg
-	if [ -f $1/isolinux/text.cfg ];then
+	if [ -f $MNT/$1/isolinux/text.cfg ];then
 		UBUCFG=text.cfg
-	elif [ -f $1/isolinux/txt.cfg ];then
+	elif [ -f $MNT/$1/isolinux/txt.cfg ];then
 		UBUCFG=txt.cfg
 	else
 		UBUCFG=isolinux.cfg #For custom-made live CDs
 	fi
-	cp $1/isolinux/$UBUCFG multicd-working/boot/$1/$1.cfg
-	sed -i "s@default live@default menu.c32@g" multicd-working/boot/$1/$1.cfg #Show menu instead of boot: prompt
-	sed -i "s@file=/cdrom/preseed/@file=/cdrom/boot/$1/preseed/@g" multicd-working/boot/$1/$1.cfg #Preseed folder moved - not sure if ubiquity uses this
-	sed -i "s^initrd=/casper/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" multicd-working/boot/$1/$1.cfg #Initrd moved, ignore_uuid added
-	sed -i "s^kernel /casper/^kernel /boot/$1/^g" multicd-working/boot/$1/$1.cfg #Kernel moved
+	cp $MNT/$1/isolinux/$UBUCFG $WORK/boot/$1/$1.cfg
+	sed -i "s@default live@default menu.c32@g" $WORK/boot/$1/$1.cfg #Show menu instead of boot: prompt
+	sed -i "s@file=/cdrom/preseed/@file=/cdrom/boot/$1/preseed/@g" $WORK/boot/$1/$1.cfg #Preseed folder moved - not sure if ubiquity uses this
+	sed -i "s^initrd=/casper/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" $WORK/boot/$1/$1.cfg #Initrd moved, ignore_uuid added
+	sed -i "s^kernel /casper/^kernel /boot/$1/^g" $WORK/boot/$1/$1.cfg #Kernel moved
 	if [ $(cat $TAGS/lang) != en ];then
-		sed -i "s^initrd=/boot/$1/^debian-installer/language=$(cat $TAGS/lang) console-setup/layoutcode?=$(cat $TAGS/lang) initrd=/boot/$1/^g" multicd-working/boot/$1/$1.cfg #Add language codes to cmdline
+		sed -i "s^initrd=/boot/$1/^debian-installer/language=$(cat $TAGS/lang) console-setup/layoutcode?=$(cat $TAGS/lang) initrd=/boot/$1/^g" $WORK/boot/$1/$1.cfg #Add language codes to cmdline
 	fi
-	umount $1;rmdir $1
+	umcdmount $1
 else
 	echo "$0: \"$1\" is empty or not an ISO"
 	exit 1
