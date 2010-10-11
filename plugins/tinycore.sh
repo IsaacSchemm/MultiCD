@@ -40,7 +40,7 @@ if [ -f tinycore.iso ];then
 		TCNAME="Tiny Core Linux"
 	fi
 	for i in $(ls $WORK/boot/tinycore|grep '\.gz');do
-		if [ "$(ls $WORK/boot/tinycore|grep '\.gz')" == "$i" ];then #This is true if there is just one initrd
+		if [ "$(ls $WORK/boot/tinycore|grep '\.gz')" == "$(basename $i)" ];then #This is true if there is just one initrd on the ISO
 			echo "label tinycore
 			menu label ^$TCNAME
 			kernel /boot/tinycore/bzImage
