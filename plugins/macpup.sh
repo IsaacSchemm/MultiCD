@@ -28,64 +28,30 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f macpup.iso ];then
-		echo "Copying Macpup..."
-		if [ ! -d macpup ];then
-			mkdir macpup
-		fi
-		if grep -q "`pwd`/macpup" /etc/mtab ; then
-			umount macpup
-		fi
-		mount -o loop macpup.iso macpup/
-		#The installer will only work if Macpup is in the root dir of the disc
-		if [ ! -f $TAGS/puppies/macpup.inroot ];then
-			mkdir multicd-working/macpup
-			cp macpup/*.sfs multicd-working/macpup/
-			cp macpup/vmlinuz multicd-working/macpup/vmlinuz
-			cp macpup/initrd.gz multicd-working/macpup/initrd.gz
-		else
-			cp macpup/*.sfs multicd-working/
-			cp macpup/vmlinuz multicd-working/vmlinuz
-			cp macpup/initrd.gz multicd-working/initrd.gz
-		fi
-		umount macpup
-		rmdir macpup
+		plugins/puppy-common.sh macpup
 	fi
 elif [ $1 = writecfg ];then
-#BEGIN PUPPY ENTRY#
 if [ -f macpup.iso ];then
-if [ -d multicd-working/macpup ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label macpup
+if [ -d $WORK/macpup ];then
+	EXTRAARGS="psubdir=macpup"
+fi
+echo "label macpup
 menu label ^Macpup
 kernel /macpup/vmlinuz
-append initrd=/macpup/initrd.gz pmedia=cd psubdir=macpup
+append pmedia=cd $EXTRAARGS
+initrd /macpup/initrd.gz
 #label macpup-nox
 #menu label Macpup (boot to command line)
 #kernel /macpup/vmlinuz
-#append initrd=/macpup/initrd.gz pmedia=cd pfix=nox psubdir=macpup
+#append pmedia=cd pfix=nox $EXTRAARGS
+#initrd /macpup/initrd.gz
 #label macpup-noram
 #menu label Macpup (don't load to RAM)
 #kernel /macpup/vmlinuz
-#append initrd=/macpup/initrd.gz pmedia=cd pfix=noram psubdir=macpup
-EOF
-else
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label macpup
-menu label ^Macpup
-kernel /vmlinuz
-append initrd=/initrd.gz pmedia=cd
-#label macpup-nox
-#menu label Macpup (boot to command line)
-#kernel /vmlinuz
-#append initrd=/initrd.gz pmedia=cd pfix=nox
-#label macpup-noram
-#menu label Macpup (don't load to RAM)
-#kernel /vmlinuz
-#append initrd=/initrd.gz pmedia=cd pfix=noram
-EOF
+#append pmedia=cd pfix=noram $EXTRAARGS
+#initrd /macpup/initrd.gz
+" >> $WORK/boot/isolinux/isolinux.cfg
 fi
-fi
-#END PUPPY ENTRY#
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
