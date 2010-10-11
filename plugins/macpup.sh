@@ -28,25 +28,31 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f macpup.iso ];then
+		echo "Copying Macpup..."
 		plugins/puppy-common.sh macpup
 	fi
 elif [ $1 = writecfg ];then
 if [ -f macpup.iso ];then
+if [ -f $TAGS/macpup.name ] && [ "$(cat $TAGS/macpup.name)" != "" ];then
+	PUPNAME=$(cat $TAGS/macpup.name)
+else
+	PUPNAME="Macpup"
+fi
 if [ -d $WORK/macpup ];then
 	EXTRAARGS="psubdir=macpup"
 fi
 echo "label macpup
-menu label ^Macpup
+menu label ^$PUPNAME
 kernel /macpup/vmlinuz
 append pmedia=cd $EXTRAARGS
 initrd /macpup/initrd.gz
 #label macpup-nox
-#menu label Macpup (boot to command line)
+#menu label $PUPNAME (boot to command line)
 #kernel /macpup/vmlinuz
 #append pmedia=cd pfix=nox $EXTRAARGS
 #initrd /macpup/initrd.gz
 #label macpup-noram
-#menu label Macpup (don't load to RAM)
+#menu label $PUPNAME (don't load to RAM)
 #kernel /macpup/vmlinuz
 #append pmedia=cd pfix=noram $EXTRAARGS
 #initrd /macpup/initrd.gz

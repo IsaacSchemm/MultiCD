@@ -29,26 +29,32 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f puppy.iso ];then
+		echo "Copying Puppy..."
 		plugins/puppy-common.sh puppy
 	fi
 elif [ $1 = writecfg ];then
 #BEGIN PUPPY ENTRY#
 if [ -f puppy.iso ];then
+if [ -f $TAGS/puppy.name ] && [ "$(cat $TAGS/puppy.name)" != "" ];then
+	PUPNAME=$(cat $TAGS/puppy.name)
+else
+	PUPNAME="Puppy Linux"
+fi
 if [ -d $WORK/puppy ];then
 	EXTRAARGS="psubdir=puppy"
 fi
 echo "label puppy
-menu label ^Puppy Linux
+menu label ^$PUPNAME
 kernel /puppy/vmlinuz
 append pmedia=cd $EXTRAARGS
 initrd /puppy/initrd.gz
 #label puppy-nox
-#menu label Puppy Linux (boot to command line)
+#menu label $PUPNAME (boot to command line)
 #kernel /puppy/vmlinuz
 #append pmedia=cd pfix=nox $EXTRAARGS
 #initrd /puppy/initrd.gz
 #label puppy-noram
-#menu label Puppy Linux (don't load to RAM)
+#menu label $PUPNAME (don't load to RAM)
 #kernel /puppy/vmlinuz
 #append pmedia=cd pfix=noram $EXTRAARGS
 #initrd /puppy/initrd.gz
