@@ -49,9 +49,9 @@ b46e680a72a2b21964ac1069815bf5c3  plugins/puppy2.sh
 3aa6e6bf178be98d2d80326363b5c098  plugins/slitaz.sh
 9cc1cc8db4b0c9b55fc0f6dae4e1bfe1  plugins/sysrcd.sh
 bbb19a57a5d9415c7ab56e64ea8b635f  plugins/tcnet.sh
-679813295798d95665632ebed904da51  plugins/tinycore2.sh
+ab1019dbf844ad0a176b33744d05d034  plugins/tinycore2.sh
 6dbe02e02dcbfec27d45ff700937452c  plugins/tinycore-common.sh
-62ffb877736c29e476b8eb13aa5e337c  plugins/tinycore.sh
+668a27330ffe0b2d016182d458a6c878  plugins/tinycore.sh
 fe598de986f823b71c66c3acbaf128d5  plugins/tinyme.sh
 0fc357d3da0a56583a3016e14046390d  plugins/trk.sh
 b9ff570f980e9ae2e5cfe75b4858ff72  plugins/ubcd.sh

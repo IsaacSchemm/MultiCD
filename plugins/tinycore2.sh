@@ -40,17 +40,11 @@ if [ -f tinycore2.iso ];then
 		TCNAME="Tiny Core Linux #2"
 	fi
 	for i in $(ls $WORK/boot/tinycore2|grep '\.gz');do
-		if [ "$(ls $WORK/boot/tinycore2|grep '\.gz')" == "$(basename $i)" ];then #This is true if there is just one initrd on the ISO
-			echo "label tinycore2
-			menu label ^$TCNAME
-			kernel /boot/tinycore2/bzImage
-			append quiet initrd=/boot/tinycore2/$(basename $i)">>multicd-working/boot/isolinux/isolinux.cfg
-		else
-			echo "label tinycore2-$i
-			menu label $TCNAME ($i)
-			kernel /boot/tinycore2/bzImage
-			append quiet initrd=/boot/tinycore2/$(basename $i)">>multicd-working/boot/isolinux/isolinux.cfg
-		fi
+		echo "label tinycore2-$i
+		menu label ^$TCNAME
+		kernel /boot/tinycore2/bzImage
+		append quiet
+		initrd /boot/tinycore2/$(basename $i)">>multicd-working/boot/isolinux/isolinux.cfg
 	done
 fi
 #END TINY CORE 2 ENTRY#
