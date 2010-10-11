@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f tinycore.iso ];then
 		echo "Tiny Core Linux"
-		touch $TAGS/tinycore.needsname
+		touch $TAGS/tinycore.needsname #Comment out this line and multicd.sh won't ask for a custom name for this ISO
 	fi
 elif [ $1 = copy ];then
 	if [ -f tinycore.iso ];then

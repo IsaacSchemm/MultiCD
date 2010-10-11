@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f ubuntu2.iso ];then
 		echo "Ubuntu Custom #2 (for using multiple versions on one disc - 9.10 or newer)"
-		echo > $TAGS/ubuntu2.needsname
+		echo > $TAGS/ubuntu2.needsname #Comment out this line and multicd.sh won't ask for a custom name for this ISO
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu2.iso ];then

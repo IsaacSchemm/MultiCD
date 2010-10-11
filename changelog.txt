@@ -56,4 +56,4 @@
 #v5.7 - Added support in slax.sh for Slax Remix (v07). Damn Vunerable Linux, Caine, Windows 98 SE, Windows Me added. multicd.sh now checks md5sums of its plugins and runs step 1 as "nobody". (September 3, 2010)
 #v5.8 - Added Windows 7 recovery disc plugin. Incorporated fixes for Arch Linux plugins. Various bugfixes. Step 1 now run as root again (there were file permission issues) but still checks md5sums first. (September 17, 2010)
 #v5.9 - Slight changes to plugins to use variables, echo instead of cat (most haven't been changed yet; see TODO.txt). Trinity and GParted plugins fixed. Ubuntu plugins use a common ubuntu-common.sh for copying. Hiren's support added. Other changes I forgot about. (Oct 6, 2010)
-#v6.0 - Added "wait" (or "w") option to multicd.sh. Fixed Puppy plugins. Minor: DBAN plugin now comments out options instead of simply hiding them. (UNREL)
+#v6.0 - Added "wait" (or "w") option to multicd.sh. Added puppy2, tinycore2 plugins. Minor: DBAN plugin now comments out options instead of simply hiding them. (UNREL)

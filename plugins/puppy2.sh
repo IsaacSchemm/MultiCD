@@ -25,7 +25,7 @@ if [ $1 = scan ];then
 	if [ -f puppy2.iso ];then
 		echo "Puppy Linux #2"
 		touch $TAGS/puppies/puppy2
-		touch $TAGS/puppy2.needsname
+		touch $TAGS/puppy2.needsname #Comment out this line and multicd.sh won't ask for a custom name for this ISO
 	fi
 elif [ $1 = copy ];then
 	if [ -f puppy2.iso ];then

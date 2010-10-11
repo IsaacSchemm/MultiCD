@@ -25,6 +25,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f binary.iso ];then
 		echo "Debian Live"
+		touch plugins/debian-live.needsname #Comment out this line and multicd.sh won't ask for a custom name for this ISO
 	fi
 elif [ $1 = copy ];then
 	if [ -f binary.iso ];then
@@ -40,12 +41,22 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f binary.iso ];then
+if [ -f $TAGS/debian-live.name ] && [ "$(cat $TAGS/debian-live.name)" != "" ];then
+	DEBNAME=$(cat $TAGS/debian-live.name)
+else
+	DEBNAME="Debian Live"
+fi
 echo "label debian-live
-menu label >> ^Debian Live
+menu label >> ^$DEBNAME
 com32 menu.c32
 append dlive.cfg" >> $WORK/boot/isolinux/isolinux.cfg
 sed '/memtest/d' $WORK/boot/isolinux/dlive.cfg | sed '/Memory test/d' > /tmp/dlive.cfg
 mv /tmp/dlive.cfg $WORK/boot/isolinux/dlive.cfg
+echo "label back
+menu label Back to main menu
+com32 menu.c32
+append /boot/isolinux/isolinux.cfg
+" >> multicd-working/boot/isolinux/dlive.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

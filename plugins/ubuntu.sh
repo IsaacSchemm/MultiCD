@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f ubuntu.iso ];then
 		echo "Ubuntu"
-		echo > $TAGS/ubuntu.needsname
+		echo > $TAGS/ubuntu.needsname #Comment out this line and multicd.sh won't ask for a custom name for this ISO
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu.iso ];then

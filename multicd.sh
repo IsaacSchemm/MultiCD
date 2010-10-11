@@ -420,7 +420,7 @@ else
  exit 1
 fi
 EXTRAARGS=""
-if $VERBOSE;then
+if ! $VERBOSE;then
 	EXTRAARGS="$EXTRAARGS -quiet"
 fi
 if [ ! -f $TAGS/win9x ];then
