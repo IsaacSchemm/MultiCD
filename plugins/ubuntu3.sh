@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f ubuntu3.iso ];then
 		echo "Ubuntu custom #3 (for using multiple versions on one disc - 9.10 or newer)"
-		echo > $TAGS/ubuntu3
+		echo > $TAGS/ubuntu3.needsname
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu3.iso ];then
@@ -33,23 +33,21 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubuntu3.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
-label ubuntu3
-menu label --> Ubuntu Custom #3 Menu
+if [ -f $TAGS/ubuntu3.name ] && [ "$(cat $TAGS/ubuntu3.name)" != "" ];then
+	UBUNAME=$(cat $TAGS/ubuntu3.name)
+else
+	UBUNAME="Ubuntu #3"
+fi
+echo "label ubuntu3
+menu label --> $UBUNAME Menu
 com32 menu.c32
 append /boot/ubuntu3/ubuntu3.cfg
-
-EOF
-cat >> multicd-working/boot/ubuntu3/ubuntu3.cfg << EOF
-
-label back
+" >> multicd-working/boot/isolinux/isolinux.cfg
+echo "label back
 menu label Back to main menu
 com32 menu.c32
 append /boot/isolinux/isolinux.cfg
-EOF
-if [ -f $TAGS/ubuntu3.name ] && [ "$(cat $TAGS/ubuntu3.name)" != "" ];then
-	perl -pi -e "s/Ubuntu\ Custom\ \#3/$(cat $TAGS/ubuntu3.name)/g" multicd-working/boot/isolinux/isolinux.cfg
-fi
+" >> multicd-working/boot/ubuntu3/ubuntu3.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

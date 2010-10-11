@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f ubuntu.iso ];then
 		echo "Ubuntu"
-		echo > $TAGS/ubuntu
+		echo > $TAGS/ubuntu.needsname
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu.iso ];then
@@ -33,25 +33,21 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubuntu.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
-label ubuntu2
-menu label --> Ubuntu #1 Menu
+if [ -f $TAGS/ubuntu.name ] && [ "$(cat $TAGS/ubuntu.name)" != "" ];then
+	UBUNAME=$(cat $TAGS/ubuntu.name)
+else
+	UBUNAME="Ubuntu #1"
+fi
+echo "label ubuntu
+menu label --> $UBUNAME Menu
 com32 menu.c32
 append /boot/ubuntu/ubuntu.cfg
-
-EOF
-cat >> multicd-working/boot/ubuntu/ubuntu.cfg << EOF
-
-label back
+" >> multicd-working/boot/isolinux/isolinux.cfg
+echo "label back
 menu label Back to main menu
 com32 menu.c32
 append /boot/isolinux/isolinux.cfg
-EOF
-if [ -f $TAGS/ubuntu.name ] && [ "$(cat $TAGS/ubuntu.name)" != "" ];then
-	perl -pi -e "s/Ubuntu\ \#1/$(cat $TAGS/ubuntu.name)/g" multicd-working/boot/isolinux/isolinux.cfg
-else
-	perl -pi -e "s/Ubuntu\ \#1/Ubuntu/g" multicd-working/boot/isolinux/isolinux.cfg
-fi
+" >> multicd-working/boot/ubuntu/ubuntu.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

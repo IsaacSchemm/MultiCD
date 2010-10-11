@@ -167,8 +167,9 @@ if $INTERACTIVE;then
 		true>$(find $TAGS/puppies -maxdepth 1 -type f).inroot
 	fi
 	if which dialog &> /dev/null;then
-		for i in $(find $TAGS -maxdepth 1 -name ubuntu\*);do
-			dialog --inputbox "What would you like $(echo $i|sed -e "s/$TAGS\///g") to be called on the CD boot menu?\n(Leave blank if you don't care.)" 10 70 2> $i.name
+		for i in $(find $TAGS -maxdepth 1 -name \*.needsname);do
+			dialog --inputbox "What would you like $(basename $i) to be called on the CD boot menu?\n(Leave blank if you don't care.)" 10 70 \
+			2> $(echo $i|sed -e 's/needsname/name/g')
 		done
 	fi
 else

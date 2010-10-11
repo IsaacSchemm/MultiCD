@@ -24,7 +24,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f ubuntu2.iso ];then
 		echo "Ubuntu Custom #2 (for using multiple versions on one disc - 9.10 or newer)"
-		echo > $TAGS/ubuntu2
+		echo > $TAGS/ubuntu2.needsname
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu2.iso ];then
@@ -33,23 +33,21 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubuntu2.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
-label ubuntu2
-menu label --> Ubuntu Custom #2 Menu
+if [ -f $TAGS/ubuntu2.name ] && [ "$(cat $TAGS/ubuntu2.name)" != "" ];then
+	UBUNAME=$(cat $TAGS/ubuntu2.name)
+else
+	UBUNAME="Ubuntu #2"
+fi
+echo "label ubuntu2
+menu label --> $UBUNAME Menu
 com32 menu.c32
 append /boot/ubuntu2/ubuntu2.cfg
-
-EOF
-cat >> multicd-working/boot/ubuntu2/ubuntu2.cfg << EOF
-
-label back
+" >> multicd-working/boot/isolinux/isolinux.cfg
+echo "label back
 menu label Back to main menu
 com32 menu.c32
 append /boot/isolinux/isolinux.cfg
-EOF
-if [ -f $TAGS/ubuntu2.name ] && [ "$(cat $TAGS/ubuntu2.name)" != "" ];then
-	perl -pi -e "s/Ubuntu\ Custom\ \#2/$(cat $TAGS/ubuntu2.name)/g" multicd-working/boot/isolinux/isolinux.cfg
-fi
+" >> multicd-working/boot/ubuntu2/ubuntu2.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

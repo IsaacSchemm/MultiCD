@@ -51,13 +51,13 @@ bbb19a57a5d9415c7ab56e64ea8b635f  plugins/tcnet.sh
 fe598de986f823b71c66c3acbaf128d5  plugins/tinyme.sh
 0fc357d3da0a56583a3016e14046390d  plugins/trk.sh
 b9ff570f980e9ae2e5cfe75b4858ff72  plugins/ubcd.sh
-80e2e8b3459454a2f18d9173272b69ab  plugins/ubuntu2.sh
+2b058b9564fb58efca33df0790e268a6  plugins/ubuntu2.sh
 8499b5f0173d395e80e7f4e067934314  plugins/ubuntu_32_bit.sh
-10c14748f96580efa9b0a21f5c8e6a5f  plugins/ubuntu3.sh
+cba2a5d9f89251b59c27ec20e99df836  plugins/ubuntu3.sh
 8ea432c6485b594d40d5dbc777778bde  plugins/ubuntu_64_bit.sh
 6a614451917b320d6339ad27deb2c00d  plugins/ubuntu-common.sh
 fc97c4d36ebd89a1ea313085af275a88  plugins/ubuntu-inst.sh
-35585fa164f283ed47d6ac82d6bcef28  plugins/ubuntu.sh
+38b446106a2eae4b3e37804213937ce4  plugins/ubuntu.sh
 be4929a5acfa8b1b60cd8c6eb055a7b6  plugins/vyatta.sh
 4346853ac8a712015004c099cff087ec  plugins/weaknet.sh
 9f11407c7131d170e795c2b8ee9f3fe8  plugins/win7recovery.sh
