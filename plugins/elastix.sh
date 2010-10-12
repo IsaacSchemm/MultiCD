@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Elastix plugin for multicd.sh
-#version 5.5
+#version 6.0
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,36 +28,27 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f elastix.iso ];then
-		 echo "Elastix..."
-		if [ ! -d elastix ];then
-			mkdir elastix
-		fi
-		if grep -q "`pwd`/elastix" /etc/mtab ; then
-			umount elastix
-		fi
-		mount -o loop elastix.iso elastix/
-		cp -r elastix/isolinux multicd-working/boot/elastix
-		cp -r elastix/Elastix multicd-working/
-		if [ -d multicd-working/images ];then
+		echo "Copying Elastix..."
+		mcdmount elastix
+		cp -r $MNT/elastix/isolinux $WORK/boot/elastix
+		cp -r $MNT/elastix/Elastix $WORK/
+		if [ -d $WORK/images ];then
 			echo "There is already a folder called \"images\". Are you adding another Red Hat-based distro?"
 			echo "Copying anyway - be warned that on the final CD, something might not work properly."
 		fi
-		cp -r elastix/images multicd-working/
-		cp -r elastix/repodata multicd-working/
-		cp elastix/.discinfo multicd-working/
-		cp elastix/* multicd-working/ 2>/dev/null || true
-		umount elastix
-		rmdir elastix
+		cp -r $MNT/elastix/images $WORK/
+		cp -r $MNT/elastix/repodata $WORK/
+		cp $MNT/elastix/.discinfo $WORK/
+		cp $MNT/elastix/* $WORK/ 2>/dev/null || true
+		umcdmount elastix
 	fi
 elif [ $1 = writecfg ];then
 if [ -f elastix.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label elastixmenu
+echo "label elastixmenu
 menu label --> ^Elastix
 config /boot/isolinux/elastix.cfg
-EOF
-cat > multicd-working/boot/isolinux/elastix.cfg << "EOF"
-default linux
+" >> $WORK/boot/isolinux/isolinux.cfg
+echo "default linux
 prompt 1
 timeout 600
 display /boot/elastix/boot.msg
@@ -80,7 +72,11 @@ label rhinoraid
   append ks=cdrom:/ks_rhinoraid.cfg initrd=/boot/elastix/initrd.img ramdisk_size=8192
 label local
   localboot 1
-EOF
+label back
+menu label Back to main menu
+com32 menu.c32
+append /boot/isolinux/isolinux.cfg
+" > $WORK/boot/isolinux/elastix.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
