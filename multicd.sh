@@ -427,6 +427,7 @@ if [ ! -f $TAGS/win9x ];then
 	EXTRAARGS="$EXTRAARGS -iso-level 4" #To ensure that Windows 9x installation CDs boot properly
 fi
 if $WAIT;then
+	chmod -R a+w $WORK/boot/isolinux #So regular users can edit menus
 	echo "    Dropping to root prompt. Type \"exit\" to build the ISO image."
 	echo "    Don't do anything hasty."
 	echo "PS1=\"    mcd waiting# \"">/tmp/mcdprompt

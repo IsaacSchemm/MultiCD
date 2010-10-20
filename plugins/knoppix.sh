@@ -48,7 +48,7 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f knoppix.iso ];then
-echo "MENU START ^Knoppix
+echo "MENU BEGIN ^Knoppix
 
 LABEL knoppix
 MENU LABEL Knoppix
