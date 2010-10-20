@@ -48,7 +48,9 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f knoppix.iso ];then
-echo "LABEL knoppix
+echo "MENU START ^Knoppix
+
+LABEL knoppix
 MENU LABEL Knoppix
 KERNEL /boot/knoppix/linux
 INITRD /boot/knoppix/minirt.gz
@@ -64,7 +66,20 @@ LABEL knoppix-2
 MENU LABEL Knoppix (boot to command line)
 KERNEL /boot/knoppix/linux
 INITRD /boot/knoppix/minirt.gz
-APPEND ramdisk_size=100000 lang=$(cat $TAGS/lang) vt.default_utf8=0 apm=power-off vga=791 nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6 2" >> multicd-working/boot/isolinux/isolinux.cfg
+APPEND ramdisk_size=100000 lang=$(cat $TAGS/lang) vt.default_utf8=0 apm=power-off vga=791 nomce quiet loglevel=0 tz=localtime knoppix_dir=KNOPPIX6 2
+
+LABEL fb1024x768
+KERNEL linux
+APPEND ramdisk_size=100000 lang=en vt.default_utf8=0 apm=power-off vga=791 xmodule=fbdev initrd=minirt.gz nomce quiet loglevel=0 tz=localtime
+LABEL fb1280x1024
+KERNEL linux
+APPEND ramdisk_size=100000 lang=en vt.default_utf8=0 apm=power-off vga=794 xmodule=fbdev initrd=minirt.gz nomce quiet loglevel=0 tz=localtime
+LABEL fb800x600
+KERNEL linux
+APPEND ramdisk_size=100000 lang=en vt.default_utf8=0 apm=power-off vga=788 xmodule=fbdev initrd=minirt.gz nomce quiet loglevel=0 tz=localtime
+
+MENU END
+" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
