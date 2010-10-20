@@ -400,6 +400,15 @@ if [ -d includes ];then
  cp -r includes/* $WORK/
 fi
 
+if $WAIT;then
+	chmod -R a+w $WORK/boot/isolinux #So regular users can edit menus
+	echo "    Dropping to root prompt. Type \"exit\" to build the ISO image."
+	echo "    Don't do anything hasty."
+	echo "PS1=\"    mcd waiting# \"">/tmp/mcdprompt
+	bash --rcfile /tmp/mcdprompt || sh
+	rm /tmp/mcdprompt || true
+fi
+
 if $MD5;then
  echo "Generating MD5 checksums..."
  if $VERBOSE;then
@@ -425,14 +434,6 @@ if ! $VERBOSE;then
 fi
 if [ ! -f $TAGS/win9x ];then
 	EXTRAARGS="$EXTRAARGS -iso-level 4" #To ensure that Windows 9x installation CDs boot properly
-fi
-if $WAIT;then
-	chmod -R a+w $WORK/boot/isolinux #So regular users can edit menus
-	echo "    Dropping to root prompt. Type \"exit\" to build the ISO image."
-	echo "    Don't do anything hasty."
-	echo "PS1=\"    mcd waiting# \"">/tmp/mcdprompt
-	bash --rcfile /tmp/mcdprompt || sh
-	rm /tmp/mcdprompt || true
 fi
 echo "Building CD image..."
 $GENERATOR -o multicd.iso \
