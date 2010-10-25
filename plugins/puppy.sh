@@ -30,7 +30,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f puppy.iso ];then
 		echo "Copying Puppy..."
-		puppy-common puppy
+		puppycommon puppy
 	fi
 elif [ $1 = writecfg ];then
 #BEGIN PUPPY ENTRY#

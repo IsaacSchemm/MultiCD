@@ -13,7 +13,7 @@ mcdmount () {
 umcdmount () {
 	umount $MNT/$1;rmdir $MNT/$1
 }
-tinycore-common () {
+tinycorecommon () {
 	if [ ! -z "$1" ] && [ -f $1.iso ];then
 		mcdmount $1
 		mkdir $WORK/boot/tinycore
@@ -29,7 +29,7 @@ tinycore-common () {
 		exit 1
 	fi
 }
-puppy-common () {
+puppycommon () {
 	if [ ! -z "$1" ] && [ -f $1.iso ];then
 		mcdmount $1
 		#The installer will only work if Puppy is in the root dir of the disc
@@ -49,7 +49,7 @@ puppy-common () {
 		exit 1
 	fi
 }
-ubuntu-common () {
+ubuntucommon () {
 	if [ ! -z "$1" ] && [ -f $1.iso ];then
 		mcdmount $1
 		cp -R $MNT/$1/casper $WORK/boot/$1 #Live system

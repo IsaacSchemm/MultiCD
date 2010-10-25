@@ -29,7 +29,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f ubuntu3.iso ];then
 		echo "Copying Ubuntu Custom #3..."
-		ubuntu-common ubuntu3
+		ubuntucommon ubuntu3
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubuntu3.iso ];then

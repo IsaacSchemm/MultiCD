@@ -28,7 +28,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f kubuntu_32_bit.iso ];then
 		echo "Copying kubuntu_32_bit..."
-		ubuntu-common kubuntu_32_bit
+		ubuntucommon kubuntu_32_bit
 	fi
 elif [ $1 = writecfg ];then
 if [ -f kubuntu_32_bit.iso ];then
