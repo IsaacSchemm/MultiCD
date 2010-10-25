@@ -109,8 +109,8 @@ elif [ $1 = writecfg ];then
 
 		rm multicd-working/boot/ophcrack/ophcrack.cfg
 	fi
-elif [ $1 = category ];then
-	echo "tools"
+#elif [ $1 = category ];then
+#	echo "tools"
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
