@@ -48,7 +48,7 @@ elif [ $1 = copy ];then
 		fi
 		mount -o loop hirens.iso hirens/
 		if [ -f hirens/BootCD.txt ];then
-			head -n 1 hirens/BootCD.txt |sed -e 's/\t//g'>tags/hirens.name
+			head -n 1 hirens/BootCD.txt |sed -e 's/\t//g'>$TAGS/hirens.name
 		else
 			echo "Warning: No BootCD.txt in hirens.iso" 1>&2
 			echo "Hiren's BootCD">tags/hirens.name
