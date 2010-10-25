@@ -29,7 +29,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f ubuntu.iso ];then
 		echo "Copying Ubuntu..."
-		plugins/ubuntu-common.sh ubuntu
+		ubuntu-common ubuntu
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubuntu.iso ];then

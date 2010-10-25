@@ -29,7 +29,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f macpup.iso ];then
 		echo "Copying Macpup..."
-		plugins/puppy-common.sh macpup
+		puppy-common macpup
 	fi
 elif [ $1 = writecfg ];then
 if [ -f macpup.iso ];then

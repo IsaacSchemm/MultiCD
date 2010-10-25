@@ -29,7 +29,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f tinycore.iso ];then
 		echo "Copying Tiny Core..."
-		plugins/tinycore-common.sh tinycore
+		tinycore-common tinycore
 	fi
 elif [ $1 = writecfg ];then
 #BEGIN TINY CORE ENTRY#

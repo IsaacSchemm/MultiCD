@@ -28,7 +28,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f mintdebian.iso ];then
 		echo "Linux Mint Debian Edition"
-		plugins/ubuntu-common.sh mintdebian
+		ubuntu-common mintdebian
 	fi
 elif [ $1 = writecfg ];then
 if [ -f mintdebian.iso ];then

@@ -28,7 +28,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f kubuntu.iso ];then
 		echo "Copying Kubuntu..."
-		plugins/ubuntu-common.sh kubuntu
+		ubuntu-common kubuntu
 	fi
 elif [ $1 = writecfg ];then
 if [ -f kubuntu.iso ];then
