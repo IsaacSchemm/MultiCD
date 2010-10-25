@@ -28,3 +28,4 @@ for i in $(echo plugins/*.sh);do
 done
 cat working[0123456].sh > combined-multicd.sh
 rm working[0123456].sh
+sed -i -e 's^\. \./functions\.sh^^g' combined-multicd.sh
