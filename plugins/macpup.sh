@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Macpup plugin for multicd.sh
 #version 6.0
 #Copyright (c) 2010 maybeway36

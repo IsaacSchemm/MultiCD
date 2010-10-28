@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Linux Mint plugin for multicd.sh
 #version 5.8
 #Copyright (c) 2010 maybeway36, Zirafarafa

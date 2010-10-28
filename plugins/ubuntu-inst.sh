@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Ubuntu installer plugin for multicd.sh
 #version 5.0
 #Copyright (c) 2009 maybeway36

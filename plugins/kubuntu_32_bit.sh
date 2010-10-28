@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #kubuntu_32_bit plugin for multicd.sh
 #version 5.8
 #Copyright (c) 2010 maybeway36
