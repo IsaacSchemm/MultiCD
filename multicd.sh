@@ -8,7 +8,8 @@ if [ $(whoami) != "root" ];then
 	fi
 fi
 set -e
-#multicd.sh 6.0
+. ./functions.sh
+#multicd.sh 6.1
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -87,6 +88,8 @@ for i in $MCDDIR/plugins/*;do
 	[ ! -x $i ]&&chmod +x $i
 done
 #END PREPARE#
+
+isoaliases #This function is in functions.sh
 
 #START SCAN
 for i in $MCDDIR/plugins/*;do

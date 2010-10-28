@@ -78,3 +78,40 @@ ubuntucommon () {
 		exit 1
 	fi
 }
+
+isoaliases () {
+echo "
+lupu-511 puppy
+slax-remix-v08 slax
+KNOPPIX_V6.2.1CD-2010-01-31-EN.iso knoppix
+KNOPPIX_V6.2.1CD-2010-01-31-DE.iso knoppix
+NetbootCD-3.4.iso netbootcd
+systemrescuecd-x86-1.6.2 sysrcd
+tinycore-current tinycore
+tinycore_3.2 tinycore
+trinity-rescue-kit.3.4-build-367 trk
+linuxmint-debian-201009-gnome-dvd-i386 ubuntu3
+linuxmint-10-gnome-dvd-i386 linuxmint
+linuxmint-10-gnome-cd-i386 linuxmint
+linuxmint-9-gnome-dvd-i386 linuxmint
+linuxmint-9-gnome-cd-i386 linuxmint
+ubuntu-10.10-desktop-i386 ubuntu_32_bit
+ubuntu-10.10-desktop-amd64 ubuntu_64_bit
+kubuntu-10.10-desktop-i386 kubuntu_32_bit
+kubuntu-10.10-desktop-amd64 kubuntu_64_bit
+
+"|while read i;do
+	IM1=$(echo $i|awk '{print $1}')
+	IM2=$(echo $i|awk '{print $2}')
+	if [ -e $IM1.iso ] && [ ! -e $IM2.iso ];then
+		if ln -s $IM1.iso $IM2.iso;then
+			touch $TAGS/madelinks
+			echo "Made a link named $IM2.iso pointing to $IM1.iso"
+		fi
+	fi
+done
+if [ -f $TAGS/madelinks ];then
+	rm $TAGS/madelinks
+	sleep 1
+fi
+}

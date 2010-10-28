@@ -42,7 +42,6 @@ d57dc2111ab0a31b8d178233411ad524  plugins/pclx.sh
 da3ef9d5564868f2b719ef4c5ac9618b  plugins/ping.sh
 1b90bd4db4b4a7cea06c454578c2f722  plugins/pmagic.sh
 60d6f1e262974cf3adec3dc766b5d0ea  plugins/puppy2.sh
-769458e916416a8d167e658d47ea6652  plugins/puppy-common.sh
 86c58f7ec55d81d766121db9df2458e4  plugins/puppy.sh
 13de89b3e91b94db0cd5e31101b424bb  plugins/riplinux.sh
 7f567c0d5832ea867cadfd152a258805  plugins/slax.sh
@@ -50,7 +49,6 @@ da3ef9d5564868f2b719ef4c5ac9618b  plugins/ping.sh
 9cc1cc8db4b0c9b55fc0f6dae4e1bfe1  plugins/sysrcd.sh
 bbb19a57a5d9415c7ab56e64ea8b635f  plugins/tcnet.sh
 6ea3aee03a98f9889dd7d3f6dd2eab54  plugins/tinycore2.sh
-769458e916416a8d167e658d47ea6652  plugins/tinycore-common.sh
 8b702d9adb6a7c5e2af26b4d618d4903  plugins/tinycore.sh
 fe598de986f823b71c66c3acbaf128d5  plugins/tinyme.sh
 0fc357d3da0a56583a3016e14046390d  plugins/trk.sh
@@ -59,7 +57,6 @@ d475a39f8f5689d00d0be8c81a40eec1  plugins/ubuntu2.sh
 2b814e1661ee1e5f8e2392abfcef803b  plugins/ubuntu_32_bit.sh
 88b19570931fe820ed9bb78f09b1e670  plugins/ubuntu3.sh
 d4e46c9d13f68cd4055e648a28dc181b  plugins/ubuntu_64_bit.sh
-769458e916416a8d167e658d47ea6652  plugins/ubuntu-common.sh
 e33b1a12c816c85543ec328ccadd8167  plugins/ubuntu-inst.sh
 f14fe027f551a282c1e33f3eafdc9692  plugins/ubuntu.sh
 be4929a5acfa8b1b60cd8c6eb055a7b6  plugins/vyatta.sh
