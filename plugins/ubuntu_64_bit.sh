@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 . ./functions.sh
-#ubuntu_64_bit plugin for multicd.sh
-#version 5.8
+#Ubuntu (64-bit) plugin for multicd.sh
+#version 6.1
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,18 +24,18 @@ set -e
 #THE SOFTWARE.
 if [ $1 = scan ];then
 	if [ -f ubuntu_64_bit.iso ];then
-		echo "ubuntu_64_bit"
+		echo "Ubuntu (64-bit)"
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu_64_bit.iso ];then
-		echo "Copying ubuntu_64_bit..."
+		echo "Copying Ubuntu (64-bit)..."
 		ubuntucommon ubuntu_64_bit
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubuntu_64_bit.iso ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
 label ubuntu_64_bit2
-menu label --> ubuntu_64_bit Menu
+menu label --> Ubuntu (64-bit) Menu
 com32 menu.c32
 append /boot/ubuntu_64_bit/ubuntu_64_bit.cfg
 

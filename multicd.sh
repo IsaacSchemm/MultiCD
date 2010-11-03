@@ -1,14 +1,22 @@
 #!/bin/bash
-if [ $(whoami) != "root" ];then
-	if !(uname|grep -q Linux);then
-		echo "Only Linux kernels are supported at the moment (due to heavy use of \"-o loop\")."
-	else
-		echo "This script must be run as root, so it can mount ISO images on the filesystem during the building process."
-		exit 1
-	fi
-fi
 set -e
 . ./functions.sh
+
+if echo $* | grep -q "\bcleanlinks\b";then
+	ls -la |grep ^l |awk '{ print $8,$10 }'|while read i;do
+		if echo $i|awk '{print $2}'|grep -qv "/";then
+			rm -v $(echo $i|awk '{print $1}')
+		fi
+	done
+	exit 0
+fi
+if !(uname|grep -q Linux);then
+		echo "Only Linux kernels are supported at the moment (due to heavy use of \"-o loop\")."
+fi
+if [ $(whoami) != "root" ];then
+	echo "This script must be run as root, so it can mount ISO images on the filesystem during the building process."
+	exit 1
+fi
 #multicd.sh 6.1
 #Copyright (c) 2010 maybeway36
 #
@@ -171,7 +179,13 @@ if $INTERACTIVE;then
 	fi
 	if which dialog &> /dev/null;then
 		for i in $(find $TAGS -maxdepth 1 -name \*.needsname);do
-			dialog --inputbox "What would you like $(basename $i|sed -e 's/\.needsname//g') to be called on the CD boot menu?\n(Leave blank for the default.)" 10 70 \
+			BASENAME=$(basename $i|sed -e 's/\.needsname//g')
+			if [ -f $BASENAME.defaultname ];then
+				DEFUALTTEXT=$(cat $BASENAME.defaultname)
+			else
+				DEFAULTTEXT=""
+			fi
+			dialog --inputbox "What would you like $BASENAME to be called on the CD boot menu?\n(Leave blank for the default.)" 10 70 \
 			2> $(echo $i|sed -e 's/needsname/name/g')
 		done
 	fi

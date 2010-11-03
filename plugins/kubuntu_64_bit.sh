@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 . ./functions.sh
-#kubuntu_64_bit plugin for multicd.sh
-#version 5.8
+#Kubuntu (64-bit) plugin for multicd.sh
+#version 6.1
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,18 +24,18 @@ set -e
 #THE SOFTWARE.
 if [ $1 = scan ];then
 	if [ -f kubuntu_64_bit.iso ];then
-		echo "kubuntu_64_bit"
+		echo "Kubuntu (64-bit)"
 	fi
 elif [ $1 = copy ];then
 	if [ -f kubuntu_64_bit.iso ];then
-		echo "Copying kubuntu_64_bit..."
+		echo "Copying Kubuntu (64-bit)..."
 		ubuntucommon kubuntu_64_bit
 	fi
 elif [ $1 = writecfg ];then
 if [ -f kubuntu_64_bit.iso ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
 label kubuntu_64_bit2
-menu label --> kubuntu_64_bit Menu
+menu label --> Kubuntu (64-bit) Menu
 com32 menu.c32
 append /boot/kubuntu_64_bit/kubuntu_64_bit.cfg
 

@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 . ./functions.sh
-#ubuntu_32_bit plugin for multicd.sh
-#version 5.8
+#Ubuntu (32-bit) plugin for multicd.sh
+#version 6.1
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,18 +24,18 @@ set -e
 #THE SOFTWARE.
 if [ $1 = scan ];then
 	if [ -f ubuntu_32_bit.iso ];then
-		echo "ubuntu_32_bit"
+		echo "Ubuntu (32-bit)"
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu_32_bit.iso ];then
-		echo "Copying ubuntu_32_bit..."
+		echo "Copying Ubuntu (32-bit)..."
 		ubuntucommon ubuntu_32_bit
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubuntu_32_bit.iso ];then
 cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
-label ubuntu_32_bit2
-menu label --> ubuntu_32_bit Menu
+label ubuntu_32_bit
+menu label --> Ubuntu (32-bit)
 com32 menu.c32
 append /boot/ubuntu_32_bit/ubuntu_32_bit.cfg
 

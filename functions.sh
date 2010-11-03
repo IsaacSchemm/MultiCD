@@ -90,7 +90,7 @@ systemrescuecd-x86-1.6.2 sysrcd
 tinycore-current tinycore
 tinycore_3.2 tinycore
 trinity-rescue-kit.3.4-build-367 trk
-linuxmint-debian-201009-gnome-dvd-i386 ubuntu3
+linuxmint-debian-201009-gnome-dvd-i386 ubuntu3 Linux^Mint^Debian^Edition
 linuxmint-10-gnome-dvd-i386 linuxmint
 linuxmint-10-gnome-cd-i386 linuxmint
 linuxmint-9-gnome-dvd-i386 linuxmint
@@ -107,6 +107,9 @@ kubuntu-10.10-desktop-amd64 kubuntu_64_bit
 		if ln -s $IM1.iso $IM2.iso;then
 			touch $TAGS/madelinks
 			echo "Made a link named $IM2.iso pointing to $IM1.iso"
+			if [ -n "$(echo $i|awk '{print $3}')" ];then
+				echo $i|awk '{print $3}'|sed -e 's/^/ /g'>$IM2.defaultname
+			fi
 		fi
 	fi
 done
