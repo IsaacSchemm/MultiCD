@@ -81,34 +81,40 @@ ubuntucommon () {
 
 isoaliases () {
 echo "
-lupu-511 puppy
-slax-remix-v08 slax
-KNOPPIX_V6.2.1CD-2010-01-31-EN.iso knoppix
-KNOPPIX_V6.2.1CD-2010-01-31-DE.iso knoppix
-NetbootCD-3.4.iso netbootcd
-systemrescuecd-x86-1.6.2 sysrcd
-tinycore-current tinycore
-tinycore_3.2 tinycore
-trinity-rescue-kit.3.4-build-367 trk
-linuxmint-debian-201009-gnome-dvd-i386 ubuntu3 Linux^Mint^Debian^Edition
-linuxmint-10-gnome-dvd-i386 linuxmint
-linuxmint-10-gnome-cd-i386 linuxmint
-linuxmint-9-gnome-dvd-i386 linuxmint
-linuxmint-9-gnome-cd-i386 linuxmint
-ubuntu-10.10-desktop-i386 ubuntu_32_bit
-ubuntu-10.10-desktop-amd64 ubuntu_64_bit
-kubuntu-10.10-desktop-i386 kubuntu_32_bit
-kubuntu-10.10-desktop-amd64 kubuntu_64_bit
+lupu-*.iso puppy
+slax-remix-*.iso slax
+KNOPPIX_V*CD-2010-01-31-EN.iso knoppix
+KNOPPIX_V*CD-2010-01-31-DE.iso knoppix
+NetbootCD-*.iso netbootcd
+systemrescuecd-x86-*.iso sysrcd
+tinycore-current.iso tinycore
+tinycore_*.iso tinycore
+trinity-rescue-kit.*.iso trk
+linuxmint-debian-*.iso ubuntu3 Linux^Mint^Debian^Edition
+linuxmint-*.iso linuxmint
+ubuntu-*-desktop-i386.iso ubuntu_32_bit
+ubuntu-*-desktop-amd64.iso ubuntu_64_bit
+kubuntu-*-desktop-i386.iso kubuntu_32_bit
+kubuntu-*-desktop-amd64.iso kubuntu_64_bit
 
 "|while read i;do
 	IM1=$(echo $i|awk '{print $1}')
 	IM2=$(echo $i|awk '{print $2}')
-	if [ -e $IM1.iso ] && [ ! -e $IM2.iso ];then
-		if ln -s $IM1.iso $IM2.iso;then
-			touch $TAGS/madelinks
-			echo "Made a link named $IM2.iso pointing to $IM1.iso"
+	if [ -e $IM1 ] && [ ! -e $IM2 ];then
+		if ln -s $IM1 $IM2;then
+			ISOBASENAME=$(echo $IM2|sed -e 's/\.iso//g')
+			touch $TAGS/madelinks #This is to make multicd.sh pause for 1 second so the notifications are readable
 			if [ -n "$(echo $i|awk '{print $3}')" ];then
-				echo $i|awk '{print $3}'|sed -e 's/^/ /g'>$IM2.defaultname
+				echo $i|awk '{print $3}'|sed -e 's/^/ /g'>$ISOBASENAME.defaultname
+			fi
+			CUTOUT1=$(echo "$i"|awk 'BEGIN {FS = "*"} ; {print $1}') #The parts of the ISO name before the asterisk
+			CUTOUT2=$(echo "$i"|awk '{print $1}'|awk 'BEGIN {FS = "*"} ; {print $2}') #The parts after the asterisk
+			VERSION=$(echo "$IM1"|awk '{sub(/'"$CUTOUT1"'/,"");sub(/'"$CUTOUT2"'/,"");print}') #Cuts out whatever the asterisk represents (which will be the version number)
+			if [ "$VERSION" != "*" ] && [ "$VERSION" != "$IM1" ];then
+				echo $VERSION > $TAGS/$ISOBASENAME.version
+				echo "Made a link named $IM2 pointing to $IM1 (version $VERSION)"
+			else	
+				echo "Made a link named $IM2 pointing to $IM1"
 			fi
 		fi
 	fi
