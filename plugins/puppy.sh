@@ -38,8 +38,13 @@ elif [ $1 = writecfg ];then
 if [ -f puppy.iso ];then
 if [ -f $TAGS/puppy.name ] && [ "$(cat $TAGS/puppy.name)" != "" ];then
 	PUPNAME=$(cat $TAGS/puppy.name)
+elif [ -f puppy.defaultname ] && [ "$(cat puppydefault.name)" != "" ];then
+	PUPNAME=$(cat puppydefault.name)
 else
 	PUPNAME="Puppy Linux"
+fi
+if [ -f puppy.version ] && [ "$(cat puppy.version)" != "" ];then
+	PUPNAME="$PUPNAME $(cat puppy.version)"
 fi
 if [ -d $WORK/puppy ];then
 	EXTRAARGS="psubdir=puppy"
