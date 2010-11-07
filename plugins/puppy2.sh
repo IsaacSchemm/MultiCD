@@ -38,6 +38,8 @@ elif [ $1 = writecfg ];then
 if [ -f puppy2.iso ];then
 if [ -f $TAGS/puppy2.name ] && [ "$(cat $TAGS/puppy2.name)" != "" ];then
 	PUPNAME=$(cat $TAGS/puppy2.name)
+elif [ -f puppy2.defaultname ] && [ "$(cat puppy2.defaultname)" != "" ];then
+	PUPNAME=$(cat puppy2.defaultname)
 else
 	PUPNAME="Puppy Linux #2"
 fi

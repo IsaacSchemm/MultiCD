@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #SystemRescueCd plugin for multicd.sh
-#version 5.6.1
+#version 6.1
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,36 +28,20 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f sysrcd.iso ];then
-	echo "Copying SystemRescueCd..."
-	if [ ! -d sysrcd ];then
-		mkdir sysrcd
-	fi
-	if grep -q "`pwd`/sysrcd" /etc/mtab ; then
-		umount sysrcd
-	fi
-	mount -o loop sysrcd.iso sysrcd/
-	mkdir multicd-working/boot/sysrcd
-	cp sysrcd/sysrcd.* multicd-working/boot/sysrcd/ #Compressed filesystem
-	cp sysrcd/isolinux/altker* multicd-working/boot/sysrcd/ #Kernels
-	cp sysrcd/isolinux/rescue* multicd-working/boot/sysrcd/ #Kernels
-	cp sysrcd/isolinux/initram.igz multicd-working/boot/sysrcd/initram.igz #Initrd
-	cp sysrcd/version multicd-working/boot/sysrcd/version
-	umount sysrcd
-	rmdir sysrcd
+		echo "Copying SystemRescueCd..."
+		mcdmount sysrcd
+		mkdir multicd-working/boot/sysrcd
+		cp sysrcd/sysrcd.* multicd-working/boot/sysrcd/ #Compressed filesystem
+		cp sysrcd/isolinux/altker* multicd-working/boot/sysrcd/ #Kernels
+		cp sysrcd/isolinux/rescue* multicd-working/boot/sysrcd/ #Kernels
+		cp sysrcd/isolinux/initram.igz multicd-working/boot/sysrcd/initram.igz #Initrd
+		cp sysrcd/version multicd-working/boot/sysrcd/version
+		umcdmount sysrcd
 	fi
 elif [ $1 = writecfg ];then
 if [ -f sysrcd.iso ];then
 VERSION=$(cat multicd-working/boot/sysrcd/version)
-cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
-label sysrcd
-menu label --> ^System Rescue Cd ($VERSION)
-com32 menu.c32
-append sysrcd.cfg
-
-EOF
-
-cat > multicd-working/boot/isolinux/sysrcd.cfg << EOF
-menu title System Rescue CD
+echo "menu begin --> ^System Rescue Cd ($VERSION)
 
 label rescuecd0
 menu label ^SystemRescueCd 32-bit
@@ -83,7 +68,8 @@ label back
 menu label Back to main menu
 com32 menu.c32
 append isolinux.cfg
-EOF
+
+menu end" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

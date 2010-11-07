@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #Tiny Core Linux plugin for multicd.sh
-#version 6.0
+#version 6.1
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,8 +37,13 @@ elif [ $1 = writecfg ];then
 if [ -f tinycore.iso ];then
 	if [ -f $TAGS/tinycore.name ] && [ "$(cat $TAGS/tinycore.name)" != "" ];then
 		TCNAME=$(cat $TAGS/tinycore.name)
+	elif [ -f tinycore.defaultname ] && [ "$(cat tinycore.defaultname)" != "" ];then
+		TCNAME=$(cat tinycore.defaultname)
 	else
 		TCNAME="Tiny Core Linux"
+	fi
+	if [ -f tinycore.version ] && [ "$(cat tinycore.version)" != "" ];then
+		TCNAME="$TCNAME $(cat tinycore.version)"
 	fi
 	for i in $(ls $WORK/boot/tinycore|grep '\.gz');do
 		echo "label tinycore-$i

@@ -37,14 +37,14 @@ elif [ $1 = writecfg ];then
 #BEGIN PUPPY ENTRY#
 if [ -f puppy.iso ];then
 if [ -f $TAGS/puppy.name ] && [ "$(cat $TAGS/puppy.name)" != "" ];then
-	PUPNAME=$(cat $TAGS/puppy.name)
-elif [ -f puppy.defaultname ] && [ "$(cat puppydefault.name)" != "" ];then
-	PUPNAME=$(cat puppydefault.name)
+	PUPNAME=$(cat $TAGS/puppy.name) #User-entered name
+elif [ -f puppy.defaultname ] && [ "$(cat puppy.defaultname)" != "" ];then
+	PUPNAME=$(cat puppy.defaultname) #Default name based on the automatic links made in isoaliases()
 else
-	PUPNAME="Puppy Linux"
+	PUPNAME="Puppy Linux" #Fallback name
 fi
 if [ -f puppy.version ] && [ "$(cat puppy.version)" != "" ];then
-	PUPNAME="$PUPNAME $(cat puppy.version)"
+	PUPNAME="$PUPNAME $(cat puppy.version)" #Version based on isoaliases()
 fi
 if [ -d $WORK/puppy ];then
 	EXTRAARGS="psubdir=puppy"

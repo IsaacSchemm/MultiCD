@@ -33,20 +33,22 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubuntu_32_bit.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
-label ubuntu_32_bit
-menu label --> Ubuntu (32-bit)
+if [ -f ubuntu_32_bit.version ] && [ "$(cat ubuntu_32_bit.version)" != "" ];then
+	UBUVER=" $(cat ubuntu_32_bit.version)"
+else
+	UBUVER=""
+fi
+echo "label ubuntu_32_bit
+menu label --> Ubuntu ($UBUVER 32-bit)
 com32 menu.c32
 append /boot/ubuntu_32_bit/ubuntu_32_bit.cfg
-
-EOF
-cat >> multicd-working/boot/ubuntu_32_bit/ubuntu_32_bit.cfg << EOF
-
+" >> multicd-working/boot/isolinux/isolinux.cfg
+echo "
 label back
 menu label Back to main menu
 com32 menu.c32
 append /boot/isolinux/isolinux.cfg
-EOF
+" >> multicd-working/boot/ubuntu_32_bit/ubuntu_32_bit.cfg 
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

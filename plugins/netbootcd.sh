@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #NetbootCD 3.x/4.x plugin for multicd.sh
-#version 5.7
+#version 6.1
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,37 +29,34 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f netbootcd.iso ];then
 		echo "Copying NetbootCD..."
-		if [ ! -d netbootcd ];then
-			mkdir netbootcd
-		fi
-		if grep -q "`pwd`/netbootcd" /etc/mtab ; then
-			umount netbootcd
-		fi
-		mount -o loop netbootcd.iso netbootcd/
+		mcdmount netbootcd
 		mkdir -p multicd-working/boot/nbcd
 		cp netbootcd/isolinux/kexec.bzI multicd-working/boot/nbcd/kexec.bzI
 		cp netbootcd/isolinux/* multicd-working/boot/nbcd/
-		sleep 1;umount netbootcd;rmdir netbootcd
+		sleep 1;umcdmount netbootcd
 	fi
 elif [ $1 = writecfg ];then
 #BEGIN NETBOOTCD ENTRY#
 if [ -f netbootcd.iso ];then
+if [ -f netbootcd.version ] && [ "$(cat netbootcd.version)" != "" ];then
+	NBCDVER=" $(cat netbootcd.version)"
+else
+	NBCDVER=""
+fi
 if [ -f multicd-working/boot/nbcd/nbinit4.lz ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-LABEL netbootcd
-MENU LABEL ^NetbootCD
+echo "LABEL netbootcd
+MENU LABEL ^NetbootCD$NBCDVER
 KERNEL /boot/nbcd/kexec.bzI
 initrd /boot/nbcd/nbinit4.lz
 APPEND quiet
-EOF
+" >> multicd-working/boot/isolinux/isolinux.cfg
 else
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-LABEL netbootcd
-MENU LABEL ^NetbootCD
+echo "LABEL netbootcd
+MENU LABEL ^NetbootCD$NBCDVER
 KERNEL /boot/nbcd/kexec.bzI
 initrd /boot/nbcd/nbinit3.gz
 APPEND quiet
-EOF
+" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 fi
 #END NETBOOTCD ENTRY#

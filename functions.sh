@@ -112,6 +112,7 @@ kubuntu-*-desktop-amd64.iso kubuntu_64_bit.iso
 			VERSION=$(echo "$IM1"|awk '{sub(/'"$CUTOUT1"'/,"");sub(/'"$CUTOUT2"'/,"");print}') #Cuts out whatever the asterisk represents (which will be the version number)
 			if [ "$VERSION" != "*" ] && [ "$VERSION" != "$IM1" ];then
 				echo $VERSION > $ISOBASENAME.version
+				#The SystemRescueCD plugin does not use this, but I figure it won't do any harm to have an extra file sitting there.
 				echo "Made a link named $IM2 pointing to $IM1 (version $VERSION)"
 			else	
 				echo "Made a link named $IM2 pointing to $IM1"

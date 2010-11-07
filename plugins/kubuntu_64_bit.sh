@@ -33,20 +33,22 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f kubuntu_64_bit.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
-label kubuntu_64_bit2
-menu label --> Kubuntu (64-bit) Menu
+if [ -f kubuntu_64_bit.version ] && [ "$(cat kubuntu_64_bit.version)" != "" ];then
+	KUBUVER=" $(cat kubuntu_64_bit.version)"
+else
+	KUBUVER=""
+fi
+echo "label kubuntu_64_bit
+menu label --> Kubuntu ($KUBUVER 64-bit)
 com32 menu.c32
 append /boot/kubuntu_64_bit/kubuntu_64_bit.cfg
-
-EOF
-cat >> multicd-working/boot/kubuntu_64_bit/kubuntu_64_bit.cfg << EOF
-
+" >> multicd-working/boot/isolinux/isolinux.cfg
+echo "
 label back
 menu label Back to main menu
 com32 menu.c32
 append /boot/isolinux/isolinux.cfg
-EOF
+" >> multicd-working/boot/kubuntu_64_bit/kubuntu_64_bit.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

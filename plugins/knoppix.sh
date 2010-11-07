@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Knoppix plugin for multicd.sh
-#version 6.0
+#version 6.1
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,13 +30,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f knoppix.iso ];then
 		echo "Copying Knoppix..."
-		if [ ! -d knoppix ];then
-			mkdir knoppix
-		fi
-		if grep -q "`pwd`/knoppix" /etc/mtab ; then
-			umount knoppix
-		fi
-		mount -o loop knoppix.iso knoppix/
+		mcdmount knoppix
 		mkdir multicd-working/KNOPPIX6
 		#Compressed filesystem and docs. We have to call it KNOPPIX6 because DSL uses KNOPPIX, and if we change that DSL's installer won't work.
 		for i in $(ls knoppix/KNOPPIX*|grep -v '^KNOPPIX2$');do
@@ -44,11 +39,16 @@ elif [ $1 = copy ];then
 		mkdir -p multicd-working/boot/knoppix
 		cp knoppix/boot/isolinux/linux multicd-working/boot/knoppix/linux
 		cp knoppix/boot/isolinux/minirt.gz multicd-working/boot/knoppix/minirt.gz
-		umount knoppix;rmdir knoppix
+		umcdmount knoppix
 	fi
 elif [ $1 = writecfg ];then
 if [ -f knoppix.iso ];then
-echo "MENU BEGIN ^Knoppix
+if [ -f knoppix.version ] && [ "$(cat knoppix.version)" != "" ];then
+	KNOPPIXVER=" $(cat knoppix.version)"
+else
+	KNOPPIXVER=""
+fi
+echo "MENU BEGIN ^Knoppix$KNOPPIXVER
 
 LABEL knoppix
 MENU LABEL Knoppix
