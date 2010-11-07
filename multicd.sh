@@ -1,22 +1,6 @@
 #!/bin/bash
 set -e
 . ./functions.sh
-
-if echo $* | grep -q "\bcleanlinks\b";then
-	ls -la |grep ^l |awk '{ print $8,$10 }'|while read i;do
-		if echo $i|awk '{print $2}'|grep -qv "/";then
-			rm -v $(echo $i|awk '{print $1}')
-		fi
-	done
-	exit 0
-fi
-if !(uname|grep -q Linux);then
-		echo "Only Linux kernels are supported at the moment (due to heavy use of \"-o loop\")."
-fi
-if [ $(whoami) != "root" ];then
-	echo "This script must be run as root, so it can mount ISO images on the filesystem during the building process."
-	exit 1
-fi
 #multicd.sh 6.1
 #Copyright (c) 2010 maybeway36
 #
@@ -47,6 +31,25 @@ mkdir -p /tmp/multicd-$USER
 export MNT=/tmp/multicd-$USER
 #TAGS: used to store small text files (temporary)
 export TAGS=$MNT/tags
+
+
+if echo $* | grep -q "\bcleanlinks\b";then
+	ls -la |grep ^l |awk '{ print $8,$10 }'|while read i;do
+		if echo $i|awk '{print $2}'|grep -qv "/";then
+			rm -v $(echo $i|awk '{print $1}')
+		fi
+	done
+	rm -v *.version 2> /dev/null
+	exit 0
+fi
+
+if !(uname|grep -q Linux);then
+	echo "Only Linux kernels are supported at the moment (due to heavy use of \"-o loop\")."
+fi
+if [ $(whoami) != "root" ];then
+	echo "This script must be run as root, so it can mount ISO images on the filesystem during the building process."
+	exit 1
+fi
 
 if [ -d $TAGS ];then rm -r $TAGS;fi
 mkdir -p $TAGS
