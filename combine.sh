@@ -8,7 +8,8 @@ if [ ! -f multicd.sh ] || [ ! -d plugins ] || [ -d functions.sh ];then
 fi
 rm working*.sh 2>/dev/null ||true
 sed -n '/#!\/bin\/bash/,/#START PREPARE/p' multicd.sh > working0.sh
-cat functions.sh >> working0.sh #mcdmount and umcdmount
+cat functions.sh >> working0.sh
+cat isoaliases.sh >> working0.sh
 sed -n '/#END PREPARE/,/#START SCAN/p' multicd.sh >> working0.sh
 sed -n '/#END SCAN/,/#START COPY/p' multicd.sh > working2.sh
 sed -n '/#END COPY/,/#START WRITE/p' multicd.sh > working4.sh
@@ -29,3 +30,4 @@ done
 cat working[0123456].sh > combined-multicd.sh
 rm working[0123456].sh
 sed -i -e 's^\. \./functions\.sh^^g' combined-multicd.sh
+sed -i -e 's^\. \./isoaliases\.sh^^g' combined-multicd.sh
