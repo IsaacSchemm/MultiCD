@@ -33,12 +33,12 @@ elif [ $1 = copy ];then
 		mcdmount knoppix
 		mkdir multicd-working/KNOPPIX6
 		#Compressed filesystem and docs. We have to call it KNOPPIX6 because DSL uses KNOPPIX, and if we change that DSL's installer won't work.
-		for i in $(ls knoppix/KNOPPIX*|grep -v '^KNOPPIX2$');do
-			cp -r knoppix/KNOPPIX/$i multicd-working/KNOPPIX6/
+		for i in $(ls $MNT/knoppix/KNOPPIX*|grep -v '^KNOPPIX2$');do
+			cp -r $MNT/knoppix/KNOPPIX/$i multicd-working/KNOPPIX6/
 		done
 		mkdir -p multicd-working/boot/knoppix
-		cp knoppix/boot/isolinux/linux multicd-working/boot/knoppix/linux
-		cp knoppix/boot/isolinux/minirt.gz multicd-working/boot/knoppix/minirt.gz
+		cp $MNT/knoppix/boot/isolinux/linux multicd-working/boot/knoppix/linux
+		cp $MNT/knoppix/boot/isolinux/minirt.gz multicd-working/boot/knoppix/minirt.gz
 		umcdmount knoppix
 	fi
 elif [ $1 = writecfg ];then

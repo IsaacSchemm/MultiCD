@@ -38,7 +38,7 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f dsl.iso ];then
-echo "menu begin ^DSL
+echo "menu begin --> ^DSL
 
 LABEL dsl
 MENU LABEL DSL

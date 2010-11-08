@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Finnix plugin for multicd.sh
-#version 5.3
-#Copyright (c) 2010 Rorschach
+#version 6.1
+#Copyright (c) 2010 Rorschach, maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -28,29 +29,23 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f finnix.iso ];then
 		echo "Copying Finnix..."
-		if [ ! -d finnix ];then
-			mkdir finnix
-		fi
-		if grep -q "`pwd`/finnix" /etc/mtab ; then
-			umount finnix
-		fi
-		mount -o loop finnix.iso finnix/
+		mcdmount finnix
 		# Copies compressed filesystem
-		cp -r finnix/FINNIX multicd-working/
+		cp -r $MNT/finnix/FINNIX multicd-working/
 		# Copies kernel, and initramdisk
 		mkdir multicd-working/boot/finnix
-		cp finnix/isolinux/linux multicd-working/boot/finnix/
-		cp finnix/isolinux/linux64 multicd-working/boot/finnix/
-		cp finnix/isolinux/minirt multicd-working/boot/finnix/
+		cp $MNT/finnix/isolinux/linux multicd-working/boot/finnix/
+		cp $MNT/finnix/isolinux/linux64 multicd-working/boot/finnix/
+		cp $MNT/finnix/isolinux/minirt multicd-working/boot/finnix/
 		# Copies memdisk and Smart Boot Manager
-		cp finnix/isolinux/memdisk multicd-working/boot/finnix/
-		cp finnix/isolinux/sbm.imz multicd-working/boot/finnix/
-		umount finnix
-		rmdir finnix
+		cp $MNT/finnix/isolinux/memdisk multicd-working/boot/finnix/
+		cp $MNT/finnix/isolinux/sbm.imz multicd-working/boot/finnix/
+		umcdmount finnix
 	fi
 elif [ $1 = writecfg ];then
 if [ -f finnix.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+echo "menu begin --> ^Finnix
+
 label Finnix
   MENU LABEL ^Finnix (x86)
   kernel /boot/finnix/linux
@@ -90,7 +85,9 @@ label sbm
   MENU LABEL Smart Boot Manager
   kernel /boot/finnix/memdisk
   append initrd=/boot/finnix/sbm.imz
-EOF
+
+menu end
+" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

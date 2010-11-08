@@ -31,8 +31,8 @@ elif [ $1 = copy ];then
 		echo "Copying NetbootCD..."
 		mcdmount netbootcd
 		mkdir -p multicd-working/boot/nbcd
-		cp netbootcd/isolinux/kexec.bzI multicd-working/boot/nbcd/kexec.bzI
-		cp netbootcd/isolinux/* multicd-working/boot/nbcd/
+		cp $MNT/netbootcd/isolinux/kexec.bzI multicd-working/boot/nbcd/kexec.bzI
+		cp $MNT/netbootcd/isolinux/* multicd-working/boot/nbcd/
 		sleep 1;umcdmount netbootcd
 	fi
 elif [ $1 = writecfg ];then

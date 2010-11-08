@@ -31,11 +31,11 @@ elif [ $1 = copy ];then
 		echo "Copying SystemRescueCd..."
 		mcdmount sysrcd
 		mkdir multicd-working/boot/sysrcd
-		cp sysrcd/sysrcd.* multicd-working/boot/sysrcd/ #Compressed filesystem
-		cp sysrcd/isolinux/altker* multicd-working/boot/sysrcd/ #Kernels
-		cp sysrcd/isolinux/rescue* multicd-working/boot/sysrcd/ #Kernels
-		cp sysrcd/isolinux/initram.igz multicd-working/boot/sysrcd/initram.igz #Initrd
-		cp sysrcd/version multicd-working/boot/sysrcd/version
+		cp $MNT/sysrcd/sysrcd.* multicd-working/boot/sysrcd/ #Compressed filesystem
+		cp $MNT/sysrcd/isolinux/altker* multicd-working/boot/sysrcd/ #Kernels
+		cp $MNT/sysrcd/isolinux/rescue* multicd-working/boot/sysrcd/ #Kernels
+		cp $MNT/sysrcd/isolinux/initram.igz multicd-working/boot/sysrcd/initram.igz #Initrd
+		cp $MNT/sysrcd/version multicd-working/boot/sysrcd/version
 		umcdmount sysrcd
 	fi
 elif [ $1 = writecfg ];then

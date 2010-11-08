@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Fedora installer plugin for multicd.sh
-#version 5.5
-#Copyright (c) 2009 maybeway36
+#version 6.1
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -27,31 +28,23 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f fedora-boot.iso ];then
-		 echo "Copying Fedora netboot installer..."
-		if [ ! -d fedora-boot ];then
-			mkdir fedora-boot
-		fi
-		if grep -q "`pwd`/fedora-boot" /etc/mtab ; then
-			umount fedora-boot
-		fi
-		mount -o loop fedora-boot.iso fedora-boot/
+		echo "Copying Fedora netboot installer..."
+		mcdmount fedora-boot
 		mkdir multicd-working/boot/fedora
-		cp fedora-boot/isolinux/vmlinuz multicd-working/boot/fedora/vmlinuz
-		cp fedora-boot/isolinux/initrd.img multicd-working/boot/fedora/initrd.img
+		cp $MNT/fedora-boot/isolinux/vmlinuz multicd-working/boot/fedora/vmlinuz
+		cp $MNT/fedora-boot/isolinux/initrd.img multicd-working/boot/fedora/initrd.img
 		if [ -d multicd-working/images ];then
 			echo "There is already an \"images\" folder on the multicd. You might have another Red Hat-based distro on it."
 			echo "Fedora's \"images\" folder won't be copied; instead, these files will be downloaded before the installer starts."
 		else
 			#Commenting out the below line will save about 100MB on the CD, but it will have to be downloaded when you install Fedora
-			cp -R fedora-boot/images multicd-working/
+			cp -R $MNT/fedora-boot/images multicd-working/
 		fi
-		umount fedora-boot
-		rmdir fedora-boot
+		umcdmount fedora-boot
 	fi
 elif [ $1 = writecfg ];then
 if [ -f fedora-boot.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label flinux
+echo "label flinux
   #TIP: If you change the method= entry in the append line, you can change the mirror and version installed.
   menu label ^Install Fedora from mirrors.kernel.org (Fedora 13 only)
   kernel /boot/fedora/vmlinuz
@@ -68,7 +61,7 @@ label frescue
   menu label Rescue installed Fedora system
   kernel /boot/fedora/vmlinuz
   append initrd=/boot/fedora/initrd.img rescue
-EOF
+" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

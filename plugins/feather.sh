@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Feather Linux plugin for multicd.sh
-#version 5.0.1
-#Copyright (c) 2009 maybeway36
+#version 6.1
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -28,25 +29,17 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f feather.iso ];then
 		echo "Copying Feather..."
-		if [ ! -d feather ];then
-			mkdir feather
-		fi
-		if grep -q "`pwd`/feather" /etc/mtab ; then
-			umount feather
-		fi
-		mount -o loop feather.iso feather/
+		mcdmount feather
 		mkdir multicd-working/FEATHER
-		cp -R feather/KNOPPIX/* multicd-working/FEATHER/ #Compressed filesystem
+		cp -R $MNT/feather/KNOPPIX/* multicd-working/FEATHER/ #Compressed filesystem
 		mkdir multicd-working/boot/feather
-		cp feather/boot/isolinux/linux24 multicd-working/boot/feather/linux24
-		cp feather/boot/isolinux/minirt24.gz multicd-working/boot/feather/minirt24.gz
-		umount feather
-		rmdir feather
+		cp $MNT/feather/boot/isolinux/linux24 multicd-working/boot/feather/linux24
+		cp $MNT/feather/boot/isolinux/minirt24.gz multicd-working/boot/feather/minirt24.gz
+		umcdmount feather
 	fi
 elif [ $1 = writecfg ];then
 if [ -f feather.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-LABEL feather
+echo "LABEL feather
 MENU LABEL ^Feather Linux
 KERNEL /boot/feather/linux24
 APPEND ramdisk_size=100000 init=/etc/init lang=us apm=power-off vga=791 initrd=/boot/feather/minirt24.gz knoppix_dir=FEATHER nomce quiet BOOT_IMAGE=knoppix
@@ -58,7 +51,7 @@ LABEL feather-2
 MENU LABEL Feather Linux (boot to command line)
 KERNEL /boot/feather/linux24
 APPEND ramdisk_size=100000 init=/etc/init lang=us apm=power-off vga=791 initrd=/boot/feather/minirt24.gz knoppix_dir=FEATHER nomce quiet 2 BOOT_IMAGE=knoppix
-EOF
+" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
