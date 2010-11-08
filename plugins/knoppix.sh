@@ -78,6 +78,11 @@ LABEL fb800x600
 KERNEL linux
 APPEND ramdisk_size=100000 lang=en vt.default_utf8=0 apm=power-off vga=788 xmodule=fbdev initrd=minirt.gz nomce quiet loglevel=0 tz=localtime
 
+label back
+menu label Back to main menu
+com32 menu.c32
+append isolinux.cfg
+
 MENU END
 " >> multicd-working/boot/isolinux/isolinux.cfg
 fi

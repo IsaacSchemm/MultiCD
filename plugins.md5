@@ -25,7 +25,7 @@ dfb3c0b41d8cefe8d73ba10d1bfe3e93  plugins/freedos.sh
 bd9478d0c67c451a73ee532cb5ea4420  plugins/hirens.sh
 2ebc5b388b52e06e2f2c8029ab41d61b  plugins/insert.sh
 7cb1d37abd916fb3e690a90217fd59c7  plugins/ipcop.sh
-5637d77acb684c83f8957adf687f88ba  plugins/knoppix.sh
+d689722fb78379c7c07bfc1bf9d6f424  plugins/knoppix.sh
 a97054faa7e984e3d6fee6ea709eb89c  plugins/kubuntu_32_bit.sh
 4b1f808dc577dc7493c2757aa905c09d  plugins/kubuntu_64_bit.sh
 d053922c080c00c84ca0771c2ef4b6bd  plugins/kubuntu.sh
@@ -40,6 +40,7 @@ f156d8d5ebff334159a17ba7b115e9a3  plugins/opensuse.sh
 e1a195e6be67960bfc39f8b5cdefa23c  plugins/pclos.sh
 d57dc2111ab0a31b8d178233411ad524  plugins/pclx.sh
 da3ef9d5564868f2b719ef4c5ac9618b  plugins/ping.sh
+d41d8cd98f00b204e9800998ecf8427e  plugins/plugins.md5
 1b90bd4db4b4a7cea06c454578c2f722  plugins/pmagic.sh
 ef97f86a72785c7d26f1fb4dc194b8b3  plugins/puppy2.sh
 de202f0f45cd20e822bc0cc91443743b  plugins/puppy.sh
