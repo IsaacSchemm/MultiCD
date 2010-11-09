@@ -29,10 +29,10 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f cdl.iso ];then
 		echo "Copying CDlinux..."
-		mcdmount cdlinux
-		cp -r $MNT/cdlinux/CDlinux $WORK/CDlinux #Everything in one folder
+		mcdmount cdl
+		cp -r $MNT/cdl/CDlinux $WORK/CDlinux #Everything in one folder
 		rm $WORK/CDlinux/boot/memtest.bin.gz #Remove redundant memtest
-		umcdmount cdlinux
+		umcdmount cdl
 	fi
 elif [ $1 = writecfg ];then
 if [ -f cdl.iso ];then

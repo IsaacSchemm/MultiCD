@@ -5,7 +5,7 @@ f39bc9c7db07a832cda71f706eedfa7c  plugins/arch.sh
 de85c584447721eb741a9f3db405bf81  plugins/austrumi.sh
 3cc33c4fc0daa66feebb228ae58707a6  plugins/backtrack.sh
 6f5190db2a97bb55e6eaddf66cb9a173  plugins/caine.sh
-1840b50e913078882e36964e939956b1  plugins/cdlinux.sh
+409a9cc7d50a9898c377c2f39d8e2461  plugins/cdlinux.sh
 dc8af425fdd93fe5ec906b261f184d49  plugins/clonezilla.sh
 36d0ec0a464a687566a187a2717885e2  plugins/dban.sh
 fb18f372271cb0b9ac353da764abfbd8  plugins/debian-inst.sh
