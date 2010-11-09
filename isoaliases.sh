@@ -3,8 +3,7 @@ isoaliases () {
 echo "
 lupu-*.iso puppy.iso
 slax-remix-*.iso slax.iso
-KNOPPIX_V*CD-2010-01-31-EN.iso knoppix.iso
-KNOPPIX_V*CD-2010-01-31-DE.iso knoppix.iso
+KNOPPIX_V*.iso knoppix.iso
 NetbootCD-*.iso netbootcd.iso
 systemrescuecd-x86-*.iso sysrcd.iso
 tinycore-current.iso tinycore.iso

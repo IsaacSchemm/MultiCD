@@ -13,6 +13,16 @@ mcdmount () {
 umcdmount () {
 	umount $MNT/$1;rmdir $MNT/$1
 }
+cleanlinks () {
+	ls -la |grep ^l |awk '{ print $8,$10 }'|while read i;do
+		if echo $i|awk '{print $2}'|grep -qv "/";then
+			rm -v $(echo $i|awk '{print $1}')
+		fi
+	done
+	rm -v *.version 2> /dev/null
+	exit 0
+}
+
 tinycorecommon () {
 	if [ ! -z "$1" ] && [ -f $1.iso ];then
 		mcdmount $1
