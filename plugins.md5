@@ -20,11 +20,11 @@ d2f29405982f9351c5772370d5944867  plugins/elastix.sh
 731566b5c08af4c6fff504720b7b2f1a  plugins/fedora.sh
 217c32a20447c634b336760b00ed62e6  plugins/finnix.sh
 dfb3c0b41d8cefe8d73ba10d1bfe3e93  plugins/freedos.sh
-10559ab40c24e994d70488e7db131f19  plugins/geexbox.sh
+85f1a926f607a07792e21ad1690fd54d  plugins/geexbox.sh
 9fa4c688ca3866a0631a4814705defad  plugins/gparted.sh
-bd9478d0c67c451a73ee532cb5ea4420  plugins/hirens.sh
-2ebc5b388b52e06e2f2c8029ab41d61b  plugins/insert.sh
-7cb1d37abd916fb3e690a90217fd59c7  plugins/ipcop.sh
+05591e24de7f2b5353d8feb131d29305  plugins/hirens.sh
+57f59d98a1b665f833f7d14db6493997  plugins/insert.sh
+5c6c54b98ce4e27ddb69b5b398465729  plugins/ipcop.sh
 d689722fb78379c7c07bfc1bf9d6f424  plugins/knoppix.sh
 a97054faa7e984e3d6fee6ea709eb89c  plugins/kubuntu_32_bit.sh
 4b1f808dc577dc7493c2757aa905c09d  plugins/kubuntu_64_bit.sh

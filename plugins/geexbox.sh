@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #GeeXboX plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 maybeway36
+#version 6.1
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -24,34 +25,22 @@ set -e
 if [ $1 = scan ];then
 	if [ -f geexbox.iso ];then
 		echo "GeeXboX"
-	elif [ -f gbox.iso ];then
-		echo "GeeXboX (moving gbox.iso to geexbox.iso)"
-		mv gbox.iso geexbox.iso
 	fi
 elif [ $1 = copy ];then
 	if [ -f geexbox.iso ];then
 		echo "Copying GeeXboX..."
-		if [ ! -d geexbox ];then
-			mkdir geexbox
-		fi
-		if grep -q "`pwd`/geexbox" /etc/mtab ; then
-			umount geexbox
-		fi
-		mount -o loop geexbox.iso geexbox/
-		cp -r geexbox/GEEXBOX multicd-working/ #Everything GeeXbox has is in one folder. :)
-		umount geexbox;rmdir geexbox
+		mcdmount geexbgox
+		cp -r $MNT/geexbox/GEEXBOX multicd-working/ #Everything GeeXbox has is in one folder. :)
+		umcdmount geexbox
 	fi
 elif [ $1 = writecfg ];then
 if [ -f geexbox.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label gbox
+echo "label gbox
 	menu label ^GeeXboX
 	com32 vesamenu.c32
 	append gbox.menu
-EOF
-cat > multicd-working/boot/isolinux/gbox.menu << "EOF"
-PROMPT 0
+" >> multicd-working/boot/isolinux/isolinux.cfg
+echo "PROMPT 0
 
 TIMEOUT 20
 
@@ -100,7 +89,7 @@ LABEL hdtvdebug
   APPEND initrd=/GEEXBOX/boot/initrd.gz root=/dev/ram0 rw rdinit=linuxrc boot=cdrom lang=en remote=atiusb receiver=atiusb keymap=qwerty splash=0 vga=789 video=vesafb:ywrap,mtrr hdtv debugging
 
 F1 help.msg #00000000
-EOF
+" > multicd-working/boot/isolinux/gbox.menu
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #INSERT plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 maybeway36
+#version 6.1
+#Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -27,24 +28,17 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f insert.iso ];then
-	if [ ! -d insert ];then
-		mkdir insert
-	fi
-	if grep -q "`pwd`/insert" /etc/mtab ; then
-		umount insert
-	fi
-	mount -o loop insert.iso insert/
-	cp -R insert/INSERT multicd-working/ #Compressed filesystem
-	mkdir multicd-working/boot/insert
-	cp insert/isolinux/vmlinuz multicd-working/boot/insert/vmlinuz
-	cp insert/isolinux/miniroot.lz multicd-working/boot/insert/miniroot.lz
-	umount insert
-	rmdir insert
+		echo "Copying INSERT..."
+		mcdmount insert
+		cp -R $MNT/insert/INSERT multicd-working/ #Compressed filesystem
+		mkdir multicd-working/boot/insert
+		cp $MNT/insert/isolinux/vmlinuz multicd-working/boot/insert/vmlinuz
+		cp $MNT/insert/isolinux/miniroot.lz multicd-working/boot/insert/miniroot.lz
+		umcdmount insert
 	fi
 elif [ $1 = writecfg ];then
 if [ -f insert.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-LABEL insert
+echo "LABEL insert
 menu label ^INSERT
 KERNEL /boot/insert/vmlinuz
 APPEND ramdisk_size=100000 init=/etc/init lang=en apm=power-off vga=773 initrd=/boot/insert/miniroot.lz nomce noapic dma BOOT_IMAGE=insert
@@ -60,7 +54,7 @@ LABEL failsafe
 menu label INSERT (failsafe)
 KERNEL /boot/insert/vmlinuz
 APPEND ramdisk_size=100000 init=/etc/init lang=en vga=normal atapicd nosound noapic noacpi pnpbios=off acpi=off nofstab noscsi nodma noapm nousb nopcmcia nofirewire noagp nomce nodhcp xmodule=vesa initrd=/boot/insert/miniroot.lz BOOT_IMAGE=insert
-EOF
+" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

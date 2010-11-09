@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #IPCop plugin for multicd.sh
-#version 5.6
+#version 6.1
 #Copyright (c) 2010 maybeway36
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,34 +29,25 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f ipcop.iso ];then
 		echo "Copying IPCop..."
-		if [ ! -d ipcop ];then
-			mkdir ipcop
-		fi
-		if grep -q "`pwd`/ipcop" /etc/mtab ; then
-			umount ipcop
-		fi
-		mount -o loop ipcop.iso ipcop/
-		cp -r ipcop/boot/isolinux multicd-working/boot/ipcop
+		mcdmount ipcop
+		cp -r $MNT/ipcop/boot/isolinux multicd-working/boot/ipcop
 		if [ -d multicd-working/images ];then
 			echo "There is already a folder called \"images\". Are you adding another Red Hat-based distro?"
 			echo "Copying anyway - be warned that on the final CD, something might not work properly."
 		fi
-		cp -r ipcop/images multicd-working/
-		cp ipcop/*.tgz multicd-working
-		cp -r ipcop/doc multicd-working/boot/ipcop/ || true
-		cp ipcop/*.txt multicd-working/boot/ipcop/ || true
-		umount ipcop
-		rmdir ipcop
+		cp -r $MNT/ipcop/images multicd-working/
+		cp $MNT/ipcop/*.tgz multicd-working
+		cp -r $MNT/ipcop/doc multicd-working/boot/ipcop/ || true
+		cp $MNT/ipcop/*.txt multicd-working/boot/ipcop/ || true
+		umcdmount ipcop
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ipcop.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label ipcopmenu
+echo "label ipcopmenu
 menu label --> ^IPCop
 config /boot/isolinux/ipcop.cfg
-EOF
-cat > multicd-working/boot/isolinux/ipcop.cfg << "EOF"
-TIMEOUT 5000
+" >> multicd-working/boot/isolinux/isolinux.cfg
+echo "TIMEOUT 5000
 F1 /boot/ipcop/f1.txt
 F2 /boot/ipcop/f2.txt
 F3 /boot/ipcop/f3.txt
@@ -81,7 +73,7 @@ LABEL dma
 LABEL memtest
   KERNEL /boot/memtest
   APPEND -
-EOF
+" > multicd-working/boot/isolinux/ipcop.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
