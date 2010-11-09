@@ -30,7 +30,7 @@ elif [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f mintdebian.iso ];then
-		echo "Linux Mint Debian Edition"
+		echo "Copying Linux Mint Debian Edition..."
 		ubuntucommon mintdebian
 	fi
 elif [ $1 = writecfg ];then

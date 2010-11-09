@@ -101,7 +101,7 @@ KERNEL /boot/slax/vmlinuz
 APPEND initrd=/boot/slax/initrd.lz ramdisk_size=6666 root=/dev/ram0 rw autoexec=telinit~4  changes=/slax/
 
 LABEL slax
-MENU LABEL Slax Text mode
+MENU LABEL Slax$SLAXVER Text mode
 KERNEL /boot/slax/vmlinuz
 APPEND initrd=/boot/slax/initrd.lz ramdisk_size=6666 root=/dev/ram0 rw  changes=/slax/" >> $WORK/boot/isolinux/isolinux.cfg
 elif [ -f $WORK/slax/base/002-xorg.lzm ];then
