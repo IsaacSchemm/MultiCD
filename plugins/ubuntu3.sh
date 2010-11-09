@@ -22,7 +22,9 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "linuxmint-debian-*.iso ubuntu3.iso Linux^Mint^Debian^Edition"
+elif [ $1 = scan ];then
 	if [ -f ubuntu3.iso ];then
 		echo "Ubuntu custom #3 (for using multiple versions on one disc - 9.10 or newer)"
 		echo > $TAGS/ubuntu3.needsname #Comment out this line and multicd.sh won't ask for a custom name for this ISO

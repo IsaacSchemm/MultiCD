@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #Linux Mint plugin for multicd.sh
-#version 5.8
+#version 6.1
 #Copyright (c) 2010 maybeway36, Zirafarafa
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +22,13 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "linuxmint-gnome*.iso linuxmint.iso"
+	echo "linuxmint-kde*.iso linuxmint.iso"
+	echo "linuxmint-xfce*.iso linuxmint.iso"
+	echo "linuxmint-lxde*.iso linuxmint.iso"
+	echo "linuxmint-fluxbox*.iso linuxmint.iso"
+elif [ $1 = scan ];then
 	if [ -f linuxmint.iso ];then
 		echo "Linux Mint (8/Helena or newer)"
 	fi

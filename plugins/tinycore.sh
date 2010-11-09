@@ -22,7 +22,10 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "tinycore-current.iso tinycore.iso"
+	echo "tinycore_*.iso tinycore.iso"
+elif [ $1 = scan ];then
 	if [ -f tinycore.iso ];then
 		echo "Tiny Core Linux"
 		#touch $TAGS/tinycore.needsname #Comment out this line and multicd.sh won't ask for a custom name for this ISO

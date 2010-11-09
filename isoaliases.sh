@@ -1,22 +1,13 @@
 #!/bin/sh
 isoaliases () {
-echo "
-lupu-*.iso puppy.iso
-slax-remix-*.iso slax.iso
-KNOPPIX_V*.iso knoppix.iso
-NetbootCD-*.iso netbootcd.iso
-systemrescuecd-x86-*.iso sysrcd.iso
-tinycore-current.iso tinycore.iso
-tinycore_*.iso tinycore.iso
-trinity-rescue-kit.*.iso trk.iso
-linuxmint-debian-*.iso ubuntu3.iso Linux^Mint^Debian^Edition
-linuxmint-*.iso linuxmint.iso
-ubuntu-*-desktop-i386.iso ubuntu_32_bit.iso
-ubuntu-*-desktop-amd64.iso ubuntu_64_bit.iso
-kubuntu-*-desktop-i386.iso kubuntu_32_bit.iso
-kubuntu-*-desktop-amd64.iso kubuntu_64_bit.iso
-
-"|while read i;do
+true > $TAGS/linklist
+for i in $MCDDIR/plugins/*;do
+	TOPRINT=$($i links)
+	if [ $? = 0 ];then
+		echo $TOPRINT >> $TAGS/linklist
+	fi
+done
+cat $TAGS/linklist|while read i;do
 	IM1=$(echo $i|awk '{print $1}')
 	IM2=$(echo $i|awk '{print $2}')
 	if [ -e $IM1 ] && [ ! -e $IM2 ];then

@@ -22,7 +22,9 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "ubuntu-*-desktop-amd64.iso ubuntu_64_bit.iso"
+elif [ $1 = scan ];then
 	if [ -f ubuntu_64_bit.iso ];then
 		echo "Ubuntu (64-bit)"
 	fi

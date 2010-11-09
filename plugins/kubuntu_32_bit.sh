@@ -22,7 +22,9 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "kubuntu-*-desktop-i386.iso kubuntu_32_bit.iso"
+elif [ $1 = scan ];then
 	if [ -f kubuntu_32_bit.iso ];then
 		echo "Kubuntu (32-bit)"
 	fi
