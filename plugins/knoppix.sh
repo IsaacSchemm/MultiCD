@@ -50,7 +50,7 @@ if [ -f knoppix.version ] && [ "$(cat knoppix.version)" != "" ];then
 else
 	KNOPPIXVER=""
 fi
-echo "MENU BEGIN ^Knoppix$KNOPPIXVER
+echo "MENU BEGIN --> ^Knoppix$KNOPPIXVER
 
 LABEL knoppix
 MENU LABEL Knoppix

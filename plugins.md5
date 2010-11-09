@@ -25,7 +25,7 @@ fb78b272cfd4333d191afffcde6c254e  plugins/gparted.sh
 e35371de7c33c44b3b8d52ef5e9af208  plugins/hirens.sh
 b0f803ec4c57f94f22ac3e806fde33a1  plugins/insert.sh
 0e643298a635b8e91924524e6a230d1f  plugins/ipcop.sh
-73d317541a0235a9f5ecfe61aa0c45d9  plugins/knoppix.sh
+5b2489f9f6802f7e0a6619b2d3b7e340  plugins/knoppix.sh
 5b6aeb32685fce7c4409a72266db2870  plugins/kubuntu_32_bit.sh
 b874ff8fd9da71cb400c620026b74184  plugins/kubuntu_64_bit.sh
 24063643dfa04dd464d27ce321af30ba  plugins/kubuntu.sh
