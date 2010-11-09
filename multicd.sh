@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 . ./functions.sh
-. ./isoaliases.sh
 #multicd.sh 6.1
 #Copyright (c) 2010 libertyernie
 #

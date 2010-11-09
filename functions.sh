@@ -19,16 +19,16 @@ cleanlinks () {
 			rm -v $(echo $i|awk '{print $1}')
 		fi
 	done
-	rm -v *.version 2> /dev/null
+	rm -fv *.defaultname 2> /dev/null
+	rm -fv *.version 2> /dev/null
 	exit 0
 }
 
 isoaliases () {
 true > $TAGS/linklist
 for i in $MCDDIR/plugins/*;do
-	TOPRINT=$($i links)
-	if ! (echo $TOPRINT|grep -q Usage);then
-		echo $TOPRINT >> $TAGS/linklist
+	if ! ($i links|grep -q Usage);then
+		$i links >> $TAGS/linklist
 	fi
 done
 cat $TAGS/linklist|while read i;do
@@ -39,7 +39,12 @@ cat $TAGS/linklist|while read i;do
 			ISOBASENAME=$(echo $IM2|sed -e 's/\.iso//g')
 			touch $TAGS/madelinks #This is to make multicd.sh pause for 1 second so the notifications are readable
 			if [ -n "$(echo $i|awk '{print $3}')" ];then
-				echo $i|awk '{print $3}'|sed -e 's/^/ /g'>$ISOBASENAME.defaultname #The third field of the row will be the default name when multicd.sh asks the user to enter a name. This should also be used by the plugin script if $TAGS/whatever.name is not present
+				#The third field of the row will be the default name when multicd.sh asks the user to enter a name.
+				#This should also be used by the menu-writing portion of the plugin script if $TAGS/whatever.name is not present.
+				#Right now, there are no ISOs/plugins that use this. Potentially, it could be used for ubuntu2, tinycore2, puppy2, etc.
+				#However, it might be easier just to make a new plugin for those by copying and altering the one of the base distro.
+				#I might get rid of this .defaultname code in the future.
+				echo $i|awk '{print $3}'|sed -e 's/^/ /g'>$ISOBASENAME.defaultname
 			fi
 			CUTOUT1=$(echo "$i"|awk 'BEGIN {FS = "*"} ; {print $1}') #The parts of the ISO name before the asterisk
 			CUTOUT2=$(echo "$i"|awk '{print $1}'|awk 'BEGIN {FS = "*"} ; {print $2}') #The parts after the asterisk

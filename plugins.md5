@@ -32,7 +32,7 @@ b874ff8fd9da71cb400c620026b74184  plugins/kubuntu_64_bit.sh
 18643455432b0861454306ac3a0b06e4  plugins/linuxmint.sh
 e259a7c51aabacc881c99265798aca87  plugins/macpup.sh
 a790922354f2d9e710d6714af4301b5b  plugins/mandriva.sh
-2ebca2617f3362ca25ea84ccbb516f0d  plugins/mintdebian.sh
+bbfc4f0a1daaf85b3d5a8f24c23d13dd  plugins/mintdebian.sh
 dd4942f842ccf3c3a0add829e078d9b1  plugins/netbootcd.sh
 56e7914ee4eb0c79dc89dc70598d7833  plugins/ntpasswd.sh
 e8ec385f7d2bcc57cc6f6e5301dc4aa5  plugins/opensuse.sh
@@ -45,7 +45,7 @@ d41d8cd98f00b204e9800998ecf8427e  plugins/plugins.md5
 1abb7a383f65d3892a5ec69523de02b3  plugins/puppy2.sh
 075a6c4c09f0055ace3dd5c076157c38  plugins/puppy.sh
 218717c833a63e96969d46a433276c75  plugins/riplinux.sh
-a5d875d44179864f7797e87f08e2fdfd  plugins/slax.sh
+299ffc86d43a3d94c8b6302c42c56514  plugins/slax.sh
 2dd0065de49b1cfe78d86dec7b14cf5e  plugins/slitaz.sh
 687ad73a7cf5d5dfea99223558661835  plugins/sysrcd.sh
 6948759f327a9e5f6e9a03c8b0421935  plugins/tcnet.sh
