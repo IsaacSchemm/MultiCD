@@ -32,7 +32,7 @@ b874ff8fd9da71cb400c620026b74184  plugins/kubuntu_64_bit.sh
 18643455432b0861454306ac3a0b06e4  plugins/linuxmint.sh
 e259a7c51aabacc881c99265798aca87  plugins/macpup.sh
 a790922354f2d9e710d6714af4301b5b  plugins/mandriva.sh
-576e166c0ba7aba04a4a78176b4e695f  plugins/mintdebian.sh
+2ebca2617f3362ca25ea84ccbb516f0d  plugins/mintdebian.sh
 dd4942f842ccf3c3a0add829e078d9b1  plugins/netbootcd.sh
 56e7914ee4eb0c79dc89dc70598d7833  plugins/ntpasswd.sh
 e8ec385f7d2bcc57cc6f6e5301dc4aa5  plugins/opensuse.sh
@@ -56,7 +56,7 @@ c7814db52fbeb77c309cd5a20c3925cc  plugins/tinycore2.sh
 afbd7984644f64998c01b5ee312a5dc3  plugins/ubcd.sh
 ed370c9594b4ff7aab03c5a0207f5f46  plugins/ubuntu2.sh
 508cc6f8b96ba176ef1e1111d5aed59a  plugins/ubuntu_32_bit.sh
-5f4ed16608599a50394463f47a437d9b  plugins/ubuntu3.sh
+d607de3c56c9a8b3818108a382f20c17  plugins/ubuntu3.sh
 3a97d0baced1bf9bd71bd6ccfc787fa2  plugins/ubuntu_64_bit.sh
 cd0a3681dbdcfab44c3eceed78a19128  plugins/ubuntu-inst.sh
 5f0851a3bbc17f884a375264176a96ec  plugins/ubuntu.sh

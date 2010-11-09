@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #Linux Mint Debian Edition plugin for multicd.sh
-#version 5.8
+#version 6.1
 #Copyright (c) 2010 libertyernie, Zirafarafa
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +22,9 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "linuxmint-debian-*.iso ubuntu3.iso Linux^Mint^Debian^Edition"
+elif [ $1 = scan ];then
 	if [ -f mintdebian.iso ];then
 		echo "Linux Mint Debian Edition"
 	fi
