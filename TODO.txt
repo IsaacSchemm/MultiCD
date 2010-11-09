@@ -1,5 +1,6 @@
-Plugins still work; this is just so they all use the same format. I'm still working on it.
+Plugins still work; this is just so they all use the same format. I'm still working on it. This file is for my use.
 *Have plugins use $MNT and $WORK instead of current dir and multicd-working, respectively
 *Have plugins use new "mcdmount" and "mcdumount" functions included in multicd.sh
 *Use echo instead of cat for writing to isolinux.cfg
-*Use "initrd" isolinux command instead of putting initrd in append (new usage)
+*Optional: use "initrd" isolinux command instead of putting initrd in append (new usage)
+*Add "links" option to each plugin

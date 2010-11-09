@@ -1,3 +1,23 @@
+#Automatically recognized filenames (the script will make links to the files it expects to see below):
+KNOPPIX_V*.iso	knoppix.iso
+kubuntu-*-desktop-i386.iso		kubuntu_32_bit.iso
+kubuntu-*-desktop-amd64.iso		kubuntu_64_bit.iso
+linuxmint-gnome*.iso			linuxmint.iso
+linuxmint-kde*.iso			linuxmint.iso
+linuxmint-xfce*.iso			linuxmint.iso
+linuxmint-lxde*.iso			linuxmint.iso
+linuxmint-fluxbox*.iso			linuxmint.iso
+linuxmint-debian-*.iso			mintdebian.iso
+NetbootCD-*.iso				netbootcd.iso
+lupu-*.iso				puppy.iso
+slax-*.iso				slax.iso
+systemrescuecd-x86-*.iso		sysrcd.iso
+tinycore-current.iso			tinycore.iso
+tinycore_*.iso				tinycore.iso
+trinity-rescue-kit.*.iso		trk.iso
+ubuntu-*-desktop-i386.iso		ubuntu_32_bit.iso
+ubuntu-*-desktop-amd64.iso		ubuntu_64_bit.iso
+
 #Filenames:	
 #antiX			antix.iso
 #Arch Linux		arch.iso
@@ -24,7 +44,9 @@
 #INSERT			insert.iso
 #IPCop			ipcop.iso
 #Knoppix 5		knoppix5.iso
+#Kubuntu live CD/DVD	kubuntu.iso, kubuntu_32_bit.iso, kubuntu_64_bit.iso
 #Linux Mint		linuxmint.iso
+#Linux Mint Debian Ed.	mintdebian.iso
 #Mandriva netboot	mandriva-boot.iso
 #NetbootCD		netbootcd.iso
 #NT Pass. & Reg. Editor	ntpasswd.iso
@@ -40,7 +62,7 @@
 #Tiny Core Linux	tinycore.iso
 #TinyMe			tinyme.iso
 #Trinity Rescue Kit	trk.iso
-#Ubuntu live CD		ubuntu.iso
+#Ubuntu live CDs	ubuntu.iso, ubuntu2.iso, ubuntu3.iso, ubuntu_32_bit.iso, ubuntu_64_bit.iso
 #Ubuntu netboot		ubuntu-mini.iso
 #Ultimate Boot CD	ubcd.iso
 #Vyatta			vyatta.iso

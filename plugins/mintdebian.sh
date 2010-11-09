@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "linuxmint-debian-*.iso ubuntu3.iso Linux^Mint^Debian^Edition"
+	echo "linuxmint-debian-*.iso mintdebian.iso"
 elif [ $1 = scan ];then
 	if [ -f mintdebian.iso ];then
 		echo "Linux Mint Debian Edition"

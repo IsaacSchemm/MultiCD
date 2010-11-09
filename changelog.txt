@@ -57,4 +57,4 @@
 #v5.8 - Added Windows 7 recovery disc plugin. Incorporated fixes for Arch Linux plugins. Various bugfixes. Step 1 now run as root again (there were file permission issues) but still checks md5sums first. (September 17, 2010)
 #v5.9 - Slight changes to plugins to use variables, echo instead of cat (most haven't been changed yet; see TODO.txt). Trinity and GParted plugins fixed. Ubuntu plugins use a common ubuntu-common.sh for copying. Hiren's support added. Other changes I forgot about. (Oct 6, 2010)
 #v6.0 - Added "wait" (or "w") option to multicd.sh. Added puppy2, tinycore2 plugins. Knoppix now has a submenu. Minor: DBAN plugin now comments out options instead of simply hiding them. (October 20, 2010)
-#v6.1 - Added automatic ISO linking and "cleanlinks" option to multicd.sh. Changed (K)ubuntu 32/64-bit plugin titles (on the boot menu.) [UNREL]
+#v6.1 - Added automatic ISO linking and "cleanlinks" option to multicd.sh. (The ISO names to look for when linking are stored in the plugins - see tinycore.sh for an example.) Also changed (K)ubuntu 32/64-bit plugin titles (on the boot menu) and updated some more plugins to the "new format." (Nov 9, 2010)

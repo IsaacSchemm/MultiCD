@@ -22,7 +22,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "slax-remix-*.iso slax.iso"
+	echo "slax-*.iso slax.iso"
 elif [ $1 = scan ];then
 	if [ -f slax.iso ];then
 		echo "Slax"
