@@ -13,16 +13,6 @@ mcdmount () {
 umcdmount () {
 	umount $MNT/$1;rmdir $MNT/$1
 }
-cleanlinks () {
-	ls -la |grep ^l |awk '{ print $8,$10 }'|while read i;do
-		if echo $i|awk '{print $2}'|grep -qv "/";then
-			rm -v $(echo $i|awk '{print $1}')
-		fi
-	done
-	rm -fv *.defaultname 2> /dev/null
-	rm -fv *.version 2> /dev/null
-	exit 0
-}
 
 isoaliases () {
 true > $TAGS/linklist

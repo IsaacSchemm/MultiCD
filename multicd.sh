@@ -34,7 +34,14 @@ export TAGS=$MNT/tags
 
 
 if echo $* | grep -q "\bcleanlinks\b";then
-	cleanlinks
+	ls -la |grep ^l |awk '{ print $8,$10 }'|while read i;do
+		if echo $i|awk '{print $2}'|grep -qv "/";then
+			rm -v $(echo $i|awk '{print $1}')
+		fi
+	done
+	rm -fv *.defaultname 2> /dev/null
+	rm -fv *.version 2> /dev/null
+	exit 0
 fi
 
 if !(uname|grep -q Linux);then
