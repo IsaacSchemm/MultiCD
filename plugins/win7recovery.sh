@@ -2,7 +2,7 @@
 set -e
 #Windows 7 Recovery Disc plugin for multicd.sh
 #version 5.8
-#Copyright for this script (c) 2010 maybeway36
+#Copyright for this script (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal

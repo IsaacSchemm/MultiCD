@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #SystemRescueCd plugin for multicd.sh
 #version 6.1
-#Copyright (c) 2010 maybeway36
+#Copyright (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal

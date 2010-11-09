@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #BackTrack plugin for multicd.sh (designed for BackTrack 4)
 #version 5.7
-#Copyright (c) 2010 maybeway36
+#Copyright (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
