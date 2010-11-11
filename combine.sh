@@ -20,7 +20,7 @@ for i in $(echo plugins/*.sh);do
 			echo "Note: $i may not be under the MIT license. Check its license terms and add them to combined-multicd.sh."
 		fi
 		head -n 3 $i |tail -n 2 >> working1.sh #Plugin title
-		if grep '\$1 = links' $i;then
+		if grep -q '\$1 = links' $i;then
 			sed -n '/\$1 = links/,/\$1 = scan/p' $i|sed -e '1d' -e '$d' >> working1.sh #Links portion
 		fi
 		sed -n '/\$1 = scan/,/\$1 = copy/p' $i|sed -e '1d' -e '$d' >> working3.sh #Scan portion

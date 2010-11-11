@@ -14,7 +14,7 @@ f0ac7667e148c426e8b4bfdc36c376c0  plugins/clonezilla.sh
 35e2b6c5fd86be53788a6828ce66da9d  plugins/diskcopy.sh
 1e318ce1d88b3589d1fa263f30b7cd9a  plugins/dsl.sh
 a48803fc0ef4ebe72f0cda9080f566fd  plugins/dvl.sh
-6e55cb3dbe30c90b2583fad7af37b51c  plugins/efw.sh
+b513c265ea3c94d0f3daf91cefb6547a  plugins/efw.sh
 dfccc0474313ff1a79c5acefd9d9f2be  plugins/elastix.sh
 c0fed35f474e1323473770faa78e6814  plugins/feather.sh
 a7f9ee5f5169fd6b89b16ecab0da15d9  plugins/fedora.sh
