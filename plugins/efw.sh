@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #Endian Firewall Community Edition plugin for multicd.sh
-#version 6.0
+#version 6.2
 #Copyright (c) 2010 PsynoKhi0, libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,7 +37,7 @@ elif [ $1 = copy ];then
 		cp -r $MNT/efw/rpms $WORK/ #at the root of the original CD
 		cp $MNT/efw/LICENSE.txt $WORK/EFW-LICENSE.txt #License terms
 		cp $MNT/efw/README.txt $WORK/EFW-README.txt
-		umcdmount endian
+		umcdmount efw
 	fi
 elif [ $1 = writecfg ];then
 if [ -f efw.iso ];then

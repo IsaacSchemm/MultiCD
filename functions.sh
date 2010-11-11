@@ -16,11 +16,13 @@ umcdmount () {
 
 isoaliases () {
 true > $TAGS/linklist
+#START LINKS#
 for i in $MCDDIR/plugins/*;do
 	if ! ($i links|grep -q Usage);then
 		$i links >> $TAGS/linklist
 	fi
 done
+#END LINKS#
 cat $TAGS/linklist|while read i;do
 	IM1=$(echo $i|awk '{print $1}')
 	IM2=$(echo $i|awk '{print $2}')
@@ -120,3 +122,4 @@ ubuntucommon () {
 		exit 1
 	fi
 }
+#END FUNCTIONS
