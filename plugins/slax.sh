@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Slax 6 plugin for multicd.sh
-#version 6.0
+#version 6.2
 #Copyright (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,13 +31,7 @@ elif [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f slax.iso ];then
 		echo "Copying Slax..."
-		if [ ! -d $MNT/slax ];then
-			mkdir $MNT/slax
-		fi
-		if grep -q "$MNT/slax" /etc/mtab ; then
-			umount $MNT/slax
-		fi
-		mount -o loop slax.iso $MNT/slax/
+		mcdmount slax
 		if [ -f $TAGS/slaxlist ];then
 			mkdir $WORK/$MNT/slax
 			for i in `ls $MNT/slax/slax|sed -e '/^base$/ d'`;do
@@ -59,7 +54,7 @@ elif [ $1 = copy ];then
 			SUFFIX=gz
 		fi
 		cp $MNT/slax/boot/initrd.$SUFFIX $WORK/boot/slax/initrd.$SUFFIX
-		umount $MNT/slax;rmdir $MNT/slax
+		umcdmount slax
 		##########
 		if [ "`ls -1 *.lzm 2> /dev/null;true`" != "" ];then
 			echo "Copying Slax modules..."
