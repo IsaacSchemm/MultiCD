@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #openSUSE installer plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 libertyernie
+#version 6.2
+#Copyright (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,37 +23,27 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = scan ];then
-	if [ -f opensuse.iso ];then
+	if [ -f opensuse-boot.iso ];then
 		echo "openSUSE netboot installer"
 	fi
 elif [ $1 = copy ];then
-	if [ -f opensuse.iso ];then
+	if [ -f opensuse-boot.iso ];then
 		echo "Copying openSUSE netboot installer..."
-		if [ ! -d opensuse ];then
-			mkdir opensuse
-		fi
-		if grep -q "`pwd`/opensuse" /etc/mtab ; then
-			umount opensuse
-		fi
-		mount -o loop opensuse.iso opensuse/
-		mkdir multicd-working/boot/opensuse
-		awk '/^VERSION/ {print $2}' opensuse/content >/tmp/$USER-opensuseversion.tmp
-		cp opensuse/boot/i386/loader/linux multicd-working/boot/opensuse/linux
-		cp opensuse/boot/i386/loader/initrd multicd-working/boot/opensuse/initrd
-		umount opensuse
-		rmdir opensuse
+		mcdmount opensuse-boot
+		mkdir $WORK/boot/opensuse
+		awk '/^VERSION/ {print $2}' $MNT/opensuse/content > $TAGS/opensuse-boot.version
+		cp $MNT/opensuse/boot/i386/loader/linux $WORK/boot/opensuse/linux
+		cp $MNT/opensuse/boot/i386/loader/initrd $WORK/boot/opensuse/initrd
+		umcdmount opensuse-boot
 	fi
 elif [ $1 = writecfg ];then
-if [ -f opensuse.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label opensuse-kernel
-  menu label Install ^openSUSE (from mirrors.kernel.org)
+if [ -f opensuse-boot.iso ];then
+echo "label opensuse-kernel
+  menu label Install ^openSUSE $(cat $TAGS/opensuse-boot.version) (from mirrors.kernel.org)
   kernel /boot/opensuse/linux
-EOF
-echo "  append initrd=/boot/opensuse/initrd splash=silent showopts install=ftp://mirrors.kernel.org/opensuse/distribution/"$(cat /tmp/$USER-opensuseversion.tmp)"/repo/oss" >> multicd-working/boot/isolinux/isolinux.cfg
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+  append initrd=/boot/opensuse/initrd splash=silent showopts install=ftp://mirrors.kernel.org/opensuse/distribution/"$(cat $TAGS/opensuse-boot.version)"/repo/oss
 label opensuse
-  menu label Install openSUSE (specify mirror)
+  menu label Install openSUSE $(cat $TAGS/opensuse-boot.version) (specify mirror)
   kernel /boot/opensuse/linux
   append initrd=/boot/opensuse/initrd splash=silent showopts
 label opensuse-repair
@@ -63,7 +54,7 @@ label opensuse-rescue
   menu label openSUSE rescue system
   kernel /boot/opensuse/linux
   append initrd=/boot/opensuse/initrd splash=silent rescue=1 showopts
-EOF
+" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

@@ -32,11 +32,11 @@ b874ff8fd9da71cb400c620026b74184  plugins/kubuntu_64_bit.sh
 24063643dfa04dd464d27ce321af30ba  plugins/kubuntu.sh
 18643455432b0861454306ac3a0b06e4  plugins/linuxmint.sh
 e259a7c51aabacc881c99265798aca87  plugins/macpup.sh
-a790922354f2d9e710d6714af4301b5b  plugins/mandriva.sh
+a790922354f2d9e710d6714af4301b5b  plugins/mandriva-boot.sh
 8e6b9b6d45e57603ecded4442174374b  plugins/mintdebian.sh
 dd4942f842ccf3c3a0add829e078d9b1  plugins/netbootcd.sh
 56e7914ee4eb0c79dc89dc70598d7833  plugins/ntpasswd.sh
-e8ec385f7d2bcc57cc6f6e5301dc4aa5  plugins/opensuse.sh
+450f9eab26565c60157cfedf3f8a94ef  plugins/opensuse.sh
 80b82c2e3869d1d5d70030b49d2ace47  plugins/ophcrack.sh
 fc76457bb8be26e33359b3a0b4ec6a2f  plugins/pclos.sh
 7b917e58234b8aba3147179b922cf3a3  plugins/pclx.sh

@@ -258,17 +258,19 @@ fi
 
 echo "Downloading SYSLINUX..." #Option 1 is to use an already present syslinux.tar.gz
 if [ ! -f syslinux.tar.gz ] && [ -d /usr/lib/syslinux ];then #Option 2: Use installed syslinux
+	#This will only be run if there is no syslinux.tar.gz file in the current dir.
 	cp /usr/lib/syslinux/isolinux.bin $WORK/boot/isolinux/
 	cp /usr/lib/syslinux/memdisk $WORK/boot/isolinux/
 	cp /usr/lib/syslinux/menu.c32 $WORK/boot/isolinux/
 	cp /usr/lib/syslinux/vesamenu.c32 $WORK/boot/isolinux/
 	cp /usr/lib/syslinux/chain.c32 $WORK/boot/isolinux/
 else
-	if [ ! -f syslinux.tar.gz ];then
-		if $VERBOSE ;then #Option 3: Get syslinux.tar.gz and save it here
-			wget -O syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.02.tar.gz
+	if [ ! -f syslinux.tar.gz ];then #Option 3: Get syslinux.tar.gz and save it here
+		if $VERBOSE ;then #These will only be run if there is no syslinux.tar.gz AND if syslinux is not installed on your PC
+			#Both of these need to be changed when a new version of syslinux comes out.
+			wget -O syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.03.tar.gz
 		else
-			wget -qO syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.02.tar.gz
+			wget -qO syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.03.tar.gz
 		fi
 	fi
 	echo "Unpacking and copying files..."
@@ -466,4 +468,4 @@ rm -r $WORK/
 isohybrid multicd.iso || true
 chmod 666 multicd.iso
 rm -r $TAGS
-#END SCRIPT
+#END SCRIPTwget -
