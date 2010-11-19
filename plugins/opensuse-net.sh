@@ -23,27 +23,27 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = scan ];then
-	if [ -f opensuse-boot.iso ];then
+	if [ -f opensuse-net.iso ];then
 		echo "openSUSE netboot installer"
 	fi
 elif [ $1 = copy ];then
-	if [ -f opensuse-boot.iso ];then
+	if [ -f opensuse-net.iso ];then
 		echo "Copying openSUSE netboot installer..."
-		mcdmount opensuse-boot
-		mkdir $WORK/boot/opensuse
-		awk '/^VERSION/ {print $2}' $MNT/opensuse/content > $TAGS/opensuse-boot.version
-		cp $MNT/opensuse/boot/i386/loader/linux $WORK/boot/opensuse/linux
-		cp $MNT/opensuse/boot/i386/loader/initrd $WORK/boot/opensuse/initrd
-		umcdmount opensuse-boot
+		mcdmount opensuse-net
+		mkdir -p $WORK/boot/opensuse
+		awk '/^VERSION/ {print $2}' $MNT/opensuse-net/content > $TAGS/opensuse-net.version
+		cp $MNT/opensuse-net/boot/i386/loader/linux $WORK/boot/opensuse/linux
+		cp $MNT/opensuse-net/boot/i386/loader/initrd $WORK/boot/opensuse/initrd
+		umcdmount opensuse-net
 	fi
 elif [ $1 = writecfg ];then
-if [ -f opensuse-boot.iso ];then
+if [ -f opensuse-net.iso ];then
 echo "label opensuse-kernel
-  menu label Install ^openSUSE $(cat $TAGS/opensuse-boot.version) (from mirrors.kernel.org)
+  menu label Install ^openSUSE $(cat $TAGS/opensuse-net.version) (from mirrors.kernel.org)
   kernel /boot/opensuse/linux
-  append initrd=/boot/opensuse/initrd splash=silent showopts install=ftp://mirrors.kernel.org/opensuse/distribution/"$(cat $TAGS/opensuse-boot.version)"/repo/oss
+  append initrd=/boot/opensuse/initrd splash=silent showopts install=ftp://mirrors.kernel.org/opensuse/distribution/"$(cat $TAGS/opensuse-net.version)"/repo/oss
 label opensuse
-  menu label Install openSUSE $(cat $TAGS/opensuse-boot.version) (specify mirror)
+  menu label Install openSUSE $(cat $TAGS/opensuse-net.version) (specify mirror)
   kernel /boot/opensuse/linux
   append initrd=/boot/opensuse/initrd splash=silent showopts
 label opensuse-repair
