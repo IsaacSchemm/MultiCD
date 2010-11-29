@@ -25,6 +25,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f ipcop.iso ];then
 		echo "IPCop"
+		touch $TAGS/redhats/ipcop
 	fi
 elif [ $1 = copy ];then
 	if [ -f ipcop.iso ];then

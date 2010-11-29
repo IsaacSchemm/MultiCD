@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #Fedora installer plugin for multicd.sh
-#version 6.1
+#version 6.2
 #Copyright (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,9 +22,12 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
+if [ $1 = links ];then
+	echo "Fedora-14-i386-netinst.iso fedora-boot.iso"
 if [ $1 = scan ];then
 	if [ -f fedora-boot.iso ];then
 		echo "Fedora netboot installer"
+		touch $TAGS/redhats/fedora-boot
 	fi
 elif [ $1 = copy ];then
 	if [ -f fedora-boot.iso ];then

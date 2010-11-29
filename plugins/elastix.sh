@@ -25,6 +25,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f elastix.iso ];then
 		echo "Elastix"
+		touch $TAGS/redhats/elastix
 	fi
 elif [ $1 = copy ];then
 	if [ -f elastix.iso ];then
