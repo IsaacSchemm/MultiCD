@@ -280,7 +280,8 @@ else
 	cp /tmp/syslinux-*/com32/menu/menu.c32 $WORK/boot/isolinux/
 	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 $WORK/boot/isolinux/
 	cp /tmp/syslinux-*/com32/modules/chain.c32 $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/utils/isohybrid $TAGS/isohybrid; PATH=$PATH:$TAGS
+	cp /tmp/syslinux-*/utils/isohybrid ./isohybrid
+	chmod +x ./isohybrid
 	rm -r /tmp/syslinux-*/
 fi
 
@@ -465,7 +466,7 @@ $GENERATOR -o multicd.iso \
 -r -J $EXTRAARGS \
 -V "$CDLABEL" $WORK/
 rm -r $WORK/
-isohybrid multicd.iso || true
+isohybrid multicd.iso || ./isohybrid multicd.iso || true
 chmod 666 multicd.iso
 rm -r $TAGS
 #END SCRIPTwget -
