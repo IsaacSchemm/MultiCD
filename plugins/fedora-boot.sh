@@ -23,8 +23,8 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "Fedora-14-i386-netinst.iso fedora-boot.iso"
-if [ $1 = scan ];then
+	echo "Fedora-*-i386-netinst.iso fedora-boot.iso"
+elif [ $1 = scan ];then
 	if [ -f fedora-boot.iso ];then
 		echo "Fedora netboot installer"
 		touch $TAGS/redhats/fedora-boot
@@ -47,21 +47,24 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f fedora-boot.iso ];then
+if [ -f fedora-boot.version ] && [ "$(cat fedora-boot.version)" != "" ];then
+	VERSION=" $(cat fedora-boot.version)" #Version based on isoaliases()
+fi
 echo "label flinux
   #TIP: If you change the method= entry in the append line, you can change the mirror and version installed.
-  menu label ^Install Fedora from mirrors.kernel.org (Fedora 13 only)
+  menu label ^Install Fedora$VERSION from mirrors.kernel.org (Fedora 13 only)
   kernel /boot/fedora/vmlinuz
   append initrd=/boot/fedora/initrd.img method=http://mirrors.kernel.org/fedora/releases/13/Fedora/i386/os
 label flinux
-  menu label ^Install or upgrade Fedora from another mirror
+  menu label ^Install or upgrade Fedora$VERSION from another mirror
   kernel /boot/fedora/vmlinuz
   append initrd=/boot/fedora/initrd.img
 label ftext
-  menu label Install or upgrade Fedora (text mode)
+  menu label Install or upgrade Fedora$VERSION (text mode)
   kernel /boot/fedora/vmlinuz
   append initrd=/boot/fedora/initrd.img text
 label frescue
-  menu label Rescue installed Fedora system
+  menu label Rescue installed Fedora$VERSION system
   kernel /boot/fedora/vmlinuz
   append initrd=/boot/fedora/initrd.img rescue
 " >> multicd-working/boot/isolinux/isolinux.cfg
