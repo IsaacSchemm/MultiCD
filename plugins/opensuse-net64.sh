@@ -42,20 +42,20 @@ elif [ $1 = writecfg ];then
 if [ -f opensuse-net64.iso ];then
 echo "label opensuse-kernel
   menu label Install ^openSUSE $(cat $TAGS/opensuse-net.version) x86_64 (from mirrors.kernel.org)
-  kernel /boot/opensuse/linux
-  append initrd=/boot/opensuse/initrd splash=silent showopts install=ftp://mirrors.kernel.org/opensuse/distribution/"$(cat $TAGS/opensuse-net.version)"/repo/oss
+  kernel /boot/opensuse/linux64
+  append initrd=/boot/opensuse/initrd64 splash=silent showopts install=ftp://mirrors.kernel.org/opensuse/distribution/"$(cat $TAGS/opensuse-net.version)"/repo/oss
 label opensuse
   menu label Install openSUSE $(cat $TAGS/opensuse-net.version) x86_64 (specify mirror)
-  kernel /boot/opensuse/linux
-  append initrd=/boot/opensuse/initrd splash=silent showopts
+  kernel /boot/opensuse/linux64
+  append initrd=/boot/opensuse/initrd64 splash=silent showopts
 label opensuse-repair
   menu label Repair an installed openSUSE x86_64 system
-  kernel /boot/opensuse/linux
-  append initrd=/boot/opensuse/initrd splash=silent repair=1 showopts
+  kernel /boot/opensuse/linux64
+  append initrd=/boot/opensuse/initrd64 splash=silent repair=1 showopts
 label opensuse-rescue
   menu label openSUSE x86_64 rescue system
-  kernel /boot/opensuse/linux
-  append initrd=/boot/opensuse/initrd splash=silent rescue=1 showopts
+  kernel /boot/opensuse/linux64
+  append initrd=/boot/opensuse/initrd64 splash=silent rescue=1 showopts
 " >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else

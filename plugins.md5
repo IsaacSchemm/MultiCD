@@ -1,7 +1,7 @@
 23d1b66e2f5837dbbd5ec74bfc8b3e3f  plugins/0hello.sh
 35792debfbef699de65cea3b22d4fe58  plugins/antix.sh
 88359d7878d3fe8def108fc8d431b9c0  plugins/archdual.sh
-bf8412fbc708724e8497a7078c19b00e  plugins/archlive.sh
+a5d3da8adfb5144b7b267157ca4ebfe7  plugins/archiso-live.sh
 121a4919e3ceb376a504bfaad8f4ae6d  plugins/arch.sh
 335d39e77bafedda124eae768fdfad04  plugins/austrumi.sh
 170ce8fdb148ae01b34bf4b86a5a41da  plugins/avg.sh
@@ -19,7 +19,7 @@ a48803fc0ef4ebe72f0cda9080f566fd  plugins/dvl.sh
 b513c265ea3c94d0f3daf91cefb6547a  plugins/efw.sh
 3b2bd3b8a181bfea8ca09a1c7d2afb31  plugins/elastix.sh
 c0fed35f474e1323473770faa78e6814  plugins/feather.sh
-23b879d9f0c7e61f5302e2ca49d2ca7a  plugins/fedora-boot64.sh
+f0f87cb3d3a644dedd8905eea1e4cfdc  plugins/fedora-boot64.sh
 950185b8fb4082ee9075dce5f7c450e5  plugins/fedora-boot.sh
 fa165ce1147203c048c5f254d20e82dc  plugins/finnix.sh
 f4fadf11263db60de023876e27c65acd  plugins/freedos.sh
@@ -38,8 +38,8 @@ a790922354f2d9e710d6714af4301b5b  plugins/mandriva-boot.sh
 8e6b9b6d45e57603ecded4442174374b  plugins/mintdebian.sh
 dd4942f842ccf3c3a0add829e078d9b1  plugins/netbootcd.sh
 56e7914ee4eb0c79dc89dc70598d7833  plugins/ntpasswd.sh
-10ba12d18d965a85de24067ad0faf058  plugins/opensuse-gnome.sh
-9169949fcfe85e5c79eac58aa8c64d3e  plugins/opensuse-net64.sh
+96f7f98e3d8df5267ef28a324ba93123  plugins/opensuse-gnome.sh
+88936a74da7942483ff6f18d8eb0fa25  plugins/opensuse-net64.sh
 deabef03a26e4ce57c0f8b811b463768  plugins/opensuse-net.sh
 80b82c2e3869d1d5d70030b49d2ace47  plugins/ophcrack.sh
 fc76457bb8be26e33359b3a0b4ec6a2f  plugins/pclos.sh

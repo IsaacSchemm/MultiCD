@@ -34,7 +34,8 @@ elif [ $1 = copy ];then
 		mcdmount opensuse-gnome
 		mkdir -p $WORK/boot/opensuse-gnome
 		cp $MNT/opensuse-gnome/openSUSE* $WORK/
-		#cp $MNT/config.isoclient $WORK/
+		cp $MNT/opensuse-gnome/config.isoclient $WORK/
+		mkdir $WORK/boot/susegnom
 		cp $MNT/opensuse-gnome/boot/i386/loader/linux $WORK/boot/susegnom/linux
 		cp $MNT/opensuse-gnome/boot/i386/loader/initrd $WORK/boot/susegnom/initrd
 		umcdmount opensuse-gnome

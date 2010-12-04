@@ -479,7 +479,12 @@ $GENERATOR -o multicd.iso \
 -r -J $EXTRAARGS \
 -V "$CDLABEL" $WORK/
 rm -r $WORK/
-isohybrid multicd.iso || ./isohybrid multicd.iso || true
+if [ -f isohybrid ];then
+	./isohybrid multicd.iso || true
+	rm isohybrid
+else
+	isohybrid multicd.iso || true
+fi
 chmod 666 multicd.iso
 rm -r $TAGS
 #END SCRIPTwget -

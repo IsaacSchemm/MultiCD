@@ -23,27 +23,27 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "archiso-live-*.iso archlive.iso"
+	echo "archiso-live-*.iso archiso-live.iso"
 elif [ $1 = scan ];then
-	if [ -f archlive.iso ];then
+	if [ -f archiso-live.iso ];then
 		echo "Archiso-live"
 	fi
 elif [ $1 = copy ];then
-	if [ -f archlive.iso ];then
+	if [ -f archiso-live.iso ];then
 		echo "Copying Archiso-live..."
-		mcdmount archlive
-		mkdir $WORK/boot/archlive
-		cp $MNT/archlive/boot/vmlinuz $WORK/boot/archlive/vmlinuz
-		cp $MNT/archlive/boot/initrd.img $WORK/boot/archlive/initrd.img
-		cp -rv $MNT/archlive/archiso-live $WORK/ #Compressed filesystems
-		umcdmount archlive
+		mcdmount archiso-live
+		mkdir $WORK/boot/archiso-live
+		cp $MNT/archiso-live/boot/vmlinuz $WORK/boot/archlive/vmlinuz
+		cp $MNT/archiso-live/boot/initrd.img $WORK/boot/archlive/initrd.img
+		cp -r $MNT/archiso-live/archiso-live $WORK/ #Compressed filesystems
+		umcdmount archiso-live
 	fi
 elif [ $1 = writecfg ];then
-if [ -f archlive.iso ];then
-if [ -f archlive.version ] && [ "$(cat archlive.version)" != "" ];then
-	VERSION=" \($(cat archlive.version)\)" #Version based on isoaliases()
+if [ -f archiso-live.iso ];then
+if [ -f archiso-live.version ] && [ "$(cat archiso-live.version)" != "" ];then
+	VERSION=" \($(cat archiso-live.version)\)" #Version based on isoaliases()
 fi
-echo "LABEL archlive
+echo "LABEL archiso-live
 TEXT HELP
 Boot the Arch Linux live medium. It allows you to install Arch Linux or
 perform system maintenance.
@@ -53,7 +53,7 @@ KERNEL /boot/archlive/vmlinuz
 APPEND initrd=/boot/archlive/initrd.img locale=en_US.UTF-8 load=overlay cdname=archiso-live session=xfce
 IPAPPEND 0
 
-LABEL archlivebaseonly
+LABEL archiso-livebaseonly
 TEXT HELP
 Boot the Arch Linux live medium. It allows you to install Arch Linux or
 perform system maintenance. Basic LXDE desktop and apps.
