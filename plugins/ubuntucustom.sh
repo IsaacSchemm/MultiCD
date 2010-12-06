@@ -22,26 +22,53 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+
+ubuname() {
+BASENAME=$(echo $1|sed -e 's/\.iso//g')
+if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then
+	UBUNAME="$(cat $TAGS/$BASENAME.name)"
+else
+	UBUNAME=$(echo $1|sed -e 's/\.ubuntu\.iso//g') #No custom name found
+fi
+}
+
+if [ $1 = links ];then
+	echo "ubuntu-*-desktop-i386.iso i386.ubuntu.iso Ubuntu_(32-bit)"
+	echo "ubuntu-*-desktop-amd64.iso amd64.ubuntu.iso Ubuntu_(64-bit)"
+	echo "kubuntu-*-desktop-i386.iso i386.k.ubuntu.iso Kubuntu_(32-bit)"
+	echo "kubuntu-*-desktop-amd64.iso amd64.k.ubuntu.iso Kubuntu_(64-bit)"
+	echo "xubuntu-*-desktop-i386.iso i386.x.ubuntu.iso Xubuntu_(32-bit)"
+	echo "xubuntu-*-desktop-amd64.iso amd64.x.ubuntu.iso Xubuntu_(64-bit)"
+	echo "edubuntu-*-dvd-i386.iso i386.x.ubuntu.iso Edubuntu_(32-bit)"
+	echo "edubuntu-*-dvd-amd64.iso amd64.x.ubuntu.iso Edubuntu_(64-bit)"
+elif [ $1 = scan ];then
 	if [ "*.ubuntu.iso" != "$(echo *.ubuntu.iso)" ];then for i in *.ubuntu.iso; do
-		echo $(echo $i|sed -e 's/\.ubuntu\.iso//g')
+		if [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
+			cat $BASENAME.defaultname
+		else
+			echo $i
+		fi
 		echo > $TAGS/$(echo $i|sed -e 's/\.iso/\.needsname/g') #Comment out this line and multicd.sh won't ask for a custom name for this ISO
 	done;fi
 elif [ $1 = copy ];then
 	if [ "*.ubuntu.iso" != "$(echo *.ubuntu.iso)" ];then for i in *.ubuntu.iso; do
-		echo "Copying $i..."
+		ubuname $i
+		echo "Copying $UBUNAME..."
 		ubuntucommon $(echo $i|sed -e 's/\.iso//g')
 	done;fi
 elif [ $1 = writecfg ];then
 if [ "*.ubuntu.iso" != "$(echo *.ubuntu.iso)" ];then for i in *.ubuntu.iso; do
-BASENAME=$(echo $i|sed -e 's/\.iso//g')
-if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then
-	UBUNAME="$(cat $TAGS/$BASENAME.name)"
+
+ubuname $i
+
+if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
+	VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
 else
-	UBUNAME=$(echo $i|sed -e 's/\.ubuntu\.iso//g')
+	VERSION=""
 fi
+
 echo "label ubuntu
-menu label --> $UBUNAME Menu
+menu label --> $UBUNAME$VERSION Menu
 com32 menu.c32
 append /boot/$BASENAME/$BASENAME.cfg
 " >> multicd-working/boot/isolinux/isolinux.cfg

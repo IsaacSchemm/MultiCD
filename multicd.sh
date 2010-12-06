@@ -203,6 +203,13 @@ if $INTERACTIVE;then
 			dialog --inputbox "What would you like $BASENAME to be called on the CD boot menu?\n(Leave blank for the default.)" 10 70 \
 			2> $(echo $i|sed -e 's/needsname/name/g')
 		done
+	else
+		for i in $(find $TAGS -maxdepth 1 -name \*.needsname);do
+			BASENAME=$(basename $i|sed -e 's/\.needsname//g')
+			if [ -f $BASENAME.defaultname ];then
+				cp $BASENAME.defaultname $TAGS/$BASENAME.name
+			fi
+		done
 	fi
 else
 	CDTITLE="MultiCD - Created $(date +"%b %d, %Y")"
@@ -213,6 +220,12 @@ else
 	for i in puppies redhats;do
 		if [ $(find $TAGS/$i -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
 			touch $(find $TAGS/$i -maxdepth 1 -type f|head -n 1) #This way, the first one alphabetically will be in the root dir
+		fi
+	done
+	for i in $(find $TAGS -maxdepth 1 -name \*.needsname);do
+		BASENAME=$(basename $i|sed -e 's/\.needsname//g')
+		if [ -f $BASENAME.defaultname ];then
+			cp $BASENAME.defaultname $TAGS/$BASENAME.name
 		fi
 	done
 fi

@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #Ubuntu (32-bit) plugin for multicd.sh
-#version 6.1
+#version 6.2
 #Copyright (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "ubuntu-*-desktop-i386.iso ubuntu_32_bit.iso"
+	true #echo "ubuntu-*-desktop-i386.iso ubuntu_32_bit.iso"
 elif [ $1 = scan ];then
 	if [ -f ubuntu_32_bit.iso ];then
 		echo "Ubuntu (32-bit)"
