@@ -26,11 +26,11 @@ if [ $1 = links ];then
 	echo "openSUSE-*-NET-x86_64.iso opensuse-net64.iso"
 elif [ $1 = scan ];then
 	if [ -f opensuse-net64.iso ];then
-		echo "openSUSE netboot installer"
+		echo "openSUSE 64-bit netboot installer"
 	fi
 elif [ $1 = copy ];then
 	if [ -f opensuse-net64.iso ];then
-		echo "Copying openSUSE netboot installer..."
+		echo "Copying openSUSE 64-bit netboot installer..."
 		mcdmount opensuse-net64
 		mkdir -p $WORK/boot/opensuse
 		awk '/^VERSION/ {print $2}' $MNT/opensuse-net64/content > $TAGS/opensuse-net.version

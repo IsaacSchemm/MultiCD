@@ -26,7 +26,9 @@ done
 cat $TAGS/linklist|while read i;do
 	IM1=$(echo $i|awk '{print $1}')
 	IM2=$(echo $i|awk '{print $2}')
-	if [ -e $IM1 ] && [ ! -e $IM2 ];then
+	if (echo $i|awk '{print $3}'|grep -q '\.iso') || [ -n "$(echo $i|awk '{print $4}')" ];then
+		echo "More than one matching ISO: $IM1, $IM2 (did not make link)"
+	elif [ -e $IM1 ] && [ ! -e $IM2 ];then
 		if ln -s $IM1 $IM2;then
 			ISOBASENAME=$(echo $IM2|sed -e 's/\.iso//g')
 			touch $TAGS/madelinks #This is to make multicd.sh pause for 1 second so the notifications are readable

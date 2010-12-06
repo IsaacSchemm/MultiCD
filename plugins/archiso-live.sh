@@ -33,24 +33,26 @@ elif [ $1 = copy ];then
 		echo "Copying Archiso-live..."
 		mcdmount archiso-live
 		mkdir $WORK/boot/archiso-live
-		cp $MNT/archiso-live/boot/vmlinuz $WORK/boot/archlive/vmlinuz
-		cp $MNT/archiso-live/boot/initrd.img $WORK/boot/archlive/initrd.img
+		cp $MNT/archiso-live/boot/vmlinuz $WORK/boot/archiso-live/vmlinuz
+		cp $MNT/archiso-live/boot/initrd.img $WORK/boot/archiso-live/initrd.img
 		cp -r $MNT/archiso-live/archiso-live $WORK/ #Compressed filesystems
 		umcdmount archiso-live
 	fi
 elif [ $1 = writecfg ];then
 if [ -f archiso-live.iso ];then
 if [ -f archiso-live.version ] && [ "$(cat archiso-live.version)" != "" ];then
-	VERSION=" \($(cat archiso-live.version)\)" #Version based on isoaliases()
+	VERSION=" ($(cat archiso-live.version))" #Version based on isoaliases()
+else
+	VERSION=""
 fi
 echo "LABEL archiso-live
 TEXT HELP
 Boot the Arch Linux live medium. It allows you to install Arch Linux or
 perform system maintenance.
 ENDTEXT
-MENU LABEL Boot Arch Linux$VERSION
-KERNEL /boot/archlive/vmlinuz
-APPEND initrd=/boot/archlive/initrd.img locale=en_US.UTF-8 load=overlay cdname=archiso-live session=xfce
+MENU LABEL Boot ^archiso-live$VERSION
+KERNEL /boot/archiso-live/vmlinuz
+APPEND initrd=/boot/archiso-live/initrd.img locale=en_US.UTF-8 load=overlay cdname=archiso-live session=xfce
 IPAPPEND 0
 
 LABEL archiso-livebaseonly
@@ -58,9 +60,9 @@ TEXT HELP
 Boot the Arch Linux live medium. It allows you to install Arch Linux or
 perform system maintenance. Basic LXDE desktop and apps.
 ENDTEXT
-MENU LABEL Boot Arch Linux with baseonly$VERSION
-KERNEL /boot/archlive/vmlinuz
-APPEND initrd=/boot/archlive/initrd.img locale=en_US.UTF-8 load=overlay cdname=archiso-live session=lxde baseonly
+MENU LABEL Boot archiso-live with baseonly$VERSION
+KERNEL /boot/archiso-live/vmlinuz
+APPEND initrd=/boot/archiso-live/initrd.img locale=en_US.UTF-8 load=overlay cdname=archiso-live session=lxde baseonly
 " >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
