@@ -29,8 +29,6 @@ e35371de7c33c44b3b8d52ef5e9af208  plugins/hirens.sh
 b0f803ec4c57f94f22ac3e806fde33a1  plugins/insert.sh
 4f29fee42e3000195298bd7c56493dd1  plugins/ipcop.sh
 5b2489f9f6802f7e0a6619b2d3b7e340  plugins/knoppix.sh
-5b6aeb32685fce7c4409a72266db2870  plugins/kubuntu_32_bit.sh
-b874ff8fd9da71cb400c620026b74184  plugins/kubuntu_64_bit.sh
 24063643dfa04dd464d27ce321af30ba  plugins/kubuntu.sh
 18643455432b0861454306ac3a0b06e4  plugins/linuxmint.sh
 e259a7c51aabacc881c99265798aca87  plugins/macpup.sh
@@ -59,9 +57,8 @@ c7814db52fbeb77c309cd5a20c3925cc  plugins/tinycore2.sh
 70a194d7fde44a3f367840c15bf1270f  plugins/trk.sh
 afbd7984644f64998c01b5ee312a5dc3  plugins/ubcd.sh
 ed370c9594b4ff7aab03c5a0207f5f46  plugins/ubuntu2.sh
-508cc6f8b96ba176ef1e1111d5aed59a  plugins/ubuntu_32_bit.sh
 d607de3c56c9a8b3818108a382f20c17  plugins/ubuntu3.sh
-3a97d0baced1bf9bd71bd6ccfc787fa2  plugins/ubuntu_64_bit.sh
+27f0654a7ad679ff61fbd7f6eafe8326  plugins/ubuntucustom.sh
 cd0a3681dbdcfab44c3eceed78a19128  plugins/ubuntu-inst.sh
 5f0851a3bbc17f884a375264176a96ec  plugins/ubuntu.sh
 be4929a5acfa8b1b60cd8c6eb055a7b6  plugins/vyatta.sh
