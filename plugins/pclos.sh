@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #PCLinuxOS plugin for multicd.sh
-#version 5.2
+#version 6.2
 #Copyright (c) 2010 libertyernie, PsynoKhi0
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,40 +21,34 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "pclinuxos-*.iso pclos.iso"
+elif [ $1 = scan ];then
 	if [ -f pclos.iso ];then
 		echo "PCLinuxOS"
 	fi
 elif [ $1 = copy ];then
 	if [ -f pclos.iso ];then
 		echo "Copying PCLinuxOS..."
-		if [ ! -d pclinuxos ];then
-			mkdir pclinuxos
-		fi
-		if grep -q `pwd`/pclinuxos /etc/mtab ; then
-			umount pclinuxos
-		fi
-		mount -o loop pclos.iso pclinuxos/
-		mkdir multicd-working/PCLinuxOS
+		mcdmount pclos
+		mkdir $WORK/PCLinuxOS
 		# Kernel, initrd
-		cp -r pclinuxos/isolinux multicd-working/PCLinuxOS/isolinux
-		# Empty boot folder, don't ask me...
-		# cp -r pclinuxos/boot multicd-working/PCLinuxOS/boot
+		cp -r $MNT/pclos/isolinux $WORK/PCLinuxOS/isolinux
 		# Filesystem
-		cp pclinuxos/livecd.sqfs multicd-working/PCLinuxOS/livecd.sqfs
+		cp $MNT/pclos/livecd.sqfs $WORK/PCLinuxOS/livecd.sqfs
 		# Remove memtest and mediacheck
-		if [ -f multicd-working/PCLinuxOS/isolinux/memtest ];then
-			rm multicd-working/PCLinuxOS/isolinux/memtest
+		if [ -f $WORK/PCLinuxOS/isolinux/memtest ];then
+			rm $WORK/PCLinuxOS/isolinux/memtest
 		fi
-		if [ -f multicd-working/PCLinuxOS/isolinux/mediacheck ];then
-			rm multicd-working/PCLinuxOS/isolinux/mediacheck
+		if [ -f $WORK/PCLinuxOS/isolinux/mediacheck ];then
+			rm $WORK/PCLinuxOS/isolinux/mediacheck
 		fi
-		umount pclinuxos
-		rmdir pclinuxos
+		umcdmount pclos
 	fi
 elif [ $1 = writecfg ];then
 if [ -f pclos.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+echo "menu begin --> ^PCLinuxOS
+
 label LiveCD
     menu label ^PCLinuxOS Live
     kernel /PCLinuxOS/isolinux/vmlinuz
@@ -83,7 +77,10 @@ label Copy_to_ram
     menu label ^PCLinuxOS Live - Copy to RAM
     kernel /PCLinuxOS/isolinux/vmlinuz
     append livecd=/PCLinuxOS/livecd copy2ram initrd=/PCLinuxOS/isolinux/initrd.gz root=/dev/rd/3 acpi=on vga=788 keyb=us splash=silent fstab=rw,auto splash=verbose
-EOF
+label back
+    menu label ^Back to main menu
+    com32 menu.c32
+    append isolinux.cfg" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

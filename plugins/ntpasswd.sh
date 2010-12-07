@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #NT Password Editor plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 libertyernie
+#version 6.2
+#Copyright (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -27,28 +27,20 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f ntpasswd.iso ];then
-		if [ ! -d ntpasswd ];then
-			mkdir ntpasswd
-		fi
-		if grep -q "`pwd`/ntpasswd" /etc/mtab ; then
-			umount ntpasswd
-		fi
-		mount -o loop ntpasswd.iso ntpasswd/
-		mkdir multicd-working/boot/ntpasswd
-		cp ntpasswd/vmlinuz multicd-working/boot/ntpasswd/vmlinuz
-		cp ntpasswd/initrd.cgz multicd-working/boot/ntpasswd/initrd.cgz
-		cp ntpasswd/scsi.cgz multicd-working/boot/ntpasswd/scsi.cgz #Alternate initrd
-		umount ntpasswd
-		rmdir ntpasswd
+		mcdmount ntpasswd
+		mkdir $WORK/boot/ntpasswd
+		cp $MNT/ntpasswd/vmlinuz $WORK/boot/ntpasswd/vmlinuz
+		cp $MNT/ntpasswd/initrd.cgz $WORK/boot/ntpasswd/initrd.cgz
+		cp $MNT/ntpasswd/scsi.cgz $WORK/boot/ntpasswd/scsi.cgz #Alternate initrd
+		umcdmount ntpasswd
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ntpasswd.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label ntpasswd
+echo "label ntpasswd
 menu label ^NT Offline Password & Registry Editor
 kernel /boot/ntpasswd/vmlinuz
 append rw vga=1 init=/linuxrc initrd=/boot/ntpasswd/initrd.cgz,/boot/ntpasswd/scsi.cgz
-EOF
+" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
