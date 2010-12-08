@@ -23,7 +23,8 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "debian-5*.iso debian-install.iso" #Note the 5 - only Lenny picked up
+	#Note the 5 - only Lenny picked up
+	echo "debian-5*.iso debian-install.iso"
 elif [ $1 = scan ];then
 	if [ -f debian-install.iso ];then
 		echo "Debian installer"
