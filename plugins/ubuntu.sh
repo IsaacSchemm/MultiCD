@@ -23,16 +23,6 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 
-ubuname() {
-#Function to define $BASENAME and $UBUNAME
-BASENAME=$(echo $1|sed -e 's/\.iso//g')
-if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then
-	UBUNAME="$(cat $TAGS/$BASENAME.name)"
-else
-	UBUNAME=$(echo $1|sed -e 's/\.ubuntu\.iso//g') #No custom name found
-fi
-}
-
 if [ $1 = links ];then
 	echo "ubuntu-*-desktop-i386.iso i386.ubuntu.iso Ubuntu_(32-bit)"
 	echo "ubuntu-*-desktop-amd64.iso amd64.ubuntu.iso Ubuntu_(64-bit)"
@@ -44,6 +34,7 @@ if [ $1 = links ];then
 	echo "edubuntu-*-dvd-amd64.iso amd64.x.ubuntu.iso Edubuntu_(64-bit)"
 elif [ $1 = scan ];then
 	if [ "*.ubuntu.iso" != "$(echo *.ubuntu.iso)" ];then for i in *.ubuntu.iso; do
+		BASENAME=$(echo $i|sed -e 's/\.iso//g')
 		if [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
 			cat $BASENAME.defaultname
 		else
@@ -53,16 +44,27 @@ elif [ $1 = scan ];then
 	done;fi
 elif [ $1 = copy ];then
 	if [ "*.ubuntu.iso" != "$(echo *.ubuntu.iso)" ];then for i in *.ubuntu.iso; do
-		ubuname $i
+		BASENAME=$(echo $i|sed -e 's/\.iso//g')
+		if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then #Check for a custom name that is not empty (it could be the default name from the "links" section of this plugin"
+			UBUNAME="$(cat $TAGS/$BASENAME.name)"
+		else
+			UBUNAME=$(echo $i|sed -e 's/\.ubuntu\.iso//g') #No custom name found
+		fi
 		echo "Copying $UBUNAME..."
 		ubuntucommon $(echo $i|sed -e 's/\.iso//g')
 	done;fi
 elif [ $1 = writecfg ];then
 if [ "*.ubuntu.iso" != "$(echo *.ubuntu.iso)" ];then for i in *.ubuntu.iso; do
 
-ubuname $i
+BASENAME=$(echo $i|sed -e 's/\.iso//g')
+if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then #Same chunk of code as above...
+	UBUNAME="$(cat $TAGS/$BASENAME.name)"
+else
+	UBUNAME=$(echo $i|sed -e 's/\.ubuntu\.iso//g')
+fi #...ends here
 
-if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
+if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ] \
+&& [ "$(cat $TAGS/$BASENAME.name)" == "$(cat $BASENAME.defaultname)" ];then
 	VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
 else
 	VERSION=""

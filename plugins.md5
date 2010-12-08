@@ -57,7 +57,7 @@ c7814db52fbeb77c309cd5a20c3925cc  plugins/tinycore2.sh
 70a194d7fde44a3f367840c15bf1270f  plugins/trk.sh
 afbd7984644f64998c01b5ee312a5dc3  plugins/ubcd.sh
 cd0a3681dbdcfab44c3eceed78a19128  plugins/ubuntu-mini.sh
-907e3b53ac59be68a2fb531f6f50209d  plugins/ubuntu.sh
+40f6d8303488b19f00bf14376ffc038b  plugins/ubuntu.sh
 be4929a5acfa8b1b60cd8c6eb055a7b6  plugins/vyatta.sh
 ff397c64954003be93f2339067f24a2b  plugins/weaknet.sh
 75728de3f1a2775a5475e493075ef541  plugins/win7recovery.sh

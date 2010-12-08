@@ -202,6 +202,9 @@ if $INTERACTIVE;then
 			fi
 			dialog --inputbox "What would you like $BASENAME to be called on the CD boot menu?\n(Leave blank for the default.)" 10 70 \
 			2> $(echo $i|sed -e 's/needsname/name/g')
+			if [ "$(cat $TAGS/$BASENAME.name)" = "" ] && [ -f $BASENAME.defaultname ];then
+				cp $BASENAME.defaultname $TAGS/$BASENAME.name
+			fi
 		done
 	else
 		for i in $(find $TAGS -maxdepth 1 -name \*.needsname);do
