@@ -1,4 +1,4 @@
-#Automatically recognized filenames (the script will make links to the files it expects to see below):
+#Automatically recognized filenames (the script will make links to the files below to match what it expects):
 archiso-live-*.iso			archiso-live.iso
 avg_*.iso				avg.iso
 debian-5*.iso				debian-install.iso
@@ -35,11 +35,14 @@ edubuntu-*-dvd-amd64.iso		amd64.x.ubuntu.iso
 #Filenames:	
 #antiX			antix.iso
 #Arch Linux		arch.iso
+#Archiso-live		archiso-live.iso
 #Austrumi		al.iso
+#AVG Rescue CD		avg.iso
 #Caine			caine.iso
 #CDlinux		cdl.iso
 #Clonezilla		clonezilla.iso
 #DBAN			dban.iso
+#Debian install CD/DVD	debian-install.iso
 #Debian Live		binary.iso
 #Debian netboot		debian-mini.iso
 #DeLi Linux		deli.iso
@@ -50,6 +53,7 @@ edubuntu-*-dvd-amd64.iso		amd64.x.ubuntu.iso
 #Endian Firewall	efw.iso
 #Feather		feather.iso
 #Fedora netboot		fedora-boot.iso
+#Fedora netboot	x86_64	fedora-boot64.iso
 #Finnix			finnix.iso
 #FreeDOS 1.0		fdbasecd.iso OR fdfullcd.iso
 #GeeXboX		gbox.iso
@@ -63,7 +67,9 @@ edubuntu-*-dvd-amd64.iso		amd64.x.ubuntu.iso
 #Mandriva netboot	mandriva-boot.iso
 #NetbootCD		netbootcd.iso
 #NT Pass. & Reg. Editor	ntpasswd.iso
-#openSUSE netboot	opensuse.iso
+#openSUSE GNOME LiveCD	opensuse-gnome.iso
+#openSUSE netboot	opensuse-net.iso
+#openSUSE netboot	opensuse-net64.iso
 #Parted Magic		pmagic.iso
 #PING			ping.iso
 #Puppy			puppy.iso

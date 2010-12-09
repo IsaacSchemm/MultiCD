@@ -20,7 +20,7 @@ a48803fc0ef4ebe72f0cda9080f566fd  plugins/dvl.sh
 b513c265ea3c94d0f3daf91cefb6547a  plugins/efw.sh
 3b2bd3b8a181bfea8ca09a1c7d2afb31  plugins/elastix.sh
 c0fed35f474e1323473770faa78e6814  plugins/feather.sh
-f0f87cb3d3a644dedd8905eea1e4cfdc  plugins/fedora-boot64.sh
+94c4b7893c366aed715cb9cc58977acc  plugins/fedora-boot64.sh
 950185b8fb4082ee9075dce5f7c450e5  plugins/fedora-boot.sh
 fa165ce1147203c048c5f254d20e82dc  plugins/finnix.sh
 f4fadf11263db60de023876e27c65acd  plugins/freedos.sh
