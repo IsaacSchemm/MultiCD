@@ -1,4 +1,4 @@
-23d1b66e2f5837dbbd5ec74bfc8b3e3f  plugins/0hello.sh
+b673f919fae8c8143563f93abb6b8fc1  plugins/0hello.sh
 35792debfbef699de65cea3b22d4fe58  plugins/antix.sh
 88359d7878d3fe8def108fc8d431b9c0  plugins/archdual.sh
 70f04fa290c4e5b2bc770724f1b5c601  plugins/archiso-live.sh
@@ -60,7 +60,7 @@ cd0a3681dbdcfab44c3eceed78a19128  plugins/ubuntu-mini.sh
 40f6d8303488b19f00bf14376ffc038b  plugins/ubuntu.sh
 be4929a5acfa8b1b60cd8c6eb055a7b6  plugins/vyatta.sh
 ff397c64954003be93f2339067f24a2b  plugins/weaknet.sh
-75728de3f1a2775a5475e493075ef541  plugins/win7recovery.sh
-a1b0d2c29465b1ed651682cbb02d8aeb  plugins/win98se.sh
-a0598ceece2ab71fa8f4d0a8a90a6632  plugins/winme.sh
+0a4cf7eae626cb222d1a3082fc10f512  plugins/win7recovery.sh
+b64299a007091c5a409b03224459784b  plugins/win98se.sh
+87c841cedaf5d40088a811cef937b445  plugins/winme.sh
 9988b387126cb773ea58e856f1187da4  plugins/wolvix.sh

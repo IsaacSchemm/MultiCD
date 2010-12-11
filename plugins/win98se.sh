@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Windows 98 SE Setup plugin for multicd.sh
-#version 6.0
+#version 6.3
 #Copyright for this script (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,31 +23,25 @@ set -e
 #THE SOFTWARE.
 if [ $1 = scan ];then
 	if [ -f win98se.iso ];then
-		echo "Windows 98 SE (Not open source - do not distribute)"
-		touch tags/win9x
+		echo "Windows 98 SE (Not open source - do not distribute the final ISO)"
+		touch tags/win9x #This tells the interactive option of the script to ask about the add-ons & tools folders
 	fi
 elif [ $1 = copy ];then
 	if [ -f win98se.iso ];then
 		echo "Copying Windows 98 SE..."
-		if [ ! -d win98se ];then
-			mkdir win98se
-		fi
-		if grep -q "`pwd`/win98se" /etc/mtab ; then
-			umount win98se
-		fi
-		mount -o loop win98se.iso win98se/
-		cp -r win98se/win98 multicd-working/
-		rm -r multicd-working/win98/ols
+		mcdmount win98se
+		cp -r $MNT/win98se/win98 $WORK/
+		rm -r $WORK/win98/ols
 		if [ -f $TAGS/9xextras ];then
-			cp -r win98se/add-ons multicd-working/win98/add-ons
-			cp -r win98se/tools multicd-working/win98/tools
+			cp -r $MNT/win98se/add-ons $WORK/win98/add-ons
+			cp -r $MNT/win98se/tools $WORK/win98/tools
 		fi
-		umount win98se;rmdir win98se
+		umcdmount win98se
 		dd if=win98se.iso bs=43008 skip=1 count=35 of=/tmp/dat
-		dd if=/tmp/dat bs=1474560 count=1 of=multicd-working/boot/win98se.img
+		dd if=/tmp/dat bs=1474560 count=1 of=$WORK/boot/win98se.img
 		rm /tmp/dat
 		if which mdel > /dev/null;then
-			mdel -i multicd-working/boot/win98se.img ::JO.SYS #Disable HD/CD boot prompt - not needed, but a nice idea
+			mdel -i $WORK/boot/win98se.img ::JO.SYS #Disable HD/CD boot prompt - not needed, but a nice idea
 		fi
 	fi
 elif [ $1 = writecfg ];then
@@ -55,7 +49,7 @@ if [ -f win98se.iso ];then
 echo "label win98se
 menu label ^Windows 98 Second Edition Setup
 kernel memdisk
-initrd /boot/win98se.img">>multicd-working/boot/isolinux/isolinux.cfg
+initrd /boot/win98se.img">>$WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

@@ -3,10 +3,14 @@ set -e
 #This script will have multicd.sh print something to the screen if you put a
 #file named "moo" in with your ISO images. uudecode must be installed.
 
-if [ $1 = scan ] && [ -f moo ] && which uudecode > /dev/null;then
-	match=$(grep --text --line-number '^PAYLOAD:$' $0 | cut -d ':' -f 1)
-	payload_start=$((match + 1))
-	tail -n +$payload_start $0 | uudecode | gzip -cd
+if [ $1 = scan ] && [ -f moo ];then
+	if which uudecode > /dev/null;then
+		match=$(grep --text --line-number '^PAYLOAD:$' $0 | cut -d ':' -f 1)
+		payload_start=$((match + 1))
+		tail -n +$payload_start $0 | uudecode | gzip -cd
+	else
+		echo "You have a file called \"moo\". You should install uuencode, part of the sharutils package."
+	fi
 fi
 exit 0
 PAYLOAD:

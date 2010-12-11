@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Windows Me Setup plugin for multicd.sh
-#version 6.0
+#version 6.3
 #Copyright for this script (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,28 +23,22 @@ set -e
 #THE SOFTWARE.
 if [ $1 = scan ];then
 	if [ -f winme.iso ];then
-		echo "Windows Me (Not open source - do not distribute)"
-		touch tags/win9x
+		echo "Windows Me (Not open source - do not distribute the final ISO)"
+		touch tags/win9x #This tells the interactive option of the script to ask about the add-ons & tools folders
 	fi
 elif [ $1 = copy ];then
 	if [ -f winme.iso ];then
 		echo "Copying Windows Me..."
-		if [ ! -d winme ];then
-			mkdir winme
-		fi
-		if grep -q "`pwd`/winme" /etc/mtab ; then
-			umount winme
-		fi
-		mount -o loop winme.iso winme/
-		cp -r winme/win9x multicd-working/
-		rm -r multicd-working/win9x/ols
+		mcdmount winme
+		cp -r $MNT/winme/win9x $WORK/
+		rm -r $WORK/win9x/ols
 		if [ -f $TAGS/9xextras ];then
-			cp -r winme/add-ons multicd-working/win9x/add-ons
-			cp -r winme/tools multicd-working/win9x/tools
+			cp -r $MNT/winme/add-ons $WORK/win9x/add-ons
+			cp -r $MNT/winme/tools $WORK/win9x/tools
 		fi
-		umount winme;rmdir winme
+		umcdmount winme
 		dd if=winme.iso bs=716800 skip=1 count=3 of=/tmp/dat
-		dd if=/tmp/dat bs=1474560 count=1 of=multicd-working/boot/winme.img
+		dd if=/tmp/dat bs=1474560 count=1 of=$WORK/boot/winme.img
 		rm /tmp/dat
 	fi
 elif [ $1 = writecfg ];then
@@ -52,7 +46,7 @@ if [ -f winme.iso ];then
 echo "label winme
 menu label ^Windows Me Setup
 kernel memdisk
-initrd /boot/winme.img">>multicd-working/boot/isolinux/isolinux.cfg
+initrd /boot/winme.img">>$WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

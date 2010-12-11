@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 #Windows 7 Recovery Disc plugin for multicd.sh
-#version 5.8
+#version 6.3
 #Copyright for this script (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,29 +23,23 @@ set -e
 #THE SOFTWARE.
 if [ $1 = scan ];then
 	if [ -f win7recovery.iso ];then
-		echo "Windows 7 Recovery Disc (Not open source - do not distribute)"
+		echo "Windows 7 Recovery Disc (Not open source)"
 	fi
 elif [ $1 = copy ];then
 	if [ -f win7recovery.iso ];then
 		echo "Copying Windows 7 Recovery Disc..."
-		if [ ! -d win7recovery ];then
-			mkdir win7recovery
-		fi
-		if grep -q "`pwd`/win7recovery" /etc/mtab ; then
-			umount win7recovery
-		fi
-		mount -o loop win7recovery.iso win7recovery/
-		cp win7recovery/boot/* multicd-working/boot/
-		cp -r win7recovery/sources multicd-working/
-		cp win7recovery/bootmgr multicd-working/
-		umount win7recovery;rmdir win7recovery
+		mcdmount win7recovery
+		cp $MNT/win7recovery/boot/* $WORK/boot/
+		cp -r $MNT/win7recovery/sources $WORK/
+		cp$MNT/ win7recovery/bootmgr $WORK/
+		umcdmount win7recovery
 	fi
 elif [ $1 = writecfg ];then
 if [ -f win7recovery.iso ];then
 echo "label win7recovery
 menu label Windows ^7 Recovery Disc
 kernel chain.c32
-append boot ntldr=/bootmgr">>multicd-working/boot/isolinux/isolinux.cfg
+append boot ntldr=/bootmgr">>$WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
