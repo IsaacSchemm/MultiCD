@@ -24,7 +24,7 @@ c0fed35f474e1323473770faa78e6814  plugins/feather.sh
 950185b8fb4082ee9075dce5f7c450e5  plugins/fedora-boot.sh
 fa165ce1147203c048c5f254d20e82dc  plugins/finnix.sh
 f4fadf11263db60de023876e27c65acd  plugins/freedos.sh
-cc3622673dce2f997a0ea27233397b5b  plugins/geexbox.sh
+8057f9519ebd52e32babf9aec4a4ed16  plugins/geexbox.sh
 917b228125d8ff9c20198047ad5ce903  plugins/gparted.sh
 e35371de7c33c44b3b8d52ef5e9af208  plugins/hirens.sh
 b0f803ec4c57f94f22ac3e806fde33a1  plugins/insert.sh
@@ -55,7 +55,7 @@ c7814db52fbeb77c309cd5a20c3925cc  plugins/tinycore2.sh
 84793e2e848a0f03e3b10de934303e55  plugins/tinycore.sh
 14897206dad6c58933d1d3d5ac391eff  plugins/tinyme.sh
 70a194d7fde44a3f367840c15bf1270f  plugins/trk.sh
-afbd7984644f64998c01b5ee312a5dc3  plugins/ubcd.sh
+42d41656ea2d54b9750b38fe8bdc7a9a  plugins/ubcd.sh
 cd0a3681dbdcfab44c3eceed78a19128  plugins/ubuntu-mini.sh
 40f6d8303488b19f00bf14376ffc038b  plugins/ubuntu.sh
 be4929a5acfa8b1b60cd8c6eb055a7b6  plugins/vyatta.sh

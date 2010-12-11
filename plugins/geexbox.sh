@@ -29,7 +29,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f geexbox.iso ];then
 		echo "Copying GeeXboX..."
-		mcdmount geexbgox
+		mcdmount geexbox
 		cp -r $MNT/geexbox/GEEXBOX multicd-working/ #Everything GeeXbox has is in one folder. :)
 		umcdmount geexbox
 	fi

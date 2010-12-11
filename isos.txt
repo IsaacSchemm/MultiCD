@@ -23,6 +23,7 @@ systemrescuecd-x86-*.iso		sysrcd.iso
 tinycore-current.iso			tinycore.iso
 tinycore_*.iso				tinycore.iso
 trinity-rescue-kit.*.iso		trk.iso
+ubcd-*.iso				ubcd.iso
 ubuntu-*-desktop-i386.iso		i386.ubuntu.iso
 ubuntu-*-desktop-amd64.iso		amd64.ubuntu.iso
 kubuntu-*-desktop-i386.iso		i386.k.ubuntu.iso
@@ -56,7 +57,7 @@ edubuntu-*-dvd-amd64.iso		amd64.x.ubuntu.iso
 #Fedora netboot	x86_64	fedora-boot64.iso
 #Finnix			finnix.iso
 #FreeDOS 1.0		fdbasecd.iso OR fdfullcd.iso
-#GeeXboX		gbox.iso
+#GeeXboX		geexbox.iso
 #GParted		gparted.iso
 #Hiren's boot CD	hirens.iso
 #INSERT			insert.iso
