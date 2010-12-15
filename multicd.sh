@@ -285,22 +285,31 @@ if [ -f grub.exe ];then
  cp grub.exe $WORK/boot/grub.exe
 fi
 
-echo "Downloading SYSLINUX..." #Option 1 is to use an already present syslinux.tar.gz
-if [ ! -f syslinux.tar.gz ] && [ -d /usr/lib/syslinux ];then #Option 2: Use installed syslinux
-	#This will only be run if there is no syslinux.tar.gz file in the current dir.
+echo "Downloading SYSLINUX..."
+if [ -d /usr/lib/syslinux ];then
 	cp /usr/lib/syslinux/isolinux.bin $WORK/boot/isolinux/
 	cp /usr/lib/syslinux/memdisk $WORK/boot/isolinux/
 	cp /usr/lib/syslinux/menu.c32 $WORK/boot/isolinux/
 	cp /usr/lib/syslinux/vesamenu.c32 $WORK/boot/isolinux/
 	cp /usr/lib/syslinux/chain.c32 $WORK/boot/isolinux/
+	cp /usr/bin/isohybrid $TAGS
+elif [ -f syslinux.tar.gz ];then
+	echo "Unpacking and copying files..."
+	tar -C /tmp -xzf syslinux.tar.gz
+	cp /tmp/syslinux-*/core/isolinux.bin $WORK/boot/isolinux/
+	cp /tmp/syslinux-*/memdisk/memdisk $WORK/boot/isolinux/
+	cp /tmp/syslinux-*/com32/menu/menu.c32 $WORK/boot/isolinux/
+	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 $WORK/boot/isolinux/
+	cp /tmp/syslinux-*/com32/modules/chain.c32 $WORK/boot/isolinux/
+	cp /tmp/syslinux-*/utils/isohybrid $TAGS/isohybrid
+	chmod +x $TAGS/isohybrid
+	rm -r /tmp/syslinux-*/
 else
-	if [ ! -f syslinux.tar.gz ];then #Option 3: Get syslinux.tar.gz and save it here
-		if $VERBOSE ;then #These will only be run if there is no syslinux.tar.gz AND if syslinux is not installed on your PC
-			#Both of these need to be changed when a new version of syslinux comes out.
-			wget -O syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.03.tar.gz
-		else
-			wget -qO syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.03.tar.gz
-		fi
+	if $VERBOSE ;then #These will only be run if there is no syslinux.tar.gz AND if syslinux is not installed on your PC
+		#Both of these need to be changed when a new version of syslinux comes out.
+		wget -O syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.03.tar.gz
+	else
+		wget -qO syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.03.tar.gz
 	fi
 	echo "Unpacking and copying files..."
 	tar -C /tmp -xzf syslinux.tar.gz
@@ -309,8 +318,8 @@ else
 	cp /tmp/syslinux-*/com32/menu/menu.c32 $WORK/boot/isolinux/
 	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 $WORK/boot/isolinux/
 	cp /tmp/syslinux-*/com32/modules/chain.c32 $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/utils/isohybrid ./isohybrid
-	chmod +x ./isohybrid
+	cp /tmp/syslinux-*/utils/isohybrid $TAGS/isohybrid
+	chmod +x $TAGS/isohybrid
 	rm -r /tmp/syslinux-*/
 fi
 
@@ -495,12 +504,9 @@ $GENERATOR -o multicd.iso \
 -r -J $EXTRAARGS \
 -V "$CDLABEL" $WORK/
 rm -r $WORK/
-if [ -f isohybrid ];then
-	./isohybrid multicd.iso || true
-	rm isohybrid
-else
-	isohybrid multicd.iso || true
-fi
+
+$TAGS/isohybrid multicd.iso 2> /dev/null || true
+rm $TAGS/isohybrid
 chmod 666 multicd.iso
 rm -r $TAGS
-#END SCRIPTwget -
+#END SCRIPT
