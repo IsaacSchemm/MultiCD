@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #Ubuntu plugin for multicd.sh
-#version 6.2
+#version 6.3
 #Copyright (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -63,8 +63,7 @@ else
 	UBUNAME=$(echo $i|sed -e 's/\.ubuntu\.iso//g')
 fi #...ends here
 
-if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ] \
-&& [ "$(cat $TAGS/$BASENAME.name)" == "$(cat $BASENAME.defaultname)" ];then
+if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
 	VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
 else
 	VERSION=""
