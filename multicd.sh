@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 . ./functions.sh
-#multicd.sh 6.2.1
+#multicd.sh 6.3
 #Copyright (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -505,7 +505,8 @@ $GENERATOR -o multicd.iso \
 -V "$CDLABEL" $WORK/
 rm -r $WORK/
 
-$TAGS/isohybrid multicd.iso 2> /dev/null || true
+echo "Running isohybrid..."
+$TAGS/isohybrid multicd.iso 2> /dev/null || echo $?
 rm $TAGS/isohybrid
 chmod 666 multicd.iso
 rm -r $TAGS
