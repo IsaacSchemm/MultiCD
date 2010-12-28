@@ -24,7 +24,7 @@ set -e
 #THE SOFTWARE.
 if [ $1 = links ];then
 	#Note the 5 - only Lenny picked up
-	echo "debian-5*.iso debian-install.iso"
+	echo "debian-5*.iso debian-install.iso none"
 elif [ $1 = scan ];then
 	if [ -f debian-install.iso ];then
 		echo "Debian installer"

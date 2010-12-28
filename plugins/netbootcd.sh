@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "NetbootCD-*.iso netbootcd.iso"
+	echo "NetbootCD-*.iso netbootcd.iso none"
 elif [ $1 = scan ];then
 	if [ -f netbootcd.iso ];then
 		echo "NetbootCD"

@@ -22,7 +22,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "ubcd-*.iso ubcd.iso"
+	echo "ubcd-*.iso ubcd.iso none"
 elif [ $1 = scan ];then
 	if [ -f ubcd.iso ];then
 		echo "Ultimate Boot CD"

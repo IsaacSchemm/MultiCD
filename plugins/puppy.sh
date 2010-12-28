@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "lupu-*.iso puppy.iso"
+	echo "lupu-*.iso puppy.iso none"
 elif [ $1 = scan ];then
 	if [ -f puppy.iso ];then
 		echo "Puppy Linux"

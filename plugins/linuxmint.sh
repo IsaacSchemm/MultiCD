@@ -23,11 +23,11 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "linuxmint-gnome*.iso linuxmint.iso"
-	echo "linuxmint-kde*.iso linuxmint.iso"
-	echo "linuxmint-xfce*.iso linuxmint.iso"
-	echo "linuxmint-lxde*.iso linuxmint.iso"
-	echo "linuxmint-fluxbox*.iso linuxmint.iso"
+	echo "linuxmint-gnome*.iso linuxmint.iso Linux_Mint_(GNOME)"
+	echo "linuxmint-kde*.iso linuxmint.iso Linux_Mint_(KDE)"
+	echo "linuxmint-xfce*.iso linuxmint.iso Linux_Mint_(Xfce)"
+	echo "linuxmint-lxde*.iso linuxmint.iso Linux_Mint_(LXDE)"
+	echo "linuxmint-fluxbox*.iso linuxmint.iso Linux_Mint_(Fluxbox)"
 elif [ $1 = scan ];then
 	if [ -f linuxmint.iso ];then
 		echo "Linux Mint (8/Helena or newer)"

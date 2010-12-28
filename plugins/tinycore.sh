@@ -23,8 +23,8 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "tinycore-current.iso tinycore.iso"
-	echo "tinycore_*.iso tinycore.iso"
+	echo "tinycore-current.iso tinycore.iso none"
+	echo "tinycore_*.iso tinycore.iso none"
 elif [ $1 = scan ];then
 	if [ -f tinycore.iso ];then
 		echo "Tiny Core Linux"

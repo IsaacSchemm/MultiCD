@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "avg_*.iso avg.iso"
+	echo "avg_*.iso avg.iso none"
 elif [ $1 = scan ];then
 	if [ -f avg.iso ];then
 		echo "AVG Rescue CD"

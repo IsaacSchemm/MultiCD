@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "archiso-live-*.iso archiso-live.iso"
+	echo "archiso-live-*.iso archiso-live.iso none"
 elif [ $1 = scan ];then
 	if [ -f archiso-live.iso ];then
 		echo "Archiso-live"

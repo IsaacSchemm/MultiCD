@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "Fedora-*-i386-netinst.iso fedora-boot.iso"
+	echo "Fedora-*-i386-netinst.iso fedora-boot.iso none"
 elif [ $1 = scan ];then
 	if [ -f fedora-boot.iso ];then
 		echo "Fedora netboot installer"

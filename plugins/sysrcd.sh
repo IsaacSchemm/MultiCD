@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "systemrescuecd-x86-*.iso sysrcd.iso"
+	echo "systemrescuecd-x86-*.iso sysrcd.iso none"
 elif [ $1 = scan ];then
 	if [ -f sysrcd.iso ];then
 		echo "SystemRescueCd"

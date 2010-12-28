@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #Parted Magic plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 libertyernie
+#version 6.3
+#Copyright (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -21,28 +21,29 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "pmagic-*.iso pmagic.iso none"
+elif [ $1 = scan ];then
 	if [ -f pmagic.iso ];then
 		echo "Parted Magic"
 	fi
 elif [ $1 = copy ];then
 	if [ -f pmagic.iso ];then
-	echo "Copying Parted Magic..."
-	if [ ! -d pmagic ];then
-		mkdir pmagic
-	fi
-	if grep -q "`pwd`/pmagic" /etc/mtab ; then
-		umount pmagic
-	fi
-	mount -o loop pmagic.iso pmagic/
-	#Sudo is needed b/c of weird permissions on 4.7 ISO for the initrd
-	sudo cp -r pmagic/pmagic multicd-working/ #Compressed filesystem and kernel/initrd
-	umount pmagic
-	rmdir pmagic
+		echo "Copying Parted Magic..."
+		mcdmount pmagic
+		#Sudo is needed b/c of weird permissions on 4.7 ISO for the initrd
+		sudo cp -r $MNT/pmagic/pmagic $WORK/ #Compressed filesystem and kernel/initrd
+		umcdmount pmagic
 	fi
 elif [ $1 = writecfg ];then
 if [ -f pmagic.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+if [ -f pmagic.version ] && [ "$(cat pmagic.version)" != "" ];then
+	VERSION=" $(cat pmagic.version)"
+else
+	VERSION=""
+fi
+echo "MENU BEGIN ^Parted Magic$VERSION
+
 LABEL normal
 MENU LABEL ^Parted Magic: Default settings (Runs from RAM / Ejects CD)
 KERNEL /pmagic/bzImage
@@ -77,10 +78,17 @@ LABEL console
 MENU LABEL ^Parted Magic: Console (boots to the shell)
 KERNEL /pmagic/bzImage
 APPEND noapic initrd=/pmagic/initramfs load_ramdisk=1 prompt_ramdisk=0 rw vga=normal sleep=10 consoleboot keymap=us
-EOF
+
+LABEL back
+MENU LABEL ^Back to main menu
+COM32 menu.c32
+APPEND isolinux.cfg
+
+MENU END
+" >> multicd-working/boot/isolinux/isolinux.cfg
 fi
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi

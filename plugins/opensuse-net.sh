@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "openSUSE-*-NET-i586.iso opensuse-net.iso"
+	echo "openSUSE-*-NET-i586.iso opensuse-net.iso none"
 elif [ $1 = scan ];then
 	if [ -f opensuse-net.iso ];then
 		echo "openSUSE netboot installer"

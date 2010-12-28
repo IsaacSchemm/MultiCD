@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "trinity-rescue-kit.*.iso trk.iso"
+	echo "trinity-rescue-kit.*.iso trk.iso none"
 elif [ $1 = scan ];then
 	if [ -f trk.iso ];then
 		echo "Trinity Rescue Kit"

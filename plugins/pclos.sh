@@ -22,7 +22,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "pclinuxos-*.iso pclos.iso"
+	echo "pclinuxos-*.iso pclos.iso none"
 elif [ $1 = scan ];then
 	if [ -f pclos.iso ];then
 		echo "PCLinuxOS"
