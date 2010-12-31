@@ -23,6 +23,25 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 
+ubuntuExists () {
+	if [ "*.ubuntu.iso" != "$(echo *.ubuntu.iso)" ];then
+		echo true
+	else
+		echo false
+	fi
+}
+
+getUbuntuName () {
+	BASENAME=$(echo $i|sed -e 's/\.iso//g')
+	if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then
+		cat $TAGS/$BASENAME.name
+	elif [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
+		cat $BASENAME.defaultname
+	else
+		echo $BASENAME|sed -e 's/\.ubuntu//g'
+	fi
+}
+
 if [ $1 = links ];then
 	echo "ubuntu-*-desktop-i386.iso i386.ubuntu.iso Ubuntu_(32-bit)"
 	echo "ubuntu-*-desktop-amd64.iso amd64.ubuntu.iso Ubuntu_(64-bit)"
@@ -33,55 +52,44 @@ if [ $1 = links ];then
 	echo "edubuntu-*-dvd-i386.iso i386.x.ubuntu.iso Edubuntu_(32-bit)"
 	echo "edubuntu-*-dvd-amd64.iso amd64.x.ubuntu.iso Edubuntu_(64-bit)"
 elif [ $1 = scan ];then
-	if [ "*.ubuntu.iso" != "$(echo *.ubuntu.iso)" ];then for i in *.ubuntu.iso; do
-		BASENAME=$(echo $i|sed -e 's/\.iso//g')
-		if [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
-			cat $BASENAME.defaultname
-		else
-			echo $i
-		fi
-		echo > $TAGS/$(echo $i|sed -e 's/\.iso/\.needsname/g') #Comment out this line and multicd.sh won't ask for a custom name for this ISO
-	done;fi
+	if $(ubuntuExists());then
+		for i in *.ubuntu.iso; do
+			getUbuntuName()
+			echo > $TAGS/$(echo $i|sed -e 's/\.iso/\.needsname/g') #Comment out this line and multicd.sh won't ask for a custom name for this ISO
+		done
+	fi
 elif [ $1 = copy ];then
-	if [ "*.ubuntu.iso" != "$(echo *.ubuntu.iso)" ];then for i in *.ubuntu.iso; do
-		BASENAME=$(echo $i|sed -e 's/\.iso//g')
-		if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then #Check for a custom name that is not empty (it could be the default name from the "links" section of this plugin"
-			UBUNAME="$(cat $TAGS/$BASENAME.name)"
-		else
-			UBUNAME=$(echo $i|sed -e 's/\.ubuntu\.iso//g') #No custom name found
-		fi
-		echo "Copying $UBUNAME..."
-		ubuntucommon $(echo $i|sed -e 's/\.iso//g')
-	done;fi
+	if $(ubuntuExists());then
+		for i in *.ubuntu.iso; do
+			echo "Copying $(getUbuntuName())..."
+			ubuntucommon $(echo $i|sed -e 's/\.iso//g')
+		done
+	fi
 elif [ $1 = writecfg ];then
-if [ "*.ubuntu.iso" != "$(echo *.ubuntu.iso)" ];then for i in *.ubuntu.iso; do
+	if $(ubuntuExists());then
+		for i in *.ubuntu.iso; do
+			UBUNAME=$(getUbuntuName())
 
-BASENAME=$(echo $i|sed -e 's/\.iso//g')
-if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then #Same chunk of code as above...
-	UBUNAME="$(cat $TAGS/$BASENAME.name)"
-else
-	UBUNAME=$(echo $i|sed -e 's/\.ubuntu\.iso//g')
-fi #...ends here
+			if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
+				VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
+			else
+				VERSION=""
+			fi
 
-if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
-	VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
+			echo "label ubuntu
+			menu label --> $UBUNAME$VERSION Menu
+			com32 menu.c32
+			append /boot/$BASENAME/$BASENAME.cfg
+			" >> multicd-working/boot/isolinux/isolinux.cfg
+			echo "label back
+			menu label Back to main menu
+			com32 menu.c32
+			append /boot/isolinux/isolinux.cfg
+			" >> multicd-working/boot/$BASENAME/$BASENAME.cfg
+		done
+	fi
 else
-	VERSION=""
-fi
-
-echo "label ubuntu
-menu label --> $UBUNAME$VERSION Menu
-com32 menu.c32
-append /boot/$BASENAME/$BASENAME.cfg
-" >> multicd-working/boot/isolinux/isolinux.cfg
-echo "label back
-menu label Back to main menu
-com32 menu.c32
-append /boot/isolinux/isolinux.cfg
-" >> multicd-working/boot/$BASENAME/$BASENAME.cfg
-done;fi
-else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi
