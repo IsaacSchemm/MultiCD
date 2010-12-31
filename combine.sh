@@ -19,6 +19,9 @@ for i in $(echo plugins/*.sh);do
 		if ! grep -q "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM," $i;then
 			echo "Note: $i may not be under the MIT license. Check its license terms and add them to combined-multicd.sh."
 		fi
+		if grep -q "#START FUNCTIONS#" $i;then
+			sed -n '/#START FUNCTIONS#/,/#END FUNCTIONS#/p' $i >> workingF.sh #Links portion
+		fi
 		if grep -q '\$1 = links' $i;then
 			sed -n '/\$1 = links/,/\$1 = scan/p' $i|sed -e '1d' -e '$d' >> working1.sh #Links portion
 		fi
@@ -30,7 +33,7 @@ for i in $(echo plugins/*.sh);do
 	fi
 done
 sed -i -e 's/$/ >> $TAGS\/linklist/g' working1.sh
-cat working[012345678].sh > combined-multicd.sh
-rm working[012345678].sh
+cat working[0F12345678].sh > combined-multicd.sh
+rm working[0F12345678].sh
 sed -i -e 's^\. \./functions\.sh^^g' combined-multicd.sh
 sed -i -e 's^\. \./isoaliases\.sh^^g' combined-multicd.sh

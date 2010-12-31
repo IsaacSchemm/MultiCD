@@ -23,6 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 
+#BEGIN FUNCTIONS#
 ubuntuExists () {
 	if [ "*.ubuntu.iso" != "$(echo *.ubuntu.iso)" ];then
 		echo true
@@ -41,6 +42,7 @@ getUbuntuName () {
 		echo $BASENAME|sed -e 's/\.ubuntu//g'
 	fi
 }
+#END FUNCTIONS#
 
 if [ $1 = links ];then
 	echo "ubuntu-*-desktop-i386.iso i386.ubuntu.iso Ubuntu_(32-bit)"
