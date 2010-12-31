@@ -15,54 +15,74 @@ umcdmount () {
 }
 
 isoaliases () {
-true > $TAGS/linklist
-#START LINKS#
-for i in $MCDDIR/plugins/*;do
-	if ! ($i links|grep -q Usage);then
-		$i links >> $TAGS/linklist
-	fi
-done
-#END LINKS#
-cat $TAGS/linklist|while read i;do
-	DEFAULTNAME=$(echo "$i"|awk '{print $NF}')
-	IM2=$(echo "$i"|awk '{LESS=NF-1; print $LESS}') #What should be linked to
-	IM1=$(echo $i|awk '{LESS=NF-1; for (i=1; i<LESS; i++) print $i }') #Prints all except the last 2 fields. $i is NOT surrounded by quotes, so wildcards are expanded.
-	if !( echo $IM1 | grep -q '\*' ) && [ ! -e $IM2 ];then #IM1 exists (i.e. the asterisk got expanded) and IM2 doesn't exist yet
-		COUNTER=0
-		for j in $IM1;do
-			if [ $COUNTER = 0 ];then
-				LINKTO=$IM2
-			else
-				LINKTO=${COUNTER}_${IM2} #More than one (i.e. Ubuntu)
-			fi
-			if [ -e "$j" ] && ln -s $j $LINKTO;then
-				ISOBASENAME=$(echo $LINKTO|sed -e 's/\.iso//g')
-				touch $TAGS/madelinks #This is to make multicd.sh pause for 1 second so the notifications are readable
-				CUTOUT1=$(echo "$i"|awk 'BEGIN {FS = "*"} ; {print $1}') #The parts of the ISO name before the asterisk
-				CUTOUT2=$(echo "$i"|awk '{print $1}'|awk 'BEGIN {FS = "*"} ; {print $2}') #The parts after the asterisk
-				VERSION=$(echo "$j"|awk '{sub(/'"$CUTOUT1"'/,"");sub(/'"$CUTOUT2"'/,"");print}') #Cuts out whatever the asterisk represents (which will be the version number)
-				if [ "$VERSION" != "*" ] && [ "$VERSION" != "$j" ];then
-					echo $VERSION > $ISOBASENAME.version #The SystemRescueCD plugin does not use this, but I figure it won't do any harm to have an extra file sitting there.
-					echo "Made a link named $LINKTO pointing to $j (version $VERSION)"
-				else	
-					echo "Made a link named $LINKTO pointing to $j"
-					VERSION="*" #Should remain an asterisk in .defaultname file (see below)
+	true > $TAGS/linklist #Clears the file that keeps track of the links.
+
+	#The data from START LINKS to END LINKS is not copied when combine.sh makes a single file.
+	#In that case, this is instead handled by adding " >> $TAGS/linklist" to each line in the "links" section of a plugin.
+	#START LINKS#
+	for i in $MCDDIR/plugins/*;do
+		if ! ($i links|grep -q Usage);then
+			$i links >> $TAGS/linklist
+		fi
+	done
+	#END LINKS#
+
+	cat $TAGS/linklist|while read i;do
+
+		DEFAULTNAME=$(echo "$i"|awk '{print $NF}')
+		LINKNAME=$(echo "$i"|awk '{LESS=NF-1; print $LESS}') #What should be linked to
+		MATCHING_ISOS=$(echo $i|awk '{LESS=NF-1; for (i=1; i<LESS; i++) print $i }') #Prints all except the last 2 fields. $i is NOT surrounded by quotes, so wildcards are expanded.
+
+		if !( echo $MATCHING_ISOS | grep -q '\*' ) && [ ! -e $LINKNAME ];then
+			#MATCHING_ISOS exists (i.e. the asterisk got expanded) and LINKNAME doesn't exist yet
+			COUNTER=0
+			for j in $MATCHING_ISOS;do
+				#This is done for each matching ISO.
+
+				if [ $COUNTER = 0 ];then
+					LINKTO=$LINKNAME #The intended link name.
+				else
+					#Adds the counter number and an underscore to the beginning of the link name.
+					#This is done for all link names with more than one matching ISO, but only plugins that support multiples (i.e. ubuntu.sh) will pick up the extra ISO names.
+					#This might cause a little (harmless) clutter in the working directory.
+					LINKTO=${COUNTER}_${LINKNAME}
 				fi
-				if [ "$DEFAULTNAME" != "none" ];then
-					#The third field of the row will be the default name when multicd.sh asks the user to enter a name.
-					#This could also be used by the menu-writing portion of the plugin script if $TAGS/whatever.name is not present.
-					#Underscores are replaced with spaces. Asterisks are replaced with the $VERSION found above.
-					echo $DEFAULTNAME|sed -e 's/_/ /g' -e "s/\*/$VERSION/g">$ISOBASENAME.defaultname
+
+				if [ -e "$j" ] && ln -s $j $LINKTO;then
+					#The ISO that the link should point to exists, and the link was created sucessfully.
+
+					ISOBASENAME=$(echo $LINKTO|sed -e 's/\.iso//g')
+
+					touch $TAGS/madelinks #This function will pause for 1 second if this file exists, so the notifications are readable
+
+					CUTOUT1=$(echo "$i"|awk 'BEGIN {FS = "*"} ; {print $1}') #The parts of the ISO name before the asterisk
+					CUTOUT2=$(echo "$i"|awk '{print $1}'|awk 'BEGIN {FS = "*"} ; {print $2}') #The parts after the asterisk
+					VERSION=$(echo "$j"|awk '{sub(/'"$CUTOUT1"'/,"");sub(/'"$CUTOUT2"'/,"");print}') #Cuts out whatever the asterisk represents (which will be the version number)
+
+					if [ "$VERSION" != "*" ] && [ "$VERSION" != "$j" ];then
+						echo $VERSION > $ISOBASENAME.version #Some plugins (like SystemRescueCD) don't use this, because the version number is on a file in the ISO.
+						echo "Made a link named $LINKTO pointing to $j (version $VERSION)"
+					else	
+						echo "Made a link named $LINKTO pointing to $j"
+						VERSION="*"
+					fi
+					if [ "$DEFAULTNAME" != "none" ];then
+						#The last field of the row will be the default name when multicd.sh asks the user to enter a name (activated with "i" option.)
+						#This could also be used by the menu-writing portion of the plugin script if $TAGS/whatever.name (created by the "i" option) is not present.
+						#Underscores are replaced with spaces. Asterisks are replaced with the $VERSION found above.
+						echo $DEFAULTNAME|sed -e 's/_/ /g' -e "s/\*/$VERSION/g">$ISOBASENAME.defaultname
+					fi
+
+				COUNTER=$(($COUNTER+1))
 				fi
-			COUNTER=$(($COUNTER+1))
-			fi
-		done
+			done
+		fi
+	done
+	if [ -f $TAGS/madelinks ];then
+		#If the file exists, remove it, then pause for 1 second so the notifications can be seen.
+		rm $TAGS/madelinks
+		sleep 1
 	fi
-done
-if [ -f $TAGS/madelinks ];then
-	rm $TAGS/madelinks
-	sleep 1
-fi
 }
 
 tinycorecommon () {
