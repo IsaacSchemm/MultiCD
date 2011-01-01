@@ -30,7 +30,7 @@ e35371de7c33c44b3b8d52ef5e9af208  plugins/hirens.sh
 b0f803ec4c57f94f22ac3e806fde33a1  plugins/insert.sh
 4f29fee42e3000195298bd7c56493dd1  plugins/ipcop.sh
 614b636465af45d29edf9dbf97f242dc  plugins/knoppix.sh
-0a4950fa3fd93b594208ae8f13935161  plugins/linuxmint.sh
+4048c7b657feb5aeac5700533c3b0739  plugins/linuxmint.sh
 e259a7c51aabacc881c99265798aca87  plugins/macpup.sh
 a790922354f2d9e710d6714af4301b5b  plugins/mandriva-boot.sh
 b7f6b16b86153ccec3e39b2e22b88d1d  plugins/mintdebian.sh
@@ -58,7 +58,7 @@ ac802add2b37bdf06f848365fa19f55e  plugins/trk.sh
 7805e228486404590bdc6d29a4beda48  plugins/ubcd.sh
 cbb08751f91220658afdebbd35d3f1a3  plugins/ubuntu-alternate.sh
 cd0a3681dbdcfab44c3eceed78a19128  plugins/ubuntu-mini.sh
-704304890a54f8baa6eb453b338d3732  plugins/ubuntu.sh
+f21274b7a6644d7d667bf726e684f90d  plugins/ubuntu.sh
 be4929a5acfa8b1b60cd8c6eb055a7b6  plugins/vyatta.sh
 ff397c64954003be93f2339067f24a2b  plugins/weaknet.sh
 0a4cf7eae626cb222d1a3082fc10f512  plugins/win7recovery.sh

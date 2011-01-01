@@ -35,12 +35,21 @@ ubuntuExists () {
 getUbuntuName () {
 	BASENAME=$(echo $i|sed -e 's/\.iso//g')
 	if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then
-		cat $TAGS/$BASENAME.name
+		UBUNAME=$(cat $TAGS/$BASENAME.name)
 	elif [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
-		cat $BASENAME.defaultname
+		UBUNAME=$(cat $BASENAME.defaultname)
 	else
-		echo $BASENAME|sed -e 's/\.ubuntu//g'
+		UBUNAME=$(echo $BASENAME|sed -e 's/\.ubuntu//g')
 	fi
+
+	BASENAME=$(echo $i|sed -e 's/\.iso//g')
+	if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
+		VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
+	else
+		VERSION=""
+	fi
+
+	echo ${UBUNAME}${VERSION}
 }
 #END FUNCTIONS#
 
@@ -72,15 +81,8 @@ elif [ $1 = writecfg ];then
 		for i in *.ubuntu.iso; do
 			UBUNAME=$(getUbuntuName)
 
-			BASENAME=$(echo $i|sed -e 's/\.iso//g')
-			if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
-				VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
-			else
-				VERSION=""
-			fi
-
 			echo "label $BASENAME
-			menu label --> $UBUNAME$VERSION Menu
+			menu label --> $UBUNAME Menu
 			com32 menu.c32
 			append /boot/$BASENAME/$BASENAME.cfg
 			" >> multicd-working/boot/isolinux/isolinux.cfg

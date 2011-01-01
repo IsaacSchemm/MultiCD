@@ -35,21 +35,26 @@ linuxmintExists () {
 getLinuxmintName () {
 	BASENAME=$(echo $i|sed -e 's/\.iso//g')
 	if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then
-		cat $TAGS/$BASENAME.name
+		UBUNAME=$(cat $TAGS/$BASENAME.name)
 	elif [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
-		cat $BASENAME.defaultname
+		UBUNAME=$(cat $BASENAME.defaultname)
 	else
-		echo $BASENAME|sed -e 's/\.linuxmint//g'
+		UBUNAME=$(echo $BASENAME|sed -e 's/\.ubuntu//g')
 	fi
+
+	BASENAME=$(echo $i|sed -e 's/\.iso//g')
+	if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
+		VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
+	else
+		VERSION=""
+	fi
+
+	echo ${UBUNAME}${VERSION}
 }
 #END FUNCTIONS#
 
 if [ $1 = links ];then
-	echo "linuxmint-gnome*.iso linuxmint.iso Linux_Mint_(GNOME)"
-	echo "linuxmint-kde*.iso linuxmint.iso Linux_Mint_(KDE)"
-	echo "linuxmint-xfce*.iso linuxmint.iso Linux_Mint_(Xfce)"
-	echo "linuxmint-lxde*.iso linuxmint.iso Linux_Mint_(LXDE)"
-	echo "linuxmint-fluxbox*.iso linuxmint.iso Linux_Mint_(Fluxbox)"
+	echo "linuxmint-*.iso mint.linuxmint.iso Linux_Mint"
 elif [ $1 = scan ];then
 	if $(linuxmintExists);then
 		for i in *.linuxmint.iso; do
@@ -69,15 +74,8 @@ elif [ $1 = writecfg ];then
 		for i in *.linuxmint.iso; do
 			UBUNAME=$(getLinuxmintName)
 
-			BASENAME=$(echo $i|sed -e 's/\.iso//g')
-			if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
-				VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
-			else
-				VERSION=""
-			fi
-
 			echo "label $BASENAME
-			menu label --> $UBUNAME$VERSION Menu
+			menu label --> $UBUNAME Menu
 			com32 menu.c32
 			append /boot/$BASENAME/$BASENAME.cfg
 			" >> multicd-working/boot/isolinux/isolinux.cfg
