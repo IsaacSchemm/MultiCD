@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 
-#BEGIN FUNCTIONS#
+#START FUNCTIONS#
 ubuntuExists () {
 	if [ "*.ubuntu.iso" != "$(echo *.ubuntu.iso)" ];then
 		echo true
@@ -54,24 +54,25 @@ if [ $1 = links ];then
 	echo "edubuntu-*-dvd-i386.iso i386.x.ubuntu.iso Edubuntu_(32-bit)"
 	echo "edubuntu-*-dvd-amd64.iso amd64.x.ubuntu.iso Edubuntu_(64-bit)"
 elif [ $1 = scan ];then
-	if $(ubuntuExists());then
+	if $(ubuntuExists);then
 		for i in *.ubuntu.iso; do
-			getUbuntuName()
+			getUbuntuName
 			echo > $TAGS/$(echo $i|sed -e 's/\.iso/\.needsname/g') #Comment out this line and multicd.sh won't ask for a custom name for this ISO
 		done
 	fi
 elif [ $1 = copy ];then
-	if $(ubuntuExists());then
+	if $(ubuntuExists);then
 		for i in *.ubuntu.iso; do
-			echo "Copying $(getUbuntuName())..."
+			echo "Copying $(getUbuntuName)..."
 			ubuntucommon $(echo $i|sed -e 's/\.iso//g')
 		done
 	fi
 elif [ $1 = writecfg ];then
-	if $(ubuntuExists());then
+	if $(ubuntuExists);then
 		for i in *.ubuntu.iso; do
-			UBUNAME=$(getUbuntuName())
+			UBUNAME=$(getUbuntuName)
 
+			BASENAME=$(echo $i|sed -e 's/\.iso//g')
 			if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
 				VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
 			else

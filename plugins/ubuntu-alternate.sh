@@ -23,10 +23,11 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "ubuntu-*.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(32-bit)"
+	echo "ubuntu-*-alternate-i386.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(32-bit)"
+	echo "ubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(64-bit)"
 elif [ $1 = scan ];then
 	if [ -f ubuntu-alternate.iso ];then
-		echo -n "Ubuntu alternate installer (only one of these can be included)"
+		echo "Ubuntu alternate installer (only one of these can be included)"
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu-alternate.iso ];then
@@ -51,7 +52,7 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 if [ -f ubuntu-alternate.iso ] && [ ! -f $TAGS/ubuntu-not-copied ];then
 if [ -f $WORK/README.diskdefines ];then
-	CDNAME="$(grep DISKNAME a/README.diskdefines|awk '{for (i=3; i<NF+1; i++) { printf $i; printf " " } printf "\n" }')"
+	CDNAME="$(grep DISKNAME $WORK/README.diskdefines|awk '{for (i=3; i<NF+1; i++) { printf $i; printf " " } printf "\n" }')"
 else
 	CDNAME="Ubuntu alternate installer"
 fi
