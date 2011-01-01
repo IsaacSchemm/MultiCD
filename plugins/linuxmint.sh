@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #Linux Mint plugin for multicd.sh
-#version 6.1
+#version 6.3
 #Copyright (c) 2010 libertyernie, Zirafarafa
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,6 +22,28 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
+
+#START FUNCTIONS#
+linuxmintExists () {
+	if [ "*.linuxmint.iso" != "$(echo *.linuxmint.iso)" ];then
+		echo true
+	else
+		echo false
+	fi
+}
+
+getLinuxmintName () {
+	BASENAME=$(echo $i|sed -e 's/\.iso//g')
+	if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then
+		cat $TAGS/$BASENAME.name
+	elif [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
+		cat $BASENAME.defaultname
+	else
+		echo $BASENAME|sed -e 's/\.linuxmint//g'
+	fi
+}
+#END FUNCTIONS#
+
 if [ $1 = links ];then
 	echo "linuxmint-gnome*.iso linuxmint.iso Linux_Mint_(GNOME)"
 	echo "linuxmint-kde*.iso linuxmint.iso Linux_Mint_(KDE)"
@@ -29,33 +51,45 @@ if [ $1 = links ];then
 	echo "linuxmint-lxde*.iso linuxmint.iso Linux_Mint_(LXDE)"
 	echo "linuxmint-fluxbox*.iso linuxmint.iso Linux_Mint_(Fluxbox)"
 elif [ $1 = scan ];then
-	if [ -f linuxmint.iso ];then
-		echo "Linux Mint (8/Helena or newer)"
+	if $(linuxmintExists);then
+		for i in *.linuxmint.iso; do
+			getLinuxmintName
+			echo > $TAGS/$(echo $i|sed -e 's/\.iso/\.needsname/g') #Comment out this line and multicd.sh won't ask for a custom name for this ISO
+		done
 	fi
 elif [ $1 = copy ];then
-	if [ -f linuxmint.iso ];then
-		echo "Copying Linux Mint..."
-		ubuntucommon linuxmint
+	if $(linuxmintExists);then
+		for i in *.linuxmint.iso; do
+			echo "Copying $(getLinuxmintName)..."
+			ubuntucommon $(echo $i|sed -e 's/\.iso//g')
+		done
 	fi
 elif [ $1 = writecfg ];then
-if [ -f linuxmint.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << EOF
-label linuxmint
-menu label --> Linux ^Mint Menu
-com32 vesamenu.c32
-append /boot/linuxmint/linuxmint.cfg
+	if $(linuxmintExists);then
+		for i in *.linuxmint.iso; do
+			UBUNAME=$(getLinuxmintName)
 
-EOF
-cat >> multicd-working/boot/linuxmint/linuxmint.cfg << EOF
+			BASENAME=$(echo $i|sed -e 's/\.iso//g')
+			if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
+				VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
+			else
+				VERSION=""
+			fi
 
-label back
-menu label Back to main menu
-com32 menu.c32
-append /boot/isolinux/isolinux.cfg
-EOF
-fi
+			echo "label $BASENAME
+			menu label --> $UBUNAME$VERSION Menu
+			com32 menu.c32
+			append /boot/$BASENAME/$BASENAME.cfg
+			" >> multicd-working/boot/isolinux/isolinux.cfg
+			echo "label back
+			menu label Back to main menu
+			com32 menu.c32
+			append /boot/isolinux/isolinux.cfg
+			" >> multicd-working/boot/$BASENAME/$BASENAME.cfg
+		done
+	fi
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi

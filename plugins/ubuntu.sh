@@ -79,7 +79,7 @@ elif [ $1 = writecfg ];then
 				VERSION=""
 			fi
 
-			echo "label ubuntu
+			echo "label $BASENAME
 			menu label --> $UBUNAME$VERSION Menu
 			com32 menu.c32
 			append /boot/$BASENAME/$BASENAME.cfg
