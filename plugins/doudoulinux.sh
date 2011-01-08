@@ -33,6 +33,7 @@ elif [ $1 = copy ];then
 		echo "Copying DoudouLinux..."
 		mcdmount doudoulinux
 		cp -r $MNT/doudoulinux/live $WORK/boot/doudou #Copy live folder - usually all that is needed
+		cp $MNT/doudoulinux/isolinux/live.cfg $TAGS/doudou.cfg
 		umcdmount doudoulinux
 		rm $WORK/live/memtest||true
 	fi
@@ -43,36 +44,9 @@ elif [ $1 = writecfg ];then
 		else
 			DOUDOUVER=""
 		fi
-		SUPPORTEDLANGUAGES="ar en es fr ro ru sr sr@latin uk de it nl pl pt tr vi"
-		if [ -f $TAGS/lang ];then
-			#User-defined language.
-			LANG=$(cat $TAGS/lang)
-		else
-			#Determine the language based on the filename.
-			LANG=en #Just in case it can't be found, default to en
-			for i in $SUPPORTEDLANGUAGES;do
-				if echo $DOUDOUVER|grep -q $i;then
-					LANG=$i
-				fi
-			done
-		fi
-		#Actually determines the args to use for each language. Only fr and en are in here right now.
-		if [ $LANG = ar ];then
-			LOCALE_ARGS="locale=ar_EG.UTF-8 keyb=ara,fr,us klayout=us kvariant=qwerty,oss, koptions=grp:alt_shift_toggle"
-		elif [ $LANG = fr ];then
-			LOCALE_ARGS="locale=fr_FR.UTF-8 keyb=fr klayout=fr kvariant=oss koptions=lv3:ralt_switch,compose:menu"
-		else
-			LOCALE_ARGS="locale=en_US.UTF-8 keyb=us klayout=us"
-		fi
-		echo "label live
-		menu label Start DoudouLinux
-		kernel /boot/doudou/vmlinuz
-		append initrd=/boot/doudou/initrd.img live-media-path=/boot/doudou boot=live $LOCALE_ARGS notimezone noxautologin persistent persistent-subtext=doudoulinux live-media=removable edd=off username=tux hostname=doudoulinux union=aufs 
-
-		label livefailsafe
-		menu label Start DoudouLinux without persistence
-		kernel /boot/doudou/vmlinuz
-		append initrd=/boot/doudou/initrd.img live-media-path=/boot/doudou boot=live $LOCALE_ARGS notimezone noxautologin username=tux hostname=doudoulinux union=aufs" >> $WORK/boot/isolinux/isolinux.cfg
+		perl -pi -e "s/Start DoudouLinux/Start DoudouLinux $DOUDOUVER/g" $TAGS/doudou.cfg
+		cat $TAGS/doudou.cfg >> $WORK/boot/isolinux/isolinux.cfg
+		rm $TAGS/doudou.cfg
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
