@@ -146,7 +146,10 @@ if $INTERACTIVE;then
 	MENUCOLOR=$(cat /tmp/color)
 	echo $(echo -e "\r\033[0;$(cat /tmp/color)m")Color chosen.$(echo -e '\033[0;39m')
 	rm /tmp/color
-	dialog --inputbox "Enter the two-letter language code for the language you would like to use." 9 50 "en" 2> $TAGS/lang
+	dialog --inputbox "Enter the two-letter language code for the language you would like to use.\nLeaving this empty will leave the choice up to the plugin (usually English.)" 10 50 "" 2> $TAGS/lang
+	if [ "$(cat $TAGS/lang)" = "" ];then
+		rm $TAGS/lang #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
+	fi
 	if [ -f slax.iso ];then
 		dialog --checklist "Slax modules to include:" 13 45 6 \
 		002 Xorg on \
@@ -218,7 +221,7 @@ else
 	CDTITLE="MultiCD - Created $(date +"%b %d, %Y")"
 	export CDLABEL=MultiCD
 	MENUCOLOR=44
-	echo en > $TAGS/lang
+	#echo en > $TAGS/lang
 	touch $TAGS/9xextras
 	for i in puppies redhats;do
 		if [ $(find $TAGS/$i -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
