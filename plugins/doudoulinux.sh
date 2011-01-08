@@ -25,22 +25,19 @@ set -e
 if [ $1 = links ];then
 	echo "doudoulinux-*.iso doudoulinux.iso none"
 elif [ $1 = scan ];then
-	if [ -f binary.iso ];then
+	if [ -f doudoulinux.iso ];then
 		echo "DoudouLinux"
 	fi
 elif [ $1 = copy ];then
-	if [ -f binary.iso ];then
+	if [ -f doudoulinux.iso ];then
 		echo "Copying DoudouLinux..."
 		mcdmount doudoulinux
-		cp -r $MNT/binary/live $WORK/ #Copy live folder - usually all that is needed
-		if [ -d dlive/install ];then
-			cp -r $MNT/binary/install $WORK/ #Doesn't hurt to check
-		fi
-		umcdmount binary
+		cp -r $MNT/doudoulinux/live $WORK/boot/doudou #Copy live folder - usually all that is needed
+		umcdmount doudoulinux
 		rm $WORK/live/memtest||true
 	fi
 elif [ $1 = writecfg ];then
-	if [ -f binary.iso ];then
+	if [ -f doudoulinux.iso ];then
 		if [ -f doudoulinux.version ] && [ "$(cat doudoulinux.version)" != "" ];then
 			DOUDOUVER=" $(cat doudoulinux.version)"
 		else
@@ -59,20 +56,23 @@ elif [ $1 = writecfg ];then
 				fi
 			done
 		fi
-		if [ $LANG = fr ];then #Actually determines the args to use for each language. Only fr and en are in here right now.
+		#Actually determines the args to use for each language. Only fr and en are in here right now.
+		if [ $LANG = ar ];then
+			LOCALE_ARGS="locale=ar_EG.UTF-8 keyb=ara,fr,us klayout=us kvariant=qwerty,oss, koptions=grp:alt_shift_toggle"
+		elif [ $LANG = fr ];then
 			LOCALE_ARGS="locale=fr_FR.UTF-8 keyb=fr klayout=fr kvariant=oss koptions=lv3:ralt_switch,compose:menu"
 		else
 			LOCALE_ARGS="locale=en_US.UTF-8 keyb=us klayout=us"
 		fi
 		echo "label live
 		menu label Start DoudouLinux
-		kernel /live/vmlinuz
-		append initrd=/live/initrd.img boot=live $LOCALE_ARGS notimezone noxautologin persistent persistent-subtext=doudoulinux live-media=removable edd=off username=tux hostname=doudoulinux union=aufs 
+		kernel /boot/doudou/vmlinuz
+		append initrd=/boot/doudou/initrd.img live-media-path=/boot/doudou boot=live $LOCALE_ARGS notimezone noxautologin persistent persistent-subtext=doudoulinux live-media=removable edd=off username=tux hostname=doudoulinux union=aufs 
 
 		label livefailsafe
 		menu label Start DoudouLinux without persistence
-		kernel /live/vmlinuz
-		append initrd=/live/initrd.img boot=live $LOCALE_ARGS notimezone noxautologin username=tux hostname=doudoulinux union=aufs" >> $WORK/boot/isolinux/isolinux.cfg
+		kernel /boot/doudou/vmlinuz
+		append initrd=/boot/doudou/initrd.img live-media-path=/boot/doudou boot=live $LOCALE_ARGS notimezone noxautologin username=tux hostname=doudoulinux union=aufs" >> $WORK/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
