@@ -44,7 +44,9 @@ elif [ $1 = writecfg ];then
 		else
 			DOUDOUVER=""
 		fi
-		perl -pi -e "s/Start DoudouLinux/Start DoudouLinux $DOUDOUVER/g" $TAGS/doudou.cfg
+		perl -pi -e "s/DoudouLinux/DoudouLinux $DOUDOUVER/g" $TAGS/doudou.cfg
+		perl -pi -e "s^/live/^/boot/doudou/^g" $TAGS/doudou.cfg
+		perl -pi -e "s^boot=live^boot=live live-media-path=/boot/doudou^g" $TAGS/doudou.cfg
 		cat $TAGS/doudou.cfg >> $WORK/boot/isolinux/isolinux.cfg
 		rm $TAGS/doudou.cfg
 	fi
