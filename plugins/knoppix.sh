@@ -52,7 +52,11 @@ elif [ $1 = writecfg ];then
 		if [ -f $TAGS/lang ];then
 			LANGCODE=$(cat $TAGS/lang)
 		else
-			LANGCODE=en
+			if echo $KNOPPIXVER|grep DE;then
+				LANGCODE=de
+			else
+				LANGCODE=en
+			fi
 		fi
 		echo "MENU BEGIN --> ^Knoppix$KNOPPIXVER
 

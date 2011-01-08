@@ -48,8 +48,10 @@ elif [ $1 = writecfg ];then
 		fi
 		SUPPORTEDLANGUAGES="ar en es fr ro ru sr sr@latin uk de it nl pl pt tr vi"
 		if [ -f $TAGS/lang ];then
+			#User-defined language.
 			LANG=$(cat $TAGS/lang)
 		else
+			#Determine the language based on the filename.
 			LANG=en #Just in case it can't be found, default to en
 			for i in $SUPPORTEDLANGUAGES;do
 				if echo $DOUDOUVER|grep -q $i;then
