@@ -5,6 +5,7 @@ b673f919fae8c8143563f93abb6b8fc1  plugins/0hello.sh
 121a4919e3ceb376a504bfaad8f4ae6d  plugins/arch.sh
 335d39e77bafedda124eae768fdfad04  plugins/austrumi.sh
 15c89b63b6266b18ae69ae9c027c3b59  plugins/avg.sh
+1926a8340157c57ecbbc7bfebf36fc46  plugins/avira.sh
 8744d520bdd001153ab63ae449c7d14b  plugins/backtrack.sh
 ae50ce4106658e053b4c21044bc30f5e  plugins/caine.sh
 9eb684cf7b0599c13f93558424de78c8  plugins/cdlinux.sh
@@ -15,7 +16,7 @@ f4c332761b7f3b31a589bb7bb9e5547a  plugins/debian-install.sh
 1ed9ade12c35ede297291c7585bdbda9  plugins/debian-mini.sh
 3a993dc57624eedc4b097e3ea9ad4e30  plugins/deli.sh
 35e2b6c5fd86be53788a6828ce66da9d  plugins/diskcopy.sh
-034427044e39ba879fbd3bbcee290518  plugins/doudoulinux.sh
+6a790874965708aba2970d30a74c1869  plugins/doudoulinux.sh
 1e318ce1d88b3589d1fa263f30b7cd9a  plugins/dsl.sh
 a48803fc0ef4ebe72f0cda9080f566fd  plugins/dvl.sh
 b513c265ea3c94d0f3daf91cefb6547a  plugins/efw.sh
@@ -27,10 +28,11 @@ fa165ce1147203c048c5f254d20e82dc  plugins/finnix.sh
 f4fadf11263db60de023876e27c65acd  plugins/freedos.sh
 8057f9519ebd52e32babf9aec4a4ed16  plugins/geexbox.sh
 6953236ca3e2613f3a173a84f17d839e  plugins/gparted.sh
+14826cff1eb0e8472d727a21c3cd54c0  plugins/grmlx86.sh
 e35371de7c33c44b3b8d52ef5e9af208  plugins/hirens.sh
 b0f803ec4c57f94f22ac3e806fde33a1  plugins/insert.sh
 4f29fee42e3000195298bd7c56493dd1  plugins/ipcop.sh
-287c5ffc64a6125288d173dc44ccb596  plugins/knoppix.sh
+c7e5ebbec26e1f286793056a7e2452f8  plugins/knoppix.sh
 4048c7b657feb5aeac5700533c3b0739  plugins/linuxmint.sh
 e259a7c51aabacc881c99265798aca87  plugins/macpup.sh
 a790922354f2d9e710d6714af4301b5b  plugins/mandriva-boot.sh
