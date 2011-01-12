@@ -59,3 +59,4 @@
 #v6.0 - Added "wait" (or "w") option to multicd.sh. Added puppy2, tinycore2 plugins. Knoppix now has a submenu. Minor: DBAN plugin now comments out options instead of simply hiding them. (October 20, 2010)
 #v6.1 - Added automatic ISO linking and "cleanlinks" option to multicd.sh. (The ISO names to look for when linking are stored in the plugins - see tinycore.sh for an example.) Also changed (K)ubuntu 32/64-bit plugin titles (on the boot menu) and updated some more plugins to the "new format." (Nov 9, 2010)
 #v6.2 - Major changes to Ubuntu plugins - some were deleted, some renamed. Plugins renamed to opensuse-net and fedora-boot; opensuse-net64 and fedora-boot64 added; archiso-live, debian-install, avg added. (December 8, 2010)
+#v6.3 - DoudouLinux added. [unrel]
