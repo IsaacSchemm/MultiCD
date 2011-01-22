@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #multicd.sh 6.3
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2011 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -164,6 +164,23 @@ if $INTERACTIVE;then
 		rm ./slaxlist0
 		if wc -c $TAGS/slaxlist|grep -q 24;then #24 bytes means they are all checked
 			rm $TAGS/slaxlist #If they are all checked, delete the file
+		fi
+	fi
+	if [ -f porteus.iso ];then
+		dialog --checklist "Porteus modules to include:" 13 45 6 \
+		002 Xorg on \
+		003 LXDE on \
+		004 KDE on \
+		005 "KDE apps" on \
+		006 KOffice on \
+		007 Development on \
+		008 Firefox on \
+		2> ./porteuslist0
+		echo >> ./porteuslist0
+		cat ./porteuslist0|sed -e 's/"//g' -e 's/ /\n/g'>$TAGS/porteuslist
+		rm ./porteuslist0
+		if wc -c $TAGS/porteuslist|grep -q 28;then #28 bytes means they are all checked
+			rm $TAGS/porteuslist #If they are all checked, delete the file
 		fi
 	fi
 	if [ -f win98se.iso ] || [ -f winme.iso ];then

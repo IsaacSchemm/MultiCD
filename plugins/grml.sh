@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #GRML plugin for multicd.sh
 #version 6.3
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2011 libertyernie
 #modified quick and dirty by T.Ma.X. N060d9 to work with grml
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal

@@ -2,8 +2,8 @@
 set -e
 . ./functions.sh
 #Slax 6 plugin for multicd.sh
-#version 6.2
-#Copyright (c) 2010 libertyernie
+#version 6.3
+#Copyright (c) 2011 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -60,16 +60,18 @@ elif [ $1 = copy ];then
 			echo "Copying Slax modules..."
 		fi
 		for i in `ls -1 *.lzm 2> /dev/null;true`; do
-			cp $i $WORK/slax/modules/ #Copy the .lzm module to the modules folder
-			if $VERBOSE;then
-				echo \(Copied $i\)
+			if (! echo $i|grep -q ".sq4.lzm");then
+				cp $i $WORK/slax/modules/ #Copy the .lzm module to the modules folder
+				if $VERBOSE;then
+					echo \(Copied $i\)
+				fi
 			fi
 		done
 	fi
 elif [ $1 = writecfg ];then
 #BEGIN SLAX ENTRY#
 if [ -f slax.iso ];then
-if [ -f $WORK/slax/base/002-desktop.sq4.lzm ];then
+if [ -f $WORK/slax/base/002-xorg.lzm ];then
 if [ -f slax.version ] && [ "$(cat slax.version)" != "" ];then
 	SLAXVER=" $(cat slax.version)"
 else
