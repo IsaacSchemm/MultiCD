@@ -61,7 +61,7 @@ com32 menu.c32
 append isolinux.cfg" >> $WORK/boot/isolinux/trk.menu
 fi
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi

@@ -66,7 +66,7 @@ APPEND initrd=/boot/archiso-live/initrd.img locale=en_US.UTF-8 load=overlay cdna
 " >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi

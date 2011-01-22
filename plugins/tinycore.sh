@@ -58,7 +58,7 @@ if [ -f tinycore.iso ];then
 fi
 #END TINY CORE ENTRY#
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi
