@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 . ./functions.sh
-#Debian Live plugin for multicd.sh
-#version 6.0
+#DoudouLinux plugin for multicd.sh
+#version 6.3
 #Copyright (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy

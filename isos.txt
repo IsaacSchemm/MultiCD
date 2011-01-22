@@ -2,9 +2,11 @@
 archiso-live-*.iso			archiso-live.iso
 avg_*.iso				avg.iso
 debian-5*.iso				debian-install.iso
+oudoulinux-*.iso			doudoulinux.iso
 Fedora-*-x86_64-netinst.iso		fedora-boot64.iso
 Fedora-*-i386-netinst.iso		fedora-boot.iso
 gparted-live-*.iso			gparted.iso
+grml_*.iso				grml.iso
 KNOPPIX_V*.iso				knoppix.iso
 linuxmint-gnome*.iso			linuxmint.iso
 linuxmint-kde*.iso			linuxmint.iso
@@ -17,6 +19,7 @@ openSUSE-*-GNOME-LiveCD-i686.iso	opensuse-gnome.iso
 openSUSE-*-NET-x86_64.iso		opensuse-net64.iso
 openSUSE-*-NET-i586.iso			opensuse-net.iso
 pclinuxos-*.iso				pclos.iso
+porteus-*.iso				porteus.iso
 lupu-*.iso				puppy.iso
 slax-*.iso				slax.iso
 systemrescuecd-x86-*.iso		sysrcd.iso
@@ -39,16 +42,18 @@ edubuntu-*-dvd-amd64.iso		amd64.x.ubuntu.iso
 #Archiso-live		archiso-live.iso
 #Austrumi		al.iso
 #AVG Rescue CD		avg.iso
+#Avira			avira.iso
 #Caine			caine.iso
 #CDlinux		cdl.iso
 #Clonezilla		clonezilla.iso
+#Damn Vulnerable Linux	dvl.iso
 #DBAN			dban.iso
 #Debian install CD/DVD	debian-install.iso
 #Debian Live		binary.iso
 #Debian netboot		debian-mini.iso
 #DeLi Linux		deli.iso
+#DoudouLinux		doudou.iso
 #DSL			dsl.iso
-#Damn Vulnerable Linux	dvl.iso
 #EASEUS Disk Copy	diskcopy.iso
 #Elastix		elastix.iso
 #Endian Firewall	efw.iso
@@ -59,6 +64,7 @@ edubuntu-*-dvd-amd64.iso		amd64.x.ubuntu.iso
 #FreeDOS 1.0		fdbasecd.iso OR fdfullcd.iso
 #GeeXboX		geexbox.iso
 #GParted		gparted.iso
+#grml			grml.iso
 #Hiren's boot CD	hirens.iso
 #INSERT			insert.iso
 #IPCop			ipcop.iso
@@ -72,6 +78,8 @@ edubuntu-*-dvd-amd64.iso		amd64.x.ubuntu.iso
 #openSUSE netboot	opensuse-net.iso
 #openSUSE netboot	opensuse-net64.iso
 #Parted Magic		pmagic.iso
+#Porteus		porteus.iso
+#Porteus modules	ANYTHING.sq4.lzm (you can have several of these)
 #PING			ping.iso
 #Puppy			puppy.iso
 #RIPLinux		riplinux.iso
