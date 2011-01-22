@@ -5,7 +5,7 @@ b6d57d169e5f47eb5d74f8935ed1c049  plugins/archiso-live.sh
 121a4919e3ceb376a504bfaad8f4ae6d  plugins/arch.sh
 335d39e77bafedda124eae768fdfad04  plugins/austrumi.sh
 30b8df4986a622d0d6f0ec786fc41a1d  plugins/avg.sh
-1926a8340157c57ecbbc7bfebf36fc46  plugins/avira.sh
+ff2910d3df98e5c10df45bcfb2e726e8  plugins/avira.sh
 8744d520bdd001153ab63ae449c7d14b  plugins/backtrack.sh
 ae50ce4106658e053b4c21044bc30f5e  plugins/caine.sh
 9eb684cf7b0599c13f93558424de78c8  plugins/cdlinux.sh
@@ -16,7 +16,7 @@ f0ac7667e148c426e8b4bfdc36c376c0  plugins/clonezilla.sh
 1ed9ade12c35ede297291c7585bdbda9  plugins/debian-mini.sh
 3a993dc57624eedc4b097e3ea9ad4e30  plugins/deli.sh
 35e2b6c5fd86be53788a6828ce66da9d  plugins/diskcopy.sh
-6a790874965708aba2970d30a74c1869  plugins/doudoulinux.sh
+4f8cd5f4a577c22770f2131ba7e6be3a  plugins/doudoulinux.sh
 1e318ce1d88b3589d1fa263f30b7cd9a  plugins/dsl.sh
 a48803fc0ef4ebe72f0cda9080f566fd  plugins/dvl.sh
 b513c265ea3c94d0f3daf91cefb6547a  plugins/efw.sh
@@ -28,7 +28,7 @@ fa165ce1147203c048c5f254d20e82dc  plugins/finnix.sh
 f4fadf11263db60de023876e27c65acd  plugins/freedos.sh
 8057f9519ebd52e32babf9aec4a4ed16  plugins/geexbox.sh
 ae5e99fd7598177835d4c7cd7df73006  plugins/gparted.sh
-a0022364648d0172f54b2d105aaab327  plugins/grml.sh
+89d8684411cc55990437fc6267b7df94  plugins/grml.sh
 e35371de7c33c44b3b8d52ef5e9af208  plugins/hirens.sh
 b0f803ec4c57f94f22ac3e806fde33a1  plugins/insert.sh
 4f29fee42e3000195298bd7c56493dd1  plugins/ipcop.sh
@@ -47,11 +47,11 @@ d857f51151ad916628a1987e5fd65b84  plugins/opensuse-net.sh
 7b917e58234b8aba3147179b922cf3a3  plugins/pclx.sh
 dc28383fec5bd743258d981893621707  plugins/ping.sh
 be34cdb6b10b92ba8bdca0b2738dc000  plugins/pmagic.sh
-e38df890a383d4252fc3e3a9cc409405  plugins/porteus.sh
+980b2c4b5bc02eff3ba57473a052b257  plugins/porteus.sh
 1abb7a383f65d3892a5ec69523de02b3  plugins/puppy2.sh
 545994e8dd2e76afb0e7cb5c3c522265  plugins/puppy.sh
 218717c833a63e96969d46a433276c75  plugins/riplinux.sh
-eed0ff717420c733cc845a877c817535  plugins/slax.sh
+4b2af35feb6bfcbfa81aaf1967a61f3a  plugins/slax.sh
 2dd0065de49b1cfe78d86dec7b14cf5e  plugins/slitaz.sh
 cb9e534ff7880a508732f338bbd9e13e  plugins/sysrcd.sh
 6948759f327a9e5f6e9a03c8b0421935  plugins/tcnet.sh
