@@ -11,7 +11,7 @@ ae50ce4106658e053b4c21044bc30f5e  plugins/caine.sh
 9eb684cf7b0599c13f93558424de78c8  plugins/cdlinux.sh
 f0ac7667e148c426e8b4bfdc36c376c0  plugins/clonezilla.sh
 0200d23517f8fb6707a45d30dd4e4f74  plugins/dban.sh
-2e2b0abc023d8e31ae0fefeb679f0357  plugins/debian-install.sh
+9c13c8a1a48290f119c417794696363a  plugins/debian-install.sh
 62d113873a481b7ebbb16210fe926a9f  plugins/debian-live.sh
 1ed9ade12c35ede297291c7585bdbda9  plugins/debian-mini.sh
 3a993dc57624eedc4b097e3ea9ad4e30  plugins/deli.sh

@@ -35,53 +35,65 @@ elif [ $1 = copy ];then
 		mcdmount debian-install
 		cp -r $MNT/debian-install/.disk $WORK
 		cp -r $MNT/debian-install/dists $WORK
-		cp -r $MNT/debian-install/install.386 $WORK
+		cp -r $MNT/debian-install/install.* $WORK
 		cp -r $MNT/debian-install/pool $WORK
 		cp $MNT/debian-install/dedication.txt $WORK || true
 		umcdmount debian-install
 	fi
 elif [ $1 = writecfg ];then
 if [ -f debian-install.iso ];then
-if [ -f debian-install.version ] && [ "$(cat debian-install.version)" != "" ];then
-	VERSION=" (5$(cat debian-install.version))" #The 5 here is intentional
+if [ -f $WORK/.disk/info ];then
+	DEBNAME="$(cat $WORK/.disk/info)"
 else
-	VERSION=""
+	DEBNAME="Debian GNU/Linux installer"
 fi
-echo "menu begin --> ^Debian GNU/Linux installer$VERSION
+
+DIR=debnotfounderror
+for i in $(echo $WORK/install.*);do
+	if [ -f $i/vmlinuz ];then
+		DIR=$(basename $i)
+	fi
+done
+if [ $DIR = "debnotfounderror" ];then
+	echo "Error: install.* directory not found for Debian installer."
+	echo "Debian installer will not work on this CD."
+fi
+
+echo "menu begin --> ^$DEBNAME
 
 label install
 	menu label ^Install
 	menu default
-	kernel /install.386/vmlinuz
-	append vga=normal initrd=/install.386/initrd.gz -- quiet 
+	kernel /$DIR/vmlinuz
+	append vga=normal initrd=/$DIR/initrd.gz -- quiet 
 label expert
 	menu label ^Expert install
-	kernel /install.386/vmlinuz
-	append priority=low vga=normal initrd=/install.386/initrd.gz -- 
+	kernel /$DIR/vmlinuz
+	append priority=low vga=normal initrd=/$DIR/initrd.gz -- 
 label rescue
 	menu label ^Rescue mode
-	kernel /install.386/vmlinuz
-	append vga=normal initrd=/install.386/initrd.gz rescue/enable=true -- quiet 
+	kernel /$DIR/vmlinuz
+	append vga=normal initrd=/$DIR/initrd.gz rescue/enable=true -- quiet 
 label auto
 	menu label ^Automated install
-	kernel /install.386/vmlinuz
-	append auto=true priority=critical vga=normal initrd=/install.386/initrd.gz -- quiet 
+	kernel /$DIR/vmlinuz
+	append auto=true priority=critical vga=normal initrd=/$DIR/initrd.gz -- quiet 
 label installgui
 	menu label ^Graphical install
-	kernel /install.386/vmlinuz
-	append video=vesa:ywrap,mtrr vga=788 initrd=/install.386/gtk/initrd.gz -- quiet 
+	kernel /$DIR/vmlinuz
+	append video=vesa:ywrap,mtrr vga=788 initrd=/$DIR/gtk/initrd.gz -- quiet 
 label expertgui
 	menu label Graphical expert install
-	kernel /install.386/vmlinuz
-	append priority=low video=vesa:ywrap,mtrr vga=788 initrd=/install.386/gtk/initrd.gz -- 
+	kernel /$DIR/vmlinuz
+	append priority=low video=vesa:ywrap,mtrr vga=788 initrd=/$DIR/gtk/initrd.gz -- 
 label rescuegui
 	menu label Graphical rescue mode
-	kernel /install.386/vmlinuz
-	append video=vesa:ywrap,mtrr vga=788 initrd=/install.386/gtk/initrd.gz rescue/enable=true -- quiet  
+	kernel /$DIR/vmlinuz
+	append video=vesa:ywrap,mtrr vga=788 initrd=/$DIR/gtk/initrd.gz rescue/enable=true -- quiet  
 label autogui
 	menu label Graphical automated install
-	kernel /install.386/vmlinuz
-	append auto=true priority=critical video=vesa:ywrap,mtrr vga=788 initrd=/install.386/gtk/initrd.gz -- quiet 
+	kernel /$DIR/vmlinuz
+	append auto=true priority=critical video=vesa:ywrap,mtrr vga=788 initrd=/$DIR/gtk/initrd.gz -- quiet 
 label Back to main menu
 	com32 menu.c32
 	append isolinux.cfg
