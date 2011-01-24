@@ -34,8 +34,13 @@ elif [ $1 = copy ];then
 		echo "Copying Fedora netboot installer..."
 		mcdmount fedora-boot
 		mkdir multicd-working/boot/fedora
-		cp $MNT/fedora-boot/isolinux/vmlinuz multicd-working/boot/fedora/vmlinuz
-		cp $MNT/fedora-boot/isolinux/initrd.img multicd-working/boot/fedora/initrd.img
+		if [ -f $MNT/fedora-boot/isolinux/vmlinuz ];then
+			cp $MNT/fedora-boot/isolinux/vmlinuz multicd-working/boot/fedora/vmlinuz
+			cp $MNT/fedora-boot/isolinux/initrd.img multicd-working/boot/fedora/initrd.img
+		elif [ -f $MNT/fedora-boot/isolinux/vmlinuz0 ];then
+			cp $MNT/fedora-boot/isolinux/vmlinuz0 multicd-working/boot/fedora/vmlinuz
+			cp $MNT/fedora-boot/isolinux/initrd0.img multicd-working/boot/fedora/initrd.img
+		fi
 		if [ -d multicd-working/images ];then
 			echo "There is already an \"images\" folder on the multicd. You might have another Red Hat-based distro on it."
 			echo "Fedora's \"images\" folder won't be copied; instead, these files will be downloaded before the installer starts."
