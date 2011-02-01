@@ -27,7 +27,7 @@ d8126a0ac9cdcdcc326505059b3824c8  plugins/fedora-boot.sh
 fa165ce1147203c048c5f254d20e82dc  plugins/finnix.sh
 f4fadf11263db60de023876e27c65acd  plugins/freedos.sh
 8057f9519ebd52e32babf9aec4a4ed16  plugins/geexbox.sh
-ae5e99fd7598177835d4c7cd7df73006  plugins/gparted.sh
+4a6860c7c8a6c9732e3f40719a68e8c2  plugins/gparted.sh
 89d8684411cc55990437fc6267b7df94  plugins/grml.sh
 e35371de7c33c44b3b8d52ef5e9af208  plugins/hirens.sh
 b0f803ec4c57f94f22ac3e806fde33a1  plugins/insert.sh

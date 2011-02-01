@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 . ./functions.sh
-#multicd.sh 6.3
+#multicd.sh 6.4
 #Copyright (c) 2011 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,9 +34,9 @@ export TAGS=$MNT/tags
 
 
 if echo $* | grep -q "\bcleanlinks\b";then
-	ls -la |grep ^l |awk '{ print $8,$10 }'|while read i;do
-		if echo $i|awk '{print $2}'|grep -qv "/";then
-			rm -v $(echo $i|awk '{print $1}')
+	for i in *;do
+		if [ -n "$(readlink "$i"|grep -v '/')" ];then
+			rm -v "$i"
 		fi
 	done
 	rm -fv *.defaultname 2> /dev/null

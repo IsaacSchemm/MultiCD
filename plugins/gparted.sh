@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #GParted Live plugin for multicd.sh
-#version 6.2
+#version 6.4
 #Copyright (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,15 +38,20 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f gparted.iso ];then
+	if [ -f $WORK/gparted/vmlinuz1 ];then
+		AP="1"
+	else
+		AP=""
+	fi
 echo "# Since no network setting in the squashfs image, therefore if ip=frommedia, the network is disabled. That's what we want.
 label GParted Live
   # MENU HIDE
   MENU LABEL GParted Live (Default settings)
   # MENU PASSWD
-  kernel /boot/gparted/vmlinuz1
-  append initrd=/boot/gparted/initrd1.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset vga=788 ip=frommedia nosplash live-media-path=/boot/gparted
+  kernel /boot/gparted/vmlinuz$AP
+  append initrd=/boot/gparted/initrd$AP.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset vga=788 ip=frommedia nosplash live-media-path=/boot/gparted
   TEXT HELP
-  * GParted live version: 0.6.4-1. Live version maintainer: Steven Shiau
+  * GParted live version: $(cat gparted.version). Live version maintainer: Steven Shiau
   * Disclaimer: GParted live comes with ABSOLUTELY NO WARRANTY
   ENDTEXT
 
@@ -56,8 +61,8 @@ label GParted Live (To RAM)
   # MENU HIDE
   MENU LABEL GParted Live (To RAM. Boot media can be removed later)
   # MENU PASSWD
-  kernel /boot/gparted/vmlinuz1
-  append initrd=/boot/gparted/initrd1.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset noprompt vga=788 toram=filesystem.squashfs live-media-path=/boot/gparted ip=frommedia  nosplash
+  kernel /boot/gparted/vmlinuz$AP
+  append initrd=/boot/gparted/initrd$AP.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset noprompt vga=788 toram=filesystem.squashfs live-media-path=/boot/gparted ip=frommedia  nosplash
   TEXT HELP
   All the programs will be copied to RAM, so you can
   remove boot media (CD or USB flash drive) later
@@ -68,8 +73,8 @@ label GParted Live without framebuffer
   # MENU HIDE
   MENU LABEL GParted Live (Safe graphic settings, vga=normal)
   # MENU PASSWD
-  kernel /boot/gparted/vmlinuz1
-  append initrd=/boot/gparted/initrd1.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset ip=frommedia vga=normal nosplash live-media-path=/boot/gparted
+  kernel /boot/gparted/vmlinuz$AP
+  append initrd=/boot/gparted/initrd$AP.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset ip=frommedia vga=normal nosplash live-media-path=/boot/gparted
   TEXT HELP
   Disable console frame buffer support
   ENDTEXT
@@ -79,8 +84,8 @@ label GParted Live failsafe mode
   # MENU HIDE
   MENU LABEL GParted Live (Failsafe mode)
   # MENU PASSWD
-  kernel /boot/gparted/vmlinuz1
-  append initrd=/boot/gparted/initrd1.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset acpi=off irqpoll noapic noapm nodma nomce nolapic nosmp ip=frommedia vga=normal nosplash live-media-path=/boot/gparted
+  kernel /boot/gparted/vmlinuz$AP
+  append initrd=/boot/gparted/initrd$AP.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset acpi=off irqpoll noapic noapm nodma nomce nolapic nosmp ip=frommedia vga=normal nosplash live-media-path=/boot/gparted
   TEXT HELP
   acpi=off irqpoll noapic noapm nodma nomce nolapic 
   nosmp vga=normal nosplash
