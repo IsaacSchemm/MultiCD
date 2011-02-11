@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #antiX Linux plugin for multicd.sh
-#version 5.9
+#version 6.4
 #Copyright (c) 2010 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,7 +30,7 @@ elif [ $1 = copy ];then
 	if [ -f antix.iso ];then
 		echo "Copying AntiX..."
 		mcdmount antix
-		cp -r $MNT/antix/mepis $WORK/ #Everything in antiX but the kernel and initrd
+		cp -r $MNT/antix/antiX $WORK/ #Everything in antiX but the kernel and initrd
 		mkdir -p $WORK/boot/antix
 		cp $MNT/antix/boot/vmlinuz $WORK/boot/antix/vmlinuz #Kernel
 		cp $MNT/antix/boot/initrd.gz $WORK/boot/antix/initrd.gz #Initrd
