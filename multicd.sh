@@ -306,7 +306,7 @@ if [ -f grub.exe ];then
 fi
 
 echo "Downloading SYSLINUX..."
-if [ -d /usr/lib/syslinux ];then
+if [ -d /usr/lib/syslinux -a -f /usr/bin/isohybrid ];then
 	cp /usr/lib/syslinux/isolinux.bin $WORK/boot/isolinux/
 	cp /usr/lib/syslinux/memdisk $WORK/boot/isolinux/
 	cp /usr/lib/syslinux/menu.c32 $WORK/boot/isolinux/

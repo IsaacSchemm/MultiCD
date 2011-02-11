@@ -65,7 +65,7 @@ cd0a3681dbdcfab44c3eceed78a19128  plugins/ubuntu-mini.sh
 f21274b7a6644d7d667bf726e684f90d  plugins/ubuntu.sh
 be4929a5acfa8b1b60cd8c6eb055a7b6  plugins/vyatta.sh
 ff397c64954003be93f2339067f24a2b  plugins/weaknet.sh
-0a4cf7eae626cb222d1a3082fc10f512  plugins/win7recovery.sh
+643c4bb9b92712e702e2e3f08b750fbc  plugins/win7recovery.sh
 b64299a007091c5a409b03224459784b  plugins/win98se.sh
 87c841cedaf5d40088a811cef937b445  plugins/winme.sh
 9988b387126cb773ea58e856f1187da4  plugins/wolvix.sh
