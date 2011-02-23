@@ -1,3 +1,5 @@
+This file is not used by the script at all. You can keep it if you want, however.
+
 #Automatically recognized filenames (the script will make links to the files below to match what it expects):
 archiso-live-*.iso			archiso-live.iso
 avg_*.iso				avg.iso
@@ -35,6 +37,7 @@ xubuntu-*-desktop-i386.iso		i386.x.ubuntu.iso
 xubuntu-*-desktop-amd64.iso		amd64.x.ubuntu.iso
 edubuntu-*-dvd-i386.iso			i386.x.ubuntu.iso
 edubuntu-*-dvd-amd64.iso		amd64.x.ubuntu.iso
+lubuntu-*.iso				i386.l.ubuntu.iso
 
 #Filenames:	
 #antiX			antix.iso
