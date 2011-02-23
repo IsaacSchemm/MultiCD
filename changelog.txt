@@ -60,3 +60,5 @@
 #v6.1 - Added automatic ISO linking and "cleanlinks" option to multicd.sh. (The ISO names to look for when linking are stored in the plugins - see tinycore.sh for an example.) Also changed (K)ubuntu 32/64-bit plugin titles (on the boot menu) and updated some more plugins to the "new format." (Nov 9, 2010)
 #v6.2 - Major changes to Ubuntu plugins - some were deleted, some renamed. Plugins renamed to opensuse-net and fedora-boot; opensuse-net64 and fedora-boot64 added; archiso-live, debian-install, avg added. (December 8, 2010)
 #v6.3 - DoudouLinux, GRML, Avira and Porteus added. Files ending in .sq4.lzm are assumed to be Porteus modules; other .lzm files are assumed to be Slax modules. (January 22, 2011)
+#v6.4 - Basically a bunch of bug fixes. (February 22, 2011)
+
