@@ -47,11 +47,11 @@ d857f51151ad916628a1987e5fd65b84  plugins/opensuse-net.sh
 7b917e58234b8aba3147179b922cf3a3  plugins/pclx.sh
 dc28383fec5bd743258d981893621707  plugins/ping.sh
 be34cdb6b10b92ba8bdca0b2738dc000  plugins/pmagic.sh
-e1ceb2ee16b90cf0d3e54d41a70aae9b  plugins/porteus.sh
+49a4c9d97fa945773303b653fc444c97  plugins/porteus.sh
 1abb7a383f65d3892a5ec69523de02b3  plugins/puppy2.sh
 545994e8dd2e76afb0e7cb5c3c522265  plugins/puppy.sh
 218717c833a63e96969d46a433276c75  plugins/riplinux.sh
-488c0b94c8fe4548b0d00724c465173a  plugins/slax.sh
+da082bb7221dad31e9f3f03fd6cddc17  plugins/slax.sh
 2dd0065de49b1cfe78d86dec7b14cf5e  plugins/slitaz.sh
 cb9e534ff7880a508732f338bbd9e13e  plugins/sysrcd.sh
 6948759f327a9e5f6e9a03c8b0421935  plugins/tcnet.sh
