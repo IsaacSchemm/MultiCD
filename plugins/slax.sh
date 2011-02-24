@@ -33,7 +33,7 @@ elif [ $1 = copy ];then
 		echo "Copying Slax..."
 		mcdmount slax
 		if [ -f $TAGS/slaxlist ];then
-			mkdir $WORK/$MNT/slax
+			mkdir $MNT/slax
 			for i in `ls $MNT/slax/slax|sed -e '/^base$/ d'`;do
 				cp -R $MNT/slax/slax/$i $WORK/slax/ #Copy everything but the base modules
 			done

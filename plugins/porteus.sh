@@ -33,7 +33,7 @@ elif [ $1 = copy ];then
 		echo "Copying Porteus..."
 		mcdmount porteus
 		if [ -f $TAGS/porteuslist ];then
-			mkdir $WORK/$MNT/porteus
+			mkdir $MNT/porteus
 			for i in `ls $MNT/porteus/porteus|sed -e '/^base$/ d'`;do
 				cp -R $MNT/porteus/porteus/$i $WORK/porteus/ #Copy everything but the base modules
 			done
