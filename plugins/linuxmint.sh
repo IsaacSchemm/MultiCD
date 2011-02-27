@@ -2,8 +2,8 @@
 set -e
 . ./functions.sh
 #Linux Mint plugin for multicd.sh
-#version 6.3
-#Copyright (c) 2010 libertyernie, Zirafarafa
+#version 6.5
+#Copyright (c) 2010 libertyernie (orig. by Zirafarafa)
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -72,6 +72,7 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 	if $(linuxmintExists);then
 		for i in *.linuxmint.iso; do
+			BASENAME=$(echo $i|sed -e 's/\.iso//g')
 			UBUNAME=$(getLinuxmintName)
 
 			echo "label $BASENAME

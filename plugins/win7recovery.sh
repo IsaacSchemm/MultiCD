@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Windows 7 Recovery Disc plugin for multicd.sh
 #version 6.4
 #Copyright for this script (c) 2010 libertyernie
@@ -31,7 +32,7 @@ elif [ $1 = copy ];then
 		mcdmount win7recovery
 		cp $MNT/win7recovery/boot/* $WORK/boot/
 		cp -r $MNT/win7recovery/sources $WORK/
-		cp $MNT/ win7recovery/bootmgr $WORK/
+		cp $MNT/win7recovery/bootmgr $WORK/
 		umcdmount win7recovery
 	fi
 elif [ $1 = writecfg ];then
