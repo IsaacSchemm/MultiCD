@@ -30,7 +30,7 @@ elif [ $1 = scan ];then
 		echo "KDuXP"
 	fi
 elif [ $1 = copy ];then
-	if f [ -f kduxp.iso ];then
+	if [ -f kduxp.iso ];then
 		echo "Copying KDuXP..."
 		ubuntucommon kduxp
 	fi

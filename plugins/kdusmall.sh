@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 . ./functions.sh
-#KDU-Small plugin for multicd.sh
+#KDu-Small plugin for multicd.sh
 #version 6.6
 #Copyright (c) 2011 libertyernie
 #
@@ -24,14 +24,14 @@ set -e
 #THE SOFTWARE.
 
 if [ $1 = links ];then
-	echo "KDU-Small-*.iso kdusmall.iso none"
+	echo "KDu-Small-*.iso kdusmall.iso none"
 elif [ $1 = scan ];then
 	if [ -f kdusmall.iso ];then
-		echo "KDU-Small"
+		echo "KDu-Small"
 	fi
 elif [ $1 = copy ];then
-	if f [ -f kduxp.iso ];then
-		echo "Copying KDU-Small..."
+	if [ -f kdusmall.iso ];then
+		echo "Copying KDu-Small..."
 		ubuntucommon kdusmall
 	fi
 elif [ $1 = writecfg ];then
@@ -45,7 +45,7 @@ elif [ $1 = writecfg ];then
 			KDUVER=""
 		fi
 		echo "label kdusmall
-		menu label --> KDU-Small$KDUVER Menu
+		menu label --> KDu-Small$KDUVER Menu
 		com32 menu.c32
 		append /boot/kdusmall/kdusmall.cfg
 		" >> multicd-working/boot/isolinux/isolinux.cfg
