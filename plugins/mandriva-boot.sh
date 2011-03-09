@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #Mandriva installer plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 libertyernie
+#version 6.5
+#Copyright (c) 2011 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -28,22 +28,15 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f mandriva-boot.iso ];then
 		echo "Copying Mandriva netboot installer..."
-		if [ ! -d mandriva-boot ];then
-			mkdir mandriva-boot
-		fi
-		if grep -q "`pwd`/mandriva-boot" /etc/mtab ; then
-			umount mandriva-boot
-		fi
-		mount -o loop mandriva-boot.iso mandriva-boot/
-		mkdir multicd-working/boot/mandriva
-		cp -r mandriva-boot/isolinux/alt0 multicd-working/boot/mandriva/
-		cp -r mandriva-boot/isolinux/alt1 multicd-working/boot/mandriva/
-		umount mandriva-boot
-		rmdir mandriva-boot
+		mcdmount mandriva-boot
+		mkdir $WORK/boot/mandriva
+		cp -r $MNT/mandriva-boot/isolinux/alt0 $WORK/boot/mandriva/
+		cp -r $MNT/mandriva-boot/isolinux/alt1 $WORK/boot/mandriva/
+		umcdmount mandriva-boot
 	fi
 elif [ $1 = writecfg ];then
 if [ -f mandriva-boot.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+cat >> $WORK/boot/isolinux/isolinux.cfg << "EOF"
 label alt0
   menu label Install ^Mandriva
   kernel /boot/mandriva/alt0/vmlinuz
