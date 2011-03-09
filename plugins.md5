@@ -47,6 +47,7 @@ d857f51151ad916628a1987e5fd65b84  plugins/opensuse-net.sh
 80b82c2e3869d1d5d70030b49d2ace47  plugins/ophcrack.sh
 86934235d54fa91cbcb53ef6d366ba46  plugins/pclos.sh
 7b917e58234b8aba3147179b922cf3a3  plugins/pclx.sh
+4de372265eb6e472788c702ecb601b5b  plugins/pentoo.sh
 dc28383fec5bd743258d981893621707  plugins/ping.sh
 be34cdb6b10b92ba8bdca0b2738dc000  plugins/pmagic.sh
 49a4c9d97fa945773303b653fc444c97  plugins/porteus.sh
