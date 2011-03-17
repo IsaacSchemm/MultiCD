@@ -348,18 +348,22 @@ else
 fi
 
 if $MEMTEST;then
-	if [ -f memtest ];then
+	if [ -f memtest ] && [ "$(wc -c memtest)" != "0" ];then
 		cp memtest $WORK/boot/memtest
 	elif [ -f /boot/memtest86+.bin ];then
 		cp /boot/memtest86+.bin $WORK/boot/memtest
 	else
-		echo "Downloading memtest86+ 4.10 from memtest.org..."
+		echo "Downloading memtest86+ 4.20 from memtest.org..."
 		if $VERBOSE;then
-			wget -O- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
+			wget -O- http://memtest.org/download/4.20/memtest86+-4.20.bin.gz|gzip -cd>memtest
 		else
-			wget -qO- http://memtest.org/download/4.10/memtest86+-4.10.bin.gz|gzip -cd>memtest
+			wget -qO- http://memtest.org/download/4.20/memtest86+-4.20.bin.gz|gzip -cd>memtest
 		fi
-		cp memtest $WORK/boot/memtest
+		if [ -f memtest ] && [ "$(wc -c memtest)" != "0 memtest" ];then
+			cp memtest $WORK/boot/memtest
+		else
+			echo "Download of memtest failed."
+		fi
 	fi
 fi
 
