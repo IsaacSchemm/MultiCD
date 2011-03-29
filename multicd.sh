@@ -146,9 +146,13 @@ if $INTERACTIVE;then
 	MENUCOLOR=$(cat /tmp/color)
 	echo $(echo -e "\r\033[0;$(cat /tmp/color)m")Color chosen.$(echo -e '\033[0;39m')
 	rm /tmp/color
-	dialog --inputbox "Enter the two-letter language code for the language you would like to use.\nLeaving this empty will leave the choice up to the plugin (usually English.)" 10 50 "" 2> $TAGS/lang
-	if [ "$(cat $TAGS/lang)" = "" ];then
-		rm $TAGS/lang #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
+	dialog --inputbox "Enter the language code (example: en_US) for the language you would like to use.\nLeaving this empty will leave the choice up to the plugin (usually English.)" 10 50 "" 2> $TAGS/lang-full
+	LANGFULL="$(cat $TAGS/lang-full)"
+	if [ "$LANGFULL" = "" ];then
+		rm $TAGS/lang-full #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
+	else
+		#Get two-letter code (e.g. the first part) for plugins that only use that part of the lang code
+		cat $TAGS/lang-full|awk -F_ '{print $1}' > $TAGS/lang
 	fi
 	if [ -f slax.iso ];then
 		dialog --checklist "Slax modules to include:" 13 45 6 \

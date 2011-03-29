@@ -42,18 +42,21 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f opensuse-gnome.iso ];then
-echo "label openSUSE_Live_(GNOME)
-  menu label ^openSUSE Live (GNOME)
-  kernel /boot/susegnom/linux
-  initrd /boot/susegnom/initrd
-  append ramdisk_size=512000 ramdisk_blocksize=4096 splash=silent quiet preloadlog=/dev/null showopts 
-label linux
-  menu label Install openSUSE (GNOME)
-  kernel /boot/susegnom/linux
-  initrd /boot/susegnom/initrd
-  append ramdisk_size=512000 ramdisk_blocksize=4096 splash=silent quiet preloadlog=/dev/null liveinstall showopts
-" >> multicd-working/boot/isolinux/isolinux.cfg
-fi
+	if [ -f $TAGS/lang-full ];then
+		LANGADD="lang=$(cat $TAGS/lang-full)"
+	fi
+	echo "label openSUSE_Live_(GNOME)
+	  menu label ^openSUSE Live (GNOME)
+	  kernel /boot/susegnom/linux
+	  initrd /boot/susegnom/initrd
+	  append ramdisk_size=512000 ramdisk_blocksize=4096 splash=silent quiet preloadlog=/dev/null showopts $LANGADD
+	label linux
+	  menu label Install openSUSE (GNOME)
+	  kernel /boot/susegnom/linux
+	  initrd /boot/susegnom/initrd
+	  append ramdisk_size=512000 ramdisk_blocksize=4096 splash=silent quiet preloadlog=/dev/null liveinstall showopts $LANGADD
+	" >> multicd-working/boot/isolinux/isolinux.cfg
+	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"

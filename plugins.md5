@@ -41,7 +41,7 @@ e259a7c51aabacc881c99265798aca87  plugins/macpup.sh
 c757cbcaf1e64d4460a527a4900825be  plugins/mintdebian.sh
 03571b37161e00323eb99385d0ee82ae  plugins/netbootcd.sh
 2ae4bc4cca713098344a631c86ebe5f7  plugins/ntpasswd.sh
-073f27db8e1b5266fab0917d0bfda966  plugins/opensuse-gnome.sh
+c1337a6f4e18743a7d637784039d25b0  plugins/opensuse-gnome.sh
 886859f76e54fd0283f1c703fc5a1cf8  plugins/opensuse-net64.sh
 d857f51151ad916628a1987e5fd65b84  plugins/opensuse-net.sh
 5f52975d92aab762c3f5daf9d2d611cb  plugins/ophcrack.sh
