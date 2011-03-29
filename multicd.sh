@@ -146,7 +146,9 @@ if $INTERACTIVE;then
 	MENUCOLOR=$(cat /tmp/color)
 	echo $(echo -e "\r\033[0;$(cat /tmp/color)m")Color chosen.$(echo -e '\033[0;39m')
 	rm /tmp/color
-	dialog --inputbox "Enter the language code (example: en_US) for the language you would like to use.\nLeaving this empty will leave the choice up to the plugin (usually English.)" 10 50 "" 2> $TAGS/lang-full
+	dialog --inputbox "Enter the language code for the language you would like to use.\n\
+Leaving this empty will leave the choice up to the plugin (usually English.)\n\
+Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 10 50 "" 2> $TAGS/lang-full
 	LANGFULL="$(cat $TAGS/lang-full)"
 	if [ "$LANGFULL" = "" ];then
 		rm $TAGS/lang-full #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
