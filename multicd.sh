@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 . ./functions.sh
-#multicd.sh 6.4
+#multicd.sh 6.5
 #Copyright (c) 2011 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,15 +23,14 @@ set -e
 #THE SOFTWARE.
 
 #MCDDIR: directory where plugins.md5 and plugins folder are expected to be.
-MCDDIR=$(pwd)
+MCDDIR=.
 #WORK: the directory that the eventual CD/DVD contents will be stored temporarily.
-export WORK=$(pwd)/multicd-working
+export WORK=multicd-working
 #MNT: the directory inside which new folders will be made to mount the ISO images.
 mkdir -p /tmp/multicd-$USER
 export MNT=/tmp/multicd-$USER
 #TAGS: used to store small text files (temporary)
 export TAGS=$MNT/tags
-
 
 if echo $* | grep -q "\bcleanlinks\b";then
 	for i in *;do
@@ -148,7 +147,7 @@ if $INTERACTIVE;then
 	rm /tmp/color
 	dialog --inputbox "Enter the language code for the language you would like to use.\n\
 Leaving this empty will leave the choice up to the plugin (usually English.)\n\
-Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 10 50 "" 2> $TAGS/lang-full
+Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> $TAGS/lang-full
 	LANGFULL="$(cat $TAGS/lang-full)"
 	if [ "$LANGFULL" = "" ];then
 		rm $TAGS/lang-full #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
