@@ -61,4 +61,4 @@
 #v6.2 - Major changes to Ubuntu plugins - some were deleted, some renamed. Plugins renamed to opensuse-net and fedora-boot; opensuse-net64 and fedora-boot64 added; archiso-live, debian-install, avg added. (December 8, 2010)
 #v6.3 - DoudouLinux, GRML, Avira and Porteus added. Files ending in .sq4.lzm are assumed to be Porteus modules; other .lzm files are assumed to be Slax modules. (January 22, 2011)
 #v6.4 - Basically a bunch of bug fixes. (February 22, 2011)
-
+#v6.5 - Added Pentoo. More bugfixes. (April 25, 2011)

@@ -81,6 +81,7 @@ lubuntu-*.iso				i386.l.ubuntu.iso
 #openSUSE netboot	opensuse-net.iso
 #openSUSE netboot	opensuse-net64.iso
 #Parted Magic		pmagic.iso
+#Pentoo			pentoo.iso
 #Porteus		porteus.iso
 #Porteus modules	ANYTHING.sq4.lzm (you can have several of these)
 #PING			ping.iso
