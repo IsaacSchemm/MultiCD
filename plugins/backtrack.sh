@@ -2,8 +2,8 @@
 set -e
 . ./functions.sh
 #BackTrack plugin for multicd.sh (designed for BackTrack 4)
-#version 5.7
-#Copyright (c) 2010 libertyernie
+#version 6.6
+#Copyright (c) 2011 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,9 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "bt4-*.iso backtrack.iso none"
+elif [ $1 = scan ];then
 	if [ -f backtrack.iso ];then
 		echo "BackTrack"
 	fi
@@ -35,14 +37,15 @@ elif [ $1 = copy ];then
 		cp $MNT/backtrack/boot/initrd* $WORK/boot/backtrack/
 		umcdmount backtrack
 		echo -n "Making initrd(s)..." #This initrd code is common to distros using old versions of casper
+		WORKPATH="$(readlink -f "$WORK")"
 		for i in initrd.gz initrd800.gz initrdfr.gz;do
 			if [ -d $MNT/initrd-tmp-mount ];then rm -r $MNT/initrd-tmp-mount;fi
 			mkdir $MNT/initrd-tmp-mount
 			cd $MNT/initrd-tmp-mount
-			gzip -cd $WORK/boot/backtrack/$i | cpio -id
+			gzip -cd $WORKPATH/boot/backtrack/$i | cpio -id
 			perl -pi -e 's/path\/casper/path\/boot\/backtrack/g' scripts/casper
 			perl -pi -e 's/directory\/casper/directory\/boot\/backtrack/g' scripts/casper
-			find . | cpio --create --format='newc' | gzip -c > $WORK/boot/backtrack/$i
+			find . | cpio --create --format='newc' | gzip -c > $WORKPATH/boot/backtrack/$i
 			cd -
 			rm -r $MNT/initrd-tmp-mount
 		done
