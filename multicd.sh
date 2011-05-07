@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 . ./functions.sh
-#multicd.sh 6.5
+#multicd.sh 6.6
 #Copyright (c) 2011 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,7 +32,7 @@ export MNT=/tmp/multicd-$USER
 #TAGS: used to store small text files (temporary)
 export TAGS=$MNT/tags
 
-if echo $* | grep -q "\bcleanlinks\b";then
+if echo $* | grep -q "\bclean\b";then
 	for i in *;do
 		if [ -n "$(readlink "$i"|grep -v '/')" ];then
 			rm -v "$i"
