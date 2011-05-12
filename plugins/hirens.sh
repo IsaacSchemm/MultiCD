@@ -2,8 +2,8 @@
 set -e
 . ./functions.sh
 #Hiren's BootCD (11.0) plugin for multicd.sh
-#version 6.1
-#Copyright for this script (c) 2010 libertyernie
+#version 6.6
+#Copyright for this script (c) 2011 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -28,15 +28,10 @@ if [ $1 = scan ];then
 		DUPLICATES=false #Initialize variable
 		for i in riplinux dban konboot ntpasswd;do
 			if [ -f $i.iso ];then
-				echo
-				echo "Note: Hiren's BootCD already includes $i."
+				echo "  Note: Hiren's BootCD already includes $i. Continuing anyway."
 				DUPLICATES=true
 			fi
 		done
-		if $DUPLICATES;then
-			echo "Continuing anyway."
-			echo
-		fi
 	fi
 elif [ $1 = copy ];then
 	if [ -f hirens.iso ];then

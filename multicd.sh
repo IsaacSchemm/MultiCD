@@ -310,12 +310,11 @@ if [ -f grub.exe ];then
  cp grub.exe $WORK/boot/grub.exe
 fi
 
-echo "Downloading SYSLINUX..."
 if [ -f syslinux-4.03.tar.gz ] && [ ! -f syslinux.tar.gz ];then
 	ln -s syslinux-4.03.tar.gz syslinux.tar.gz #Link newest version
 fi
 if [ -f syslinux.tar.gz ];then
-	echo "Unpacking and copying files..."
+	echo "Unpacking and copying SYSLINUX files..."
 	tar -C /tmp -xzf syslinux.tar.gz
 	cp /tmp/syslinux-*/core/isolinux.bin $WORK/boot/isolinux/
 	cp /tmp/syslinux-*/memdisk/memdisk $WORK/boot/isolinux/
@@ -325,20 +324,33 @@ if [ -f syslinux.tar.gz ];then
 	cp /tmp/syslinux-*/utils/isohybrid $TAGS/isohybrid
 	chmod +x $TAGS/isohybrid
 	rm -r /tmp/syslinux-*/
-elif [ -d /usr/lib/syslinux -a -f /usr/bin/isohybrid ];then
-	echo "Copying from installed SYSLINUX files..."
-	cp /usr/lib/syslinux/isolinux.bin $WORK/boot/isolinux/
-	cp /usr/lib/syslinux/memdisk $WORK/boot/isolinux/
-	cp /usr/lib/syslinux/menu.c32 $WORK/boot/isolinux/
-	cp /usr/lib/syslinux/vesamenu.c32 $WORK/boot/isolinux/
-	cp /usr/lib/syslinux/chain.c32 $WORK/boot/isolinux/
-	cp /usr/bin/isohybrid $TAGS
+elif [ -d /usr/lib/syslinux ];then
+	if [ -f /usr/bin/isohybrid ];then
+		echo "Copying from installed SYSLINUX files..."
+		cp /usr/lib/syslinux/isolinux.bin $WORK/boot/isolinux/
+		cp /usr/lib/syslinux/memdisk $WORK/boot/isolinux/
+		cp /usr/lib/syslinux/menu.c32 $WORK/boot/isolinux/
+		cp /usr/lib/syslinux/vesamenu.c32 $WORK/boot/isolinux/
+		cp /usr/lib/syslinux/chain.c32 $WORK/boot/isolinux/
+		cp /usr/bin/isohybrid $TAGS
+	else
+		echo "The installed SYSLINUX version does not include isohybrid. It might be out of date."
+	fi
 else
+	echo "Downloading SYSLINUX..."
 	if $VERBOSE ;then #These will only be run if there is no syslinux.tar.gz AND if syslinux is not installed on your PC
 		#Both of these need to be changed when a new version of syslinux comes out.
-		wget -O syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.03.tar.gz
+		if ! wget -O syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.04.tar.gz;then
+			echo "Error: could not download SYSLINUX. Please update the URL in $0."
+			rm syslinux.tar.gz
+			false #quits script
+		fi
 	else
-		wget -qO syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.03.tar.gz
+		if ! wget -qO syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.04.tar.gz;then
+			echo "Error: could not download SYSLINUX. Please update the URL in $0."
+			rm syslinux.tar.gz
+			false #quits script
+		fi
 	fi
 	echo "Unpacking and copying files..."
 	tar -C /tmp -xzf syslinux.tar.gz

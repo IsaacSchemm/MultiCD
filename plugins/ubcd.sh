@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 #Ultimate Boot CD plugin for multicd.sh
-#version 5.9
-#Copyright (c) 2010 libertyernie
+#version 6.6
+#Copyright (c) 2011 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -29,13 +29,11 @@ elif [ $1 = scan ];then
 	fi
 	if [ -f dban.iso ] && [ -f ubcd.iso ];then
 		echo
-		echo "Note: Ultimate Boot CD includes DBAN, so it is not necessary alone as well."
-		echo "Continuing anyway."
+		echo "  Note: Ultimate Boot CD includes DBAN, so it is not necessary alone as well. Continuing anyway."
 	fi
 	if [ -f ntpasswd.iso ] && [ -f ubcd.iso ];then
 		echo
-		echo "Note: UBCD includes NT Password & Registry Editor, so it is not necessary alone as well."
-		echo "Continuing anyway."
+		echo "  Note: UBCD includes ntpasswd, so it is not necessary alone as well. Continuing anyway."
 	fi
 elif [ $1 = copy ];then
 	set -e
