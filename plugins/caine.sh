@@ -24,7 +24,7 @@ set -e
 #THE SOFTWARE.
 if [ $1 = scan ];then
 	if [ -f caine.iso ];then
-		echo "Caine"
+		echo "Caine [note: this is old; it doesn't work for new versions]"
 	fi
 elif [ $1 = copy ];then
 	if [ -f caine.iso ];then

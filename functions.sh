@@ -117,7 +117,7 @@ puppycommon () {
 		fi
 		umcdmount $1
 	else
-		echo "$0: \"$1\" is empty or not an ISO"
+		echo "$0: \"$1\" is empty or not an ISO, so it will not be copied. This is a bug."
 		exit 1
 	fi
 }

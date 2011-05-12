@@ -313,6 +313,7 @@ fi
 if [ -f syslinux-4.03.tar.gz ] && [ ! -f syslinux.tar.gz ];then
 	ln -s syslinux-4.03.tar.gz syslinux.tar.gz #Link newest version
 fi
+
 if [ -f syslinux.tar.gz ];then
 	echo "Unpacking and copying SYSLINUX files..."
 	tar -C /tmp -xzf syslinux.tar.gz
@@ -336,7 +337,8 @@ elif [ -d /usr/lib/syslinux ];then
 	else
 		echo "The installed SYSLINUX version does not include isohybrid. It might be out of date."
 	fi
-else
+fi
+if [ ! -f $WORK/boot/isolinux/isolinux.bin ];then
 	echo "Downloading SYSLINUX..."
 	if $VERBOSE ;then #These will only be run if there is no syslinux.tar.gz AND if syslinux is not installed on your PC
 		#Both of these need to be changed when a new version of syslinux comes out.
