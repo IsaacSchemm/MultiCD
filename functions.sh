@@ -134,7 +134,7 @@ ubuntucommon () {
 		elif [ -f $MNT/$1/isolinux/txt.cfg ];then
 			UBUCFG=txt.cfg
 		else
-			UBUCFG=isolinux.cfg #For custom-made live CDs
+			UBUCFG=isolinux.cfg #For custom-made live CDs like Weaknet
 		fi
 		cp $MNT/$1/isolinux/$UBUCFG $WORK/boot/$1/$1.cfg
 		sed -i "s@default live@default menu.c32@g" $WORK/boot/$1/$1.cfg #Show menu instead of boot: prompt

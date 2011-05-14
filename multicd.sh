@@ -553,7 +553,7 @@ $GENERATOR -o multicd.iso \
 rm -r $WORK/
 
 echo "Running isohybrid..."
-$TAGS/isohybrid multicd.iso 2> /dev/null || echo $?
+$TAGS/isohybrid multicd.iso 2> /dev/null || echo "(isohybrid gave an error status of $?. The ISO might still work on USB, though.)"
 rm $TAGS/isohybrid
 chmod 666 multicd.iso
 rm -r $TAGS
