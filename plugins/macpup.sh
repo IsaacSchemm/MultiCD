@@ -2,8 +2,8 @@
 set -e
 . ./functions.sh
 #Macpup plugin for multicd.sh
-#version 6.0
-#Copyright (c) 2010 libertyernie
+#version 6.6
+#Copyright (c) 2011 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -42,21 +42,28 @@ fi
 if [ -d $WORK/macpup ];then
 	EXTRAARGS="psubdir=macpup"
 fi
+if [ -d $WORK/macpup ];then
+	EXTRAARGS="psubdir=macpup"
+	KERNELPATH="/macpup"
+else
+	EXTRAARGS=""
+	KERNELPATH=""
+fi
 echo "label macpup
 menu label ^$PUPNAME
-kernel /macpup/vmlinuz
+kernel $KERNELPATH/vmlinuz
 append pmedia=cd $EXTRAARGS
-initrd /macpup/initrd.gz
+initrd $KERNELPATH/initrd.gz
 #label macpup-nox
 #menu label $PUPNAME (boot to command line)
-#kernel /macpup/vmlinuz
+#kernel $KERNELPATH/vmlinuz
 #append pmedia=cd pfix=nox $EXTRAARGS
-#initrd /macpup/initrd.gz
+#initrd $KERNELPATH/initrd.gz
 #label macpup-noram
 #menu label $PUPNAME (don't load to RAM)
-#kernel /macpup/vmlinuz
+#kernel $KERNELPATH/vmlinuz
 #append pmedia=cd pfix=noram $EXTRAARGS
-#initrd /macpup/initrd.gz
+#initrd $KERNELPATH/initrd.gz
 " >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else

@@ -2,8 +2,8 @@
 set -e
 . ./functions.sh
 #Puppy Linux #2 plugin for multicd.sh
-#version 6.0
-#Copyright (c) 2010 libertyernie
+#version 6.6
+#Copyright (c) 2011 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -45,22 +45,26 @@ else
 fi
 if [ -d $WORK/puppy2 ];then
 	EXTRAARGS="psubdir=puppy2"
+	KERNELPATH="/puppy2"
+else
+	EXTRAARGS=""
+	KERNELPATH=""
 fi
 echo "label puppy2
 menu label ^$PUPNAME
-kernel /puppy2/vmlinuz
+kernel $KERNELPATH/vmlinuz
 append pmedia=cd $EXTRAARGS
-initrd /puppy2/initrd.gz
+initrd $KERNELPATH/initrd.gz
 #label puppy2-nox
 #menu label $PUPNAME (boot to command line)
-#kernel /puppy2/vmlinuz
+#kernel $KERNELPATH/vmlinuz
 #append pmedia=cd pfix=nox $EXTRAARGS
-#initrd /puppy2/initrd.gz
+#initrd $KERNELPATH/initrd.gz
 #label puppy2-noram
 #menu label $PUPNAME (don't load to RAM)
-#kernel /puppy2/vmlinuz
+#kernel $KERNELPATH/vmlinuz
 #append pmedia=cd pfix=noram $EXTRAARGS
-#initrd /puppy2/initrd.gz
+#initrd $KERNELPATH/initrd.gz
 " >> $WORK/boot/isolinux/isolinux.cfg
 fi
 #END PUPPY2 ENTRY#
