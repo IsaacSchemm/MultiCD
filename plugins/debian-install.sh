@@ -2,8 +2,8 @@
 set -e
 . ./functions.sh
 #Debian install CD/DVD plugin for multicd.sh
-#version 6.2
-#Copyright (c) 2010 libertyernie
+#version 6.6
+#Copyright (c) 2011 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,8 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	#Note the 5 - only Lenny picked up
-	echo "debian-5*.iso debian-install.iso none"
+	#Note the 6 - only Squeeze picked up
+	echo "debian-6*.iso debian-install.iso none"
 elif [ $1 = scan ];then
 	if [ -f debian-install.iso ];then
 		echo "Debian installer"
