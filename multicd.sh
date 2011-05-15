@@ -504,7 +504,7 @@ com32 menu.c32
 append isolinux.cfg">>$WORK/boot/isolinux/games.cfg
 fi
 
-if [ -d includes ] && [ "$(echo empty/.* empty/*)" = 'empty/. empty/.. empty/*' ] ;then
+if [ -d includes ] && [ "$(echo empty/.* empty/*)" != 'empty/. empty/.. empty/*' ] ;then
  echo "Copying includes..."
  cp -r includes/* $WORK/
 fi
