@@ -33,10 +33,10 @@ elif [ $1 = copy ];then
 		echo "Copying NetbootCD..."
 		mcdmount netbootcd
 		mkdir -p ${WORK}/boot/nbcd
-		if [ -d ${WORK}/boot/isolinux ];then
-			BOOTDIR=${WORK}/boot/isolinux
+		if [ -d ${MNT}/netbootcd/boot/isolinux ];then
+			BOOTDIR=${MNT}/netbootcd/boot/isolinux
 		else
-			BOOTDIR=${WORK}/isolinux
+			BOOTDIR=${MNT}/netbootcd/isolinux
 		fi
 		cp ${BOOTDIR}/kexec.bzI ${WORK}/boot/nbcd/kexec.bzI
 		cp ${BOOTDIR}/nbinit*.gz ${WORK}/boot/nbcd/nbinit.gz
