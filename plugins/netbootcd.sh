@@ -37,6 +37,7 @@ elif [ $1 = copy ];then
 			BOOTDIR=${WORK}/boot/isolinux
 		else
 			BOOTDIR=${WORK}/isolinux
+		fi
 		cp ${BOOTDIR}/kexec.bzI ${WORK}/boot/nbcd/kexec.bzI
 		cp ${BOOTDIR}/nbinit*.gz ${WORK}/boot/nbcd/nbinit.gz
 		if [ -f ${BOOTDIR}/tinycore.gz ];then
