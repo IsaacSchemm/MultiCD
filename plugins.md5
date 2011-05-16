@@ -40,7 +40,7 @@ f0729d142365cb0e43bdc7e0945a9a7f  plugins/knoppix.sh
 85a2d5ab59d0d23ca82d2ecb723f5bb5  plugins/macpup.sh
 2ccec07cb8b5d95b0cd565b6f51b11d9  plugins/mandriva-boot.sh
 c757cbcaf1e64d4460a527a4900825be  plugins/mintdebian.sh
-03571b37161e00323eb99385d0ee82ae  plugins/netbootcd.sh
+9ab1a6143d687e0562fef044ff2546db  plugins/netbootcd.sh
 2ae4bc4cca713098344a631c86ebe5f7  plugins/ntpasswd.sh
 c1337a6f4e18743a7d637784039d25b0  plugins/opensuse-gnome.sh
 886859f76e54fd0283f1c703fc5a1cf8  plugins/opensuse-net64.sh

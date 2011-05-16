@@ -2,8 +2,8 @@
 set -e
 . ./functions.sh
 #NetbootCD 3.x/4.x plugin for multicd.sh
-#version 6.1
-#Copyright (c) 2010 libertyernie
+#version 6.6
+#Copyright (c) 2011 libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -32,36 +32,49 @@ elif [ $1 = copy ];then
 	if [ -f netbootcd.iso ];then
 		echo "Copying NetbootCD..."
 		mcdmount netbootcd
-		mkdir -p multicd-working/boot/nbcd
-		cp $MNT/netbootcd/isolinux/kexec.bzI multicd-working/boot/nbcd/kexec.bzI
-		cp $MNT/netbootcd/isolinux/* multicd-working/boot/nbcd/
+		mkdir -p ${WORK}/boot/nbcd
+		if [ -d ${WORK}/boot/isolinux ];then
+			BOOTDIR=${WORK}/boot/isolinux
+		else
+			BOOTDIR=${WORK}/isolinux
+		cp ${BOOTDIR}/kexec.bzI ${WORK}/boot/nbcd/kexec.bzI
+		cp ${BOOTDIR}/nbinit*.gz ${WORK}/boot/nbcd/nbinit.gz
+		if [ -f ${BOOTDIR}/tinycore.gz ];then
+			cp ${BOOTDIR}/tinycore.gz ${WORK}/boot/nbcd/tinycore.gz
+		fi
+		if [ -f ${BOOTDIR}/grub.exe ];then
+			cp ${BOOTDIR}/grub.exe ${WORK}/boot/nbcd/grub.exe
+		fi
 		sleep 1;umcdmount netbootcd
 	fi
 elif [ $1 = writecfg ];then
-#BEGIN NETBOOTCD ENTRY#
-if [ -f netbootcd.iso ];then
-if [ -f netbootcd.version ] && [ "$(cat netbootcd.version)" != "" ];then
-	NBCDVER=" $(cat netbootcd.version)"
-else
-	NBCDVER=""
-fi
-if [ -f multicd-working/boot/nbcd/nbinit4.lz ];then
-echo "LABEL netbootcd
-MENU LABEL ^NetbootCD$NBCDVER
-KERNEL /boot/nbcd/kexec.bzI
-initrd /boot/nbcd/nbinit4.lz
-APPEND quiet
-" >> multicd-working/boot/isolinux/isolinux.cfg
-else
-echo "LABEL netbootcd
-MENU LABEL ^NetbootCD$NBCDVER
-KERNEL /boot/nbcd/kexec.bzI
-initrd /boot/nbcd/nbinit3.gz
-APPEND quiet
-" >> multicd-working/boot/isolinux/isolinux.cfg
-fi
-fi
-#END NETBOOTCD ENTRY#
+	if [ -f netbootcd.iso ];then
+		if [ -f netbootcd.version ] && [ "$(cat netbootcd.version)" != "" ];then
+			NBCDVER=" $(cat netbootcd.version)"
+		else
+			NBCDVER=""
+		fi
+		echo "LABEL netbootcd
+		MENU LABEL ^NetbootCD$NBCDVER
+		KERNEL /boot/nbcd/kexec.bzI
+		initrd /boot/nbcd/nbinit.gz
+		APPEND quiet
+		" >> ${WORK}/boot/isolinux/isolinux.cfg
+		if [ -f ${WORK}/boot/nbcd/tinycore.gz ];then
+			echo "LABEL nbcd-tinycore
+			MENU LABEL ^Tiny Core Linux (from NetbootCD)
+			KERNEL /boot/nbcd/kexec.bzI
+			INITRD /boot/nbcd/tinycore.gz
+			APPEND quiet
+			" >> ${WORK}/boot/isolinux/isolinux.cfg
+		fi
+		if [ -f ${WORK}/boot/nbcd/grub.exe ];then
+			echo "LABEL nbcd-grub
+			MENU LABEL ^GRUB4DOS (from NetbootCD)
+			KERNEL /boot/nbcd/grub.exe
+			" >> ${WORK}/boot/isolinux/isolinux.cfg
+		fi
+	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
