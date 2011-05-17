@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 . ./functions.sh
-#Debian netinst (i386) plugin for multicd.sh
+#Debian netinst (amd64) plugin for multicd.sh
 #version 6.6
 #Copyright (c) 2011 libertyernie
 #
@@ -23,34 +23,34 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "debian-*-i386-netinst.iso debian-netinst.iso none"
+	echo "debian-*-amd64-netinst.iso debian-netinst64.iso none"
 elif [ $1 = scan ];then
-	if [ -f debian-netinst.iso ];then
-		echo "Debian netinst"
+	if [ -f debian-netinst64.iso ];then
+		echo "Debian netinst (amd64)"
 	fi
 elif [ $1 = copy ];then
-	if [ -f debian-netinst.iso ];then
-		echo "Copying Debian netinst..."
-		mcdmount debian-netinst
+	if [ -f debian-netinst64.iso ];then
+		echo "Copying Debian netinst (amd64)..."
+		mcdmount debian-netinst64
 		if [ ! -d $WORK/.disk ];then
-			cp -r $MNT/debian-netinst/.disk $WORK
+			cp -r $MNT/debian-netinst64/.disk $WORK
 		else
-			echo "Debian GNU/Linux (MultiCD) $(date -u)" > $WORK/.disk/info
+			echo "Debian GNU/Linux - Unofficial Installation Media (MultiCD) $(date -u)" > $WORK/.disk/info
 		fi
-		cp -r $MNT/debian-netinst/dists $WORK
-		cp -r $MNT/debian-netinst/install.386 $WORK
-		cp -r $MNT/debian-netinst/pool $WORK
-		cp $MNT/debian-netinst/dedication.txt $WORK || true
-		umcdmount debian-netinst
+		cp -r $MNT/debian-netinst64/dists $WORK
+		cp -r $MNT/debian-netinst64/install.amd $WORK
+		cp -r $MNT/debian-netinst64/pool $WORK
+		cp $MNT/debian-netinst64/dedication.txt $WORK || true
+		umcdmount debian-netinst64
 	fi
 elif [ $1 = writecfg ];then
-	if [ -f debian-netinst.iso ];then
-		DEBNAME="Debian GNU/Linux netinst (i386)"
-		if [ -f debian-netinst.version ] && [ "$(cat debian-netinst.version)" != "" ];then
-			DEBNAME="$DEBNAME $(cat debian-netinst.version)"
+	if [ -f debian-netinst64.iso ];then
+		DEBNAME="Debian GNU/Linux netinst (amd64)"
+		if [ -f debian-netinst64.version ] && [ "$(cat debian-netinst64.version)" != "" ];then
+			DEBNAME="$DEBNAME $(cat debian-netinst64.version)"
 		fi
 
-		DIR="install.386"
+		DIR="install.amd"
 
 		echo "menu begin --> ^$DEBNAME
 

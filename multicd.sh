@@ -553,8 +553,12 @@ $GENERATOR -o multicd.iso \
 rm -r $WORK/
 
 echo "Running isohybrid..."
-$TAGS/isohybrid multicd.iso 2> /dev/null || echo "(isohybrid gave an error status of $?. The ISO might still work on USB, though.)"
-rm $TAGS/isohybrid
+if which isohybrid > /dev/null;then
+	isohybrid multicd.iso 2> /dev/null || echo "(The installed isohybrid gave an error status of $?.)"
+else
+	$TAGS/isohybrid multicd.iso 2> /dev/null || echo "(isohybrid gave an error status of $?. If you install the syslinux package, you might have more luck.)"
+	rm $TAGS/isohybrid
+fi
 chmod 666 multicd.iso
 rm -r $TAGS
 #END SCRIPT
