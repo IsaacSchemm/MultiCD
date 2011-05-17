@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "bt4-*.iso backtrack.iso none"
+	echo "BT5-*.iso backtrack.iso none"
 elif [ $1 = scan ];then
 	if [ -f backtrack.iso ];then
 		echo "BackTrack"
@@ -31,72 +31,27 @@ elif [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f backtrack.iso ];then
 		echo "Copying BackTrack..."
-		mcdmount backtrack
-		cp -R $MNT/backtrack/casper $WORK/boot/backtrack
-		cp $MNT/backtrack/boot/vmlinuz $WORK/boot/backtrack/
-		cp $MNT/backtrack/boot/initrd* $WORK/boot/backtrack/
-		umcdmount backtrack
-		echo -n "Making initrd(s)..." #This initrd code is common to distros using old versions of casper
-		WORKPATH="$(readlink -f "$WORK")"
-		for i in initrd.gz initrd800.gz initrdfr.gz;do
-			if [ -d $MNT/initrd-tmp-mount ];then rm -r $MNT/initrd-tmp-mount;fi
-			mkdir $MNT/initrd-tmp-mount
-			cd $MNT/initrd-tmp-mount
-			gzip -cd $WORKPATH/boot/backtrack/$i | cpio -id
-			perl -pi -e 's/path\/casper/path\/boot\/backtrack/g' scripts/casper
-			perl -pi -e 's/directory\/casper/directory\/boot\/backtrack/g' scripts/casper
-			find . | cpio --create --format='newc' | gzip -c > $WORKPATH/boot/backtrack/$i
-			cd -
-			rm -r $MNT/initrd-tmp-mount
-		done
-		echo " done."
+		ubuntucommon backtrack
 	fi
 elif [ $1 = writecfg ];then
-if [ -f backtrack.iso ];then
-cat >> $WORK/boot/isolinux/isolinux.cfg << "EOF"
-label			backtrack1024
-menu label		Start ^BackTrack FrameBuffer (1024x768)
-kernel			/boot/backtrack/vmlinuz
-append			BOOT=casper boot=casper nopersistent rw quiet vga=0x317 ignore_uuid
-initrd			/boot/backtrack/initrd.gz
+	if [ -f backtrack.iso ];then
+		if [ -f backtrack.version ] && [ "$(cat backtrack.version)" != "" ];then
+			VERSION=" $(cat backtrack.version)" #Version based on isoaliases()
+		else
+			VERSION=""
+		fi
 
-label			backtrack800
-menu label		Start BackTrack FrameBuffer (800x600)
-kernel			/boot/backtrack/vmlinuz
-append			BOOT=casper boot=casper nopersistent rw quiet vga=0x314 ignore_uuid
-initrd			/boot/backtrack/initrd800.gz
-
-label			backtrack-forensics
-menu label		Start BackTrack Forensics (no swap)
-kernel			/boot/backtrack/vmlinuz
-append			BOOT=casper boot=casper nopersistent rw vga=0x317 ignore_uuid
-initrd			/boot/backtrack/initrdfr.gz
-
-label			backtrack-safe
-menu label 		Start BackTrack in Safe Graphical Mode
-kernel			/boot/backtrack/vmlinuz
-append			BOOT=casper boot=casper xforcevesa rw quiet ignore_uuid
-initrd			/boot/backtrack/initrd.gz
-
-label			backtrack-persistent
-menu label		Start Persistent Backtrack Live CD
-kernel			/boot/backtrack/vmlinuz
-append			BOOT=casper boot=casper persistent rw quiet ignore_uuid
-initrd			/boot/backtrack/initrd.gz
-
-label			backtrack-text
-menu label		Start BackTrack in Text Mode
-kernel			/boot/backtrack/vmlinuz
-append			BOOT=casper boot=casper nopersistent textonly rw quiet ignore_uuid
-initrd			/boot/backtrack/initrd.gz
-
-label			backtrack-ram
-menu label		Start BackTrack Graphical Mode from RAM
-kernel			/boot/backtrack/vmlinuz
-append			BOOT=casper boot=casper toram nopersistent rw quiet ignore_uuid
-initrd			/boot/backtrack/initrd.gz
-EOF
-fi
+		echo "label backtract
+		menu label --> BackTrack$VERSION Menu
+		com32 menu.c32
+		append /boot/backtrack/backtrack.cfg
+		" >> multicd-working/boot/isolinux/isolinux.cfg
+		echo "label back
+		menu label Back to main menu
+		com32 menu.c32
+		append /boot/isolinux/isolinux.cfg
+		" >> multicd-working/boot/backtrack/backtrack.cfg
+	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
