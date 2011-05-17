@@ -23,31 +23,31 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "debian-*-i386-netinst.iso debian-netinst.iso none"
+	echo "debian-*-i386-netinst.iso debian-install.iso none"
 elif [ $1 = scan ];then
-	if [ -f debian-netinst.iso ];then
+	if [ -f debian-install.iso ];then
 		echo "Debian netinst"
 	fi
 elif [ $1 = copy ];then
-	if [ -f debian-netinst.iso ];then
+	if [ -f debian-install.iso ];then
 		echo "Copying Debian netinst..."
-		mcdmount debian-netinst
+		mcdmount debian-install
 		if [ ! -d $WORK/.disk ];then
-			cp -r $MNT/debian-netinst/.disk $WORK
+			cp -r $MNT/debian-install/.disk $WORK
 		else
 			echo "Debian GNU/Linux (MultiCD) $(date -u)" > $WORK/.disk/info
 		fi
-		cp -r $MNT/debian-netinst/dists $WORK
-		cp -r $MNT/debian-netinst/install.386 $WORK
-		cp -r $MNT/debian-netinst/pool $WORK
-		cp $MNT/debian-netinst/dedication.txt $WORK || true
-		umcdmount debian-netinst
+		cp -r $MNT/debian-install/dists $WORK
+		cp -r $MNT/debian-install/install.386 $WORK
+		cp -r $MNT/debian-install/pool $WORK
+		cp $MNT/debian-install/dedication.txt $WORK || true
+		umcdmount debian-install
 	fi
 elif [ $1 = writecfg ];then
-	if [ -f debian-netinst.iso ];then
+	if [ -f debian-install.iso ];then
 		DEBNAME="Debian GNU/Linux netinst (i386)"
-		if [ -f debian-netinst.version ] && [ "$(cat debian-netinst.version)" != "" ];then
-			DEBNAME="$DEBNAME $(cat debian-netinst.version)"
+		if [ -f debian-install.version ] && [ "$(cat debian-install.version)" != "" ];then
+			DEBNAME="$DEBNAME $(cat debian-install.version)"
 		fi
 
 		DIR="install.386"

@@ -23,31 +23,31 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "debian-*-amd64-netinst.iso debian-netinst64.iso none"
+	echo "debian-*-amd64-netinst.iso debian-install64.iso none"
 elif [ $1 = scan ];then
-	if [ -f debian-netinst64.iso ];then
+	if [ -f debian-install64.iso ];then
 		echo "Debian netinst (amd64)"
 	fi
 elif [ $1 = copy ];then
-	if [ -f debian-netinst64.iso ];then
+	if [ -f debian-install64.iso ];then
 		echo "Copying Debian netinst (amd64)..."
-		mcdmount debian-netinst64
+		mcdmount debian-install64
 		if [ ! -d $WORK/.disk ];then
-			cp -r $MNT/debian-netinst64/.disk $WORK
+			cp -r $MNT/debian-install64/.disk $WORK
 		else
 			echo "Debian GNU/Linux - Unofficial Installation Media (MultiCD) $(date -u)" > $WORK/.disk/info
 		fi
-		cp -r $MNT/debian-netinst64/dists $WORK
-		cp -r $MNT/debian-netinst64/install.amd $WORK
-		cp -r $MNT/debian-netinst64/pool $WORK
-		cp $MNT/debian-netinst64/dedication.txt $WORK || true
-		umcdmount debian-netinst64
+		cp -r $MNT/debian-install64/dists $WORK
+		cp -r $MNT/debian-install64/install.amd $WORK
+		cp -r $MNT/debian-install64/pool $WORK
+		cp $MNT/debian-install64/dedication.txt $WORK || true
+		umcdmount debian-install64
 	fi
 elif [ $1 = writecfg ];then
-	if [ -f debian-netinst64.iso ];then
+	if [ -f debian-install64.iso ];then
 		DEBNAME="Debian GNU/Linux netinst (amd64)"
-		if [ -f debian-netinst64.version ] && [ "$(cat debian-netinst64.version)" != "" ];then
-			DEBNAME="$DEBNAME $(cat debian-netinst64.version)"
+		if [ -f debian-install64.version ] && [ "$(cat debian-install64.version)" != "" ];then
+			DEBNAME="$DEBNAME $(cat debian-install64.version)"
 		fi
 
 		DIR="install.amd"
