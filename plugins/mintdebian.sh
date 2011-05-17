@@ -42,13 +42,6 @@ com32 vesamenu.c32
 append /boot/mintdebian/mintdebian.cfg
 
 EOF
-cat >> multicd-working/boot/mintdebian/mintdebian.cfg << EOF
-
-label back
-menu label Back to main menu
-com32 menu.c32
-append /boot/isolinux/isolinux.cfg
-EOF
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

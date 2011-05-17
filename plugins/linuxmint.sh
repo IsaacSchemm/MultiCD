@@ -80,11 +80,6 @@ elif [ $1 = writecfg ];then
 			com32 menu.c32
 			append /boot/$BASENAME/$BASENAME.cfg
 			" >> multicd-working/boot/isolinux/isolinux.cfg
-			echo "label back
-			menu label Back to main menu
-			com32 menu.c32
-			append /boot/isolinux/isolinux.cfg
-			" >> multicd-working/boot/$BASENAME/$BASENAME.cfg
 		done
 	fi
 else

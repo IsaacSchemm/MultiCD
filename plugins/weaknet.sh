@@ -46,11 +46,6 @@ if [ -f weaknet.iso ];then
 	com32 vesamenu.c32
 	append /boot/weaknet/weaknet.cfg
 	" >> multicd-working/boot/isolinux/isolinux.cfg
-	echo "label back
-	menu label Back to main menu
-	com32 menu.c32
-	append /boot/isolinux/isolinux.cfg
-	" >> multicd-working/boot/weaknet/weaknet.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
