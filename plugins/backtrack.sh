@@ -41,7 +41,7 @@ elif [ $1 = writecfg ];then
 			VERSION=""
 		fi
 
-		echo "label backtract
+		echo "label backtrack
 		menu label --> BackTrack$VERSION Menu
 		com32 menu.c32
 		append /boot/backtrack/backtrack.cfg

@@ -141,7 +141,7 @@ ubuntucommon () {
 		menu label Back to main menu
 		com32 menu.c32
 		append /boot/isolinux/isolinux.cfg
-		" >> multicd-working/boot/backtrack/backtrack.cfg
+		" >> multicd-working/boot/$1/$1.cfg
 		sed -i "s@default live@default menu.c32@g" $WORK/boot/$1/$1.cfg #Show menu instead of boot: prompt
 		sed -i "s@file=/cdrom/preseed/@file=/cdrom/boot/$1/preseed/@g" $WORK/boot/$1/$1.cfg #Preseed folder moved - not sure if ubiquity uses this
 		sed -i "s^initrd=/casper/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" $WORK/boot/$1/$1.cfg #Initrd moved, ignore_uuid added
