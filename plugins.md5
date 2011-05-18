@@ -20,7 +20,7 @@ b08b55c8566eb2cc6f61a97ba35dc508  plugins/debian-install.sh
 4f8cd5f4a577c22770f2131ba7e6be3a  plugins/doudoulinux.sh
 1e318ce1d88b3589d1fa263f30b7cd9a  plugins/dsl.sh
 a48803fc0ef4ebe72f0cda9080f566fd  plugins/dvl.sh
-b513c265ea3c94d0f3daf91cefb6547a  plugins/efw.sh
+a9bdf845823eea3c7e96e488fa06a282  plugins/efw.sh
 3b2bd3b8a181bfea8ca09a1c7d2afb31  plugins/elastix.sh
 c0fed35f474e1323473770faa78e6814  plugins/feather.sh
 373106c704b40295a61a709d377c1202  plugins/fedora-boot64.sh

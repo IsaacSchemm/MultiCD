@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #Endian Firewall Community Edition plugin for multicd.sh
-#version 6.2
+#version 6.6
 #Copyright (c) 2010 PsynoKhi0, libertyernie
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -41,7 +41,9 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f efw.iso ];then
-echo "label endianfirewall
+echo "menu begin ^Endian Firewall
+
+label endianfirewall
 	menu label ^Endian Firewall - Default
 	kernel /boot/endian/vmlinuz 
 	append initrd=/boot/endian/instroot.gz root=/dev/ram0 rw
@@ -61,6 +63,11 @@ label endianfirewall_nousborpcmcia
 	menu label ^Endian Firewall - No USB nor PCMCIA
 	kernel /boot/endian/vmlinuz
 	append ide=nodma initrd=/boot/endian/instroot.gz root=/dev/ram0 rw nousb nopcmcia
+label back
+	menu label ^Back to main menu
+	com32 menu.c32
+	append isolinux.cfg
+menu end
 " >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
