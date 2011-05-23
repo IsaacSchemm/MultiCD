@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 . ./functions.sh
-#NetbootCD 3.x/4.x plugin for multicd.sh
+#NetbootCD 4.x tc+nb.iso plugin for multicd.sh
 #version 6.6
 #Copyright (c) 2011 libertyernie
 #
@@ -22,37 +22,46 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = links ];then
-	echo "NetbootCD-*.iso netbootcd.iso none"
-elif [ $1 = scan ];then
-	if [ -f netbootcd.iso ];then
-		echo "NetbootCD"
+if [ $1 = scan ];then
+	if [ -f tc+nb.iso ];then
+		echo "NetbootCD / Tiny Core / GRUB4DOS"
 	fi
 elif [ $1 = copy ];then
-	if [ -f netbootcd.iso ];then
-		echo "Copying NetbootCD..."
-		mcdmount netbootcd
-		mkdir -p ${WORK}/boot/nbcd
-		cp ${MNT}/netbootcd/isolinux/kexec.bzI ${WORK}/boot/nbcd/kexec.bzI
-		cp ${MNT}/netbootcd/isolinux/nbinit*.gz ${WORK}/boot/nbcd/nbinit.gz
-		sleep 1;umcdmount netbootcd
+	if [ -f tc+nb.iso ];then
+		echo "Copying NetbootCD / Tiny Core / GRUB4DOS..."
+		mcdmount tc+nb
+		mkdir -p ${WORK}/boot/tc+nb
+		cp ${MNT}/tc+nb/isolinux/kexec.bzI ${WORK}/boot/tc+nb/
+		cp ${MNT}/tc+nb/isolinux/nbinit*.gz ${WORK}/boot/tc+nb/nbinit.gz
+		cp ${MNT}/tc+nb/isolinux/tinycore.gz ${WORK}/boot/tc+nb/
+		cp ${MNT}/tc+nb/isolinux/grub.exe ${WORK}/boot/tc+nb/
+		sleep 1;umcdmount tc+nb
 	fi
 elif [ $1 = writecfg ];then
-	if [ -f netbootcd.iso ];then
-		if [ -f netbootcd.version ] && [ "$(cat netbootcd.version)" != "" ];then
-			NBCDVER=" $(cat netbootcd.version)"
-		else
-			NBCDVER=""
-		fi
-		echo "LABEL netbootcd
-		MENU LABEL ^NetbootCD$NBCDVER
-		KERNEL /boot/nbcd/kexec.bzI
-		initrd /boot/nbcd/nbinit.gz
+	if [ -f tc+nb.iso ];then
+		echo "LABEL tc+nb
+		MENU LABEL ^NetbootCD (tc+nb.iso)
+		KERNEL /boot/tc+nb/kexec.bzI
+		initrd /boot/tc+nb/nbinit.gz
 		APPEND quiet
 		" >> ${WORK}/boot/isolinux/isolinux.cfg
+		if [ -f ${WORK}/boot/tc+nb/tinycore.gz ];then
+			echo "LABEL tc+nb-tinycore
+			MENU LABEL ^Tiny Core Linux (tc+nb.iso)
+			KERNEL /boot/tc+nb/kexec.bzI
+			INITRD /boot/tc+nb/tinycore.gz
+			APPEND quiet
+			" >> ${WORK}/boot/isolinux/isolinux.cfg
+		fi
+		if [ -f ${WORK}/boot/tc+nb/grub.exe ];then
+			echo "LABEL tc+nb-grub
+			MENU LABEL ^GRUB4DOS (tc+nb.iso)
+			KERNEL /boot/tc+nb/grub.exe
+			" >> ${WORK}/boot/isolinux/isolinux.cfg
+		fi
 	fi
 else
-	echo "Usage: $0 {links|scan|copy|writecfg}"
+	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi

@@ -41,7 +41,7 @@ f0729d142365cb0e43bdc7e0945a9a7f  plugins/knoppix.sh
 85a2d5ab59d0d23ca82d2ecb723f5bb5  plugins/macpup.sh
 2ccec07cb8b5d95b0cd565b6f51b11d9  plugins/mandriva-boot.sh
 3fa18ba85a6a5ebd40bd31af87f19649  plugins/mintdebian.sh
-492fdd25f411df9439243039003642cc  plugins/netbootcd.sh
+99a85f6a670ad0e247e174c95e075875  plugins/netbootcd.sh
 2ae4bc4cca713098344a631c86ebe5f7  plugins/ntpasswd.sh
 c1337a6f4e18743a7d637784039d25b0  plugins/opensuse-gnome.sh
 886859f76e54fd0283f1c703fc5a1cf8  plugins/opensuse-net64.sh
@@ -59,6 +59,7 @@ dc28383fec5bd743258d981893621707  plugins/ping.sh
 da082bb7221dad31e9f3f03fd6cddc17  plugins/slax.sh
 2dd0065de49b1cfe78d86dec7b14cf5e  plugins/slitaz.sh
 cb9e534ff7880a508732f338bbd9e13e  plugins/sysrcd.sh
+218c004e759df849228c86aa5af3bf02  plugins/tc+nb.sh
 6948759f327a9e5f6e9a03c8b0421935  plugins/tcnet.sh
 c7814db52fbeb77c309cd5a20c3925cc  plugins/tinycore2.sh
 7432335f43b5bdfc7f4aac9474977e49  plugins/tinycore.sh
@@ -71,6 +72,7 @@ ed2eb4760ee0d4ede59176fb70e81c20  plugins/ubuntu.sh
 be4929a5acfa8b1b60cd8c6eb055a7b6  plugins/vyatta.sh
 982ab4183f75895c97c9b28344b5c8cb  plugins/weaknet.sh
 6511c50ffb30450319d4daba8dfd9b2c  plugins/win7recovery.sh
+5c87a4c0f40bdb42de26851988fad55f  plugins/win7test.sh
 b64299a007091c5a409b03224459784b  plugins/win98se.sh
 87c841cedaf5d40088a811cef937b445  plugins/winme.sh
 9988b387126cb773ea58e856f1187da4  plugins/wolvix.sh
