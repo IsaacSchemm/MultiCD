@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Pentoo plugin for multicd.sh
 #version 6.4
-#Copyright (c) 2011 libertyernie
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal

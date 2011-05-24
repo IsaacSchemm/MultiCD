@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #RIPLinuX plugin for multicd.sh
-#version 5.6.1
-#Copyright (c) 2010 libertyernie
+#version 6.6 (last functional change: 5.6.1)
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -27,34 +28,27 @@ if [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f riplinux.iso ];then
-		if [ ! -d riplinux ];then
-echo "Copying RIP Linux..."
-			mkdir riplinux
-		fi
-		if grep -q "`pwd`/riplinux" /etc/mtab ; then
-			umount riplinux
-		fi
-		mount -o loop riplinux.iso riplinux/
-		mkdir -p multicd-working/boot/riplinux
-		cp -r riplinux/boot/doc multicd-working/boot/ #Documentation
-		cp -r riplinux/boot/grub4dos multicd-working/boot/riplinux/ #GRUB4DOS :)
-		cp riplinux/boot/kernel32 multicd-working/boot/riplinux/kernel32 #32-bit kernel
-		cp riplinux/boot/kernel64 multicd-working/boot/riplinux/kernel64 #64-bit kernel
-		cp riplinux/boot/rootfs.cgz multicd-working/boot/riplinux/rootfs.cgz #Initrd
-		perl -pi -e 's/\/boot\/kernel/\/boot\/riplinux\/kernel/g' multicd-working/boot/riplinux/grub4dos/menu-cd.lst #Fix the menu.lst
-		perl -pi -e 's/\/boot\/rootfs.cgz/\/boot\/riplinux\/rootfs.cgz/g' multicd-working/boot/riplinux/grub4dos/menu-cd.lst #Fix it some more
-		umount riplinux
-		rmdir riplinux
+		echo "Copying RIP Linux..."
+		mcdmount riplinux
+		mkdir -p $WORK/boot/riplinux
+		cp -r $MNT/riplinux/boot/doc $WORK/boot/ #Documentation
+		cp -r $MNT/riplinux/boot/grub4dos $WORK/boot/riplinux/ #GRUB4DOS :)
+		cp $MNT/riplinux/boot/kernel32 $WORK/boot/riplinux/kernel32 #32-bit kernel
+		cp $MNT/riplinux/boot/kernel64 $WORK/boot/riplinux/kernel64 #64-bit kernel
+		cp $MNT/riplinux/boot/rootfs.cgz $WORK/boot/riplinux/rootfs.cgz #Initrd
+		perl -pi -e 's/\/boot\/kernel/\/boot\/riplinux\/kernel/g' $WORK/boot/riplinux/grub4dos/menu-cd.lst #Fix the menu.lst
+		perl -pi -e 's/\/boot\/rootfs.cgz/\/boot\/riplinux\/rootfs.cgz/g' $WORK/boot/riplinux/grub4dos/menu-cd.lst #Fix it some more
+		umcdmount riplinux
 	fi
 elif [ $1 = writecfg ];then
 if [ -f riplinux.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+cat >> $WORK/boot/isolinux/isolinux.cfg << "EOF"
 label riplinux
 menu label ^RIPLinuX
 com32 menu.c32
 append riplinux.cfg
 EOF
-cat >> multicd-working/boot/isolinux/riplinux.cfg << "EOF"
+cat >> $WORK/boot/isolinux/riplinux.cfg << "EOF"
 DEFAULT menu.c32
 PROMPT 0
 MENU TITLE RIPLinuX v6.7

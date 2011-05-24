@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #TinyMe plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 libertyernie
+#version 6.6 (last functional change: 5.0)
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -28,23 +29,16 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f tinyme.iso ];then
 		echo "Copying TinyMe..."
-		if [ ! -d tinyme ];then
-			mkdir tinyme
-		fi
-		if grep -q "`pwd`/tinyme" /etc/mtab ; then
-			umount tinyme
-		fi
-		mount -o loop tinyme.iso tinyme/
-		cp tinyme/livecd.sqfs multicd-working/livecd.sqfs #Compressed filesystem
-		mkdir -p multicd-working/boot/tinyme
-		cp tinyme/isolinux/vmlinuz multicd-working/boot/tinyme/vmlinuz
-		cp tinyme/isolinux/initrd.gz multicd-working/boot/tinyme/initrd.gz
-		umount tinyme
-		rmdir tinyme
+		mcdmount tinyme
+		cp $MNT/tinyme/livecd.sqfs $WORK/livecd.sqfs #Compressed filesystem
+		mkdir -p $WORK/boot/tinyme
+		cp $MNT/tinyme/isolinux/vmlinuz $WORK/boot/tinyme/vmlinuz
+		cp $MNT/tinyme/isolinux/initrd.gz $WORK/boot/tinyme/initrd.gz
+		umcdmount tinyme
 	fi
 elif [ $1 = writecfg ];then
 if [ -f tinyme.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+cat >> $WORK/boot/isolinux/isolinux.cfg << "EOF"
 label LiveCD
     menu label ^TinyMe - LiveCD
     kernel /boot/tinyme/vmlinuz

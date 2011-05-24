@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Avira Rescue CD plugin for multicd.sh
 #version 6.3
-#Copyright (c) 2011 libertyernie
+#Copyright (c) 2011 Isaac Schemm
 #modified quick and dirty by T.Ma.X. N060d9 to work with avira Rescue CD
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Debian Live plugin for multicd.sh
 #version 6.0
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -56,7 +56,7 @@ echo "label back
 menu label Back to main menu
 com32 menu.c32
 append /boot/isolinux/isolinux.cfg
-" >> multicd-working/boot/isolinux/dlive.cfg
+" >> $WORK/boot/isolinux/dlive.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

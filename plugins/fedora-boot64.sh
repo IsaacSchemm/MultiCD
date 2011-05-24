@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Fedora 64-bit installer plugin for multicd.sh
 #version 6.2
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -33,20 +33,20 @@ elif [ $1 = copy ];then
 	if [ -f fedora-boot64.iso ];then
 		echo "Copying Fedora 64-bit netboot installer..."
 		mcdmount fedora-boot64
-		mkdir multicd-working/boot/fedora64
+		mkdir $WORK/boot/fedora64
 		if [ -f $MNT/fedora-boot64/isolinux/vmlinuz ];then
-			cp $MNT/fedora-boot64/isolinux/vmlinuz multicd-working/boot/fedora64/vmlinuz
-			cp $MNT/fedora-boot64/isolinux/initrd.img multicd-working/boot/fedora64/initrd.img
+			cp $MNT/fedora-boot64/isolinux/vmlinuz $WORK/boot/fedora64/vmlinuz
+			cp $MNT/fedora-boot64/isolinux/initrd.img $WORK/boot/fedora64/initrd.img
 		elif [ -f $MNT/fedora-boot64/isolinux/vmlinuz0 ];then
-			cp $MNT/fedora-boot64/isolinux/vmlinuz0 multicd-working/boot/fedora64/vmlinuz
-			cp $MNT/fedora-boot64/isolinux/initrd0.img multicd-working/boot/fedora64/initrd.img
+			cp $MNT/fedora-boot64/isolinux/vmlinuz0 $WORK/boot/fedora64/vmlinuz
+			cp $MNT/fedora-boot64/isolinux/initrd0.img $WORK/boot/fedora64/initrd.img
 		fi
-		if [ -d multicd-working/images ];then
+		if [ -d $WORK/images ];then
 			echo "There is already an \"images\" folder on the multicd. You might have another Red Hat-based distro on it."
 			echo "64-bit Fedora's \"images\" folder won't be copied; instead, these files will be downloaded before the installer starts."
 		else
 			#Commenting out the below line will save about 100MB on the CD, but it will have to be downloaded when you install Fedora
-			cp -R $MNT/fedora-boot64/images multicd-working/
+			cp -R $MNT/fedora-boot64/images $WORK/
 		fi
 		umcdmount fedora-boot64
 	fi
@@ -72,7 +72,7 @@ label frescue64
   menu label Rescue installed 64-bit Fedora$VERSION system
   kernel /boot/fedora64/vmlinuz
   append initrd=/boot/fedora64/initrd.img rescue
-" >> multicd-working/boot/isolinux/isolinux.cfg
+" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

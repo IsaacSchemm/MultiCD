@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Clonezilla plugin for multicd.sh
 #version 6.0
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -44,8 +44,8 @@ com32 vesamenu.c32
 append clonezil.cfg
 " >> $WORK/boot/isolinux/isolinux.cfg
 #GNU sed syntax
-sed -i -e 's/\/live\//\/boot\/clonezilla\//g' multicd-working/boot/isolinux/clonezil.cfg #Change directory to /boot/clonezilla
-sed -i -e 's/append initrd=/append live-media-path=\/boot\/clonezilla initrd=/g' multicd-working/boot/isolinux/clonezil.cfg #Tell the kernel we moved it
+sed -i -e 's/\/live\//\/boot\/clonezilla\//g' $WORK/boot/isolinux/clonezil.cfg #Change directory to /boot/clonezilla
+sed -i -e 's/append initrd=/append live-media-path=\/boot\/clonezilla initrd=/g' $WORK/boot/isolinux/clonezil.cfg #Tell the kernel we moved it
 echo "label back
 menu label Back to main menu
 com32 menu.c32

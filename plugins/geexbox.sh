@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #GeeXboX plugin for multicd.sh
 #version 6.1
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ elif [ $1 = copy ];then
 	if [ -f geexbox.iso ];then
 		echo "Copying GeeXboX..."
 		mcdmount geexbox
-		cp -r $MNT/geexbox/GEEXBOX multicd-working/ #Everything GeeXbox has is in one folder. :)
+		cp -r $MNT/geexbox/GEEXBOX $WORK/ #Everything GeeXbox has is in one folder. :)
 		umcdmount geexbox
 	fi
 elif [ $1 = writecfg ];then
@@ -39,7 +39,7 @@ echo "label gbox
 	menu label ^GeeXboX
 	com32 vesamenu.c32
 	append gbox.menu
-" >> multicd-working/boot/isolinux/isolinux.cfg
+" >> $WORK/boot/isolinux/isolinux.cfg
 echo "PROMPT 0
 
 TIMEOUT 20
@@ -89,7 +89,7 @@ LABEL hdtvdebug
   APPEND initrd=/GEEXBOX/boot/initrd.gz root=/dev/ram0 rw rdinit=linuxrc boot=cdrom lang=en remote=atiusb receiver=atiusb keymap=qwerty splash=0 vga=789 video=vesafb:ywrap,mtrr hdtv debugging
 
 F1 help.msg #00000000
-" > multicd-working/boot/isolinux/gbox.menu
+" > $WORK/boot/isolinux/gbox.menu
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

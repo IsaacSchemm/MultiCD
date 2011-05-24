@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Endian Firewall Community Edition plugin for multicd.sh
 #version 6.6
-#Copyright (c) 2010 PsynoKhi0, libertyernie
+#Copyright (c) 2010 PsynoKhi0, Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal

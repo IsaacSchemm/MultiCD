@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #openSUSE installer plugin for multicd.sh
 #version 6.2
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -56,7 +56,7 @@ label opensuse-rescue
   menu label openSUSE rescue system
   kernel /boot/opensuse/linux
   append initrd=/boot/opensuse/initrd splash=silent rescue=1 showopts
-" >> multicd-working/boot/isolinux/isolinux.cfg
+" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

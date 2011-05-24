@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Vyatta plugin for multicd.sh
-#version 5.6
-#Copyright (c) 2010 PsynoKhi0
+#version 6.6 (last functional change: 5.6)
+#Copyright (c) 2010 Isaac Schemm, PsynoKhi0
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -28,20 +29,13 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f vyatta.iso ];then
 		echo "Copying Vyatta..."
-		if [ ! -d vyatta ];then
-			mkdir vyatta
-		fi
-		if grep -q "`pwd`/vyatta" /etc/mtab ; then
-			umount vyatta
-		fi
-		mount -o loop vyatta.iso vyatta/
-		cp -r vyatta/live multicd-working/Vyatta #Pretty much everything except documentation/help
-		umount vyatta
-		rmdir vyatta
+		mcdmount vyatta
+		cp -r $MNT/vyatta/live $WORK/Vyatta #Pretty much everything except documentation/help
+		umcdmount vyatta
 	fi
 elif [ $1 = writecfg ];then
 if [ -f vyatta.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+cat >> $WORK/boot/isolinux/isolinux.cfg << "EOF"
 label vyatta-live
 	menu label ^Vyatta - Live
 	kernel /Vyatta/vmlinuz1

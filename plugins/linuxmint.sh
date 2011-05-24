@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Linux Mint plugin for multicd.sh
 #version 6.5
-#Copyright (c) 2010 libertyernie (orig. by Zirafarafa)
+#Copyright (c) 2010 Isaac Schemm (orig. by Zirafarafa)
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -79,7 +79,7 @@ elif [ $1 = writecfg ];then
 			menu label --> $UBUNAME Menu
 			com32 menu.c32
 			append /boot/$BASENAME/$BASENAME.cfg
-			" >> multicd-working/boot/isolinux/isolinux.cfg
+			" >> $WORK/boot/isolinux/isolinux.cfg
 		done
 	fi
 else

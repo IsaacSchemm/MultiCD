@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Tiny Core Linux #2 plugin for multicd.sh
 #version 6.1
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,7 @@ if [ -f tinycore2.iso ];then
 		menu label ^$TCNAME
 		kernel /boot/tinycore2/bzImage
 		append quiet
-		initrd /boot/tinycore2/$(basename $i)">>multicd-working/boot/isolinux/isolinux.cfg
+		initrd /boot/tinycore2/$(basename $i)">>$WORK/boot/isolinux/isolinux.cfg
 	done
 fi
 #END TINY CORE 2 ENTRY#

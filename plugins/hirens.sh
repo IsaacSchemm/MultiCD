@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Hiren's BootCD (11.0) plugin for multicd.sh
 #version 6.6
-#Copyright for this script (c) 2011 libertyernie
+#Copyright for this script (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ elif [ $1 = copy ];then
 			echo "Warning: No BootCD.txt in hirens.iso" 1>&2
 			echo "Hiren's BootCD" > $TAGS/hirens.name
 		fi
-		cp -r $MNT/hirens/HBCD multicd-working/
+		cp -r $MNT/hirens/HBCD $WORK/
 		umcdmount hirens
 	fi
 elif [ $1 = writecfg ];then
@@ -51,7 +51,7 @@ if [ -f hirens.iso ];then
 echo "label hirens
 menu label --> ^$(cat $TAGS/hirens.name) - main menu
 com32 menu.c32
-append /HBCD/isolinux.cfg" >> multicd-working/boot/isolinux/isolinux.cfg
+append /HBCD/isolinux.cfg" >> $WORK/boot/isolinux/isolinux.cfg
 rm $TAGS/hirens.name
 fi
 else

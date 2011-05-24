@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #SystemRescueCd plugin for multicd.sh
 #version 6.1
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -32,17 +32,17 @@ elif [ $1 = copy ];then
 	if [ -f sysrcd.iso ];then
 		echo "Copying SystemRescueCd..."
 		mcdmount sysrcd
-		mkdir multicd-working/boot/sysrcd
-		cp $MNT/sysrcd/sysrcd.* multicd-working/boot/sysrcd/ #Compressed filesystem
-		cp $MNT/sysrcd/isolinux/altker* multicd-working/boot/sysrcd/ #Kernels
-		cp $MNT/sysrcd/isolinux/rescue* multicd-working/boot/sysrcd/ #Kernels
-		cp $MNT/sysrcd/isolinux/initram.igz multicd-working/boot/sysrcd/initram.igz #Initrd
-		cp $MNT/sysrcd/version multicd-working/boot/sysrcd/version
+		mkdir $WORK/boot/sysrcd
+		cp $MNT/sysrcd/sysrcd.* $WORK/boot/sysrcd/ #Compressed filesystem
+		cp $MNT/sysrcd/isolinux/altker* $WORK/boot/sysrcd/ #Kernels
+		cp $MNT/sysrcd/isolinux/rescue* $WORK/boot/sysrcd/ #Kernels
+		cp $MNT/sysrcd/isolinux/initram.igz $WORK/boot/sysrcd/initram.igz #Initrd
+		cp $MNT/sysrcd/version $WORK/boot/sysrcd/version
 		umcdmount sysrcd
 	fi
 elif [ $1 = writecfg ];then
 if [ -f sysrcd.iso ];then
-VERSION=$(cat multicd-working/boot/sysrcd/version)
+VERSION=$(cat $WORK/boot/sysrcd/version)
 echo "menu begin --> ^System Rescue Cd ($VERSION)
 
 label rescuecd0
@@ -71,7 +71,7 @@ menu label Back to main menu
 com32 menu.c32
 append isolinux.cfg
 
-menu end" >> multicd-working/boot/isolinux/isolinux.cfg
+menu end" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

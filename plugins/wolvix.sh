@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Wolvix plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 libertyernie
+#version 6.6
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -28,29 +29,31 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f wolvix.iso ];then
 		echo "Copying Wolvix..."
-		if [ ! -d wolvix ];then
-			mkdir wolvix
-		fi
-		if grep -q "`pwd`/wolvix" /etc/mtab ; then
-			umount wolvix
-		fi
-		mount -o loop wolvix.iso wolvix/
-		cp -r wolvix/wolvix multicd-working/ #The Wolvix folder with all its files
-		mkdir -p multicd-working/boot/wolvix
+		mcdmount wolvix
+		cp -r $MNT/wolvix/wolvix $WORK/ #The Wolvix folder with all its files
 		#The kernel/initrd must be here for the installer
-		cp wolvix/boot/vmlinuz multicd-working/boot/vmlinuz
-		cp wolvix/boot/initrd.gz multicd-working/boot/initrd.gz
-		umount wolvix
-		rmdir wolvix
+		if [ ! -f $WORK/boot/vmlinuz ]] && [ ! -f $WORK/boot/initrd.gz ];then
+			cp $MNT/wolvix/boot/vmlinuz $WORK/boot/vmlinuz
+			cp $MNT/wolvix/boot/initrd.gz $WORK/boot/initrd.gz
+		else
+			mkdir -p $WORK/boot/wolvix
+			cp $MNT/wolvix/boot/vmlinuz $WORK/boot/wolvix/vmlinuz
+			cp $MNT/wolvix/boot/initrd.gz $WORK/boot/wolvix/initrd.gz
+		fi
+		umcdmount wolvix
 	fi
 elif [ $1 = writecfg ];then
 if [ -f wolvix.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
-label wolvix
-menu label ^Wolvix GNU/Linux (login as root, password is toor)
-kernel /boot/vmlinuz
-append changes=wolvixsave.xfs max_loop=255 initrd=/boot/initrd.gz ramdisk_size=6666 root=/dev/ram0 rw vga=791 splash=silent
-EOF
+	if [ -f $WORK/boot/wolvix/vmlinuz ];then
+		KERNELPATH="/boot/wolvix"
+	else
+		KERNELPATH="/boot"
+	fi
+	echo "label wolvix
+	menu label ^Wolvix GNU/Linux (login as root, password is toor)
+	kernel $KERNELPATH/vmlinuz
+	append changes=wolvixsave.xfs max_loop=255 initrd=$KERNELPATH/initrd.gz ramdisk_size=6666 root=/dev/ram0 rw vga=791 splash=silent
+	" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

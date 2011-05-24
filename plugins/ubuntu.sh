@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Ubuntu plugin for multicd.sh
 #version 6.3
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -87,7 +87,7 @@ elif [ $1 = writecfg ];then
 			menu label --> $UBUNAME Menu
 			com32 menu.c32
 			append /boot/$BASENAME/$BASENAME.cfg
-			" >> multicd-working/boot/isolinux/isolinux.cfg
+			" >> $WORK/boot/isolinux/isolinux.cfg
 		done
 	fi
 else

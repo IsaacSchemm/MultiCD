@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #PCLinuxOS LXDE plugin for multicd.sh
-#version 5.2
-#Copyright (c) 2010 libertyernie, PsynoKhi0
+#version 6.6 (last functional change: 5.3)
+#Copyright (c) 2011 Isaac Schemm, PsynoKhi0
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -21,40 +22,35 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "pclinuxos-lxde-*.iso pclx.iso none"
+elif [ $1 = scan ];then
 	if [ -f pclx.iso ];then
 		echo "PCLinuxOS LXDE"
 	fi
 elif [ $1 = copy ];then
 	if [ -f pclx.iso ];then
 		echo "Copying PCLinuxOS LXDE..."
-		if [ ! -d pclinuxos ];then
-			mkdir pclinuxos
-		fi
-		if grep -q `pwd`/pclinuxos /etc/mtab ; then
-			umount pclinuxos
-		fi
-		mount -o loop pclx.iso pclinuxos/
-		mkdir multicd-working/pclosLXDE
+		mcdmount pclx
+		mkdir $WORK/pclosLXDE
 		# Kernel, initrd
-		cp -r pclinuxos/isolinux multicd-working/pclosLXDE/isolinux
+		cp -r $MNT/pclx/isolinux $WORK/pclosLXDE/isolinux
 		# Empty boot folder, don't ask me...
-		# cp -r pclinuxos/boot multicd-working/pclosLXDE/boot
+		# cp -r pclinuxos/boot $WORK/pclosLXDE/boot
 		# Filesystem
-		cp pclinuxos/livecd.sqfs multicd-working/pclosLXDE/livecd.sqfs
+		cp $MNT/pclx/livecd.sqfs $WORK/pclosLXDE/livecd.sqfs
 		# Remove memtest and mediacheck
-		if [ -f multicd-working/pclosLXDE/isolinux/memtest ];then
-			rm multicd-working/pclosLXDE/isolinux/memtest 
+		if [ -f $WORK/pclosLXDE/isolinux/memtest ];then
+			rm $WORK/pclosLXDE/isolinux/memtest 
 		fi
-		if [ -f multicd-working/pclosLXDE/isolinux/mediacheck ];then
-			rm multicd-working/pclosLXDE/isolinux/mediacheck
+		if [ -f $WORK/pclosLXDE/isolinux/mediacheck ];then
+			rm $WORK/pclosLXDE/isolinux/mediacheck
 		fi
-		umount pclinuxos
-		rmdir pclinuxos
+		umcdmount pclx
 	fi
 elif [ $1 = writecfg ];then
 if [ -f pclx.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+cat >> $WORK/boot/isolinux/isolinux.cfg << "EOF"
 label LiveCD
     menu label ^PCLinuxOS LXDE Live
     kernel /pclosLXDE/isolinux/vmlinuz
@@ -86,7 +82,7 @@ label Copy_to_ram
 EOF
 fi
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi

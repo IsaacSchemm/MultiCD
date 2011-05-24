@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #PCLinuxOS plugin for multicd.sh
-#version 6.2
-#Copyright (c) 2010 libertyernie, PsynoKhi0
+#version 6.6 (last functional change: 6.2)
+#Copyright (c) 2010 Isaac Schemm, PsynoKhi0
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "pclinuxos-*.iso pclos.iso none"
+	echo "pclinuxos-kde-*.iso pclos.iso none"
 elif [ $1 = scan ];then
 	if [ -f pclos.iso ];then
 		echo "PCLinuxOS"
@@ -80,7 +81,7 @@ label Copy_to_ram
 label back
     menu label ^Back to main menu
     com32 menu.c32
-    append isolinux.cfg" >> multicd-working/boot/isolinux/isolinux.cfg
+    append isolinux.cfg" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

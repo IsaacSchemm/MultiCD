@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #Windows 98 SE Setup plugin for multicd.sh
 #version 6.3
-#Copyright for this script (c) 2010 libertyernie
+#Copyright for this script (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal

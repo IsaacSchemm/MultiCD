@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Caine plugin for multicd.sh
 #version 6.6
-#Copyright (c) 2011 libertyernie
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ elif [ $1 = copy ];then
         echo "Copying Caine..."
         mcdmount caine
         cp -R $MNT/caine/casper $WORK/boot/caine #Live system
-        cp $MNT/caine/README.diskdefines multicd-working/
+        cp $MNT/caine/README.diskdefines $WORK/
         mkdir $WORK/CaineFiles
         for item in AutoPlay autorun.exe autorun.inf comdlg32.ocx files license.txt page5 preseed Programs RegOcx4Vista.bat rw_common tabctl32.ocx vbrun60.exe WinTaylor.exe; do
             [[ -a $MNT/caine/$item ]] && cp -R $MNT/caine/$item $WORK/CaineFiles

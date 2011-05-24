@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Knoppix plugin for multicd.sh
 #version 6.3
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -32,14 +32,14 @@ elif [ $1 = copy ];then
 	if [ -f knoppix.iso ];then
 		echo "Copying Knoppix..."
 		mcdmount knoppix
-		mkdir multicd-working/KNOPPIX6
+		mkdir $WORK/KNOPPIX6
 		#Compressed filesystem and docs. We have to call it KNOPPIX6 because DSL uses KNOPPIX, and if we change that DSL's installer won't work.
 		for i in $(ls $MNT/knoppix/KNOPPIX*|grep -v '^KNOPPIX2$');do
-			cp -r $MNT/knoppix/KNOPPIX/$i multicd-working/KNOPPIX6/
+			cp -r $MNT/knoppix/KNOPPIX/$i $WORK/KNOPPIX6/
 		done
-		mkdir -p multicd-working/boot/knoppix
-		cp $MNT/knoppix/boot/isolinux/linux multicd-working/boot/knoppix/linux
-		cp $MNT/knoppix/boot/isolinux/minirt.gz multicd-working/boot/knoppix/minirt.gz
+		mkdir -p $WORK/boot/knoppix
+		cp $MNT/knoppix/boot/isolinux/linux $WORK/boot/knoppix/linux
+		cp $MNT/knoppix/boot/isolinux/minirt.gz $WORK/boot/knoppix/minirt.gz
 		umcdmount knoppix
 	fi
 elif [ $1 = writecfg ];then
@@ -93,7 +93,7 @@ elif [ $1 = writecfg ];then
 		com32 menu.c32
 		append isolinux.cfg
 
-		MENU END" >> multicd-working/boot/isolinux/isolinux.cfg
+		MENU END" >> $WORK/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

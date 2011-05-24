@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Finnix plugin for multicd.sh
 #version 6.1
-#Copyright (c) 2010 Rorschach, libertyernie
+#Copyright (c) 2010 Rorschach, Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -31,15 +31,15 @@ elif [ $1 = copy ];then
 		echo "Copying Finnix..."
 		mcdmount finnix
 		# Copies compressed filesystem
-		cp -r $MNT/finnix/FINNIX multicd-working/
+		cp -r $MNT/finnix/FINNIX $WORK/
 		# Copies kernel, and initramdisk
-		mkdir multicd-working/boot/finnix
-		cp $MNT/finnix/isolinux/linux multicd-working/boot/finnix/
-		cp $MNT/finnix/isolinux/linux64 multicd-working/boot/finnix/
-		cp $MNT/finnix/isolinux/minirt multicd-working/boot/finnix/
+		mkdir $WORK/boot/finnix
+		cp $MNT/finnix/isolinux/linux $WORK/boot/finnix/
+		cp $MNT/finnix/isolinux/linux64 $WORK/boot/finnix/
+		cp $MNT/finnix/isolinux/minirt $WORK/boot/finnix/
 		# Copies memdisk and Smart Boot Manager
-		cp $MNT/finnix/isolinux/memdisk multicd-working/boot/finnix/
-		cp $MNT/finnix/isolinux/sbm.imz multicd-working/boot/finnix/
+		cp $MNT/finnix/isolinux/memdisk $WORK/boot/finnix/
+		cp $MNT/finnix/isolinux/sbm.imz $WORK/boot/finnix/
 		umcdmount finnix
 	fi
 elif [ $1 = writecfg ];then
@@ -87,7 +87,7 @@ label sbm
   append initrd=/boot/finnix/sbm.imz
 
 menu end
-" >> multicd-working/boot/isolinux/isolinux.cfg
+" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #WeakNet Linux plugin for multicd.sh
 #version 6.6
-#Copyright (c) 2011 libertyernie
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ if [ -f weaknet.iso ];then
 	menu label --> $WKNAME Menu
 	com32 vesamenu.c32
 	append /boot/weaknet/weaknet.cfg
-	" >> multicd-working/boot/isolinux/isolinux.cfg
+	" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

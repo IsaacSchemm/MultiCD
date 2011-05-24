@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #KDuXP plugin for multicd.sh
 #version 6.6
-#Copyright (c) 2011 libertyernie
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@ elif [ $1 = writecfg ];then
 		menu label --> KDuXP$KDUVER Menu
 		com32 menu.c32
 		append /boot/kduxp/kduxp.cfg
-		" >> multicd-working/boot/isolinux/isolinux.cfg
+		" >> $WORK/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

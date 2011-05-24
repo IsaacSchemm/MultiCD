@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #NT Password Editor plugin for multicd.sh
 #version 6.2
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +41,7 @@ echo "label ntpasswd
 menu label ^NT Offline Password & Registry Editor
 kernel /boot/ntpasswd/vmlinuz
 append rw vga=1 init=/linuxrc initrd=/boot/ntpasswd/initrd.cgz,/boot/ntpasswd/scsi.cgz
-" >> multicd-working/boot/isolinux/isolinux.cfg
+" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

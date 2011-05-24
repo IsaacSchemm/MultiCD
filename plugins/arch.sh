@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #Arch Linux installer plugin for multicd.sh
 #version 5.9
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2010 Isaac Schemm
 #Thanks to jerome_bc for updating this script for the newest Arch
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy

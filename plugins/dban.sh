@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #DBAN plugin for multicd.sh
 #version 6.0
-#Copyright (c) 2010 libertyernie
+#Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -124,7 +124,7 @@ APPEND nuke=\"dwipe --method prng --rounds 8 --verify off\" floppy=0,16,cmos
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
 #APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke=\"dwipe --method quick\"
-" >> multicd-working/boot/isolinux/isolinux.cfg
+" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 #END DBAN ENTRY#
 else

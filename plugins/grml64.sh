@@ -3,7 +3,7 @@ set -e
 . ./functions.sh
 #GRML64 plugin for multicd.sh
 #version 6.6
-#Copyright (c) 2011 libertyernie, T.Ma.X. N060d9
+#Copyright (c) 2011 Isaac Schemm, T.Ma.X. N060d9
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
 #in the Software without restriction, including without limitation the rights

@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
+. ./functions.sh
 #PING plugin for multicd.sh
-#version 5.0
-#Copyright (c) 2009 libertyernie
+#version 6.6 (last functional change: 5.0)
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -28,22 +29,15 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f ping.iso ];then
 		echo "Copying PING..."
-		if [ ! -d ping ];then
-			mkdir ping
-		fi
-		if grep -q "`pwd`/ping" /etc/mtab ; then
-			umount ping
-		fi
-		mount -o loop ping.iso ping/
-		mkdir -p multicd-working/boot/ping
-		cp ping/kernel multicd-working/boot/ping/kernel
-		cp ping/initrd.gz multicd-working/boot/ping/initrd.gz
-		umount ping
-		rmdir ping
+		mcdmount ping
+		mkdir -p $WORK/boot/ping
+		cp $MNT/ping/kernel $WORK/boot/ping/kernel
+		cp $MNT/ping/initrd.gz $WORK/boot/ping/initrd.gz
+		umcdmount ping
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ping.iso ];then
-cat >> multicd-working/boot/isolinux/isolinux.cfg << "EOF"
+cat >> $WORK/boot/isolinux/isolinux.cfg << "EOF"
 label ping
 menu label ^PING (Partimage Is Not Ghost)
 kernel /boot/ping/kernel
