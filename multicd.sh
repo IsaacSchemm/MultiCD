@@ -57,31 +57,22 @@ mkdir $TAGS/puppies
 mkdir $TAGS/redhats
 chmod -R 777 $TAGS
 
-if ( echo $* | grep -q "\bmd5\b" ) || ( echo $* | grep -q "\bc\b" );then
-	MD5=true
-else
-	MD5=false
-fi
-if echo $* | grep -q "\bm\b";then
-	MEMTEST=false
-else
-	MEMTEST=true
-fi
-if echo $* | grep -q "\bv\b";then
-	export VERBOSE=true
-else
-	export VERBOSE=false
-fi
-if echo $* | grep -q "\bi\b";then
-	INTERACTIVE=true
-else
-	INTERACTIVE=false
-fi
-if ( echo $* | grep -q "\bw\b" ) || ( echo $* | grep -q "\bwait\b" );then
-	WAIT=true
-else
-	WAIT=false
-fi
+export MD5=false
+export MEMTEST=true
+export VERBOSE=true
+export INTERACTIVE=false
+export WAIT=false
+ARGS=$(getopt -l md5 cmviw $*)
+set -- $ARGS
+for i do
+	case "$i" in
+		-c) shift;export MD5=true;;
+		-m) shift;export MEMTEST=false;;
+		-v) shift;export VERBOSE=true;;
+		-i) shift;export INTERACTIVE=true;;
+		-w) shift;export WAIT=true;;
+	esac
+done
 
 #START PREPARE#
 #One parenthesis is for md5sums that don't match; the other is for plugins that are not listed in plugins.md5

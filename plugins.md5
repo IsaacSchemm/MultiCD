@@ -71,8 +71,8 @@ cd0a3681dbdcfab44c3eceed78a19128  plugins/ubuntu-mini.sh
 ed2eb4760ee0d4ede59176fb70e81c20  plugins/ubuntu.sh
 be4929a5acfa8b1b60cd8c6eb055a7b6  plugins/vyatta.sh
 982ab4183f75895c97c9b28344b5c8cb  plugins/weaknet.sh
-6511c50ffb30450319d4daba8dfd9b2c  plugins/win7recovery.sh
-5c87a4c0f40bdb42de26851988fad55f  plugins/win7test.sh
+c5d705d5bd54866080a9f18cafe2331b  plugins/win7recovery-ram.sh
+3e06cf7219821549c0b49bbf109676d5  plugins/win7recovery.sh
 b64299a007091c5a409b03224459784b  plugins/win98se.sh
 87c841cedaf5d40088a811cef937b445  plugins/winme.sh
 9988b387126cb773ea58e856f1187da4  plugins/wolvix.sh

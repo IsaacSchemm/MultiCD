@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 . ./functions.sh
-#Windows 7 Recovery Disc plugin for multicd.sh
+#Windows 7 Recovery Disc (from RAM) plugin for multicd.sh
 #version 6.6
 #Copyright for this script (c) 2011 libertyernie
 #
@@ -23,33 +23,30 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = scan ];then
-	if [ -f win7recovery.iso ];then
-		echo "Windows 7 Recovery Disc (Not open source)"
+	if [ -f win7recovery-ram.iso ];then
+		echo "Windows 7 Recovery Disc - from RAM (Not open source)"
 	fi
 elif [ $1 = copy ];then
-	if [ -f win7recovery.iso ];then
+	if [ -f win7recovery-ram.iso ];then
 		echo "Copying Windows 7 Recovery Disc..."
-		mcdmount win7recovery
-		cp $MNT/win7recovery/boot/* $WORK/boot/
-		cp -r $MNT/win7recovery/sources $WORK/
-		cp $MNT/win7recovery/bootmgr $WORK/
-		umcdmount win7recovery
+		cp win7recovery-ram.iso $WORK/
 	fi
 elif [ $1 = writecfg ];then
-if [ -f win7recovery.iso ];then
+if [ -f win7recovery-ram.iso ];then
 	if which isoinfo &> /dev/null;then
-		if isoinfo -d -i win7recovery.iso;then
-			TYPE=" 64-bit"
-		else
+		if isoinfo -d -i win7recovery-ram.iso|grep '32_BIT';then
 			TYPE=" 32-bit"
+		else
+			TYPE=" 64-bit"
 		fi
 	else
 		TYPE=""
 	fi
-	echo "label win7recovery
-	menu label Windows ^7$TYPE Recovery Disc (direct from CD)
-	kernel chain.c32
-	append boot ntldr=/bootmgr">>$WORK/boot/isolinux/isolinux.cfg
+	echo "label win7recovery-ram
+	menu label Windows ^7 Recovery Disc (load ISO to RAM)
+	kernel memdisk
+	initrd /win7recovery-ram.iso
+	append iso">>$WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
