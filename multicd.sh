@@ -545,9 +545,9 @@ rm -r $WORK/
 
 echo "Running isohybrid..."
 if which isohybrid > /dev/null;then
-	isohybrid multicd.iso 2> /dev/null || echo "(The installed isohybrid gave an error status of $?.)"
+	isohybrid multicd.iso 2> /dev/null || echo "The installed isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
 else
-	$TAGS/isohybrid multicd.iso 2> /dev/null || echo "(isohybrid gave an error status of $?. If you install the syslinux package, you might have more luck.)"
+	$TAGS/isohybrid multicd.iso 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
 	rm $TAGS/isohybrid
 fi
 chmod 666 multicd.iso
