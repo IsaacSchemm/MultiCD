@@ -316,18 +316,18 @@ if [ -f syslinux.tar.gz ];then
 	cp /tmp/syslinux-*/utils/isohybrid $TAGS/isohybrid
 	chmod +x $TAGS/isohybrid
 	rm -r /tmp/syslinux-*/
-elif [ -d /usr/lib/syslinux ];then
-	if [ -f /usr/bin/isohybrid ];then
-		echo "Copying from installed SYSLINUX files..."
-		cp /usr/lib/syslinux/isolinux.bin $WORK/boot/isolinux/
-		cp /usr/lib/syslinux/memdisk $WORK/boot/isolinux/
-		cp /usr/lib/syslinux/menu.c32 $WORK/boot/isolinux/
-		cp /usr/lib/syslinux/vesamenu.c32 $WORK/boot/isolinux/
-		cp /usr/lib/syslinux/chain.c32 $WORK/boot/isolinux/
-		cp /usr/bin/isohybrid $TAGS
-	else
-		echo "The installed SYSLINUX version does not include isohybrid. It might be out of date."
-	fi
+#elif [ -d /usr/lib/syslinux ];then
+#	if [ -f /usr/bin/isohybrid ];then
+#		echo "Copying from installed SYSLINUX files..."
+#		cp /usr/lib/syslinux/isolinux.bin $WORK/boot/isolinux/
+#		cp /usr/lib/syslinux/memdisk $WORK/boot/isolinux/
+#		cp /usr/lib/syslinux/menu.c32 $WORK/boot/isolinux/
+#		cp /usr/lib/syslinux/vesamenu.c32 $WORK/boot/isolinux/
+#		cp /usr/lib/syslinux/chain.c32 $WORK/boot/isolinux/
+#		cp /usr/bin/isohybrid $TAGS
+#	else
+#		echo "The installed SYSLINUX version does not include isohybrid. It might be out of date."
+#	fi
 fi
 if [ ! -f $WORK/boot/isolinux/isolinux.bin ];then
 	echo "Downloading SYSLINUX..."
