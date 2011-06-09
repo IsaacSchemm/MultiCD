@@ -44,6 +44,7 @@ ARGS=$(getopt -l md5 cmviwV $*)
 set -- $ARGS
 for i do
 	case "$i" in
+		--md5) shift;export MD5=true;;
 		-c) shift;export MD5=true;;
 		-m) shift;export MEMTEST=false;;
 		-v) shift;export VERBOSE=true;;
@@ -69,12 +70,14 @@ if [ $(whoami) = root ] && uname|grep -q Linux;then
 	export EXTRACTOR = mount #When possible, loop-mount is preferred because it is faster (files are copied once, not twice, before the ISO is generated) and because it runs without an X server. However, it is only available to root, which opens up security risks.
 elif which file-roller &> /dev/null;then
 	export EXTRACTOR=file-roller
+elif which ark &> /dev/null;then
+	export EXTRACTOR=ark
 else
 	if !(uname|grep -q Linux);then
-		echo "Unless file-roller is installed to extract ISOs, only Linux kernels are supported (due to heavy use of \"-o loop\")."
+		echo "Unless file-roller or ark is installed to extract ISOs, only Linux kernels are supported (due to heavy use of \"-o loop\")."
 		exit 1
 	elif [ $(whoami) != "root" ];then
-		echo "Unless file-roller is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
+		echo "Unless file-roller or ark is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
 		exit 1
 	fi
 fi
@@ -86,18 +89,20 @@ mkdir $TAGS/puppies
 chmod -R 777 $TAGS
 
 #START PREPARE#
+
+#Plugin check currently disabled because it seems like more of a distraction than it's worth.
 #One parenthesis is for md5sums that don't match; the other is for plugins that are not listed in plugins.md5
-UNKNOWNS="$(md5sum -c $MCDDIR/plugins.md5|grep FAILED|awk -F: '{print $1}') $(for i in $MCDDIR/plugins/*.sh;do grep -q $(basename $i) $MCDDIR/plugins.md5||echo $i;done)"
-if [ "$UNKNOWNS" != " " ];then
-	echo
-	echo "Plugins that are not from the official release: $UNKNOWNS"
-	if [ $(whoami) = root ];then
-		echo "Make sure you trust every script in the plugins folder - all these scripts will get root access!"
-	fi
-	echo "Press Ctrl+C to cancel"
-	echo
-	sleep 2
-fi
+#UNKNOWNS="$(md5sum -c $MCDDIR/plugins.md5|grep FAILED|awk -F: '{print $1}') $(for i in $MCDDIR/plugins/*.sh;do grep -q $(basename $i) $MCDDIR/plugins.md5||echo $i;done)"
+#if [ "$UNKNOWNS" != " " ];then
+#	echo
+#	echo "Plugins that are not from the official release: $UNKNOWNS"
+#	if [ $(whoami) = root ];then
+#		echo "Make sure you trust every script in the plugins folder - all these scripts will get root access!"
+#	fi
+#	echo "Press Ctrl+C to cancel"
+#	echo
+#	sleep 2
+#fi
 
 #Make the scripts executable.
 for i in $MCDDIR/plugins/*;do
@@ -526,14 +531,19 @@ if $WAIT;then
 fi
 
 if $MD5;then
- echo "Generating MD5 checksums..."
- if $VERBOSE;then
-	find $WORK/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin \
-	-exec md5sum '{}' \; | sed "s^$WORK^^g" | tee $WORK/md5sum.txt
- else
-	find $WORK/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin\
-	-exec md5sum '{}' \; | sed "s^$WORK^^g" > $WORK/md5sum.txt
- fi
+	echo "Generating MD5 checksums..."
+	if which md5sum &> /dev/null;then
+		MD5SUM=md5sum
+	else
+		MD5SUM=md5
+	fi
+	if $VERBOSE;then
+		find $WORK/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin \
+		-exec $MD5SUM '{}' \; | sed "s^$WORK^^g" | tee $WORK/md5sum.txt
+	else
+		find $WORK/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin\
+		-exec $MD5SUM '{}' \; | sed "s^$WORK^^g" > $WORK/md5sum.txt
+	fi
 fi
 
 if which genisoimage > /dev/null;then
@@ -567,5 +577,5 @@ else
 	rm $TAGS/isohybrid
 fi
 chmod 666 multicd.iso
-rm -r $TAGS
+rm -r $TAGS $MNT
 #END SCRIPT

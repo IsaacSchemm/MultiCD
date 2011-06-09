@@ -2,7 +2,7 @@
 mcdmount () {
 	# $MNT is defined in multicd.sh and is normally in /tmp
 	# $1 is the argument passed to mcdmount - used for both ISO name and mount folder name
-	if grep -q $MNT/$1 /etc/mtab ; then
+	if [ $EXTRACTOR = mount ] && grep -q $MNT/$1 /etc/mtab ; then
 		umount $MNT/$1
 	fi
 	if [ -d $MNT/$1 ];then
@@ -11,6 +11,10 @@ mcdmount () {
 	mkdir $MNT/$1
 	if [ $EXTRACTOR = file-roller ];then
 		file-roller -e $MNT/$1 $1.iso
+		chmod -R +w $MNT/$1 #To avoid confirmation prompts on BSD cp
+	elif [ $EXTRACTOR = ark ];then
+		ark -b -o $MNT/$1 $1.iso
+		chmod -R +w $MNT/$1 #To avoid confirmation prompts on BSD cp
 	elif [ $EXTRACTOR = mount ];then
 		mount -o loop $1.iso $MNT/$1/
 	else
