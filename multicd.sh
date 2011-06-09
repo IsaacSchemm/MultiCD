@@ -23,6 +23,7 @@ MCDVERSION="6.7-beta"
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 
+#Clean operation runs here
 if echo $* | grep -q "\bclean\b";then
 	for i in *;do
 		if [ -n "$(readlink "$i"|grep -v '/')" ];then
@@ -31,7 +32,7 @@ if echo $* | grep -q "\bclean\b";then
 	done
 	rm -fv *.defaultname 2> /dev/null
 	rm -fv *.version 2> /dev/null
-	exit 0
+	exit 0 #quit program
 fi
 
 export MD5=false
@@ -48,7 +49,7 @@ for i do
 		-v) shift;export VERBOSE=true;;
 		-i) shift;export INTERACTIVE=true;;
 		-w) shift;export WAIT=true;;
-		-V) shift;echo $MCDVERSION;exit 0;;
+		-V) shift;echo $MCDVERSION;exit 0;; #quit program
 	esac
 done
 
@@ -64,18 +65,15 @@ export MNT="$(pwd)/temporary-mountpoints"
 #TAGS: used to store small text files (temporary)
 export TAGS="$MNT/tags"
 
-if which file-roller &> /dev/null;then
+if [ $(whoami) = root ] && uname|grep -q Linux;then
+	export EXTRACTOR = mount #When possible, loop-mount is preferred because it is faster (files are copied once, not twice, before the ISO is generated) and because it runs without an X server. However, it is only available to root, which opens up security risks.
+elif which file-roller &> /dev/null;then
 	export EXTRACTOR=file-roller
 else
-	export EXTRACTOR=mount
-fi
-
-if [ $EXTRACTOR = mount ];then
 	if !(uname|grep -q Linux);then
 		echo "Unless file-roller is installed to extract ISOs, only Linux kernels are supported (due to heavy use of \"-o loop\")."
 		exit 1
-	fi
-	if [ $(whoami) != "root" ];then
+	elif [ $(whoami) != "root" ];then
 		echo "Unless file-roller is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
 		exit 1
 	fi
