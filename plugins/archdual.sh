@@ -2,9 +2,8 @@
 set -e
 . ./functions.sh
 #Arch Linux (dual i686/x86_64) installer plugin for multicd.sh
-#version 6.0
-#Copyright (c) 2010 Isaac Schemm
-#Thanks to jerome_bc for updating this script for the newest Arch
+#version 6.7
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -31,16 +30,11 @@ elif [ $1 = copy ];then
 	if [ -f archdual.iso ];then
 		echo "Copying Arch Linux Dual..."
 		mcdmount archdual
-		mkdir -p $WORK/boot/arch/i686
-		mkdir -p $WORK/boot/arch/x86_64
-		mkdir $WORK/i686
-		mkdir $WORK/x86_64
-		cp $MNT/archdual/boot/i686/vmlinuz26 $WORK/boot/arch/i686/vmlinuz26 #i686 Kernel
-		cp $MNT/archdual/boot/x86_64/vmlinuz26 $WORK/boot/arch/x86_64/vmlinuz26 #x86_64 Kernel
-		cp $MNT/archdual/boot/i686/archiso.img $WORK/boot/arch/i686/archiso.img #i686 initrd
-		cp $MNT/archdual/boot/x86_64/archiso.img $WORK/boot/arch/x86_64/archiso.img #x86_64 initrd
-		cp $MNT/archdual/i686/*.sqfs $WORK/i686 #i686 Compressed filesystems
-		cp $MNT/archdual/x86_64/*.sqfs $WORK/x86_64 #x86_64 Compressed filesystems
+		mkdir -p $WORK/boot/arch
+		for i in vmlinuz vmlts vm64 vm64lts initrd.img initrdlts.img initrd64.img initrd64lts.img;do
+			cp $MNT/archdual/boot/$i $WORK/boot/arch/$i
+		done
+		cp $MNT/archdual/core-* $WORK/ #packages
 		cp $MNT/archdual/isomounts $WORK/ #Text file
 		umcdmount archdual
 	fi
