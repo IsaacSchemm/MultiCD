@@ -1,6 +1,7 @@
 b673f919fae8c8143563f93abb6b8fc1  plugins/0hello.sh
 65fd9479ca6cb94b5110b42be613012e  plugins/antix.sh
-2adde2fb1d40c14bfac9623ca9acccfe  plugins/archdual.sh
+19b06304e84d12ac3761421d614b0f37  plugins/archboot.sh
+3e46f32f97cf74c80b85d0de5853ef6f  plugins/archdual.sh
 c2ec3da1ae010a05c9794806705a33ed  plugins/archiso-live.sh
 eea85abc5c6500b039287930b1fb5f97  plugins/arch.sh
 c3cbf97fc4eac38d04dec0eb0a4130a7  plugins/austrumi.sh

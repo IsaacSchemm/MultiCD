@@ -2,6 +2,7 @@ This file is not used by the script at all. You can keep it if you want, however
 
 #Automatically recognized filenames (the script will make links to the files below to match what it expects):
 archiso-live-*.iso			archiso-live.iso
+archlinux-*-archboot.iso		archboot.iso
 avg_*.iso				avg.iso
 debian-5*.iso				debian-install.iso
 oudoulinux-*.iso			doudoulinux.iso
@@ -41,7 +42,8 @@ lubuntu-*.iso				i386.l.ubuntu.iso
 
 #Filenames:	
 #antiX			antix.iso
-#Arch Linux		arch.iso
+#Arch Linux (old)	arch.iso / archdual.iso
+#Arch Linux (new)	archboot.iso
 #Archiso-live		archiso-live.iso
 #Austrumi		al.iso
 #AVG Rescue CD		avg.iso
