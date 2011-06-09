@@ -2,8 +2,8 @@
 set -e
 . ./functions.sh
 #Fedora installer plugin for multicd.sh
-#version 6.2
-#Copyright (c) 2010 Isaac Schemm
+#version 6.7 (last functional change: 6.2)
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@ if [ $1 = links ];then
 elif [ $1 = scan ];then
 	if [ -f fedora-boot.iso ];then
 		echo "Fedora netboot installer"
-		touch $TAGS/redhats/fedora-boot
+		#touch $TAGS/redhats/fedora-boot
 	fi
 elif [ $1 = copy ];then
 	if [ -f fedora-boot.iso ];then
@@ -51,29 +51,29 @@ elif [ $1 = copy ];then
 		umcdmount fedora-boot
 	fi
 elif [ $1 = writecfg ];then
-if [ -f fedora-boot.iso ];then
-if [ -f fedora-boot.version ] && [ "$(cat fedora-boot.version)" != "" ];then
-	VERSION=" $(cat fedora-boot.version)" #Version based on isoaliases()
-fi
-echo "label flinux
-  #TIP: If you change the method= entry in the append line, you can change the mirror and version installed.
-  menu label ^Install Fedora$VERSION from mirrors.kernel.org (Fedora 13 only)
-  kernel /boot/fedora/vmlinuz
-  append initrd=/boot/fedora/initrd.img method=http://mirrors.kernel.org/fedora/releases/13/Fedora/i386/os
-label flinux
-  menu label ^Install or upgrade Fedora$VERSION from another mirror
-  kernel /boot/fedora/vmlinuz
-  append initrd=/boot/fedora/initrd.img
-label ftext
-  menu label Install or upgrade Fedora$VERSION (text mode)
-  kernel /boot/fedora/vmlinuz
-  append initrd=/boot/fedora/initrd.img text
-label frescue
-  menu label Rescue installed Fedora$VERSION system
-  kernel /boot/fedora/vmlinuz
-  append initrd=/boot/fedora/initrd.img rescue
-" >> $WORK/boot/isolinux/isolinux.cfg
-fi
+	if [ -f fedora-boot.iso ];then
+		if [ -f fedora-boot.version ] && [ "$(cat fedora-boot.version)" != "" ];then
+			VERSION=" $(cat fedora-boot.version)" #Version based on isoaliases()
+		fi
+		echo "label flinux
+		  #TIP: If you change the method= entry in the append line, you can change the mirror and version installed.
+		  menu label ^Install Fedora$VERSION from mirrors.kernel.org (Fedora 13 only)
+		  kernel /boot/fedora/vmlinuz
+		  append initrd=/boot/fedora/initrd.img method=http://mirrors.kernel.org/fedora/releases/13/Fedora/i386/os
+		label flinux
+		  menu label ^Install or upgrade Fedora$VERSION from another mirror
+		  kernel /boot/fedora/vmlinuz
+		  append initrd=/boot/fedora/initrd.img
+		label ftext
+		  menu label Install or upgrade Fedora$VERSION (text mode)
+		  kernel /boot/fedora/vmlinuz
+		  append initrd=/boot/fedora/initrd.img text
+		label frescue
+		  menu label Rescue installed Fedora$VERSION system
+		  kernel /boot/fedora/vmlinuz
+		  append initrd=/boot/fedora/initrd.img rescue
+		" >> $WORK/boot/isolinux/isolinux.cfg
+	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"

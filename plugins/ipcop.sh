@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #IPCop plugin for multicd.sh
-#version 6.1
+#version 6.7 (last functional change: 6.1)
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,7 +25,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f ipcop.iso ];then
 		echo "IPCop"
-		touch $TAGS/redhats/ipcop
+		#touch $TAGS/redhats/ipcop
 	fi
 elif [ $1 = copy ];then
 	if [ -f ipcop.iso ];then
@@ -43,39 +43,39 @@ elif [ $1 = copy ];then
 		umcdmount ipcop
 	fi
 elif [ $1 = writecfg ];then
-if [ -f ipcop.iso ];then
-echo "label ipcopmenu
-menu label --> ^IPCop
-config /boot/isolinux/ipcop.cfg
-" >> $WORK/boot/isolinux/isolinux.cfg
-echo "TIMEOUT 5000
-F1 /boot/ipcop/f1.txt
-F2 /boot/ipcop/f2.txt
-F3 /boot/ipcop/f3.txt
-DISPLAY /boot/ipcop/f1.txt
-PROMPT 1
-DEFAULT /boot/ipcop/vmlinuz
-APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw
-LABEL nopcmcia 
-  KERNEL /boot/ipcop/vmlinuz
-  APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw nopcmcia
-LABEL noscsi
-  KERNEL /boot/ipcop/vmlinuz
-  APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw scsi=none
-LABEL nousb
-  KERNEL /boot/ipcop/vmlinuz
-  APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw nousb
-LABEL nousborpcmcia
-  KERNEL v/boot/ipcop/mlinuz
-  APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw nousb nopcmcia
-LABEL dma
-  KERNEL /boot/ipcop/vmlinuz
-  APPEND initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw
-LABEL memtest
-  KERNEL /boot/memtest
-  APPEND -
-" > $WORK/boot/isolinux/ipcop.cfg
-fi
+	if [ -f ipcop.iso ];then
+		echo "label ipcopmenu
+		menu label --> ^IPCop
+		config /boot/isolinux/ipcop.cfg
+		" >> $WORK/boot/isolinux/isolinux.cfg
+		echo "TIMEOUT 5000
+		F1 /boot/ipcop/f1.txt
+		F2 /boot/ipcop/f2.txt
+		F3 /boot/ipcop/f3.txt
+		DISPLAY /boot/ipcop/f1.txt
+		PROMPT 1
+		DEFAULT /boot/ipcop/vmlinuz
+		APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw
+		LABEL nopcmcia 
+		  KERNEL /boot/ipcop/vmlinuz
+		  APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw nopcmcia
+		LABEL noscsi
+		  KERNEL /boot/ipcop/vmlinuz
+		  APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw scsi=none
+		LABEL nousb
+		  KERNEL /boot/ipcop/vmlinuz
+		  APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw nousb
+		LABEL nousborpcmcia
+		  KERNEL v/boot/ipcop/mlinuz
+		  APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw nousb nopcmcia
+		LABEL dma
+		  KERNEL /boot/ipcop/vmlinuz
+		  APPEND initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw
+		LABEL memtest
+		  KERNEL /boot/memtest
+		  APPEND -
+		" > $WORK/boot/isolinux/ipcop.cfg
+	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"

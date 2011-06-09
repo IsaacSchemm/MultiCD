@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
 . ./functions.sh
-#multicd.sh 6.6
+MCDVERSION="6.7-beta"
+#multicd.sh 6.7-beta
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,16 +23,6 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 
-#MCDDIR: directory where plugins.md5 and plugins folder are expected to be.
-MCDDIR=.
-#WORK: the directory that the eventual CD/DVD contents will be stored temporarily.
-export WORK=multicd-working
-#MNT: the directory inside which new folders will be made to mount the ISO images.
-mkdir -p /tmp/multicd-$USER
-export MNT=/tmp/multicd-$USER
-#TAGS: used to store small text files (temporary)
-export TAGS=$MNT/tags
-
 if echo $* | grep -q "\bclean\b";then
 	for i in *;do
 		if [ -n "$(readlink "$i"|grep -v '/')" ];then
@@ -43,26 +34,12 @@ if echo $* | grep -q "\bclean\b";then
 	exit 0
 fi
 
-if !(uname|grep -q Linux);then
-	echo "Only Linux kernels are supported at the moment (due to heavy use of \"-o loop\")."
-fi
-if [ $(whoami) != "root" ];then
-	echo "This script must be run as root, so it can mount ISO images on the filesystem during the building process."
-	exit 1
-fi
-
-if [ -d $TAGS ];then rm -r $TAGS;fi
-mkdir -p $TAGS
-mkdir $TAGS/puppies
-mkdir $TAGS/redhats
-chmod -R 777 $TAGS
-
 export MD5=false
 export MEMTEST=true
 export VERBOSE=true
 export INTERACTIVE=false
 export WAIT=false
-ARGS=$(getopt -l md5 cmviw $*)
+ARGS=$(getopt -l md5 cmviwV $*)
 set -- $ARGS
 for i do
 	case "$i" in
@@ -71,8 +48,44 @@ for i do
 		-v) shift;export VERBOSE=true;;
 		-i) shift;export INTERACTIVE=true;;
 		-w) shift;export WAIT=true;;
+		-V) shift;echo $MCDVERSION;exit 0;;
 	esac
 done
+
+#--------Directory Variables--------#
+#MCDDIR: directory where plugins.md5 and plugins folder are expected to be.
+#Only the multicd.sh file (and isoaliases() in functions.sh) should need this variable.
+MCDDIR=.
+#WORK: the directory that the eventual CD/DVD contents will be stored temporarily.
+export WORK="$(pwd)/multicd-working"
+#MNT: the directory inside which new folders will be made to mount the ISO images.
+mkdir -p "$(pwd)/temporary-mountpoints"
+export MNT="$(pwd)/temporary-mountpoints"
+#TAGS: used to store small text files (temporary)
+export TAGS="$MNT/tags"
+
+if which file-roller &> /dev/null;then
+	export EXTRACTOR=file-roller
+else
+	export EXTRACTOR=mount
+fi
+
+if [ $EXTRACTOR = mount ];then
+	if !(uname|grep -q Linux);then
+		echo "Unless file-roller is installed to extract ISOs, only Linux kernels are supported (due to heavy use of \"-o loop\")."
+		exit 1
+	fi
+	if [ $(whoami) != "root" ];then
+		echo "Unless file-roller is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
+		exit 1
+	fi
+fi
+
+if [ -d $TAGS ];then rm -r $TAGS;fi
+mkdir -p $TAGS
+mkdir $TAGS/puppies
+#mkdir $TAGS/redhats
+chmod -R 777 $TAGS
 
 #START PREPARE#
 #One parenthesis is for md5sums that don't match; the other is for plugins that are not listed in plugins.md5
@@ -80,7 +93,9 @@ UNKNOWNS="$(md5sum -c $MCDDIR/plugins.md5|grep FAILED|awk -F: '{print $1}') $(fo
 if [ "$UNKNOWNS" != " " ];then
 	echo
 	echo "Plugins that are not from the official release: $UNKNOWNS"
-	echo "Make sure you trust every script in the plugins folder - all these scripts will get root access!"
+	if [ $(whoami) = root ];then
+		echo "Make sure you trust every script in the plugins folder - all these scripts will get root access!"
+	fi
 	echo "Press Ctrl+C to cancel"
 	echo
 	sleep 2
@@ -93,6 +108,9 @@ done
 #END PREPARE#
 
 isoaliases #This function is in functions.sh
+
+echo "multicd.sh $MCDVERSION. Extracting ISO images with $EXTRACTOR."
+echo
 
 #START SCAN
 for i in $MCDDIR/plugins/*;do
@@ -194,16 +212,16 @@ Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> $TAGS
 		touch $TAGS/puppies/$(cat puppyresult).inroot
 		rm puppychooser puppyresult
 	fi
-	if [ $(find $TAGS/redhats -maxdepth 1 -type f|wc -l) -gt 1 ] && which dialog &> /dev/null;then
-		echo "dialog --radiolist \"Which Red Hat/Fedora variant should have its files stored on the CD, so they don't need to be downloaded later?\" 13 45 6 \\">puppychooser
-		for i in $TAGS/redhats/*;do
-			echo $(basename $i) \"\" off \\ >> redhatchooser
-		done
-		echo "2> rehdatresult" >> redhatchooser
-		sh redhatchooser
-		touch $TAGS/redhats/$(cat redhatresult).images
-		rm redhatchooser redhatresult
-	fi
+	#if [ $(find $TAGS/redhats -maxdepth 1 -type f|wc -l) -gt 1 ] && which dialog &> /dev/null;then
+	#	echo "dialog --radiolist \"Which Red Hat/Fedora variant should have its files stored on the CD, so they don't need to be downloaded later?\" 13 45 6 \\">puppychooser
+	#	for i in $TAGS/redhats/*;do
+	#		echo $(basename $i) \"\" off \\ >> redhatchooser
+	#	done
+	#	echo "2> rehdatresult" >> redhatchooser
+	#	sh redhatchooser
+	#	touch $TAGS/redhats/$(cat redhatresult).images
+	#	rm redhatchooser redhatresult
+	#fi
 	if [ $(find $TAGS/puppies -maxdepth 1 -type f|wc -l) -eq 1 ];then
 		NAME=$(ls $TAGS/puppies)
 		true>$(find $TAGS/puppies -maxdepth 1 -type f).inroot
@@ -236,7 +254,7 @@ else
 	MENUCOLOR=44
 	#echo en > $TAGS/lang
 	touch $TAGS/9xextras
-	for i in puppies redhats;do
+	for i in puppies;do
 		if [ $(find $TAGS/$i -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
 			touch $(find $TAGS/$i -maxdepth 1 -type f|head -n 1) #This way, the first one alphabetically will be in the root dir
 		fi
@@ -502,7 +520,7 @@ fi
 
 if $WAIT;then
 	chmod -R a+w $WORK/boot/isolinux #So regular users can edit menus
-	echo "    Dropping to root prompt. Type \"exit\" to build the ISO image."
+	echo "    Dropping to $(whoami) prompt. Type \"exit\" to build the ISO image."
 	echo "    Don't do anything hasty."
 	echo "PS1=\"    mcd waiting# \"">/tmp/mcdprompt
 	bash --rcfile /tmp/mcdprompt || sh

@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #Puppy Linux plugin for multicd.sh
-#version 6.6
+#version 6.7 (last functional change: 6.6)
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,8 +27,9 @@ if [ $1 = links ];then
 elif [ $1 = scan ];then
 	if [ -f puppy.iso ];then
 		echo "Puppy Linux"
-		touch $TAGS/puppies/puppy
 		#touch $TAGS/puppy.needsname #Comment out this line and multicd.sh won't ask for a custom name for this ISO
+		touch $TAGS/puppies/puppy
+		mkdir -p $TAGS/puppies
 	fi
 elif [ $1 = copy ];then
 	if [ -f puppy.iso ];then

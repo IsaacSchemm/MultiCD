@@ -2,8 +2,8 @@
 set -e
 . ./functions.sh
 #Fedora 64-bit installer plugin for multicd.sh
-#version 6.2
-#Copyright (c) 2010 Isaac Schemm
+#version 6.7 (last functional change: 6.2)
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@ if [ $1 = links ];then
 elif [ $1 = scan ];then
 	if [ -f fedora-boot64.iso ];then
 		echo "Fedora 64-bit netboot installer"
-		touch $TAGS/redhats/fedora-boot64
+		#touch $TAGS/redhats/fedora-boot64
 	fi
 elif [ $1 = copy ];then
 	if [ -f fedora-boot64.iso ];then
@@ -51,29 +51,29 @@ elif [ $1 = copy ];then
 		umcdmount fedora-boot64
 	fi
 elif [ $1 = writecfg ];then
-if [ -f fedora-boot64.iso ];then
-if [ -f fedora-boot64.version ] && [ "$(cat fedora-boot64.version)" != "" ];then
-	VERSION=" $(cat fedora-boot64.version)" #Version based on isoaliases()
-fi
-echo "label flinux64
-  #TIP: If you change the method= entry in the append line, you can change the mirror and version installed.
-  menu label ^Install 64-bit Fedora$VERSION from mirrors.kernel.org (Fedora 13 only)
-  kernel /boot/fedora64/vmlinuz
-  append initrd=/boot/fedora64/initrd.img method=http://mirrors.kernel.org/fedora/releases/13/Fedora/x86_64/os
-label flinux64
-  menu label ^Install or upgrade 64-bit Fedora$VERSION from another mirror
-  kernel /boot/fedora64/vmlinuz
-  append initrd=/boot/fedora64/initrd.img
-label ftext64
-  menu label Install or upgrade 64-bit Fedora$VERSION (text mode)
-  kernel /boot/fedora64/vmlinuz
-  append initrd=/boot/fedora64/initrd.img text
-label frescue64
-  menu label Rescue installed 64-bit Fedora$VERSION system
-  kernel /boot/fedora64/vmlinuz
-  append initrd=/boot/fedora64/initrd.img rescue
-" >> $WORK/boot/isolinux/isolinux.cfg
-fi
+	if [ -f fedora-boot64.iso ];then
+		if [ -f fedora-boot64.version ] && [ "$(cat fedora-boot64.version)" != "" ];then
+			VERSION=" $(cat fedora-boot64.version)" #Version based on isoaliases()
+		fi
+		echo "label flinux64
+		  #TIP: If you change the method= entry in the append line, you can change the mirror and version installed.
+		  menu label ^Install 64-bit Fedora$VERSION from mirrors.kernel.org (Fedora 13 only)
+		  kernel /boot/fedora64/vmlinuz
+		  append initrd=/boot/fedora64/initrd.img method=http://mirrors.kernel.org/fedora/releases/13/Fedora/x86_64/os
+		label flinux64
+		  menu label ^Install or upgrade 64-bit Fedora$VERSION from another mirror
+		  kernel /boot/fedora64/vmlinuz
+		  append initrd=/boot/fedora64/initrd.img
+		label ftext64
+		  menu label Install or upgrade 64-bit Fedora$VERSION (text mode)
+		  kernel /boot/fedora64/vmlinuz
+		  append initrd=/boot/fedora64/initrd.img text
+		label frescue64
+		  menu label Rescue installed 64-bit Fedora$VERSION system
+		  kernel /boot/fedora64/vmlinuz
+		  append initrd=/boot/fedora64/initrd.img rescue
+		" >> $WORK/boot/isolinux/isolinux.cfg
+	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"

@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #Macpup plugin for multicd.sh
-#version 6.6
+#version 6.7 (last functional change: 6.6)
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,6 +25,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f macpup.iso ];then
 		echo "Macpup"
+		mkdir -p $TAGS/puppies
 		touch $TAGS/puppies/macpup
 	fi
 elif [ $1 = copy ];then
@@ -33,39 +34,39 @@ elif [ $1 = copy ];then
 		puppycommon macpup
 	fi
 elif [ $1 = writecfg ];then
-if [ -f macpup.iso ];then
-if [ -f $TAGS/macpup.name ] && [ "$(cat $TAGS/macpup.name)" != "" ];then
-	PUPNAME=$(cat $TAGS/macpup.name)
-else
-	PUPNAME="Macpup"
-fi
-if [ -d $WORK/macpup ];then
-	EXTRAARGS="psubdir=macpup"
-fi
-if [ -d $WORK/macpup ];then
-	EXTRAARGS="psubdir=macpup"
-	KERNELPATH="/macpup"
-else
-	EXTRAARGS=""
-	KERNELPATH=""
-fi
-echo "label macpup
-menu label ^$PUPNAME
-kernel $KERNELPATH/vmlinuz
-append pmedia=cd $EXTRAARGS
-initrd $KERNELPATH/initrd.gz
-#label macpup-nox
-#menu label $PUPNAME (boot to command line)
-#kernel $KERNELPATH/vmlinuz
-#append pmedia=cd pfix=nox $EXTRAARGS
-#initrd $KERNELPATH/initrd.gz
-#label macpup-noram
-#menu label $PUPNAME (don't load to RAM)
-#kernel $KERNELPATH/vmlinuz
-#append pmedia=cd pfix=noram $EXTRAARGS
-#initrd $KERNELPATH/initrd.gz
-" >> $WORK/boot/isolinux/isolinux.cfg
-fi
+	if [ -f macpup.iso ];then
+		if [ -f $TAGS/macpup.name ] && [ "$(cat $TAGS/macpup.name)" != "" ];then
+			PUPNAME=$(cat $TAGS/macpup.name)
+		else
+			PUPNAME="Macpup"
+		fi
+		if [ -d $WORK/macpup ];then
+			EXTRAARGS="psubdir=macpup"
+		fi
+		if [ -d $WORK/macpup ];then
+			EXTRAARGS="psubdir=macpup"
+			KERNELPATH="/macpup"
+		else
+			EXTRAARGS=""
+			KERNELPATH=""
+		fi
+		echo "label macpup
+		menu label ^$PUPNAME
+		kernel $KERNELPATH/vmlinuz
+		append pmedia=cd $EXTRAARGS
+		initrd $KERNELPATH/initrd.gz
+		#label macpup-nox
+		#menu label $PUPNAME (boot to command line)
+		#kernel $KERNELPATH/vmlinuz
+		#append pmedia=cd pfix=nox $EXTRAARGS
+		#initrd $KERNELPATH/initrd.gz
+		#label macpup-noram
+		#menu label $PUPNAME (don't load to RAM)
+		#kernel $KERNELPATH/vmlinuz
+		#append pmedia=cd pfix=noram $EXTRAARGS
+		#initrd $KERNELPATH/initrd.gz
+		" >> $WORK/boot/isolinux/isolinux.cfg
+	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"

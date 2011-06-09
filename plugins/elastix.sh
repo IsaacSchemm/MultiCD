@@ -2,7 +2,7 @@
 set -e
 . ./functions.sh
 #Elastix plugin for multicd.sh
-#version 6.0
+#version 6.7 (last functional change: 6.0)
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,7 +25,7 @@ set -e
 if [ $1 = scan ];then
 	if [ -f elastix.iso ];then
 		echo "Elastix"
-		touch $TAGS/redhats/elastix
+		#touch $TAGS/redhats/elastix
 	fi
 elif [ $1 = copy ];then
 	if [ -f elastix.iso ];then
@@ -44,41 +44,41 @@ elif [ $1 = copy ];then
 		umcdmount elastix
 	fi
 elif [ $1 = writecfg ];then
-if [ -f elastix.iso ];then
-echo "label elastixmenu
-menu label --> ^Elastix
-config /boot/isolinux/elastix.cfg
-" >> $WORK/boot/isolinux/isolinux.cfg
-echo "default linux
-prompt 1
-timeout 600
-display /boot/elastix/boot.msg
-F1 /boot/elastix/boot.msg
-F2 /boot/elastix/options.msg
-F3 /boot/elastix/general.msg
-F4 /boot/elastix/param.msg
-F5 /boot/elastix/rescue.msg
-F7 /boot/elastix/snake.msg
-label advanced
-  kernel /boot/elastix/vmlinuz
-  append ks=cdrom:/ks_advanced.cfg initrd=/boot/elastix/initrd.img ramdisk_size=8192
-label elastix
-  kernel /boot/elastix/vmlinuz
-  append initrd=/boot/elastix/initrd.img ramdisk_size=8192
-label linux
-  kernel /boot/elastix/vmlinuz
-  append ks=cdrom:/ks.cfg initrd=/boot/elastix/initrd.img ramdisk_size=8192
-label rhinoraid
-  kernel /boot/elastix/vmlinuz
-  append ks=cdrom:/ks_rhinoraid.cfg initrd=/boot/elastix/initrd.img ramdisk_size=8192
-label local
-  localboot 1
-label back
-menu label Back to main menu
-com32 menu.c32
-append /boot/isolinux/isolinux.cfg
-" > $WORK/boot/isolinux/elastix.cfg
-fi
+	if [ -f elastix.iso ];then
+		echo "label elastixmenu
+		menu label --> ^Elastix
+		config /boot/isolinux/elastix.cfg
+		" >> $WORK/boot/isolinux/isolinux.cfg
+		echo "default linux
+		prompt 1
+		timeout 600
+		display /boot/elastix/boot.msg
+		F1 /boot/elastix/boot.msg
+		F2 /boot/elastix/options.msg
+		F3 /boot/elastix/general.msg
+		F4 /boot/elastix/param.msg
+		F5 /boot/elastix/rescue.msg
+		F7 /boot/elastix/snake.msg
+		label advanced
+		  kernel /boot/elastix/vmlinuz
+		  append ks=cdrom:/ks_advanced.cfg initrd=/boot/elastix/initrd.img ramdisk_size=8192
+		label elastix
+		  kernel /boot/elastix/vmlinuz
+		  append initrd=/boot/elastix/initrd.img ramdisk_size=8192
+		label linux
+		  kernel /boot/elastix/vmlinuz
+		  append ks=cdrom:/ks.cfg initrd=/boot/elastix/initrd.img ramdisk_size=8192
+		label rhinoraid
+		  kernel /boot/elastix/vmlinuz
+		  append ks=cdrom:/ks_rhinoraid.cfg initrd=/boot/elastix/initrd.img ramdisk_size=8192
+		label local
+		  localboot 1
+		label back
+		menu label Back to main menu
+		com32 menu.c32
+		append /boot/isolinux/isolinux.cfg
+		" > $WORK/boot/isolinux/elastix.cfg
+	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
