@@ -2,8 +2,8 @@
 set -e
 . ./functions.sh
 #FreeDOS installer plugin for multicd.sh
-#version 6.1
-#Copyright (c) 2010 Isaac Schemm
+#version 6.7
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +22,17 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
-	if [ -f fdfullcd.iso ] || [ -f fdbasecd.iso ];then
+if [ $1 = links ];then
+	echo "fdfullcd.iso freedos.iso FreeDOS_Full_CD"
+	echo "fdbasecd.iso freedos.iso FreeDOS_Base_CD"
+elif [ $1 = scan ];then
+	if [ -f freedos.iso ];then
 		echo "FreeDOS"
 	fi
 elif [ $1 = copy ];then
-	if [ -f fdfullcd.iso ] || [ -f fdbasecd.iso ];then
+	if [ -f freedos.iso ];then
 		echo "Copying FreeDOS..."
-		if [ ! -d $MNT/freedos ];then
-			mkdir $MNT/freedos
-		fi
-		if grep -q "$MNT/freedos" /etc/mtab ; then
-			umount $MNT/freedos
-		fi
-		if [ -f fdfullcd.iso ];then
-			mount -o loop fdfullcd.iso $MNT/freedos/ #It might be fdbasecd or fdfullcd
-		else
-			mount -o loop fdbasecd.iso $MNT/freedos/
-		fi
+		mcdmount freedos
 		mkdir $WORK/boot/freedos
 		cp -r $MNT/freedos/freedos $WORK/ #Core directory with the packages
 		cp $MNT/freedos/setup.bat $WORK/setup.bat #FreeDOS setup
@@ -56,19 +49,18 @@ elif [ $1 = copy ];then
 		umcdmount freedos
 	fi
 elif [ $1 = writecfg ];then
-if [ -f fdfullcd.iso ];then
-echo "label fdos
-menu label ^FreeDOS 1.0 (full)
-kernel memdisk
-append initrd=/boot/freedos/fdboot.img
-" >> $WORK/boot/isolinux/isolinux.cfg
-elif [ -f fdbasecd.iso ];then
-echo "label fdos
-menu label ^FreeDOS 1.0 (base)
-kernel memdisk
-append initrd=/boot/freedos/fdboot.img
-" >> $WORK/boot/isolinux/isolinux.cfg
-fi
+	if [ -f freedos.iso ];then
+		if [ -f freedos.defaultname ] && [ "$(cat freedos.defaultname)" != "" ];then
+			NAME=$(cat freedos.defaultname) #Default name based on the automatic links made in isoaliases()
+		else
+			NAME="FreeDOS CD" #Fallback name
+		fi
+		echo "label fdos
+		menu label ^$NAME
+		kernel memdisk
+		append initrd=/boot/freedos/fdboot.img
+		" >> $WORK/boot/isolinux/isolinux.cfg
+	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"

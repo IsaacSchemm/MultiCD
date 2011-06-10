@@ -61,13 +61,13 @@ MCDDIR=.
 #WORK: the directory that the eventual CD/DVD contents will be stored temporarily.
 export WORK="$(pwd)/multicd-working"
 #MNT: the directory inside which new folders will be made to mount the ISO images.
-mkdir -p "$(pwd)/temporary-mountpoints"
 export MNT="$(pwd)/temporary-mountpoints"
+mkdir -p $MNT
 #TAGS: used to store small text files (temporary)
 export TAGS="$MNT/tags"
 
 if [ $(whoami) = root ] && uname|grep -q Linux;then
-	export EXTRACTOR = mount #When possible, loop-mount is preferred because it is faster (files are copied once, not twice, before the ISO is generated) and because it runs without an X server. However, it is only available to root, which opens up security risks.
+	export EXTRACTOR=mount #When possible, loop-mount is preferred because it is faster (files are copied once, not twice, before the ISO is generated) and because it runs without an X server. However, it is only available to root, which opens up security risks.
 elif which file-roller &> /dev/null;then
 	export EXTRACTOR=file-roller
 elif which ark &> /dev/null;then
