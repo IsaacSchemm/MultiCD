@@ -36,7 +36,10 @@ if echo $* | grep -q "\bclean\b";then
 fi
 
 if getopt -T;then
-	echo "You have an old version of getopt. Don't use an output path with spaces in it."
+	echo "You have an old version of getopt. Don't use long options or an output path with spaces in it."
+	ARGS=$(getopt cmviwVo: $*)
+else
+	ARGS=$(getopt -l md5 -l output: cmviwVo: "$@")
 fi
 export MD5=false
 export MEMTEST=true
@@ -44,7 +47,6 @@ export VERBOSE=true
 export INTERACTIVE=false
 export WAIT=false
 export OUTPUT='multicd.iso'
-ARGS=$(getopt -l md5 -l output: cmviwVo: $*)
 eval set -- $ARGS
 for i do
 	case "$i" in
