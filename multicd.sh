@@ -35,24 +35,37 @@ if echo $* | grep -q "\bclean\b";then
 	exit 0 #quit program
 fi
 
+if getopt -T;then
+	echo "You have an old version of getopt. Don't use an output path with spaces in it."
+fi
 export MD5=false
 export MEMTEST=true
 export VERBOSE=true
 export INTERACTIVE=false
 export WAIT=false
-ARGS=$(getopt -l md5 cmviwV $*)
-set -- $ARGS
+export OUTPUT='multicd.iso'
+ARGS=$(getopt -l md5 -l output: cmviwVo: $*)
+eval set -- $ARGS
 for i do
 	case "$i" in
 		--md5) shift;export MD5=true;;
+		--output) shift;export OUTPUT="$1";shift;;
 		-c) shift;export MD5=true;;
 		-m) shift;export MEMTEST=false;;
 		-v) shift;export VERBOSE=true;;
 		-i) shift;export INTERACTIVE=true;;
 		-w) shift;export WAIT=true;;
 		-V) shift;echo $MCDVERSION;exit 0;; #quit program
+		-o) shift;export OUTPUT="$1";shift;;
 	esac
 done
+
+if ! touch $OUTPUT 2> /dev/null;then
+	echo "Error: cannot write to $OUTPUT"
+	exit 1
+else
+	rm $OUTPUT
+fi
 
 #--------Directory Variables--------#
 #MCDDIR: directory where plugins.md5 and plugins folder are expected to be.
@@ -112,7 +125,8 @@ done
 
 isoaliases #This function is in functions.sh
 
-echo "multicd.sh $MCDVERSION. Extracting ISO images with $EXTRACTOR."
+echo "multicd.sh $MCDVERSION"
+echo "Extracting ISO images with $EXTRACTOR; will build $OUTPUT; UID $(id -u)."
 echo
 
 #START SCAN
@@ -122,20 +136,20 @@ done
 #END SCAN
 
 for i in *.im[agz]; do
- test -r "$i" || continue
- echo $i|sed 's/\.im.//'
+	test -r "$i" || continue
+	echo $i|sed 's/\.im.//'
 done
 GAMES=0 #Will be changed if there are games
 for i in games/*.im[agz]; do
- test -r "$i" || continue
- echo Game: $(echo $i|sed 's/\.im.//'|sed 's/games\///')
- GAMES=1
+	test -r "$i" || continue
+	echo Game: $(echo $i|sed 's/\.im.//'|sed 's/games\///')
+	GAMES=1
 done
 if [ -f grub.exe ];then
- echo "GRUB4DOS"
+	echo "GRUB4DOS"
 fi
 if $MEMTEST;then
- echo "Memtest86+"
+	echo "Memtest86+"
 fi
 
 echo
@@ -562,7 +576,7 @@ if [ ! -f $TAGS/win9x ];then
 	EXTRAARGS="$EXTRAARGS -iso-level 4" #To ensure that Windows 9x installation CDs boot properly
 fi
 echo "Building CD image..."
-$GENERATOR -o multicd.iso \
+$GENERATOR -o "$OUTPUT" \
 -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
 -no-emul-boot -boot-load-size 4 -boot-info-table \
 -r -J $EXTRAARGS \
@@ -571,11 +585,13 @@ rm -r $WORK/
 
 echo "Running isohybrid..."
 if which isohybrid > /dev/null;then
-	isohybrid multicd.iso 2> /dev/null || echo "The installed isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
+	isohybrid "$OUTPUT" 2> /dev/null || echo "The installed isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
 else
-	$TAGS/isohybrid multicd.iso 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
+	$TAGS/isohybrid "$OUTPUT" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
 	rm $TAGS/isohybrid
 fi
-chmod 666 multicd.iso
+if [ $(whoami) == "root" ];then
+	chmod 666 "$OUTPUT"
+fi
 rm -r $TAGS $MNT
 #END SCRIPT
