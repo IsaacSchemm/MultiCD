@@ -39,8 +39,8 @@ if echo $* | grep -q "\bclean\b";then
 	exit 0 #quit program
 fi
 
-if getopt -T;then
-	echo "You have an old version of getopt. Don't use long options or an output path with spaces in it."
+if getopt -T > /dev/null;then
+	echo "You have a non-GNU of getopt. Don't use long options or an output path with spaces in it."
 	ARGS=$(getopt cmviwVo: $*)
 else
 	ARGS=$(getopt -l md5 -l output: cmviwVo: "$@")
@@ -98,7 +98,7 @@ else
 	fi
 fi
 if ( [ $EXTRACTOR = file-roller ] || [ $EXTRACTOR = ark ] ) && [ ! -n "$DISPLAY" ];then
-	echo "This script cannot use file-roller or ark to extract ISOs, because no X server is available. Please launch an X server or run this script as root."
+	echo "This script cannot use file-roller or ark to extract ISOs, because no X server  is available. Please launch an X server or run this script as root."
 	exit 1
 fi
 
@@ -124,10 +124,6 @@ chmod -R 777 $TAGS
 #	sleep 2
 #fi
 
-#Make the scripts executable.
-for i in $MCDDIR/plugins/*.sh;do
-	[ ! -x "$i" ]&&chmod +x "$i"
-done
 #END PREPARE#
 
 isoaliases #This function is in functions.sh
