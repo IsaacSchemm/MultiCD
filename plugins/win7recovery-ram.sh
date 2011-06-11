@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #Windows 7 Recovery Disc (from RAM) plugin for multicd.sh
 #version 6.6
 #Copyright for this script (c) 2011 Isaac Schemm

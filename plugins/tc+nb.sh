@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #NetbootCD 4.x tc+nb.iso plugin for multicd.sh
 #version 6.6
 #Copyright (c) 2011 Isaac Schemm

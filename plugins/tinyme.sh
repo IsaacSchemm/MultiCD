@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #TinyMe plugin for multicd.sh
 #version 6.6 (last functional change: 5.0)
 #Copyright (c) 2011 Isaac Schemm

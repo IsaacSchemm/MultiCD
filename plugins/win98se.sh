@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #Windows 98 SE Setup plugin for multicd.sh
 #version 6.3
 #Copyright for this script (c) 2010 Isaac Schemm

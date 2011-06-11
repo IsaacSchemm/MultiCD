@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #BackTrack plugin for multicd.sh (designed for BackTrack 4)
 #version 6.6
 #Copyright (c) 2011 Isaac Schemm

@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #ophcrack plugin for multicd.sh
 #version 6.5
 #Copyright (c) 2011 yogurt06/Isaac Schemm

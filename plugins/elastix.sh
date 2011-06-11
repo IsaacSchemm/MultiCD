@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #Elastix plugin for multicd.sh
 #version 6.7 (last functional change: 6.0)
 #Copyright (c) 2010 Isaac Schemm

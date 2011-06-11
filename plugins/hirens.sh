@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #Hiren's BootCD (11.0) plugin for multicd.sh
 #version 6.6
 #Copyright for this script (c) 2011 Isaac Schemm

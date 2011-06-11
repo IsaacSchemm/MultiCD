@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #Slax 6 plugin for multicd.sh
 #version 6.3
 #Copyright (c) 2011 Isaac Schemm

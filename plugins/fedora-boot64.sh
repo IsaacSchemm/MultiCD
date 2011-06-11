@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #Fedora 64-bit installer plugin for multicd.sh
 #version 6.7 (last functional change: 6.2)
 #Copyright (c) 2011 Isaac Schemm

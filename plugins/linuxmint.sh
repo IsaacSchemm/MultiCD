@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #Linux Mint plugin for multicd.sh
 #version 6.5
 #Copyright (c) 2010 Isaac Schemm (orig. by Zirafarafa)

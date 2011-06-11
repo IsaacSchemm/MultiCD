@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
-. ./functions.sh
+
+#MCDDIR: directory where functions.sh, plugins.md5 and plugins folder are expected to be.
+export MCDDIR="."
+. $MCDDIR/functions.sh
+
 MCDVERSION="6.7-beta"
 #multicd.sh 6.7-beta
 #Copyright (c) 2011 Isaac Schemm
@@ -70,9 +74,6 @@ else
 fi
 
 #--------Directory Variables--------#
-#MCDDIR: directory where plugins.md5 and plugins folder are expected to be.
-#Only the multicd.sh file (and isoaliases() in functions.sh) should need this variable.
-MCDDIR=.
 #WORK: the directory that the eventual CD/DVD contents will be stored temporarily.
 export WORK="$(pwd)/multicd-working"
 #MNT: the directory inside which new folders will be made to mount the ISO images.
@@ -84,9 +85,9 @@ export TAGS="$MNT/tags"
 if [ $(whoami) = root ] && uname|grep -q Linux;then
 	export EXTRACTOR=mount #When possible, loop-mount is preferred because it is faster (files are copied once, not twice, before the ISO is generated) and because it runs without an X server. However, it is only available to root, which opens up security risks.
 elif which file-roller &> /dev/null;then
-	export EXTRACTOR=file-roller
+	export EXTRACTOR=file-roller #file-roller is a GNOME application
 elif which ark &> /dev/null;then
-	export EXTRACTOR=ark
+	export EXTRACTOR=ark #Ark is a KDE application
 else
 	if !(uname|grep -q Linux);then
 		echo "Unless file-roller or ark is installed to extract ISOs, only Linux kernels are supported (due to heavy use of \"-o loop\")."
@@ -100,7 +101,7 @@ fi
 if [ -d $TAGS ];then rm -r $TAGS;fi
 mkdir -p $TAGS
 mkdir $TAGS/puppies
-#mkdir $TAGS/redhats
+#mkdir $TAGS/redhats (Not used anymore)
 chmod -R 777 $TAGS
 
 #START PREPARE#
@@ -120,7 +121,7 @@ chmod -R 777 $TAGS
 #fi
 
 #Make the scripts executable.
-for i in $MCDDIR/plugins/*;do
+for i in $MCDDIR/plugins/*.sh;do
 	[ ! -x "$i" ]&&chmod +x "$i"
 done
 #END PREPARE#
@@ -132,7 +133,7 @@ echo "Extracting ISO images with $EXTRACTOR; will build $OUTPUT; UID $(id -u)."
 echo
 
 #START SCAN
-for i in $MCDDIR/plugins/*;do
+for i in $MCDDIR/plugins/*.sh;do
 	$i scan
 done
 #END SCAN
@@ -191,10 +192,10 @@ Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> $TAGS
 		005 "KDE Office" on \
 		006 Development on \
 		007 Firefox on \
-		2> ./slaxlist0
-		echo >> ./slaxlist0
-		cat ./slaxlist0|sed -e 's/"//g' -e 's/ /\n/g'>$TAGS/slaxlist
-		rm ./slaxlist0
+		2> $TAGS/slaxlist0
+		echo >> $TAGS/slaxlist0
+		cat $TAGS/slaxlist0|sed -e 's/"//g' -e 's/ /\n/g'>$TAGS/slaxlist
+		rm $TAGS/slaxlist0
 		if wc -c $TAGS/slaxlist|grep -q 24;then #24 bytes means they are all checked
 			rm $TAGS/slaxlist #If they are all checked, delete the file
 		fi
@@ -208,10 +209,10 @@ Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> $TAGS
 		006 KOffice on \
 		007 Development on \
 		008 Firefox on \
-		2> ./porteuslist0
-		echo >> ./porteuslist0
-		cat ./porteuslist0|sed -e 's/"//g' -e 's/ /\n/g'>$TAGS/porteuslist
-		rm ./porteuslist0
+		2> $TAGS/porteuslist0
+		echo >> $TAGS/porteuslist0
+		cat $TAGS/porteuslist0|sed -e 's/"//g' -e 's/ /\n/g'>$TAGS/porteuslist
+		rm $TAGS/porteuslist0
 		if wc -c $TAGS/porteuslist|grep -q 28;then #28 bytes means they are all checked
 			rm $TAGS/porteuslist #If they are all checked, delete the file
 		fi
@@ -296,7 +297,7 @@ fi
 mkdir -p $WORK/boot/isolinux
 
 #START COPY
-for i in $MCDDIR/plugins/*;do
+for i in $MCDDIR/plugins/*.sh;do
 	[ ! -x $i ]&&chmod +x $i
 	$i copy
 done
@@ -462,7 +463,7 @@ kernel chain.c32
 append hd0" >> $WORK/boot/isolinux/isolinux.cfg
 #END HD BOOT OPTION#
 #START WRITE
-for i in $MCDDIR/plugins/*;do
+for i in $MCDDIR/plugins/*.sh;do
 	[ ! -x $i ]&&chmod +x $i
 	$i writecfg
 done

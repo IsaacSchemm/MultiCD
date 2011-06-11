@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #AVG Rescue CD plugin for multicd.sh
 #version 6.2
 #Copyright for this script (c) 2010 Isaac Schemm

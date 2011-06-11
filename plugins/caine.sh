@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #Caine plugin for multicd.sh
 #version 6.6
 #Copyright (c) 2011 Isaac Schemm

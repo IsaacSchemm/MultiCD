@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #DoudouLinux plugin for multicd.sh
 #version 6.3
 #Copyright (c) 2010 Isaac Schemm

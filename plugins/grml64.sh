@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #GRML64 plugin for multicd.sh
 #version 6.6
 #Copyright (c) 2011 Isaac Schemm, T.Ma.X. N060d9

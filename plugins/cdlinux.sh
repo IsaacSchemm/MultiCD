@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #CDlinux plugin for multicd.sh
 #version 6.0
 #Copyright (c) 2010 PsynoKhi0, Isaac Schemm

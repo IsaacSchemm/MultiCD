@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #Ubuntu installer plugin for multicd.sh
 #version 6.6 (last fuctional change: 5.0)
 #Copyright (c) 2011 Isaac Schemm

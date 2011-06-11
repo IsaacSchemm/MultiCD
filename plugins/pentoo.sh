@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #Pentoo plugin for multicd.sh
 #version 6.4
 #Copyright (c) 2011 Isaac Schemm

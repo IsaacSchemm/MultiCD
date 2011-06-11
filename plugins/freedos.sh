@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #FreeDOS installer plugin for multicd.sh
 #version 6.7
 #Copyright (c) 2011 Isaac Schemm

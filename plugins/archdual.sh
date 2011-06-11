@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #Arch Linux (dual i686/x86_64) installer plugin for multicd.sh
 #version 6.7
 #Copyright (c) 2011 Isaac Schemm

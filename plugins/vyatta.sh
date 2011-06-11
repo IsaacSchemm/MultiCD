@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. $MCDDIR/functions.sh
 #Vyatta plugin for multicd.sh
 #version 6.6 (last functional change: 5.6)
 #Copyright (c) 2010 Isaac Schemm, PsynoKhi0
