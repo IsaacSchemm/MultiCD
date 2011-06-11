@@ -90,12 +90,16 @@ elif which ark &> /dev/null;then
 	export EXTRACTOR=ark #Ark is a KDE application
 else
 	if !(uname|grep -q Linux);then
-		echo "Unless file-roller or ark is installed to extract ISOs, only Linux kernels are supported (due to heavy use of \"-o loop\")."
+		echo "Unless file-roller or ark is installed to extract ISOs, only Linux kernels are supported (due to the use of \"-o loop\")."
 		exit 1
 	elif [ $(whoami) != "root" ];then
 		echo "Unless file-roller or ark is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
 		exit 1
 	fi
+fi
+if ( [ $EXTRACTOR = file-roller ] || [ $EXTRACTOR = ark ] ) && [ ! -n "$DISPLAY" ];then
+	echo "This script cannot use file-roller or ark to extract ISOs, because no X server is available. Please launch an X server or run this script as root."
+	exit 1
 fi
 
 if [ -d $TAGS ];then rm -r $TAGS;fi
