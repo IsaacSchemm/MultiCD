@@ -1,7 +1,13 @@
 #!/bin/sh
-#combine.sh version 6.3 - combine multicd.sh plugins into one script
+#combine.sh version 6.7 - combine multicd.sh plugins into one script
 #Under MIT/X11 license - see multicd.sh
 set -e
+if [ "$1" != "" ];then
+	OUTPUT="$1"
+else
+	OUTPUT=combined-multicd.sh
+fi
+
 if [ ! -f multicd.sh ] || [ ! -d plugins ] || [ -d functions.sh ];then
 	echo "The files multicd.sh and functions.sh and the plugins folder must be present."
 	exit 1
@@ -33,8 +39,7 @@ for i in $(echo plugins/*.sh);do
 	fi
 done
 sed -i -e 's/$/ >> $TAGS\/linklist/g' working2.sh
-cat working[0123456789].sh > combined-multicd.sh
+cat working[0123456789].sh > $OUTPUT
 rm working[0123456789].sh
-sed -i -e 's^\. \./functions\.sh^^g' combined-multicd.sh
-sed -i -e 's^\. \./isoaliases\.sh^^g' combined-multicd.sh
-chmod +x combined-multicd.sh
+sed -i -e 's^\. \$MCDDIR/functions\.sh^^g' $OUTPUT
+chmod +x $OUTPUT

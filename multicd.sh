@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-#MCDDIR: directory where functions.sh, plugins.md5 and plugins folder are expected to be.
+#MCDDIR: directory where functions.sh, plugins.md5 and plugins folder are expected to be. Not used in a combined .sh file.
 export MCDDIR="."
 . $MCDDIR/functions.sh
 
