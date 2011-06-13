@@ -2,7 +2,7 @@
 set -e
 . $MCDDIR/functions.sh
 #Ultimate Boot CD plugin for multicd.sh
-#version 6.6
+#version 6.7 (last functional change: 6.6)
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -46,7 +46,7 @@ elif [ $1 = copy ];then
 		cp $MNT/ubcd/boot/syslinux/econfig.c32 $WORK/boot/isolinux/
 		cp $MNT/ubcd/boot/syslinux/reboot.c32 $WORK/boot/isolinux/
 		for i in $WORK/ubcd/menus/*/*.cfg $WORK/ubcd/menus/*/*/*.cfg $WORK/pmagic/boot/*/*.cfg;do
-			perl -pi -e 's/\/boot\/syslinux/\/boot\/isolinux/g' $i
+			sed -i -e 's/\/boot\/syslinux/\/boot\/isolinux/g' $i
 		done
 		head -n 1 $MNT/ubcd/ubcd/menus/syslinux/defaults.cfg | awk '{ print $6 }'>$TAGS/ubcdver.tmp.txt
 		#echo "$VERSION" > $WORK/boot/ubcd/version

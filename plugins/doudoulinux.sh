@@ -2,7 +2,7 @@
 set -e
 . $MCDDIR/functions.sh
 #DoudouLinux plugin for multicd.sh
-#version 6.3
+#version 6.7 (last functional change: 6.3)
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -44,9 +44,9 @@ elif [ $1 = writecfg ];then
 		else
 			DOUDOUVER=""
 		fi
-		perl -pi -e "s/DoudouLinux/DoudouLinux $DOUDOUVER/g" $TAGS/doudou.cfg
-		perl -pi -e "s^/live/^/boot/doudou/^g" $TAGS/doudou.cfg
-		perl -pi -e "s^boot=live^boot=live live-media-path=/boot/doudou^g" $TAGS/doudou.cfg
+		sed -i -e "s/DoudouLinux/DoudouLinux $DOUDOUVER/g" $TAGS/doudou.cfg
+		sed -i -e "s^/live/^/boot/doudou/^g" $TAGS/doudou.cfg
+		sed -i -e "s^boot=live^boot=live live-media-path=/boot/doudou^g" $TAGS/doudou.cfg
 		cat $TAGS/doudou.cfg >> $WORK/boot/isolinux/isolinux.cfg
 		rm $TAGS/doudou.cfg
 	fi

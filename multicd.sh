@@ -369,7 +369,7 @@ if [ -f syslinux.tar.gz ];then
 fi
 if [ ! -f $WORK/boot/isolinux/isolinux.bin ];then
 	echo "Downloading SYSLINUX..."
-	if $VERBOSE ;then #These will only be run if there is no syslinux.tar.gz AND if syslinux is not installed on your PC
+	if $VERBOSE ;then #These will only be run if there is no syslinux.tar.gz
 		#Both of these need to be changed when a new version of syslinux comes out.
 		if ! wget -O syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.04.tar.gz;then
 			echo "Error: could not download SYSLINUX. Please update the URL in $0."
@@ -543,7 +543,7 @@ if $WAIT;then
 	echo "    Dropping to $(whoami) prompt. Type \"exit\" to build the ISO image."
 	echo "    Don't do anything hasty."
 	echo "PS1=\"    mcd waiting# \"">/tmp/mcdprompt
-	bash --rcfile /tmp/mcdprompt || sh
+	bash --rcfile /tmp/mcdprompt
 	rm /tmp/mcdprompt || true
 fi
 
@@ -587,12 +587,12 @@ $GENERATOR -o "$OUTPUT" \
 rm -r $WORK/
 
 echo "Running isohybrid..."
-if which isohybrid > /dev/null;then
-	isohybrid "$OUTPUT" 2> /dev/null || echo "The installed isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
-else
+#if which isohybrid > /dev/null;then
+#	isohybrid "$OUTPUT" 2> /dev/null || echo "The installed isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
+#else
 	$TAGS/isohybrid "$OUTPUT" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
 	rm $TAGS/isohybrid
-fi
+#fi
 if [ $(whoami) == "root" ];then
 	chmod 666 "$OUTPUT"
 fi
