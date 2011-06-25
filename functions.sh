@@ -153,7 +153,6 @@ ubuntucommon () {
 			UBUCFG=isolinux.cfg #For custom-made live CDs like Weaknet and Zorin
 		fi
 		cp $MNT/$1/isolinux/$UBUCFG $WORK/boot/$1/$1.cfg
-		cp $MNT/$1/isolinux/*.png $WORK/boot/$1 2> /dev/null #copy splash images
 		echo "label back
 		menu label Back to main menu
 		com32 menu.c32

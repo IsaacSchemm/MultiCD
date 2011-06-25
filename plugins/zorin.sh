@@ -40,7 +40,7 @@ elif [ $1 = writecfg ];then
 
 		echo "label zorin
 		menu label --> ^Zorin OS$(getVersion) Menu
-		com32 vesamenu.c32
+		com32 menu.c32
 		append /boot/$BASENAME/$BASENAME.cfg
 		" >> $WORK/boot/isolinux/isolinux.cfg
 
