@@ -40,10 +40,10 @@ if echo $* | grep -q "\bclean\b";then
 fi
 
 if getopt -T > /dev/null;then
-	echo "You have a non-GNU of getopt. Don't use long options or an output path with spaces in it."
-	ARGS=$(getopt cmviwVo: $*)
+	echo "You have a non-GNU getopt. Don't use long options or an output path with spaces in it."
+	ARGS=$(getopt cmviwVo:t $*)
 else
-	ARGS=$(getopt -l md5 -l output: cmviwVo: "$@")
+	ARGS=$(getopt -l md5 -l output: cmviwVo:t "$@")
 fi
 export MD5=false
 export MEMTEST=true
@@ -51,6 +51,7 @@ export VERBOSE=true
 export INTERACTIVE=false
 export WAIT=false
 export OUTPUT='multicd.iso'
+export TESTISO=false
 eval set -- $ARGS
 for i do
 	case "$i" in
@@ -63,6 +64,7 @@ for i do
 		-w) shift;export WAIT=true;;
 		-V) shift;echo $MCDVERSION;exit 0;; #quit program
 		-o) shift;export OUTPUT="$1";shift;;
+		-t) shift;export TESTISO=true;shift;;
 	esac
 done
 
@@ -597,4 +599,25 @@ if [ $(whoami) == "root" ];then
 	chmod 666 "$OUTPUT"
 fi
 rm -r $TAGS $MNT
+
+if $TESTISO;then
+	RAM_FREE=$(free -m|awk 'NR == 3 {print $4}') #Current free RAM in MB, without buffers/cache
+	#Determine how much RAM to use. There is no science to this; I just arbitrarily chose these cutoff points.
+	if [ $RAM_FREE -ge 2048 ];then
+		RAM_TO_USE=1024
+	elif [ $RAM_FREE -ge 1024 ];then
+		RAM_TO_USE=512
+	elif [ $RAM_FREE -ge 512 ];then
+		RAM_TO_USE=256
+	else
+		RAM_TO_USE=128
+	fi
+	if which kvm &> /dev/null;then
+		kvm -m $RAM_TO_USE -cdrom "$OUTPUT"&
+	elif which qemu &> /dev/null;then
+		qemu -m $RAM_TO_USE -cdrom "$OUTPUT"&
+	else
+		echo "Cannot test $OUTPUT in a VM. Please install qemu or qemu-kvm."
+	fi
+fi
 #END SCRIPT
