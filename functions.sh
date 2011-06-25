@@ -152,18 +152,22 @@ ubuntucommon () {
 		else
 			UBUCFG=isolinux.cfg #For custom-made live CDs like Weaknet and Zorin
 		fi
-		cp $MNT/$1/isolinux/splash.* $WORK/boot/$1/ #Splash screen - only if the filename is splash.something
+		cp $MNT/$1/isolinux/splash.* \
+		$MNT/$1/isolinux/bg_redo.png \
+		$WORK/boot/$1/ 2> /dev/null || true #Splash screen - only if the filename is splash.something or bg_redo.png
 		cp $MNT/$1/isolinux/$UBUCFG $WORK/boot/$1/$1.cfg
 		echo "label back
 		menu label Back to main menu
 		com32 menu.c32
 		append /boot/isolinux/isolinux.cfg
 		" >> $WORK/boot/$1/$1.cfg
-		sed -i "s@menu background splash@menu background /boot/$1/splash@g" $WORK/boot/$1/$1.cfg #If it uses a splash screen, update the .cfg to show the new location
+		sed -i "s@menu background @menu background /boot/$1/@g" $WORK/boot/$1/$1.cfg #If it uses a splash screen, update the .cfg to show the new location
+		sed -i "s@MENU BACKGROUND @MENU BACKGROUND /boot/$1/@g" $WORK/boot/$1/$1.cfg #uppercase
 		sed -i "s@default live@default menu.c32@g" $WORK/boot/$1/$1.cfg #Show menu instead of boot: prompt
 		sed -i "s@file=/cdrom/preseed/@file=/cdrom/boot/$1/preseed/@g" $WORK/boot/$1/$1.cfg #Preseed folder moved - not sure if ubiquity uses this
 		sed -i "s^initrd=/casper/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" $WORK/boot/$1/$1.cfg #Initrd moved, ignore_uuid added
 		sed -i "s^kernel /casper/^kernel /boot/$1/^g" $WORK/boot/$1/$1.cfg #Kernel moved
+		sed -i "s^KERNEL /casper/^KERNEL /boot/$1/^g" $WORK/boot/$1/$1.cfg #For uppercase KERNEL
 		if [ -f $TAGS/lang ] && [ "$(cat $TAGS/lang)" != "en" ];then
 			sed -i "s^initrd=/boot/$1/^debian-installer/language=$(cat $TAGS/lang) console-setup/layoutcode?=$(cat $TAGS/lang) initrd=/boot/$1/^g" $WORK/boot/$1/$1.cfg #Add language codes to cmdline
 		fi
