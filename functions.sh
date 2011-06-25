@@ -150,9 +150,10 @@ ubuntucommon () {
 		elif [ -f $MNT/$1/isolinux/txt.cfg ];then
 			UBUCFG=txt.cfg
 		else
-			UBUCFG=isolinux.cfg #For custom-made live CDs like Weaknet
+			UBUCFG=isolinux.cfg #For custom-made live CDs like Weaknet and Zorin
 		fi
 		cp $MNT/$1/isolinux/$UBUCFG $WORK/boot/$1/$1.cfg
+		cp $MNT/$1/isolinux/*.png $WORK/boot/$1 2> /dev/null #copy splash images
 		echo "label back
 		menu label Back to main menu
 		com32 menu.c32
@@ -170,5 +171,17 @@ ubuntucommon () {
 		echo "$0: \"$1\" is empty or not an ISO"
 		exit 1
 	fi
+}
+
+#Returns the version saved by the isoaliases function. For use in writing the menu.
+getVersion() {
+	BASENAME=$(echo $i|sed -e 's/\.iso//g')
+	if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
+		VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
+	else
+		VERSION=""
+	fi
+
+	echo ${VERSION}
 }
 #END FUNCTIONS

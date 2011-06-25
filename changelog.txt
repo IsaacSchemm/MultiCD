@@ -63,4 +63,4 @@
 #v6.4 - Basically a bunch of bug fixes. (February 22, 2011)
 #v6.5 - Added Pentoo. More bugfixes. (April 25, 2011)
 #v6.6 - Several bugfixes. Added a second plugin for Windows 7 Recovery (can be loaded from RAM. (May 26, 2011)
-#v6.7 - Added archboot.sh. Added a -o/--output option for changing the output filename. KDE's ark or GNOME's file-roller can now be used to extract ISOs, so you don't need to be root. [UNREL]
+#v6.7 - Added archboot.sh, zorin,sh. Added a -o/--output option for changing the output filename. KDE's ark or GNOME's file-roller can now be used to extract ISOs, so you don't need to be root. [UNREL]
