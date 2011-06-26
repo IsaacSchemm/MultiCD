@@ -1,17 +1,15 @@
 #!/bin/sh
-if [ "$1" = "" ];then
-	echo "Please specify a version number; ex. $0 [number]"
-	exit 1
-fi
+
+VERSION=$(./multicd.sh -V)
 
 #build tarball
-tar -cvzf multicd-$1.tar.gz buildpkg.sh changelog.txt combine.sh functions.sh isos.txt multicd.sh plugins plugins.md5
+tar -cvzf multicd-$VERSION.tar.gz buildpkg.sh changelog.txt combine.sh functions.sh isos.txt multicd.sh plugins plugins.md5
 
 #build combined .sh
-./combine.sh multicd-$1.sh
+./combine.sh multicd-$VERSION.sh
 
 #build debian package
-TEMPDIR=mcdpackage-$1
+TEMPDIR=mcdpackage-$VERSION
 mkdir -p $TEMPDIR/DEBIAN $TEMPDIR/usr/bin $TEMPDIR/usr/share/multicd $TEMPDIR/usr/share/doc/multicd $TEMPDIR/usr/share/icons/hicolor/scalable/apps $TEMPDIR/usr/share/applications $TEMPDIR/usr/share/man/man1
 cp multicd.sh $TEMPDIR/usr/bin/multicd
 sed -i -e 's^MCDDIR="\."^MCDDIR="/usr/share/multicd\"^g' $TEMPDIR/usr/bin/multicd
@@ -29,7 +27,7 @@ Categories=Application;System;
 Name=MultiCD
 Comment=Build a custom CD/DVD/USB image from multiple live CDs" > $TEMPDIR/usr/share/applications/multicd.desktop
 
-cat manpage | sed -e "s/UNKNOWN_DATE/$(date +'%B %d, %Y')/g" -e "s/MCD_VER/$(./multicd.sh -V)/g" | gzip -c > $TEMPDIR/usr/share/man/man1/multicd.1.gz
+cat manpage | sed -e "s/UNKNOWN_DATE/$(date +'%B %d, %Y')/g" -e "s/MCD_VER/$VERSION/g" | gzip -c > $TEMPDIR/usr/share/man/man1/multicd.1.gz
 
 echo "This package was debianized by an automated script ($0)
 on $(date -u).
@@ -39,7 +37,7 @@ MultiCD main script copyright:
 Copyright (c) 2011 Isaac Schemm
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
+of this software and associated documentation files (the \"Software\"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
@@ -58,10 +56,13 @@ THE SOFTWARE.
 
 See the plugin .sh files for copyright information. At the moment, they all
 use the same license, but occasionally have different authors.
+
+The multicd.svg icon was made by Isaac Schemm using icons from the Tango
+Desktop Project (http://tango.freedesktop.org) as a base. It is public domain.
 " > $TEMPDIR/usr/share/doc/multicd/copyright
 
 echo "Package: multicd
-Version: $1
+Version: $VERSION
 Section: utils
 Priority: optional
 Architecture: all
@@ -77,5 +78,5 @@ cd $TEMPDIR
 md5sum $(find usr -type f) > DEBIAN/md5sums
 chown -R root.root usr
 cd -
-dpkg-deb -b $TEMPDIR multicd_${1}_all.deb
+dpkg-deb -b $TEMPDIR multicd_${VERSION}_all.deb
 rm -r $TEMPDIR

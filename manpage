@@ -1,34 +1,35 @@
 .\” This is the manpage for MultiCD.
 .\” UNKNOWN DATE and MCD VER are replaced with the current date by buildpkg.sh when making the .deb package.
-.TH man 1 UNKNOWN_DATE MCD_VER "MultiCD”
+.TH man 1 UNKNOWN_DATE MCD_VER "MultiCD"
 .SH NAME
 MultiCD \- Build a custom CD/DVD/USB image from multiple live CDs
 .SH SYNOPSIS
 .B multicd
-[clean] [gui] [OPTIONS]
+[OPTIONS]
 .SH DESCRIPTION
-MultiCD is a shell script that looks for bootable ISO9660 images (live CDs) it recognizes in the current directory and builds a new, combination ISO image that can be burned to a CD or DVD (with
-.Xr wodim 1
-) or copied to a flash drive (with
-.Xr dd 1
- - this will delete all data on the drive.) It also accepts floppy images (.img extension) or the GRUB4DOS bootloader (grub.exe).
+MultiCD is a shell script that looks for bootable ISO9660 images (live CDs) that it can recognize in the current directory and builds a new, combination ISO image that can be burned to a CD or DVD (with wodim) or copied to a flash drive (with dd - this will delete all data on the drive.) It also accepts any floppy disk image (.img extension).
 .TP
 \fBclean\fR
 Removes all symbolic links to files in the current directory, as well as all files ending in ".defaultname" or ".version". From version 6.7 on, this is also run after MultiCD has successfully made the ISO. You still might want to run it manually if a build fails, and you later change what ISOs you are using.
 .TP
 \fBgui\fR
-Launches
-.Xr zenity 1
-to ask the user for a working directory, then launches an X terminal (
-.Xr x-terminal-emulator 1
- if it is available,
-.Xr xterm 1
-otherwise) to actually run MultiCD in. This is used by the .desktop launcher in the menu on GNOME/KDE/Xfce/etc.
+Launches zenity to ask the user for a working directory, then launches an X terminal (x-terminal-emulator on Debian/Ubuntu, xterm otherwise) to actually run MultiCD in. This is used by the .desktop launcher in the menu. If zenity is not installed, MultiCD will open a terminal window to give an error message.
 .TP
-There are other arguments, too (this manpage is not done.)
+\fB-c\fR
+Creates an md5sum.txt on the root of the ISO with the checksums of all other files. Can be checked with the -c option of md5sum.
+.TP
+
 .SH SEE ALSO
 .Xr unetbootin 1
 .SH BUGS
-foo
+Requests compression of all data (including stdin, stdout, stderr, and
+data for forwarded X11 and TCP connections).
+The compression algorithm is the same used by
+.Xr gzip 1 ,
+and the
+.Dq level
+can be controlled by the
+.Cm CompressionLevel
+option for protocol version 1.
 .SH AUTHOR
 Isaac Schemm (isaacschemm@gmail.com)

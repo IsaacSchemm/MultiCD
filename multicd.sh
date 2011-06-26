@@ -47,22 +47,30 @@ fi
 if [ "$1" = "gui" ];then
 	if which zenity &> /dev/null;then
 		DIR=$(zenity --file-selection --directory --filename=$HOME/ --title="MultiCD - Choose directory")
+		cd $DIR
+		RUN="$0 -w"
 	else
-		DIR=$HOME/multicd
+		RUN="$0 give-error"
 	fi
-	cd $DIR
 	if which x-terminal-emulator &> /dev/null;then
-		exec x-terminal-emulator -e multicd -w
+		exec x-terminal-emulator -e $RUN
 	else
-		exec xterm -e multicd -w
+		exec xterm -e $RUN
 	fi
+fi
+
+if [ "$1" = "give-error" ];then
+	echo "Zenity is not installed. Please navigate to your ISO directory in the terminal, and run multicd from there."
+	echo "Press ENTER to continue..."
+	read
+	exit 1
 fi
 
 if getopt -T > /dev/null;then
 	echo "You have a non-GNU getopt. Don't use long options or an output path with spaces in it."
-	ARGS=$(getopt cmviVo:tw $*)
+	ARGS=$(getopt cdmviVo:tw $*)
 else
-	ARGS=$(getopt -l md5 -l output: -l debug cmviVo:tw "$@")
+	ARGS=$(getopt cdmviVo:tw "$@")
 fi
 export MD5=false
 export MEMTEST=true
@@ -75,9 +83,6 @@ export WAIT=false
 eval set -- $ARGS
 for i do
 	case "$i" in
-		--md5) shift;export MD5=true;;
-		--output) shift;export OUTPUT="$1";shift;;
-		--debug) shift;export DEBUG=true;shift;;
 		-c) shift;export MD5=true;;
 		-m) shift;export MEMTEST=false;;
 		-v) shift;export VERBOSE=true;;
