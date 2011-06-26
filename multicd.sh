@@ -28,7 +28,7 @@ MCDVERSION="6.7-beta"
 #THE SOFTWARE.
 
 #Clean operation runs here
-if echo $* | grep -q "\bclean\b";then
+if [ "$1" = "clean" ];then
 	for i in *;do
 		if [ -n "$(readlink "$i"|grep -v '/')" ];then
 			rm -v "$i"
@@ -39,19 +39,35 @@ if echo $* | grep -q "\bclean\b";then
 	exit 0 #quit program
 fi
 
+#GUI helper - calls a terminal emulator which calls another multicd
+if [ "$1" = "gui" ];then
+	if which zenity &> /dev/null;then
+		DIR=$(zenity --file-selection --directory --filename=$HOME/ --title="MultiCD - Choose directory")
+	else
+		DIR=$HOME/multicd
+	fi
+	cd $DIR
+	if which x-terminal-emulator &> /dev/null;then
+		exec x-terminal-emulator -e multicd -w
+	else
+		exec xterm -e multicd -w
+	fi
+fi
+
 if getopt -T > /dev/null;then
 	echo "You have a non-GNU getopt. Don't use long options or an output path with spaces in it."
-	ARGS=$(getopt cmviwVo:t $*)
+	ARGS=$(getopt cmvidVo:t $*)
 else
-	ARGS=$(getopt -l md5 -l output: cmviwVo:t "$@")
+	ARGS=$(getopt -l md5 -l output: cmvidVo:t "$@")
 fi
 export MD5=false
 export MEMTEST=true
 export VERBOSE=true
 export INTERACTIVE=false
-export WAIT=false
+export DEBUG=false
 export OUTPUT='multicd.iso'
 export TESTISO=false
+export WAIT=false
 eval set -- $ARGS
 for i do
 	case "$i" in
@@ -61,10 +77,11 @@ for i do
 		-m) shift;export MEMTEST=false;;
 		-v) shift;export VERBOSE=true;;
 		-i) shift;export INTERACTIVE=true;;
-		-w) shift;export WAIT=true;;
+		-d) shift;export DEBUG=true;;
 		-V) shift;echo $MCDVERSION;exit 0;; #quit program
 		-o) shift;export OUTPUT="$1";shift;;
 		-t) shift;export TESTISO=true;shift;;
+		-w) shift;export WAIT=true;shift;;
 	esac
 done
 
@@ -540,11 +557,11 @@ if [ -d includes ] && [ "$(echo empty/.* empty/*)" != 'empty/. empty/.. empty/*'
  cp -r includes/* $WORK/
 fi
 
-if $WAIT;then
+if $DEBUG;then
 	chmod -R a+w $WORK/boot/isolinux #So regular users can edit menus
 	echo "    Dropping to $(whoami) prompt. Type \"exit\" to build the ISO image."
 	echo "    Don't do anything hasty."
-	echo "PS1=\"    mcd waiting# \"">/tmp/mcdprompt
+	echo "PS1=\"    mcd debug# \"">/tmp/mcdprompt
 	bash --rcfile /tmp/mcdprompt
 	rm /tmp/mcdprompt || true
 fi
@@ -619,5 +636,10 @@ if $TESTISO;then
 	else
 		echo "Cannot test $OUTPUT in a VM. Please install qemu or qemu-kvm."
 	fi
+fi
+
+if $WAIT;then
+	echo "Done. Press any key to exit."
+	read
 fi
 #END SCRIPT

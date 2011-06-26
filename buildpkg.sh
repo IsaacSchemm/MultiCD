@@ -12,11 +12,21 @@ tar -cvzf multicd-$1.tar.gz buildpkg.sh changelog.txt combine.sh functions.sh is
 
 #build debian package
 TEMPDIR=mcdpackage-$1
-mkdir -p $TEMPDIR/DEBIAN $TEMPDIR/usr/bin $TEMPDIR/usr/share/multicd $TEMPDIR/usr/share/doc/multicd
+mkdir -p $TEMPDIR/DEBIAN $TEMPDIR/usr/bin $TEMPDIR/usr/share/multicd $TEMPDIR/usr/share/doc/multicd $TEMPDIR/usr/share/icons/hicolor/scalable/apps $TEMPDIR/usr/share/applications
 cp multicd.sh $TEMPDIR/usr/bin/multicd
 sed -i -e 's^MCDDIR="\."^MCDDIR="/usr/share/multicd\"^g' $TEMPDIR/usr/bin/multicd
 cp -r functions.sh plugins plugins.md5 $TEMPDIR/usr/share/multicd
 cp buildpkg.sh changelog.txt combine.sh isos.txt $TEMPDIR/usr/share/doc/multicd
+cp multicd.svg $TEMPDIR/usr/share/icons/hicolor/scalable/apps
+echo "[Desktop Entry]
+Version=1.0
+Terminal=false
+Exec=multicd gui
+Icon=multicd
+Type=Application
+Categories=Application;System;
+Name=MultiCD
+Comment=Build a custom CD/DVD/USB image from multiple live CDs" > $TEMPDIR/usr/share/applications/multicd.desktop
 echo "This package was debianized by an automated script ($0)
 on $(date -u).
 

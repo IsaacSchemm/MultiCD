@@ -2,7 +2,7 @@
 set -e
 . $MCDDIR/functions.sh
 #Porteus plugin for multicd.sh
-#version 6.3
+#version 6.7
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "porteus-*.iso porteus.iso none"
+	echo "Porteus-*.iso porteus.iso none"
 elif [ $1 = scan ];then
 	if [ -f porteus.iso ];then
 		echo "Porteus"
@@ -41,28 +41,22 @@ elif [ $1 = copy ];then
 			for i in `cat $TAGS/porteuslist`;do
 				cp $MNT/porteus/porteus/base/${i}* $WORK/porteus/base/ #Copy only the modules you wanted
 			done
-			cp $MNT/porteus/porteus/base/000-*.lzm $WORK/porteus/base/ #Don't forget the kernel!
-			cp $MNT/porteus/porteus/base/001-*.lzm $WORK/porteus/base/ #Don't forget the core module!
+			cp $MNT/porteus/porteus/base/000-* $WORK/porteus/base/ #kernel is required
+			cp $MNT/porteus/porteus/base/001-* $WORK/porteus/base/ #core module is required
 			rm $TAGS/porteuslist
 		else
 			cp -R $MNT/porteus/porteus $WORK/ #Copy everything
 		fi
 		mkdir -p $WORK/boot/porteus
 		cp $MNT/porteus/boot/vmlinuz $WORK/boot/porteus/vmlinuz
-		if [ -f $MNT/porteus/boot/initrd.lz ];then
-			SUFFIX=lz
-		else
-			SUFFIX=gz
-		fi
-		cp $MNT/porteus/boot/initrd.$SUFFIX $WORK/boot/porteus/initrd.$SUFFIX
-		cp $MNT/porteus/boot/plpbt $WORK/boot/porteus || true
+		cp $MNT/porteus/boot/initrd.xz $WORK/boot/porteus/initrd.xz
 		umcdmount porteus
 		##########
-		if [ "$(ls -1 *.sq4.lzm 2> /dev/null;true)" != "" ];then
+		if [ "$(ls -1 *.xzm 2> /dev/null;true)" != "" ];then
 			echo "Copying Porteus modules..."
 		fi
-		for i in `ls -1 *.lzm 2> /dev/null;true`; do
-			cp $i $WORK/porteus/modules/ #Copy the .lzm module to the modules folder
+		for i in `ls -1 *.xzm 2> /dev/null;true`; do
+			cp $i $WORK/porteus/modules/ #Copy the .xzm module to the modules folder
 			if $VERBOSE;then
 				echo \(Copied $i\)
 			fi
@@ -70,7 +64,7 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 	if [ -f porteus.iso ];then
-		if [ -f $WORK/porteus/base/002-xorg.lzm ];then
+		if [ -f $WORK/porteus/base/002-xorg.xzm ];then
 			if [ -f porteus.version ] && [ "$(cat porteus.version)" != "" ];then
 				PORTEUSVER=" $(cat porteus.version)"
 			else
@@ -79,7 +73,7 @@ elif [ $1 = writecfg ];then
 			echo "LABEL p-xconf
 			MENU LABEL ^Porteus$PORTEUSVER Graphics mode (KDE).
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/porteus/initrd.lz vga=791 splash=silent quiet autoexec=xconf;telinit~4 changes=/porteus/
+			APPEND initrd=/boot/porteus/initrd.xz vga=791 splash=silent quiet autoexec=xconf;telinit~4 changes=/porteus/
 			TEXT HELP
 			    Run Porteus the best way we can.
 			    Try to autoconfigure graphics
@@ -90,7 +84,7 @@ elif [ $1 = writecfg ];then
 			LABEL p-lxde
 			MENU LABEL Porteus$PORTEUSVER Graphics mode (LXDE).
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/porteus/initrd.lz vga=791 splash=silent quiet autoexec=lxde;xconf;telinit~4 changes=/porteus/
+			APPEND initrd=/boot/porteus/initrd.xz vga=791 splash=silent quiet autoexec=lxde;xconf;telinit~4 changes=/porteus/
 			TEXT HELP
 			    Run Porteus the same as above.
 			    Lightweight LXDE to be
@@ -100,7 +94,7 @@ elif [ $1 = writecfg ];then
 			LABEL p-fresh
 			MENU LABEL Porteus$PORTEUSVER Always Fresh
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/porteus/initrd.lz autoexec=xconf;telinit~4
+			APPEND initrd=/boot/porteus/initrd.xz autoexec=xconf;telinit~4
 			TEXT HELP
 			    Normally Porteus saves all changes
 			    to the /porteus/changes/ directory
@@ -114,7 +108,7 @@ elif [ $1 = writecfg ];then
 			LABEL p-cp2ram
 			MENU LABEL Porteus$PORTEUSVER Copy To RAM
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/porteus/initrd.lz vga=791 splash=silent quiet copy2ram autoexec=xconf;telinit~4
+			APPEND initrd=/boot/porteus/initrd.xz vga=791 splash=silent quiet copy2ram autoexec=xconf;telinit~4
 			TEXT HELP
 			    Run Porteus the same as above,
 			    but first copy all data to RAM
@@ -124,7 +118,7 @@ elif [ $1 = writecfg ];then
 			LABEL p-startx
 			MENU LABEL Porteus$PORTEUSVER Graphics VESA mode
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/porteus/initrd.lz autoexec=telinit~4 changes=/poreus/
+			APPEND initrd=/boot/porteus/initrd.xz autoexec=telinit~4 changes=/poreus/
 			TEXT HELP
 			    Run Porteus with KDE, but skip
 			    gfx-card config. Force 1024x768
@@ -134,7 +128,7 @@ elif [ $1 = writecfg ];then
 			LABEL p-text
 			MENU LABEL Porteus$PORTEUSVER Text mode
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/initrd.lz
+			APPEND initrd=/boot/initrd.xz
 			TEXT HELP
 			    Run Porteus in textmode and start
 			    command prompt only
@@ -143,7 +137,7 @@ elif [ $1 = writecfg ];then
 			LABEL p-pxe
 			MENU LABEL Porteus$PORTEUSVER Porteus as PXE server
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/porteus/initrd.lz autoexec=pxe-boot;xconf;telinit~4
+			APPEND initrd=/boot/porteus/initrd.xz autoexec=pxe-boot;xconf;telinit~4
 			TEXT HELP
 			    Run Porteus as usual, but also
 			    initialize PXE server.
@@ -163,7 +157,7 @@ elif [ $1 = writecfg ];then
 			echo "LABEL p-text
 			MENU LABEL Porteus$PORTEUSVER Text mode
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/initrd.lz
+			APPEND initrd=/boot/initrd.xz
 			TEXT HELP
 			    Run Porteus in textmode and start
 			    command prompt only
@@ -172,7 +166,7 @@ elif [ $1 = writecfg ];then
 			LABEL p-cp2ram
 			MENU LABEL Porteus$PORTEUSVER Text mode
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/initrd.lz copy2ram
+			APPEND initrd=/boot/initrd.xz copy2ram
 			TEXT HELP
 			    Run Porteus the same as above,
 			    but first copy all data to RAM
