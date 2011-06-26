@@ -12,12 +12,13 @@ tar -cvzf multicd-$1.tar.gz buildpkg.sh changelog.txt combine.sh functions.sh is
 
 #build debian package
 TEMPDIR=mcdpackage-$1
-mkdir -p $TEMPDIR/DEBIAN $TEMPDIR/usr/bin $TEMPDIR/usr/share/multicd $TEMPDIR/usr/share/doc/multicd $TEMPDIR/usr/share/icons/hicolor/scalable/apps $TEMPDIR/usr/share/applications
+mkdir -p $TEMPDIR/DEBIAN $TEMPDIR/usr/bin $TEMPDIR/usr/share/multicd $TEMPDIR/usr/share/doc/multicd $TEMPDIR/usr/share/icons/hicolor/scalable/apps $TEMPDIR/usr/share/applications $TEMPDIR/usr/share/man/man1
 cp multicd.sh $TEMPDIR/usr/bin/multicd
 sed -i -e 's^MCDDIR="\."^MCDDIR="/usr/share/multicd\"^g' $TEMPDIR/usr/bin/multicd
 cp -r functions.sh plugins plugins.md5 $TEMPDIR/usr/share/multicd
 cp buildpkg.sh changelog.txt combine.sh isos.txt $TEMPDIR/usr/share/doc/multicd
 cp multicd.svg $TEMPDIR/usr/share/icons/hicolor/scalable/apps
+
 echo "[Desktop Entry]
 Version=1.0
 Terminal=false
@@ -27,6 +28,9 @@ Type=Application
 Categories=Application;System;
 Name=MultiCD
 Comment=Build a custom CD/DVD/USB image from multiple live CDs" > $TEMPDIR/usr/share/applications/multicd.desktop
+
+cat manpage | sed -e "s/UNKNOWN_DATE/$(date +'%B %d, %Y')/g" -e "s/MCD_VER/$(./multicd.sh -V)/g" | gzip -c > $TEMPDIR/usr/share/man/man1/multicd.1.gz
+
 echo "This package was debianized by an automated script ($0)
 on $(date -u).
 
@@ -55,18 +59,20 @@ THE SOFTWARE.
 See the plugin .sh files for copyright information. At the moment, they all
 use the same license, but occasionally have different authors.
 " > $TEMPDIR/usr/share/doc/multicd/copyright
+
 echo "Package: multicd
 Version: $1
 Section: utils
 Priority: optional
 Architecture: all
 Depends: bash, linux-image | ark | file-roller, genisoimage | mkisofs, awk, sed
-Recommends: dialog, wget
+Recommends: dialog, wget, zenity
 Installed-Size: $(du $TEMPDIR/usr --apparent-size --total|tail -n 1|awk '{print $1}')
 Maintainer: Isaac Schemm <isaacschemm@gmail.com>
 Description: Shell script to build live CDs/DVDs from one or more images
  MultiCD is a bash script that uses plugin files to copy data from several ISO images into a new multiboot ISO image. It also supports any floppy disk image.
 " > $TEMPDIR/DEBIAN/control
+
 cd $TEMPDIR
 md5sum $(find usr -type f) > DEBIAN/md5sums
 chown -R root.root usr

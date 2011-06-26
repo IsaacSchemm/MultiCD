@@ -27,8 +27,7 @@ MCDVERSION="6.7-beta"
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 
-#Clean operation runs here
-if [ "$1" = "clean" ];then
+mcdclean() {
 	for i in *;do
 		if [ -n "$(readlink "$i"|grep -v '/')" ];then
 			rm -v "$i"
@@ -36,6 +35,11 @@ if [ "$1" = "clean" ];then
 	done
 	rm -fv *.defaultname 2> /dev/null
 	rm -fv *.version 2> /dev/null
+}
+
+#Clean operation runs here
+if [ "$1" = "clean" ];then
+	mcdclean
 	exit 0 #quit program
 fi
 
@@ -56,9 +60,9 @@ fi
 
 if getopt -T > /dev/null;then
 	echo "You have a non-GNU getopt. Don't use long options or an output path with spaces in it."
-	ARGS=$(getopt cmvidVo:t $*)
+	ARGS=$(getopt cmviVo:tw $*)
 else
-	ARGS=$(getopt -l md5 -l output: cmvidVo:t "$@")
+	ARGS=$(getopt -l md5 -l output: -l debug cmviVo:tw "$@")
 fi
 export MD5=false
 export MEMTEST=true
@@ -73,6 +77,7 @@ for i do
 	case "$i" in
 		--md5) shift;export MD5=true;;
 		--output) shift;export OUTPUT="$1";shift;;
+		--debug) shift;export DEBUG=true;shift;;
 		-c) shift;export MD5=true;;
 		-m) shift;export MEMTEST=false;;
 		-v) shift;export VERBOSE=true;;
@@ -637,6 +642,9 @@ if $TESTISO;then
 		echo "Cannot test $OUTPUT in a VM. Please install qemu or qemu-kvm."
 	fi
 fi
+
+echo "Cleaning current directory..."
+mcdclean
 
 if $WAIT;then
 	echo "Done. Press any key to exit."

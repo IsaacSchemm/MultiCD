@@ -1,0 +1,34 @@
+.\” This is the manpage for MultiCD.
+.\” UNKNOWN DATE and MCD VER are replaced with the current date by buildpkg.sh when making the .deb package.
+.TH man 1 UNKNOWN_DATE MCD_VER "MultiCD”
+.SH NAME
+MultiCD \- Build a custom CD/DVD/USB image from multiple live CDs
+.SH SYNOPSIS
+.B multicd
+[clean] [gui] [OPTIONS]
+.SH DESCRIPTION
+MultiCD is a shell script that looks for bootable ISO9660 images (live CDs) it recognizes in the current directory and builds a new, combination ISO image that can be burned to a CD or DVD (with
+.Xr wodim 1
+) or copied to a flash drive (with
+.Xr dd 1
+ - this will delete all data on the drive.) It also accepts floppy images (.img extension) or the GRUB4DOS bootloader (grub.exe).
+.TP
+\fBclean\fR
+Removes all symbolic links to files in the current directory, as well as all files ending in ".defaultname" or ".version". From version 6.7 on, this is also run after MultiCD has successfully made the ISO. You still might want to run it manually if a build fails, and you later change what ISOs you are using.
+.TP
+\fBgui\fR
+Launches
+.Xr zenity 1
+to ask the user for a working directory, then launches an X terminal (
+.Xr x-terminal-emulator 1
+ if it is available,
+.Xr xterm 1
+otherwise) to actually run MultiCD in. This is used by the .desktop launcher in the menu on GNOME/KDE/Xfce/etc.
+.TP
+There are other arguments, too (this manpage is not done.)
+.SH SEE ALSO
+.Xr unetbootin 1
+.SH BUGS
+foo
+.SH AUTHOR
+Isaac Schemm (isaacschemm@gmail.com)
