@@ -39,8 +39,9 @@ xubuntu-*-desktop-amd64.iso		amd64.x.ubuntu.iso
 edubuntu-*-dvd-i386.iso			i386.x.ubuntu.iso
 edubuntu-*-dvd-amd64.iso		amd64.x.ubuntu.iso
 lubuntu-*.iso				i386.l.ubuntu.iso
+#^^^ These are defined in the plugin files.
 
-#Filenames:	
+#Filenames: (This is not a definitive list - it is only here for documentation purposes.)	
 #antiX			antix.iso
 #Arch Linux (old)	arch.iso / archdual.iso
 #Arch Linux (new)	archboot.iso
@@ -67,6 +68,7 @@ lubuntu-*.iso				i386.l.ubuntu.iso
 #Fedora netboot	x86_64	fedora-boot64.iso
 #Finnix			finnix.iso
 #FreeDOS 1.0		fdbasecd.iso OR fdfullcd.iso
+#Fusion Linux		fusion.iso
 #GeeXboX		geexbox.iso
 #GParted		gparted.iso
 #grml			grml.iso
@@ -84,10 +86,12 @@ lubuntu-*.iso				i386.l.ubuntu.iso
 #openSUSE netboot	opensuse-net64.iso
 #Parted Magic		pmagic.iso
 #Pentoo			pentoo.iso
+#PING			ping.iso
+#Pinguy			pinguy.iso
 #Porteus		porteus.iso
 #Porteus modules	ANYTHING.sq4.lzm (you can have several of these)
-#PING			ping.iso
 #Puppy			puppy.iso
+#Redo Backup		redobackup.iso
 #RIPLinux		riplinux.iso
 #Slax			slax.iso
 #Slax modules		ANYTHING.lzm (you can have several of these)
@@ -105,6 +109,7 @@ lubuntu-*.iso				i386.l.ubuntu.iso
 #Windows7 Recovery Disk	win7recovery.iso
 #Windows7 Recovery Disk win7recovery-ram.iso (this loads the ISO into RAM)
 #Wolvix			wolvix.iso
+#Zorin OS		zorin.iso
 #Floppy images		ANYTHING.img or .imz (you can have several of these)
 #Images with games	games/ANYTHING.img or .imz (will create a submenu)
 #GRUB4DOS		grub.exe
