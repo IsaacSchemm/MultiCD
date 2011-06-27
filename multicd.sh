@@ -611,7 +611,7 @@ $GENERATOR -o "$OUTPUT" \
 -no-emul-boot -boot-load-size 4 -boot-info-table \
 -r -J $EXTRAARGS \
 -V "$CDLABEL" $WORK/
-rm -r $WORK/
+rm -rf $WORK/
 
 echo "Running isohybrid..."
 #if which isohybrid > /dev/null;then
@@ -650,7 +650,7 @@ echo "Cleaning current directory..."
 mcdclean
 
 if $WAIT;then
-	echo "Done. Press any key to exit."
+	echo "Done. Press ENTER to exit."
 	read
 fi
 #END SCRIPT
