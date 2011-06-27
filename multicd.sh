@@ -66,12 +66,12 @@ if [ "$1" = "give-error" ];then
 	exit 1
 fi
 
-if getopt -T > /dev/null;then
-	echo "You have a non-GNU getopt. Don't use long options or an output path with spaces in it."
+#if getopt -T > /dev/null;then
+#	echo "You have a non-GNU getopt. Don't use an output path with spaces in it."
 	ARGS=$(getopt cdmviVo:tw $*)
-else
-	ARGS=$(getopt cdmviVo:tw "$@")
-fi
+#else
+#	ARGS=$(getopt cdmviVo:tw "$@")
+#fi
 export MD5=false
 export MEMTEST=true
 export VERBOSE=true
@@ -84,13 +84,13 @@ eval set -- $ARGS
 for i do
 	case "$i" in
 		-c) shift;export MD5=true;;
-		-m) shift;export MEMTEST=false;;
-		-v) shift;export VERBOSE=true;;
-		-i) shift;export INTERACTIVE=true;;
 		-d) shift;export DEBUG=true;;
-		-V) shift;echo $MCDVERSION;exit 0;; #quit program
+		-i) shift;export INTERACTIVE=true;;
+		-m) shift;export MEMTEST=false;;
 		-o) shift;export OUTPUT="$1";shift;;
 		-t) shift;export TESTISO=true;shift;;
+		-v) shift;export VERBOSE=true;;
+		-V) shift;echo $MCDVERSION;exit 0;; #quit program
 		-w) shift;export WAIT=true;shift;;
 	esac
 done
@@ -427,8 +427,6 @@ fi
 if $MEMTEST;then
 	if [ -f memtest ] && [ "$(wc -c memtest)" != "0" ];then
 		cp memtest $WORK/boot/memtest
-	elif [ -f /boot/memtest86+.bin ];then
-		cp /boot/memtest86+.bin $WORK/boot/memtest
 	else
 		echo "Downloading memtest86+ 4.20 from memtest.org..."
 		if $VERBOSE;then
