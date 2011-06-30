@@ -93,6 +93,7 @@ lubuntu-*.iso				i386.l.ubuntu.iso
 #Puppy			puppy.iso
 #Redo Backup		redobackup.iso
 #RIPLinux		riplinux.iso
+#Sabayon Linux		sabayon.iso
 #Slax			slax.iso
 #Slax modules		ANYTHING.lzm (you can have several of these)
 #SliTaz			slitaz.iso
