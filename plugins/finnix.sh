@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. ./functions.sh
 #Finnix plugin for multicd.sh
-#version 6.1
-#Copyright (c) 2010 Rorschach, Isaac Schemm
+#version 6.7
+#Copyright (c) 2011 Rorschach, Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -31,12 +31,12 @@ elif [ $1 = copy ];then
 		echo "Copying Finnix..."
 		mcdmount finnix
 		# Copies compressed filesystem
-		cp -r $MNT/finnix/FINNIX $WORK/
+		cp -r $MNT/finnix/finnix $WORK/
 		# Copies kernel, and initramdisk
 		mkdir $WORK/boot/finnix
 		cp $MNT/finnix/isolinux/linux $WORK/boot/finnix/
 		cp $MNT/finnix/isolinux/linux64 $WORK/boot/finnix/
-		cp $MNT/finnix/isolinux/minirt $WORK/boot/finnix/
+		cp $MNT/finnix/isolinux/initrd.gz $WORK/boot/finnix/
 		# Copies memdisk and Smart Boot Manager
 		cp $MNT/finnix/isolinux/memdisk $WORK/boot/finnix/
 		cp $MNT/finnix/isolinux/sbm.imz $WORK/boot/finnix/
@@ -47,41 +47,41 @@ if [ -f finnix.iso ];then
 echo "menu begin --> ^Finnix
 
 label Finnix
-  MENU LABEL ^Finnix (x86)
+  MENU LABEL ^Finnix (32-bit)
   kernel /boot/finnix/linux
-  append finnixfile=/FINNIX/FINNIX initrd=/boot/finnix/minirt apm=power-off vga=791 quiet
+  append finnixfile=/finnix/finnix initrd=/boot/finnix/initrd.gz apm=power-off vga=791 quiet
 
 label Finnix64
-  MENU LABEL Finnix (AMD64)
+  MENU LABEL Finnix (64-bit)
   kernel /boot/finnix/linux64
-  append finnixfile=/FINNIX/FINNIX initrd=/boot/finnix/minirt apm=power-off vga=791 quiet
+  append finnixfile=/finnix/finnix initrd=/boot/finnix/initrd.gz apm=power-off vga=791 quiet
 
 label FinnixText
-  MENU LABEL ^Finnix (x86, textmode)
+  MENU LABEL ^Finnix (32-bit, textmode)
   kernel /boot/finnix/linux
-  append finnixfile=/FINNIX/FINNIX initrd=/boot/finnix/minirt apm=power-off vga=normal quiet
+  append finnixfile=/finnix/finnix initrd=/boot/finnix/initrd.gz apm=power-off vga=normal quiet
 
 label FinnixDebug
-  MENU LABEL ^Finnix (x86, debug mode)
+  MENU LABEL ^Finnix (32-bit, debug mode)
   kernel /boot/finnix/linux
-  append finnixfile=/FINNIX/FINNIX initrd=/boot/finnix/minirt apm=power-off vga=normal debug
+  append finnixfile=/finnix/finnix initrd=/boot/finnix/initrd.gz apm=power-off vga=normal debug
 
 label Finnix64Text
-  MENU LABEL Finnix (AMD64, textmode)
+  MENU LABEL Finnix (64-bit, textmode)
   kernel /boot/finnix/linux64
-  append finnixfile=/FINNIX/FINNIX initrd=/boot/finnix/minirt apm=power-off vga=normal quiet
+  append finnixfile=/finnix/finnix initrd=/boot/finnix/initrd.gz apm=power-off vga=normal quiet
 
 label Finnix64Debug
-  MENU LABEL Finnix (AMD64, debug mode)
+  MENU LABEL Finnix (64-bit, debug mode)
   kernel /boot/finnix/linux64
-  append finnixfile=/FINNIX/FINNIX initrd=/boot/finnix/minirt apm=power-off vga=normal debug
+  append finnixfile=/finnix/finnix initrd=/boot/finnix/initrd.gz apm=power-off vga=normal debug
 
 label FinnixFailsafe
   MENU LABEL ^Finnix (failsafe)
   kernel /boot/finnix/linux
-  append finnixfile=/FINNIX/FINNIX initrd=/boot/finnix/minirt vga=normal noapic noacpi pnpbios=off acpi=off nofstab nodma noapm nodhcp nolvm nomouse noeject
+  append finnixfile=/finnix/finnix initrd=/boot/finnix/initrd.gz vga=normal noapic noacpi pnpbios=off acpi=off nofstab nodma noapm nodhcp nolvm nomouse noeject
 
-label sbm
+label FinnixSBM
   MENU LABEL Smart Boot Manager
   kernel /boot/finnix/memdisk
   append initrd=/boot/finnix/sbm.imz
