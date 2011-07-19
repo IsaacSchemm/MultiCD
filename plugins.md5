@@ -17,7 +17,7 @@ c90776c55ab6e6286289e0f56bf52067  plugins/debian-live.sh
 ba0701674016543b421ab1677563927c  plugins/debian-mini.sh
 492fbeea5aec13babcbed8487d20b219  plugins/deli.sh
 d36324519852d0ebaddd7b0833c1ce7f  plugins/diskcopy.sh
-5e74d6b278095d703347fabbcad2b4af  plugins/doudoulinux.sh
+2da878bf908515c70e50c303e63b9120  plugins/doudoulinux.sh
 edac1a8d3005e49099b1c47d046e48f4  plugins/dsl.sh
 959aa8d99e9784a400259c3d88dd0b07  plugins/dvl.sh
 9e209d6350dbe24895866f517a4ddb05  plugins/efw.sh
@@ -25,8 +25,9 @@ f9db0ff828287dfaed026bb6dfcd1e7a  plugins/elastix.sh
 e23175001e014269aa362e3a2b387ce9  plugins/feather.sh
 ddf4dd86185e203853f5b56823092fa4  plugins/fedora-boot64.sh
 0a9c5c53a5f755d3b6ce2336d488c3d5  plugins/fedora-boot.sh
-a1386b20a7fbf7b8cca6a53bbc308ff7  plugins/finnix.sh
+32e27b80658820f2ca1863ce6c2b5697  plugins/finnix.sh
 f5c45013e5e18b5f0ed26ba90df9172b  plugins/freedos.sh
+3dd97266d71edb824748d03f41163b0a  plugins/fusion.sh
 881603e5fa69d30dac5728f59baa05f4  plugins/geexbox.sh
 cfe0e372a6c495868f2202e349fd7e17  plugins/gparted.sh
 9ea36a4fe0007491a401f10642f8ae82  plugins/grml64.sh
@@ -51,11 +52,14 @@ e2ab78e2c6bf687b2cb14e859c498d09  plugins/ophcrack.sh
 50afba869415431b0e56c73a2a0632af  plugins/pclx.sh
 0f1931993a4f91f4bee996a52263cab9  plugins/pentoo.sh
 5378244bc890802275e37610a5f77aee  plugins/ping.sh
+acb6040e444847c351dbfe570625d483  plugins/pinguy.sh
 0b38715bb1c9a9f3294ea43d8a7caab2  plugins/pmagic.sh
-04ae0d8ea0293273415e3de953a4133a  plugins/porteus.sh
+7aa32be936b184763d375abdff993345  plugins/porteus.sh
 3b967f46250497831063e36c6b5fd617  plugins/puppy2.sh
 8b0e8943e2de6517486321b0279411e9  plugins/puppy.sh
-00ab77446089e7349dc9ebe4157cbcb7  plugins/riplinux.sh
+c127174d22e5217c53411c86d66e47e2  plugins/redobackup.sh
+facd88ce59d7668860a75a5d5c27b06f  plugins/riplinux.sh
+775c12216558a02e8013e60e021ce04d  plugins/sabayon.sh
 7a3a3a2e46796654a88611ce128e215e  plugins/slax.sh
 3110c42c3edfb7a787ac67f0d382152a  plugins/slitaz.sh
 38ebbe2b7ba7bd19958dcbe2da9d62dc  plugins/sysrcd.sh
@@ -64,7 +68,7 @@ e2ab78e2c6bf687b2cb14e859c498d09  plugins/ophcrack.sh
 eb051f4854066bda1d05e76ceb1550db  plugins/tinycore.sh
 9b25544c5a29d48e1669bf56440f63b5  plugins/tinyme.sh
 296a75aec4bde818d26ce8360689b4cd  plugins/trk.sh
-7d75504ff146a16dc2448aeb2b067c60  plugins/ubcd.sh
+159fdf55a97cb2481a2e0163f4a39271  plugins/ubcd.sh
 2c66176f8a53ab589e4f8113bfe3a8b0  plugins/ubuntu-alternate.sh
 37be5205b49d89ac8b3031d6e477c002  plugins/ubuntu-mini.sh
 77992e410a2fb755ea25bb51eb66a619  plugins/ubuntu.sh
@@ -75,3 +79,5 @@ eb051f4854066bda1d05e76ceb1550db  plugins/tinycore.sh
 31b39c719dbf033c973950258a0ebe0e  plugins/win98se.sh
 5fa48c3dc5bedbdeff6c2f777ba22077  plugins/winme.sh
 8799f2c6e77ac5ad94ec4e7c489d5357  plugins/wolvix.sh
+5adf1dcceda6192256b56687fabfc89d  plugins/xbmc.sh
+bafa28a93aaae32fa64cab97da605015  plugins/zorin.sh
