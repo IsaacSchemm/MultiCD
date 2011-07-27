@@ -2,7 +2,7 @@
 set -e
 . $MCDDIR/functions.sh
 #Ultimate Boot CD plugin for multicd.sh
-#version 6.7 (last functional change: 6.6)
+#version 6.8 (last functional change: 6.6)
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,7 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "ubcd-*.iso ubcd.iso none"
+	echo "ubcd*.iso ubcd.iso none"
 elif [ $1 = scan ];then
 	if [ -f ubcd.iso ];then
 		echo "Ultimate Boot CD"

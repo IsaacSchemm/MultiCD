@@ -38,8 +38,10 @@ elif [ $1 = copy ];then
 			echo "XBMC will not be installable from this disc."
 		else
 			cp -r $MNT/xbmc/install $WORK/boot/xbmc/
-			cp -r $MNT/dists $WORK/
-			cp -r $MNT/pool $WORK/
+			cp -r $MNT/xbmc/dists $WORK/
+			cp -r $MNT/xbmc/pool $WORK/
+			#cp -r $MNT/xbmc/.disk $WORK/
+			ln -s . $WORK/debian
 		fi
 		umcdmount xbmc
 		rm $WORK/live/memtest||true
