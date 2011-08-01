@@ -33,32 +33,11 @@ elif [ $1 = copy ];then
 		echo "Copying XBMC..."
 		mcdmount xbmc
 		cp -r $MNT/xbmc/live $WORK/boot/xbmc
-		if [ -d $WORK/install ] || [ -d $WORK/pool ];then
-			echo "There is already a Debian or Ubuntu install disc on this CD."
-			echo "XBMC will not be installable from this disc."
-		else
-			cp -r $MNT/xbmc/install $WORK/
-			cp -r $MNT/xbmc/dists $WORK/
-			cp -r $MNT/xbmc/pool $WORK/
-			cp -r $MNT/xbmc/.disk $WORK/
-			ln -s . $WORK/debian
-			touch $TAGS/xbmc-install
-		fi
 		umcdmount xbmc
 		rm $WORK/live/memtest||true
 	fi
 elif [ $1 = writecfg ];then
 if [ -f xbmc.iso ];then
-	if [ -f $TAGS/xbmc-install ];then
-		INSTALLITEM="label InstallXBMCLive
-		menu label ^Install XBMCLive
-		kernel /install/vmlinuz
-		initrd /install/initrd.gz
-		append quiet preseed/file=/cdrom/install/preseed.cfg cdrom-detect/try-usb=true priority=critical --"
-	else
-		INSTALLITEM=""
-	fi
-
 	VERSION=$(getVersion xbmc)
 	echo "menu begin >> ^XBMC$VERSION
 
@@ -73,8 +52,6 @@ if [ -f xbmc.iso ];then
 	kernel /boot/xbmc/vmlinuz
 	initrd /boot/xbmc/initrd.img
 	append boot=live xbmc=nodiskmount quiet loglevel=0 persistent quickreboot quickusbmodules notimezone noaccessibility noapparmor noaptcdrom noautologin noxautologin noconsolekeyboard nofastboot nognomepanel nohosts nokpersonalizer nolanguageselector nolocales nonetworking nopowermanagement noprogramcrashes nojockey nosudo noupdatenotifier nouser nopolkitconf noxautoconfig noxscreensaver nopreseed union=aufs live-media-path=/boot/xbmc
-
-	$INSTALLITEM
 
 	menu end" >> $WORK/boot/isolinux/isolinux.cfg
 fi
