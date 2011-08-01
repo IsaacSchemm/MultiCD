@@ -33,27 +33,28 @@ elif [ $1 = copy ];then
 		echo "Copying XBMC..."
 		mcdmount xbmc
 		cp -r $MNT/xbmc/live $WORK/boot/xbmc
-		if [ -d $WORK/pool ];then
+		if [ -d $WORK/install ] || [ -d $WORK/pool ];then
 			echo "There is already a Debian or Ubuntu install disc on this CD."
 			echo "XBMC will not be installable from this disc."
 		else
-			cp -r $MNT/xbmc/install $WORK/boot/xbmc/
+			cp -r $MNT/xbmc/install $WORK/
 			cp -r $MNT/xbmc/dists $WORK/
 			cp -r $MNT/xbmc/pool $WORK/
-			#cp -r $MNT/xbmc/.disk $WORK/
+			cp -r $MNT/xbmc/.disk $WORK/
 			ln -s . $WORK/debian
+			touch $TAGS/xbmc-install
 		fi
 		umcdmount xbmc
 		rm $WORK/live/memtest||true
 	fi
 elif [ $1 = writecfg ];then
 if [ -f xbmc.iso ];then
-	if [ -d $WORK/boot/xbmc/install ];then
+	if [ -f $TAGS/xbmc-install ];then
 		INSTALLITEM="label InstallXBMCLive
 		menu label ^Install XBMCLive
-		kernel /boot/xbmc/install/vmlinuz
-		initrd /boot/xbmc/install/initrd.gz
-		append quiet preseed/file=/cdrom/boot/xbmc/install/preseed.cfg cdrom-detect/try-usb=true priority=critical --"
+		kernel /install/vmlinuz
+		initrd /install/initrd.gz
+		append quiet preseed/file=/cdrom/install/preseed.cfg cdrom-detect/try-usb=true priority=critical --"
 	else
 		INSTALLITEM=""
 	fi
