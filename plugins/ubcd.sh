@@ -2,7 +2,7 @@
 set -e
 . $MCDDIR/functions.sh
 #Ultimate Boot CD plugin for multicd.sh
-#version 6.8 (last functional change: 6.6)
+#version 6.8
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -41,13 +41,20 @@ elif [ $1 = copy ];then
 		mcdmount ubcd
 		cp -r $MNT/ubcd/ubcd $WORK/
 		cp -r $MNT/ubcd/pmagic $WORK/
-		cp -r $MNT/ubcd/antivir $WORK/
+		if [ -d $MNT/ubcd/antivir ];then
+			cp -r $MNT/ubcd/antivir $WORK/
+		fi
 		cp $MNT/ubcd/license.txt $WORK/ubcd-license.txt
-		cp $MNT/ubcd/boot/syslinux/econfig.c32 $WORK/boot/isolinux/
+		for i in econfig whichsys hdt;do
+			if [ -f $MNT/ubcd/boot/syslinux/${i}.c32 ];then
+				cp $MNT/ubcd/boot/syslinux/${i}.c32 $WORK/boot/isolinux/
+			fi
+		done
 		cp $MNT/ubcd/boot/syslinux/reboot.c32 $WORK/boot/isolinux/
 		for i in $WORK/ubcd/menus/*/*.cfg $WORK/ubcd/menus/*/*/*.cfg $WORK/pmagic/boot/*/*.cfg;do
 			sed -i -e 's/\/boot\/syslinux/\/boot\/isolinux/g' $i
 		done
+		sed -i -e 's/MENU LABEL GRUB4DOS menu/MENU LABEL Back to main menu/g' -e 's/This entry will bring you to the GRUB4DOS menu./Returns to the MultiCD menu./g' -e 's^BOOT /boot/grub/grldr^COM32 menu.c32\nAPPEND /boot/isolinux/isolinux.cfg^g' $WORK/ubcd/menus/syslinux/main.cfg
 		head -n 1 $MNT/ubcd/ubcd/menus/syslinux/defaults.cfg | awk '{ print $6 }'>$TAGS/ubcdver.tmp.txt
 		#echo "$VERSION" > $WORK/boot/ubcd/version
 		umcdmount ubcd
@@ -56,10 +63,15 @@ elif [ $1 = writecfg ];then
 if [ -f ubcd.iso ];then
 	VERSION=$(cat $TAGS/ubcdver.tmp.txt)
 	rm $TAGS/ubcdver.tmp.txt
+	if [ -d $WORK/ubcd/menus/isolinux ];then
+		MENUFOLDER=isolinux #older versions
+	else
+		MENUFOLDER=syslinux #v5.1
+	fi
 	echo "label ubcd
 	menu label --> ^Ultimate Boot CD ($VERSION) - Main menu
 	com32 menu.c32
-	append /ubcd/menus/isolinux/main.cfg" >> $WORK/boot/isolinux/isolinux.cfg
+	append /ubcd/menus/${MENUFOLDER}/main.cfg" >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
