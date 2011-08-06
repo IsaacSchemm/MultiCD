@@ -40,7 +40,9 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f opensuse-net64.iso ];then
-echo "label opensuse-kernel
+echo "menu begin --> ^openSUSE netboot (x86_64)
+
+label opensuse-kernel
   menu label Install ^openSUSE $(cat $TAGS/opensuse-net.version) x86_64 (from mirrors.kernel.org)
   kernel /boot/opensuse/linux64
   append initrd=/boot/opensuse/initrd64 splash=silent showopts install=ftp://mirrors.kernel.org/opensuse/distribution/"$(cat $TAGS/opensuse-net.version)"/repo/oss
@@ -56,6 +58,12 @@ label opensuse-rescue
   menu label openSUSE x86_64 rescue system
   kernel /boot/opensuse/linux64
   append initrd=/boot/opensuse/initrd64 splash=silent rescue=1 showopts
+label back
+  menu label ^Back to main menu
+  com32 menu.c32
+  append isolinux.cfg
+
+menu end
 " >> $WORK/boot/isolinux/isolinux.cfg
 fi
 else

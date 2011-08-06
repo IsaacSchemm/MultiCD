@@ -45,8 +45,8 @@ cb828f33898eef29dad165db26be48a4  plugins/mintdebian.sh
 77cd8c0972d154644cb018df4caf458c  plugins/netbootcd.sh
 b4b67383d84798d1a65097166715af19  plugins/ntpasswd.sh
 24072edaf42cd4d47d4cc9bfdc62af1b  plugins/opensuse-gnome.sh
-5215534932c98ff4f93b5b304a42e5fa  plugins/opensuse-net64.sh
-63fa944577f27f3db353701de8d235d7  plugins/opensuse-net.sh
+475aa214c548f740909e49dacf04c7e1  plugins/opensuse-net64.sh
+231efb8aca09c8bcd80fbb391e88b371  plugins/opensuse-net.sh
 e2ab78e2c6bf687b2cb14e859c498d09  plugins/ophcrack.sh
 297384544cef27421a6515c8e82e0d8d  plugins/pclos.sh
 50afba869415431b0e56c73a2a0632af  plugins/pclx.sh
