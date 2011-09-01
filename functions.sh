@@ -180,7 +180,7 @@ ubuntucommon () {
 
 #Returns the version saved by the isoaliases function. For use in writing the menu.
 getVersion() {
-	BASENAME=$(echo $i|sed -e 's/\.iso//g')
+	BASENAME=$(echo $1|sed -e 's/\.iso//g')
 	if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
 		VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
 	else

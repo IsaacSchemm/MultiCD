@@ -2,7 +2,7 @@
 set -e
 . $MCDDIR/functions.sh
 #Arch Linux (dual i686/x86_64) installer plugin for multicd.sh
-#version 6.7
+#version 6.8
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +22,9 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "archlinux-*-netinstall-dual.iso archdual.iso none"
+elif [ $1 = scan ];then
 	if [ -f archdual.iso ];then
 		echo "Arch Linux Dual"
 	fi
@@ -30,34 +32,40 @@ elif [ $1 = copy ];then
 	if [ -f archdual.iso ];then
 		echo "Copying Arch Linux Dual..."
 		mcdmount archdual
-		mkdir -p $WORK/boot/arch
-		for i in vmlinuz vmlts vm64 vm64lts initrd.img initrdlts.img initrd64.img initrd64lts.img;do
-			cp $MNT/archdual/boot/$i $WORK/boot/arch/$i
-		done
-		cp $MNT/archdual/core-* $WORK/ #packages
-		cp $MNT/archdual/isomounts $WORK/ #Text file
+		cp -r $MNT/archdual/arch $WORK/archdual
 		umcdmount archdual
 	fi
 elif [ $1 = writecfg ];then
-if [ -f archdual.iso ];then
-	if [ -f $TAGS/lang-full ];then
-		LANG="$(cat $TAGS/lang-full)"
-	else
-		LANG="en_US"
+	if [ -f archdual.iso ];then
+		echo "label arch
+		menu label --> ^Arch Linux ($(getVersion archdual))
+		KERNEL /archdual/boot/syslinux/ifcpu64.c32
+		APPEND have64 -- nohave64
+	
+		LABEL have64
+		MENU HIDE
+		CONFIG /archdual/boot/syslinux/syslinux_both.cfg
+		APPEND /archdual/boot/syslinux/
+	
+		LABEL nohave64
+		MENU HIDE
+		CONFIG /archdual/boot/syslinux/syslinux_32only.cfg
+		APPEND /archdual/boot/syslinux/
+		" >> $WORK/boot/isolinux/isolinux.cfg
+		for i in 32 64;do
+			sed -i -e 's^/arch/boot^/archdual/boot^g' $WORK/archdual/boot/syslinux/syslinux_arch${i}.cfg
+			sed -i -e 's^archisobasedir=arch^archisobasedir=archdual^g' $WORK/archdual/boot/syslinux/syslinux_arch${i}.cfg
+			sed -i -e "s^archisolabel=ARCH_201108^archisolabel=$CDLABEL^g" $WORK/archdual/boot/syslinux/syslinux_arch${i}.cfg
+		done
+		sed -i -e 's^/arch/boot/memtest^/boot/memtest^g' $WORK/archdual/boot/syslinux/syslinux_tail.cfg
+		sed -i -e 's^MENU ROWS 7^MENU ROWS 8^g' $WORK/archdual/boot/syslinux/syslinux_head.cfg
+		echo "
+		label back
+		menu label ^Back to main menu
+		config /boot/isolinux/isolinux.cfg
+		append /boot/isolinux
+		" >> $WORK/archdual/boot/syslinux/syslinux_tail.cfg
 	fi
-	echo "label arch1
-	menu label Boot ArchLive i686
-	kernel /boot/arch/i686/vmlinuz26
-	append lang=en locale=$LANG.UTF-8 usbdelay=5 ramdisk_size=75% archisolabel=$(cat $TAGS/cdlabel)
-	initrd /boot/arch/i686/archiso.img
-
-	label arch2
-	menu label Boot ArchLive x86_64
-	kernel /boot/arch/x86_64/vmlinuz26
-	append lang=en locale=$LANG.UTF-8 usbdelay=5 ramdisk_size=75% archisolabel=$(cat $TAGS/cdlabel)
-	initrd /boot/arch/x86_64/archiso.img
-	" >> $WORK/boot/isolinux/isolinux.cfg
-fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"

@@ -2,9 +2,8 @@
 set -e
 . $MCDDIR/functions.sh
 #Arch Linux installer plugin for multicd.sh
-#version 5.9
-#Copyright (c) 2010 Isaac Schemm
-#Thanks to jerome_bc for updating this script for the newest Arch
+#version 6.8
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +22,10 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "archlinux-*-netinstall-i686.iso arch.iso none"
+	echo "archlinux-*-netinstall-x86_64.iso arch.iso none"
+elif [ $1 = scan ];then
 	if [ -f arch.iso ];then
 		echo "Arch Linux"
 	fi
@@ -31,29 +33,28 @@ elif [ $1 = copy ];then
 	if [ -f arch.iso ];then
 		echo "Copying Arch Linux..."
 		mcdmount arch
-		mkdir $WORK/boot/arch
-		cp $MNT/arch/boot/vmlinuz26 $WORK/boot/arch/vmlinuz26 #Kernel
-		cp $MNT/arch/boot/archiso.img $WORK/boot/arch/archiso.img #initrd
-		cp $MNT/arch/*.sqfs $WORK/ #Compressed filesystems
-		cp $MNT/arch/isomounts $WORK/ #Text file
+		cp -r $MNT/arch/arch $WORK/
+		rm $WORK/arch/boot/memtest || true
 		umcdmount arch
 	fi
 elif [ $1 = writecfg ];then
 if [ -f arch.iso ];then
-	if [ -f $TAGS/lang-full ];then
-		LANG="$(cat $TAGS/lang-full)"
-	else
-		LANG="en_US"
-	fi
 	echo "label arch
-	menu label Boot ArchLive
-	kernel /boot/arch/vmlinuz26
-	append lang=en locale=$LANG.UTF-8 usbdelay=5 ramdisk_size=75% archisolabel=$(cat $TAGS/cdlabel)
-	initrd /boot/arch/archiso.img
+	menu label --> ^Arch Linux ($(getVersion arch))
+	CONFIG /arch/boot/syslinux/syslinux.cfg
+	APPEND /arch/boot/syslinux/
 	" >> $WORK/boot/isolinux/isolinux.cfg
+	sed -i -e 's^/arch/boot/memtest^/boot/memtest^g' $WORK/arch/boot/syslinux/syslinux.cfg
+	sed -i -e 's^MENU ROWS 6^MENU ROWS 7^g' $WORK/arch/boot/syslinux/syslinux.cfg
+	echo "
+	label back
+	menu label ^Back to main menu
+	config /boot/isolinux/isolinux.cfg
+	append /boot/isolinux
+	" >> $WORK/arch/boot/syslinux/syslinux.cfg
 fi
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi
