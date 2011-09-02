@@ -42,7 +42,7 @@ c4941f9b3ac84c16371d45563e81e4d7  plugins/linuxmint.sh
 1a6d81c83d793f2b8ff3bd3b531a730f  plugins/macpup.sh
 5d908322050e579fb2c417c536e10a63  plugins/mandriva-boot.sh
 cb828f33898eef29dad165db26be48a4  plugins/mintdebian.sh
-77cd8c0972d154644cb018df4caf458c  plugins/netbootcd.sh
+874890396bac39eb7f156856483f38b1  plugins/netbootcd.sh
 b4b67383d84798d1a65097166715af19  plugins/ntpasswd.sh
 24072edaf42cd4d47d4cc9bfdc62af1b  plugins/opensuse-gnome.sh
 475aa214c548f740909e49dacf04c7e1  plugins/opensuse-net64.sh
