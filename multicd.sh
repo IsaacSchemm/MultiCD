@@ -193,16 +193,25 @@ if $INTERACTIVE;then
 		echo "You must install dialog to use the interactive options."
 		exit 1
 	fi
+
 	dialog --inputbox "What would you like the title of the CD's main menu to be?" 8 70 "MultiCD - Created $(date +"%b %d, %Y")" 2> /tmp/cdtitle
 	CDTITLE=$(cat /tmp/cdtitle)
 	rm /tmp/cdtitle
+
 	dialog --inputbox "What would you like the CD label to be?" 9 40 "MultiCD" 2> /tmp/cdlabel
 	export CDLABEL=$(cat /tmp/cdlabel)
 	rm /tmp/cdlabel
-	dialog --menu "What menu color would you like?" 0 0 0 40 black 41 red 42 green 43 brown 44 blue 45 magenta 46 cyan 2> /tmp/color
+
+	dialog --menu "What menu BACKGROUND color would you like?" 0 0 0 40 black 41 red 42 green 43 brown 44 blue 45 magenta 46 cyan 47 white 2> /tmp/color
 	MENUCOLOR=$(cat /tmp/color)
 	echo $(echo -e "\r\033[0;$(cat /tmp/color)m")Color chosen.$(echo -e '\033[0;39m')
 	rm /tmp/color
+
+	dialog --menu "What menu TEXT color would you like?" 0 0 0 30 black 31 red 32 green 33 brown 34 blue 35 magenta 36 cyan 37 white 2> /tmp/color
+	TEXTCOLOR=$(cat /tmp/color)
+	echo $(echo -e "\r\033[0;$(cat /tmp/color)m")Color chosen.$(echo -e '\033[0;39m')
+	rm /tmp/color
+
 	dialog --inputbox "Enter the language code for the language you would like to use.\n\
 Leaving this empty will leave the choice up to the plugin (usually English.)\n\
 Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> $TAGS/lang-full
@@ -301,6 +310,7 @@ else
 	CDTITLE="MultiCD - Created $(date +"%b %d, %Y")"
 	export CDLABEL=MultiCD
 	MENUCOLOR=44
+	TEXTCOLOR=37
 	#echo en > $TAGS/lang
 	touch $TAGS/9xextras
 	for i in puppies;do
@@ -457,9 +467,9 @@ menu title $CDTITLE" > $WORK/boot/isolinux/isolinux.cfg
 
 #BEGIN COLOR CODE#
 	if [ $MENUCOLOR = 40 ];then
-		BORDERCOLOR=37
+		BORDERCOLOR=37 #white border
 	else
-		BORDERCOLOR=30
+		BORDERCOLOR=30 #black border
 	fi
 	echo "	menu color screen 37;40
 	menu color border 30;44
@@ -479,7 +489,9 @@ menu title $CDTITLE" > $WORK/boot/isolinux/isolinux.cfg
 	menu color timeout_msg 37;40
 	menu color timeout 1;37;40
 	menu color help 37;40
-	menu color msg07 37;40"|sed -e "s/30/$BORDERCOLOR/g" -e "s/44/$MENUCOLOR/g">>$WORK/boot/isolinux/isolinux.cfg
+	menu color msg07 37;40"|sed \
+	-e "s/30/$BORDERCOLOR/g" -e "s/44/$MENUCOLOR/g"|sed \
+	-e "s/unsel 37/unsel $TEXTCOLOR/g" >>$WORK/boot/isolinux/isolinux.cfg
 #END COLOR CODE#
 
 #BEGIN HD BOOT OPTION#
