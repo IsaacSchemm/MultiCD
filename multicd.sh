@@ -410,13 +410,13 @@ if [ ! -f $WORK/boot/isolinux/isolinux.bin ];then
 	echo "Downloading SYSLINUX..."
 	if $VERBOSE ;then #These will only be run if there is no syslinux.tar.gz
 		#Both of these need to be changed when a new version of syslinux comes out.
-		if ! wget -O syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.04.tar.gz;then
+		if ! wget -t 1 -O syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.04.tar.gz;then
 			echo "Error: could not download SYSLINUX. Please update the URL in $0."
 			rm syslinux.tar.gz
 			false #quits script
 		fi
 	else
-		if ! wget -qO syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.04.tar.gz;then
+		if ! wget -t 1 -qO syslinux.tar.gz ftp://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-4.04.tar.gz;then
 			echo "Error: could not download SYSLINUX. Please update the URL in $0."
 			rm syslinux.tar.gz
 			false #quits script

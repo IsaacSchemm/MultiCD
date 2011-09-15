@@ -110,6 +110,7 @@ lubuntu-*.iso				i386.l.ubuntu.iso
 #Windows7 Recovery Disk	win7recovery.iso
 #Windows7 Recovery Disk win7recovery-ram.iso (this loads the ISO into RAM)
 #Wolvix			wolvix.iso
+#XBMC			xbmc.iso
 #Zorin OS		zorin.iso
 #Floppy images		ANYTHING.img or .imz (you can have several of these)
 #Images with games	games/ANYTHING.img or .imz (will create a submenu)
