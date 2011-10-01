@@ -60,6 +60,7 @@ acb6040e444847c351dbfe570625d483  plugins/pinguy.sh
 c127174d22e5217c53411c86d66e47e2  plugins/redobackup.sh
 facd88ce59d7668860a75a5d5c27b06f  plugins/riplinux.sh
 775c12216558a02e8013e60e021ce04d  plugins/sabayon.sh
+f6964a97d8c6eebccb88fe9fe7bc24db  plugins/scientific-boot.sh
 7a3a3a2e46796654a88611ce128e215e  plugins/slax.sh
 3110c42c3edfb7a787ac67f0d382152a  plugins/slitaz.sh
 38ebbe2b7ba7bd19958dcbe2da9d62dc  plugins/sysrcd.sh
@@ -69,7 +70,6 @@ eb051f4854066bda1d05e76ceb1550db  plugins/tinycore.sh
 9b25544c5a29d48e1669bf56440f63b5  plugins/tinyme.sh
 296a75aec4bde818d26ce8360689b4cd  plugins/trk.sh
 f7b2250519261ba10645c191858f036a  plugins/ubcd.sh
-18ae4b0a01266d3e55c7e8e3999c9d85  plugins/ubcd.sh~
 2c66176f8a53ab589e4f8113bfe3a8b0  plugins/ubuntu-alternate.sh
 37be5205b49d89ac8b3031d6e477c002  plugins/ubuntu-mini.sh
 77992e410a2fb755ea25bb51eb66a619  plugins/ubuntu.sh
