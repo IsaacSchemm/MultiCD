@@ -24,7 +24,7 @@ edac1a8d3005e49099b1c47d046e48f4  plugins/dsl.sh
 f9db0ff828287dfaed026bb6dfcd1e7a  plugins/elastix.sh
 e23175001e014269aa362e3a2b387ce9  plugins/feather.sh
 ddf4dd86185e203853f5b56823092fa4  plugins/fedora-boot64.sh
-0a9c5c53a5f755d3b6ce2336d488c3d5  plugins/fedora-boot.sh
+b0394845fdf4061719d3b53afa88b42b  plugins/fedora-boot.sh
 32e27b80658820f2ca1863ce6c2b5697  plugins/finnix.sh
 f5c45013e5e18b5f0ed26ba90df9172b  plugins/freedos.sh
 3dd97266d71edb824748d03f41163b0a  plugins/fusion.sh
@@ -42,7 +42,7 @@ c4941f9b3ac84c16371d45563e81e4d7  plugins/linuxmint.sh
 1a6d81c83d793f2b8ff3bd3b531a730f  plugins/macpup.sh
 5d908322050e579fb2c417c536e10a63  plugins/mandriva-boot.sh
 cb828f33898eef29dad165db26be48a4  plugins/mintdebian.sh
-874890396bac39eb7f156856483f38b1  plugins/netbootcd.sh
+caea32d72882c5ab14c47940695e4e95  plugins/netbootcd.sh
 b4b67383d84798d1a65097166715af19  plugins/ntpasswd.sh
 24072edaf42cd4d47d4cc9bfdc62af1b  plugins/opensuse-gnome.sh
 475aa214c548f740909e49dacf04c7e1  plugins/opensuse-net64.sh
@@ -60,7 +60,7 @@ acb6040e444847c351dbfe570625d483  plugins/pinguy.sh
 c127174d22e5217c53411c86d66e47e2  plugins/redobackup.sh
 facd88ce59d7668860a75a5d5c27b06f  plugins/riplinux.sh
 775c12216558a02e8013e60e021ce04d  plugins/sabayon.sh
-f6964a97d8c6eebccb88fe9fe7bc24db  plugins/scientific-boot.sh
+3869842811430b4f64cdf02b58f1db21  plugins/scientific-boot.sh
 7a3a3a2e46796654a88611ce128e215e  plugins/slax.sh
 3110c42c3edfb7a787ac67f0d382152a  plugins/slitaz.sh
 38ebbe2b7ba7bd19958dcbe2da9d62dc  plugins/sysrcd.sh

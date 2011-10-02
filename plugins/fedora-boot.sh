@@ -2,7 +2,7 @@
 set -e
 . $MCDDIR/functions.sh
 #Fedora installer plugin for multicd.sh
-#version 6.7 (last functional change: 6.2)
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -57,21 +57,21 @@ elif [ $1 = writecfg ];then
 		fi
 		echo "label flinux
 		  #TIP: If you change the method= entry in the append line, you can change the mirror and version installed.
-		  menu label ^Install Fedora$VERSION from mirrors.kernel.org (Fedora 13 only)
+		  menu label ^Install Fedora$VERSION from UW-Madison's mirror (assuming Fedora 15)
 		  kernel /boot/fedora/vmlinuz
-		  append initrd=/boot/fedora/initrd.img method=http://mirrors.kernel.org/fedora/releases/13/Fedora/i386/os
+		  append initrd=/boot/fedora/initrd.img stage2=hd:LABEL=\"Fedora\" http://mirror.cs.wisc.edu/pub/mirrors/linux/download.fedora.redhat.com/pub/fedora/linux/releases/15/Everything/i386/os
 		label flinux
-		  menu label ^Install or upgrade Fedora$VERSION from another mirror
+		  menu label ^Install or upgrade Fedora$VERSION (enter mirror manually)
 		  kernel /boot/fedora/vmlinuz
-		  append initrd=/boot/fedora/initrd.img
+		  append initrd=/boot/fedora/initrd.img stage2=hd:LABEL=\"Fedora\"
 		label ftext
-		  menu label Install or upgrade Fedora$VERSION (text mode)
+		  menu label Install or upgrade Fedora$VERSION with basic video driver
 		  kernel /boot/fedora/vmlinuz
-		  append initrd=/boot/fedora/initrd.img text
+		  append initrd=/boot/fedora/initrd.img stage2=hd:LABEL=\"Fedora\" xdriver=vesa nomodeset
 		label frescue
 		  menu label Rescue installed Fedora$VERSION system
 		  kernel /boot/fedora/vmlinuz
-		  append initrd=/boot/fedora/initrd.img rescue
+		  append initrd=/boot/fedora/initrd.img stage2=hd:LABEL=\"Fedora\" rescue
 		" >> $WORK/boot/isolinux/isolinux.cfg
 	fi
 else

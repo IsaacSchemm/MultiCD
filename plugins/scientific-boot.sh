@@ -49,8 +49,12 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 	if [ -f scientific-boot.iso ];then
-		echo "label scilinux
-		menu label ^Install or upgrade Scientific Linux
+		echo "label scilinux-mirror
+		menu label ^Install Scientific Linux from UW-Madison's mirror (assuming SciLinux 6)
+		kernel /boot/sci/vmlinuz
+		append initrd=/boot/sci/initrd.img method=http://mirror.cs.wisc.edu/pub/mirrors/linux/scientificlinux.org/6/i386/os/
+		label scilinux
+		menu label ^Install or upgrade Scientific Linux (enter mirror manually)
 		kernel /boot/sci/vmlinuz
 		append initrd=/boot/sci/initrd.img
 		label scivesa

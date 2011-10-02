@@ -2,7 +2,7 @@
 set -e
 . $MCDDIR/functions.sh
 #NetbootCD 4.x plugin for multicd.sh
-#version 6.8
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -39,6 +39,7 @@ elif [ $1 = copy ];then
 			cp ${MNT}/netbootcd/boot/isolinux/isolinux.cfg ${WORK}/boot/nbcd/include.cfg
 			sed -i -e '0,/label nbcd/Id' ${WORK}/boot/nbcd/include.cfg
 			sed -i -e 's^/boot^/boot/nbcd^g' ${WORK}/boot/nbcd/include.cfg
+			sed -i -e 's/menu default//g' ${WORK}/boot/nbcd/include.cfg
 		else #version 4.0
 			cp ${MNT}/netbootcd/isolinux/kexec.bzI ${WORK}/boot/nbcd/kexec.bzI
 			cp ${MNT}/netbootcd/isolinux/*.gz ${WORK}/boot/nbcd/
