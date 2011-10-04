@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 . $MCDDIR/functions.sh
-#Fedora installer plugin for multicd.sh
+#Scientific Linux installer plugin for multicd.sh
 #version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
@@ -22,7 +22,9 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];thne
+	echo "SL-*-boot.iso scientific-boot.iso none"
+elif [ $1 = scan ];then
 	if [ -f scientific-boot.iso ];then
 		echo "Scientific Linux netboot installer"
 	fi
@@ -40,7 +42,7 @@ elif [ $1 = copy ];then
 		fi
 		if [ -d $WORK/images ];then
 			echo "There is already an \"images\" folder on the multicd. You might have another Red Hat-based distro on it."
-			echo "Fedora's \"images\" folder won't be copied; instead, these files will be downloaded before the installer starts."
+			echo "Scientific Linux's \"images\" folder won't be copied; instead, these files will be downloaded before the installer starts."
 		else
 			#Commenting out the below line will save about 100MB on the CD, but it will have to be downloaded when you install Scientific Linux
 			cp -R $MNT/scientific-boot/images $WORK/
@@ -49,10 +51,17 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 	if [ -f scientific-boot.iso ];then
+		if [ -f scientific-boot.version ] && [ "$(cat scientific-boot.version)" != "" ];then
+			VERSION=" $(cat scientific-boot.version)" #Version based on isoaliases()
+		fi
 		echo "label scilinux-mirror
 		menu label ^Install Scientific Linux from UW-Madison's mirror (assuming SciLinux 6)
 		kernel /boot/sci/vmlinuz
 		append initrd=/boot/sci/initrd.img method=http://mirror.cs.wisc.edu/pub/mirrors/linux/scientificlinux.org/6/i386/os/
+		text help
+		Scientific Linux version: $VERSION
+		endtext
+
 		label scilinux
 		menu label ^Install or upgrade Scientific Linux (enter mirror manually)
 		kernel /boot/sci/vmlinuz

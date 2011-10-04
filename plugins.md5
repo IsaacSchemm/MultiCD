@@ -9,6 +9,7 @@ a0f2fc4229385c41d87198e50bc74e17  plugins/avg.sh
 2f71a3a0dfbc5a6c968629995303ebde  plugins/backtrack.sh
 c7c56f27f3762d959b284684ca19adca  plugins/caine.sh
 4f9e3f7f79d34d22816c2fa899cf9fa8  plugins/cdlinux.sh
+1f96d1fa5714915bc30395a050fa36c9  plugins/centos-boot.sh
 a52e0a6d4eb23dedd50382c7a7857aa4  plugins/clonezilla.sh
 13b4099739a62ac8ae96b10df72d4cba  plugins/dban.sh
 1984242665a45e8eeb21a3f52091e69b  plugins/debian-install64.sh
@@ -60,7 +61,7 @@ acb6040e444847c351dbfe570625d483  plugins/pinguy.sh
 c127174d22e5217c53411c86d66e47e2  plugins/redobackup.sh
 facd88ce59d7668860a75a5d5c27b06f  plugins/riplinux.sh
 775c12216558a02e8013e60e021ce04d  plugins/sabayon.sh
-3869842811430b4f64cdf02b58f1db21  plugins/scientific-boot.sh
+b3980f737f106ee0af9232972d549601  plugins/scientific-boot.sh
 7a3a3a2e46796654a88611ce128e215e  plugins/slax.sh
 3110c42c3edfb7a787ac67f0d382152a  plugins/slitaz.sh
 38ebbe2b7ba7bd19958dcbe2da9d62dc  plugins/sysrcd.sh
