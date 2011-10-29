@@ -24,7 +24,7 @@ set -e
 #THE SOFTWARE.
 if [ $1 = links ];then
 	echo "CentOS-*-netinstall.iso centos-boot.iso none"
-if [ $1 = scan ];then
+elif [ $1 = scan ];then
 	if [ -f centos-boot.iso ];then
 		echo "CentOS netboot installer"
 	fi
@@ -37,7 +37,7 @@ elif [ $1 = copy ];then
 			cp $MNT/centos-boot/isolinux/vmlinuz $WORK/boot/centos/vmlinuz
 			cp $MNT/centos-boot/isolinux/initrd.img $WORK/boot/centos/initrd.img
 		elif [ -f $MNT/centos-boot/isolinux/vmlinuz0 ];then
-			cp $MNT/centos-boot/isolinux/vmlinuz0 $WORK/boot/centosentific/vmlinuz
+			cp $MNT/centos-boot/isolinux/vmlinuz0 $WORK/boot/centos/vmlinuz
 			cp $MNT/centos-boot/isolinux/initrd0.img $WORK/boot/centos/initrd.img
 		fi
 		if [ -d $WORK/images ];then
@@ -57,10 +57,7 @@ elif [ $1 = writecfg ];then
 		echo "label centos-mirror
 		menu label ^Install CentOS from UW-Madison's mirror (assuming SciLinux 6)
 		kernel /boot/centos/vmlinuz
-		append initrd=/boot/centos/initrd.img method=http://mirror.cs.wisc.edu/pub/mirrors/linux/centos/6/os/i386/		text help
-		CentOS version: $VERSION
-		endtext
-
+		append initrd=/boot/centos/initrd.img method=http://mirror.cs.wisc.edu/pub/mirrors/linux/centos/6/os/i386/
 		label centos
 		menu label ^Install or upgrade CentOS (enter mirror manually)
 		kernel /boot/centos/vmlinuz
