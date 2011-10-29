@@ -2,8 +2,8 @@
 set -e
 . $MCDDIR/functions.sh
 #Linux Mint plugin for multicd.sh
-#version 6.5
-#Copyright (c) 2010 Isaac Schemm (orig. by Zirafarafa)
+#version 6.9
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -34,22 +34,22 @@ linuxmintExists () {
 
 getLinuxmintName () {
 	BASENAME=$(echo $i|sed -e 's/\.iso//g')
-	if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then
-		UBUNAME=$(cat $TAGS/$BASENAME.name)
-	elif [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
-		UBUNAME=$(cat $BASENAME.defaultname)
-	else
-		UBUNAME=$(echo $BASENAME|sed -e 's/\.ubuntu//g')
-	fi
-
-	BASENAME=$(echo $i|sed -e 's/\.iso//g')
+	#get version
 	if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
 		VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
 	else
 		VERSION=""
 	fi
-
-	echo ${UBUNAME}${VERSION}
+	#get name
+	if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then
+		UBUNAME=$(cat $TAGS/$BASENAME.name)
+	elif [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
+		UBUNAME="$(cat $BASENAME.defaultname) ${VERSION}"
+	else
+		UBUNAME="$(echo $BASENAME|sed -e 's/\.ubuntu//g') ${VERSION}"
+	fi
+	#return
+	echo ${UBUNAME}
 }
 #END FUNCTIONS#
 
