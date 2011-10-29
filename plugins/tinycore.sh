@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 . $MCDDIR/functions.sh
-#Tiny Core Linux plugin for multicd.sh
-#version 6.1
+#Tiny Core Linux (also multicore) plugin for multicd.sh
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,12 +23,13 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
+	echo "multicore-current.iso tinycore.iso none"
+	echo "multicore_*.iso tinycore.iso none"
 	echo "tinycore-current.iso tinycore.iso none"
 	echo "tinycore_*.iso tinycore.iso none"
 elif [ $1 = scan ];then
 	if [ -f tinycore.iso ];then
 		echo "Tiny Core Linux"
-		#touch $TAGS/tinycore.needsname #Comment out this line and multicd.sh won't ask for a custom name for this ISO
 	fi
 elif [ $1 = copy ];then
 	if [ -f tinycore.iso ];then
@@ -51,7 +52,7 @@ if [ -f tinycore.iso ];then
 	for i in $(ls $WORK/boot/tinycore|grep '\.gz');do
 		echo "label tinycore-$i
 		menu label ^$TCNAME
-		kernel /boot/tinycore/bzImage
+		kernel /boot/tinycore/vmlinuz
 		append quiet
 		initrd /boot/tinycore/$(basename $i)">>$WORK/boot/isolinux/isolinux.cfg
 	done

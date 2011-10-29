@@ -67,7 +67,8 @@ facd88ce59d7668860a75a5d5c27b06f  plugins/riplinux.sh
 38ebbe2b7ba7bd19958dcbe2da9d62dc  plugins/sysrcd.sh
 831d11088adadb9706c605a933411452  plugins/tc+nb.sh
 0178ac925c2227e79d1c60f725ed7f82  plugins/tinycore2.sh
-eb051f4854066bda1d05e76ceb1550db  plugins/tinycore.sh
+7c289714f3be2b45598dcb32559f346a  plugins/tinycore.sh
+f3a5acd9bf89ec4463760b89dd77c06b  plugins/tinycore.sh~
 9b25544c5a29d48e1669bf56440f63b5  plugins/tinyme.sh
 296a75aec4bde818d26ce8360689b4cd  plugins/trk.sh
 f7b2250519261ba10645c191858f036a  plugins/ubcd.sh
