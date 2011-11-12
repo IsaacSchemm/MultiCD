@@ -30,7 +30,7 @@ b0394845fdf4061719d3b53afa88b42b  plugins/fedora-boot.sh
 f5c45013e5e18b5f0ed26ba90df9172b  plugins/freedos.sh
 3dd97266d71edb824748d03f41163b0a  plugins/fusion.sh
 881603e5fa69d30dac5728f59baa05f4  plugins/geexbox.sh
-cfe0e372a6c495868f2202e349fd7e17  plugins/gparted.sh
+bbfe247c0fc192541fb8b51baded1d91  plugins/gparted.sh
 9ea36a4fe0007491a401f10642f8ae82  plugins/grml64.sh
 6727d9ef4f66f825c325e5aa3afa072e  plugins/grml.sh
 a013f9509966cdc1e99dfaf9ae57b375  plugins/hirens.sh
@@ -70,7 +70,7 @@ facd88ce59d7668860a75a5d5c27b06f  plugins/riplinux.sh
 7c289714f3be2b45598dcb32559f346a  plugins/tinycore.sh
 9b25544c5a29d48e1669bf56440f63b5  plugins/tinyme.sh
 296a75aec4bde818d26ce8360689b4cd  plugins/trk.sh
-f7b2250519261ba10645c191858f036a  plugins/ubcd.sh
+8027ff2a45ca55c8f39347f87e5ad276  plugins/ubcd.sh
 2c66176f8a53ab589e4f8113bfe3a8b0  plugins/ubuntu-alternate.sh
 37be5205b49d89ac8b3031d6e477c002  plugins/ubuntu-mini.sh
 9398f210e9da1a33a4b97b4b9f05c5f2  plugins/ubuntu.sh

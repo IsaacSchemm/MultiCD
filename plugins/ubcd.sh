@@ -2,7 +2,7 @@
 set -e
 . $MCDDIR/functions.sh
 #Ultimate Boot CD plugin for multicd.sh
-#version 6.8
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,6 +34,9 @@ elif [ $1 = scan ];then
 	if [ -f ntpasswd.iso ] && [ -f ubcd.iso ];then
 		echo "  Note: UBCD includes ntpasswd, so it is not necessary alone as well. Continuing anyway."
 	fi
+	if [ -f pmagic.iso ] && [ -f ubcd.iso ];then
+		echo "  Note: UBCD includes Parted Magic, so it is not necessary alone as well. Continuing anyway."
+	fi
 elif [ $1 = copy ];then
 	set -e
 	if [ -f ubcd.iso ];then
@@ -41,6 +44,7 @@ elif [ $1 = copy ];then
 		mcdmount ubcd
 		cp -r $MNT/ubcd/ubcd $WORK/
 		cp -r $MNT/ubcd/pmagic $WORK/
+		mv $WORK/pmagic/boot/syslinux $WORK/pmagic/boot/isolinux
 		if [ -d $MNT/ubcd/antivir ];then
 			cp -r $MNT/ubcd/antivir $WORK/
 		fi

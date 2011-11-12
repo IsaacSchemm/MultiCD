@@ -2,8 +2,8 @@
 set -e
 . $MCDDIR/functions.sh
 #GParted Live plugin for multicd.sh
-#version 6.4
-#Copyright (c) 2010 Isaac Schemm
+#version 6.9
+#Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,9 @@ if [ -f gparted.iso ];then
 	else
 		AP=""
 	fi
-echo "# Since no network setting in the squashfs image, therefore if ip=frommedia, the network is disabled. That's what we want.
+echo "menu begin >> GParted Live
+
+# Since no network setting in the squashfs image, therefore if ip=frommedia, the network is disabled. That's what we want.
 label GParted Live
   # MENU HIDE
   MENU LABEL GParted Live (Default settings)
@@ -55,7 +57,6 @@ label GParted Live
   * Disclaimer: GParted live comes with ABSOLUTELY NO WARRANTY
   ENDTEXT
 
-MENU BEGIN Other modes of GParted Live
 label GParted Live (To RAM)
   # MENU DEFAULT
   # MENU HIDE
