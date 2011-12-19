@@ -3,7 +3,7 @@ set -e
 
 #MCDDIR: directory where functions.sh, plugins.md5 and plugins folder are expected to be. Not used in a combined .sh file.
 export MCDDIR="."
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 
 MCDVERSION="6.8"
 #multicd.sh 6.8
@@ -95,11 +95,11 @@ for i do
 	esac
 done
 
-if ! touch $OUTPUT 2> /dev/null;then
-	echo "Error: cannot write to $OUTPUT"
+if ! touch "${OUTPUT}" 2> /dev/null;then
+	echo "Error: cannot write to "${OUTPUT}""
 	exit 1
 else
-	rm $OUTPUT
+	rm "${OUTPUT}"
 fi
 
 #--------Directory Variables--------#
@@ -131,17 +131,17 @@ if ( [ $EXTRACTOR = file-roller ] || [ $EXTRACTOR = ark ] ) && [ ! -n "$DISPLAY"
 	exit 1
 fi
 
-if [ -d $TAGS ];then rm -r $TAGS;fi
-mkdir -p $TAGS
-mkdir $TAGS/puppies
-#mkdir $TAGS/redhats (Not used anymore)
-chmod -R 777 $TAGS
+if [ -d "${TAGS}" ];then rm -r "${TAGS}";fi
+mkdir -p "${TAGS}"
+mkdir "${TAGS}"/puppies
+#mkdir "${TAGS}"/redhats (Not used anymore)
+chmod -R 777 "${TAGS}"
 
 #START PREPARE#
 
 #Plugin check currently disabled because it seems like more of a distraction than it's worth.
 #One parenthesis is for md5sums that don't match; the other is for plugins that are not listed in plugins.md5
-#UNKNOWNS="$(md5sum -c $MCDDIR/plugins.md5|grep FAILED|awk -F: '{print $1}') $(for i in $MCDDIR/plugins/*.sh;do grep -q $(basename $i) $MCDDIR/plugins.md5||echo $i;done)"
+#UNKNOWNS="$(md5sum -c "${MCDDIR}"/plugins.md5|grep FAILED|awk -F: '{print $1}') $(for i in "${MCDDIR}"/plugins/*.sh;do grep -q $(basename $i) "${MCDDIR}"/plugins.md5||echo $i;done)"
 #if [ "$UNKNOWNS" != " " ];then
 #	echo
 #	echo "Plugins that are not from the official release: $UNKNOWNS"
@@ -158,11 +158,11 @@ chmod -R 777 $TAGS
 isoaliases #This function is in functions.sh
 
 echo "multicd.sh $MCDVERSION"
-echo "Extracting ISO images with $EXTRACTOR; will build $OUTPUT; UID $(id -u)."
+echo "Extracting ISO images with $EXTRACTOR; will build "${OUTPUT}"; UID $(id -u)."
 echo
 
 #START SCAN
-for i in $MCDDIR/plugins/*.sh;do
+for i in "${MCDDIR}"/plugins/*.sh;do
 	$i scan
 done
 #END SCAN
@@ -214,13 +214,13 @@ if $INTERACTIVE;then
 
 	dialog --inputbox "Enter the language code for the language you would like to use.\n\
 Leaving this empty will leave the choice up to the plugin (usually English.)\n\
-Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> $TAGS/lang-full
-	LANGFULL="$(cat $TAGS/lang-full)"
+Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> "${TAGS}"/lang-full
+	LANGFULL="$(cat "${TAGS}"/lang-full)"
 	if [ "$LANGFULL" = "" ];then
-		rm $TAGS/lang-full #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
+		rm "${TAGS}"/lang-full #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
 	else
 		#Get two-letter code (e.g. the first part) for plugins that only use that part of the lang code
-		cat $TAGS/lang-full|awk -F_ '{print $1}' > $TAGS/lang
+		cat "${TAGS}"/lang-full|awk -F_ '{print $1}' > "${TAGS}"/lang
 	fi
 	if [ -f slax.iso ];then
 		dialog --checklist "Slax modules to include:" 13 45 6 \
@@ -230,12 +230,12 @@ Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> $TAGS
 		005 "KDE Office" on \
 		006 Development on \
 		007 Firefox on \
-		2> $TAGS/slaxlist0
-		echo >> $TAGS/slaxlist0
-		cat $TAGS/slaxlist0|sed -e 's/"//g' -e 's/ /\n/g'>$TAGS/slaxlist
-		rm $TAGS/slaxlist0
-		if wc -c $TAGS/slaxlist|grep -q 24;then #24 bytes means they are all checked
-			rm $TAGS/slaxlist #If they are all checked, delete the file
+		2> "${TAGS}"/slaxlist0
+		echo >> "${TAGS}"/slaxlist0
+		cat "${TAGS}"/slaxlist0|sed -e 's/"//g' -e 's/ /\n/g'>"${TAGS}"/slaxlist
+		rm "${TAGS}"/slaxlist0
+		if wc -c "${TAGS}"/slaxlist|grep -q 24;then #24 bytes means they are all checked
+			rm "${TAGS}"/slaxlist #If they are all checked, delete the file
 		fi
 	fi
 	if [ -f porteus.iso ];then
@@ -247,45 +247,45 @@ Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> $TAGS
 		006 KOffice on \
 		007 Development on \
 		008 Firefox on \
-		2> $TAGS/porteuslist0
-		echo >> $TAGS/porteuslist0
-		cat $TAGS/porteuslist0|sed -e 's/"//g' -e 's/ /\n/g'>$TAGS/porteuslist
-		rm $TAGS/porteuslist0
-		if wc -c $TAGS/porteuslist|grep -q 28;then #28 bytes means they are all checked
-			rm $TAGS/porteuslist #If they are all checked, delete the file
+		2> "${TAGS}"/porteuslist0
+		echo >> "${TAGS}"/porteuslist0
+		cat "${TAGS}"/porteuslist0|sed -e 's/"//g' -e 's/ /\n/g'>"${TAGS}"/porteuslist
+		rm "${TAGS}"/porteuslist0
+		if wc -c "${TAGS}"/porteuslist|grep -q 28;then #28 bytes means they are all checked
+			rm "${TAGS}"/porteuslist #If they are all checked, delete the file
 		fi
 	fi
 	if [ -f win98se.iso ] || [ -f winme.iso ];then
 		if dialog --yesno "Would you like to copy the \"tools\" and \"add-ons\" folders from the Windows 9x/Me CD?" 0 0;then
-			touch $TAGS/9xextras
+			touch "${TAGS}"/9xextras
 		fi
 	fi
-	if [ $(find $TAGS/puppies -maxdepth 1 -type f|wc -l) -gt 1 ] && which dialog &> /dev/null;then
+	if [ $(find "${TAGS}"/puppies -maxdepth 1 -type f|wc -l) -gt 1 ] && which dialog &> /dev/null;then
 		echo "dialog --radiolist \"Which Puppy variant would you like to be installable to HD from the disc?\" 13 45 6 \\">puppychooser
-		for i in $TAGS/puppies/*;do
+		for i in "${TAGS}"/puppies/*;do
 			echo $(basename $i) \"\" off \\ >> puppychooser
 		done
 		echo "2> puppyresult" >> puppychooser
 		sh puppychooser
-		touch $TAGS/puppies/$(cat puppyresult).inroot
+		touch "${TAGS}"/puppies/$(cat puppyresult).inroot
 		rm puppychooser puppyresult
 	fi
-	#if [ $(find $TAGS/redhats -maxdepth 1 -type f|wc -l) -gt 1 ] && which dialog &> /dev/null;then
+	#if [ $(find "${TAGS}"/redhats -maxdepth 1 -type f|wc -l) -gt 1 ] && which dialog &> /dev/null;then
 	#	echo "dialog --radiolist \"Which Red Hat/Fedora variant should have its files stored on the CD, so they don't need to be downloaded later?\" 13 45 6 \\">puppychooser
-	#	for i in $TAGS/redhats/*;do
+	#	for i in "${TAGS}"/redhats/*;do
 	#		echo $(basename $i) \"\" off \\ >> redhatchooser
 	#	done
 	#	echo "2> rehdatresult" >> redhatchooser
 	#	sh redhatchooser
-	#	touch $TAGS/redhats/$(cat redhatresult).images
+	#	touch "${TAGS}"/redhats/$(cat redhatresult).images
 	#	rm redhatchooser redhatresult
 	#fi
-	if [ $(find $TAGS/puppies -maxdepth 1 -type f|wc -l) -eq 1 ];then
-		NAME=$(ls $TAGS/puppies)
-		true>$(find $TAGS/puppies -maxdepth 1 -type f).inroot
+	if [ $(find "${TAGS}"/puppies -maxdepth 1 -type f|wc -l) -eq 1 ];then
+		NAME=$(ls "${TAGS}"/puppies)
+		true>$(find "${TAGS}"/puppies -maxdepth 1 -type f).inroot
 	fi
 	if which dialog &> /dev/null;then
-		for i in $(find $TAGS -maxdepth 1 -name \*.needsname);do
+		for i in $(find "${TAGS}" -maxdepth 1 -name \*.needsname);do
 			BASENAME=$(basename $i|sed -e 's/\.needsname//g')
 			if [ -f $BASENAME.defaultname ];then
 				DEFUALTTEXT=$(cat $BASENAME.defaultname)
@@ -294,15 +294,15 @@ Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> $TAGS
 			fi
 			dialog --inputbox "What would you like $BASENAME to be called on the CD boot menu?\n(Leave blank for the default.)" 10 70 \
 			2> $(echo $i|sed -e 's/needsname/name/g')
-			if [ "$(cat $TAGS/$BASENAME.name)" = "" ] && [ -f $BASENAME.defaultname ];then
-				cp $BASENAME.defaultname $TAGS/$BASENAME.name
+			if [ "$(cat "${TAGS}"/$BASENAME.name)" = "" ] && [ -f $BASENAME.defaultname ];then
+				cp $BASENAME.defaultname "${TAGS}"/$BASENAME.name
 			fi
 		done
 	else
-		for i in $(find $TAGS -maxdepth 1 -name \*.needsname);do
+		for i in $(find "${TAGS}" -maxdepth 1 -name \*.needsname);do
 			BASENAME=$(basename $i|sed -e 's/\.needsname//g')
 			if [ -f $BASENAME.defaultname ];then
-				cp $BASENAME.defaultname $TAGS/$BASENAME.name
+				cp $BASENAME.defaultname "${TAGS}"/$BASENAME.name
 			fi
 		done
 	fi
@@ -311,32 +311,32 @@ else
 	export CDLABEL=MultiCD
 	MENUCOLOR=44
 	TEXTCOLOR=37
-	#echo en > $TAGS/lang
-	touch $TAGS/9xextras
+	#echo en > "${TAGS}"/lang
+	touch "${TAGS}"/9xextras
 	for i in puppies;do
-		if [ $(find $TAGS/$i -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
-			touch $(find $TAGS/$i -maxdepth 1 -type f|head -n 1) #This way, the first one alphabetically will be in the root dir
+		if [ $(find "${TAGS}"/$i -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
+			touch $(find "${TAGS}"/$i -maxdepth 1 -type f|head -n 1) #This way, the first one alphabetically will be in the root dir
 		fi
 	done
-	for i in $(find $TAGS -maxdepth 1 -name \*.needsname);do
+	for i in $(find "${TAGS}" -maxdepth 1 -name \*.needsname);do
 		BASENAME=$(basename $i|sed -e 's/\.needsname//g')
 		if [ -f $BASENAME.defaultname ];then
-			cp $BASENAME.defaultname $TAGS/$BASENAME.name
+			cp $BASENAME.defaultname "${TAGS}"/$BASENAME.name
 		fi
 	done
 fi
 
-if [ -d $WORK ];then
- rm -r $WORK/*
+if [ -d "${WORK}" ];then
+ rm -r "${WORK}"/*
 else
- mkdir $WORK
+ mkdir "${WORK}"
 fi
 
 #Make sure it exists, you need to put stuff there later
-mkdir -p $WORK/boot/isolinux
+mkdir -p "${WORK}"/boot/isolinux
 
 #START COPY
-for i in $MCDDIR/plugins/*.sh;do
+for i in "${MCDDIR}"/plugins/*.sh;do
 	[ ! -x $i ]&&chmod +x $i
 	$i copy
 done
@@ -346,7 +346,7 @@ done
 j="0"
 for i in *.im[agz]; do
 	test -r "$i" || continue
-	cp "$i" $WORK/boot/$j.img
+	cp "$i" "${WORK}"/boot/$j.img
 	echo -n Copying $(echo $i|sed 's/\.im.//')"... "
 	if $VERBOSE;then
 		echo "Saved as "$j".img."
@@ -359,11 +359,11 @@ done
 #This chunk copies floppy images in the "games" folder. They will have their own submenu.
 if [ $GAMES = 1 ];then
 	k="0"
-	mkdir -p $WORK/boot/games
+	mkdir -p "${WORK}"/boot/games
 	for i in games/*.im[agz]; do
 		test -r "$i" || continue
 		echo -n Copying $(echo $i|sed 's/\.im.//'|sed 's/games\///')"... "
-		cp "$i" $WORK/boot/games/$k.img
+		cp "$i" "${WORK}"/boot/games/$k.img
 		if $VERBOSE;then
 			echo "Saved as games/"$k".img."
 		else
@@ -375,7 +375,7 @@ fi
 
 if [ -f grub.exe ];then
  echo "Copying GRUB4DOS..."
- cp grub.exe $WORK/boot/grub.exe
+ cp grub.exe "${WORK}"/boot/grub.exe
 fi
 
 if [ -f syslinux-4.03.tar.gz ] && [ ! -f syslinux.tar.gz ];then
@@ -385,28 +385,28 @@ fi
 if [ -f syslinux.tar.gz ];then
 	echo "Unpacking and copying SYSLINUX files..."
 	tar -C /tmp -xzf syslinux.tar.gz
-	cp /tmp/syslinux-*/core/isolinux.bin $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/memdisk/memdisk $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/com32/menu/menu.c32 $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/com32/modules/chain.c32 $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/utils/isohybrid $TAGS/isohybrid
-	chmod +x $TAGS/isohybrid
+	cp /tmp/syslinux-*/core/isolinux.bin "${WORK}"/boot/isolinux/
+	cp /tmp/syslinux-*/memdisk/memdisk "${WORK}"/boot/isolinux/
+	cp /tmp/syslinux-*/com32/menu/menu.c32 "${WORK}"/boot/isolinux/
+	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 "${WORK}"/boot/isolinux/
+	cp /tmp/syslinux-*/com32/modules/chain.c32 "${WORK}"/boot/isolinux/
+	cp /tmp/syslinux-*/utils/isohybrid "${TAGS}"/isohybrid
+	chmod +x "${TAGS}"/isohybrid
 	rm -r /tmp/syslinux-*/
 #elif [ -d /usr/lib/syslinux ];then
 #	if [ -f /usr/bin/isohybrid ];then
 #		echo "Copying from installed SYSLINUX files..."
-#		cp /usr/lib/syslinux/isolinux.bin $WORK/boot/isolinux/
-#		cp /usr/lib/syslinux/memdisk $WORK/boot/isolinux/
-#		cp /usr/lib/syslinux/menu.c32 $WORK/boot/isolinux/
-#		cp /usr/lib/syslinux/vesamenu.c32 $WORK/boot/isolinux/
-#		cp /usr/lib/syslinux/chain.c32 $WORK/boot/isolinux/
-#		cp /usr/bin/isohybrid $TAGS
+#		cp /usr/lib/syslinux/isolinux.bin "${WORK}"/boot/isolinux/
+#		cp /usr/lib/syslinux/memdisk "${WORK}"/boot/isolinux/
+#		cp /usr/lib/syslinux/menu.c32 "${WORK}"/boot/isolinux/
+#		cp /usr/lib/syslinux/vesamenu.c32 "${WORK}"/boot/isolinux/
+#		cp /usr/lib/syslinux/chain.c32 "${WORK}"/boot/isolinux/
+#		cp /usr/bin/isohybrid "${TAGS}"
 #	else
 #		echo "The installed SYSLINUX version does not include isohybrid. It might be out of date."
 #	fi
 fi
-if [ ! -f $WORK/boot/isolinux/isolinux.bin ];then
+if [ ! -f "${WORK}"/boot/isolinux/isolinux.bin ];then
 	echo "Downloading SYSLINUX..."
 	if $VERBOSE ;then #These will only be run if there is no syslinux.tar.gz
 		#Both of these need to be changed when a new version of syslinux comes out.
@@ -424,19 +424,19 @@ if [ ! -f $WORK/boot/isolinux/isolinux.bin ];then
 	fi
 	echo "Unpacking and copying files..."
 	tar -C /tmp -xzf syslinux.tar.gz
-	cp /tmp/syslinux-*/core/isolinux.bin $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/memdisk/memdisk $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/com32/menu/menu.c32 $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/com32/modules/chain.c32 $WORK/boot/isolinux/
-	cp /tmp/syslinux-*/utils/isohybrid $TAGS/isohybrid
-	chmod +x $TAGS/isohybrid
+	cp /tmp/syslinux-*/core/isolinux.bin "${WORK}"/boot/isolinux/
+	cp /tmp/syslinux-*/memdisk/memdisk "${WORK}"/boot/isolinux/
+	cp /tmp/syslinux-*/com32/menu/menu.c32 "${WORK}"/boot/isolinux/
+	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 "${WORK}"/boot/isolinux/
+	cp /tmp/syslinux-*/com32/modules/chain.c32 "${WORK}"/boot/isolinux/
+	cp /tmp/syslinux-*/utils/isohybrid "${TAGS}"/isohybrid
+	chmod +x "${TAGS}"/isohybrid
 	rm -r /tmp/syslinux-*/
 fi
 
 if $MEMTEST;then
 	if [ -f memtest ] && [ "$(wc -c memtest)" != "0" ];then
-		cp memtest $WORK/boot/memtest
+		cp memtest "${WORK}"/boot/memtest
 	else
 		echo "Downloading memtest86+ 4.20 from memtest.org..."
 		if $VERBOSE;then
@@ -445,7 +445,7 @@ if $MEMTEST;then
 			wget -qO- http://memtest.org/download/4.20/memtest86+-4.20.bin.gz|gzip -cd>memtest
 		fi
 		if [ -f memtest ] && [ "$(wc -c memtest)" != "0 memtest" ];then
-			cp memtest $WORK/boot/memtest
+			cp memtest "${WORK}"/boot/memtest
 		else
 			echo "Download of memtest failed."
 		fi
@@ -462,7 +462,7 @@ echo "Writing isolinux.cfg..."
 echo "DEFAULT menu.c32
 TIMEOUT 0
 PROMPT 0
-menu title $CDTITLE" > $WORK/boot/isolinux/isolinux.cfg
+menu title $CDTITLE" > "${WORK}"/boot/isolinux/isolinux.cfg
 #END HEADER#
 
 #BEGIN COLOR CODE#
@@ -491,7 +491,7 @@ menu title $CDTITLE" > $WORK/boot/isolinux/isolinux.cfg
 	menu color help 37;40
 	menu color msg07 37;40"|sed \
 	-e "s/30/$BORDERCOLOR/g" -e "s/44/$MENUCOLOR/g"|sed \
-	-e "s/unsel 37/unsel $TEXTCOLOR/g" >>$WORK/boot/isolinux/isolinux.cfg
+	-e "s/unsel 37/unsel $TEXTCOLOR/g" >>"${WORK}"/boot/isolinux/isolinux.cfg
 #END COLOR CODE#
 
 #BEGIN HD BOOT OPTION#
@@ -499,10 +499,10 @@ menu title $CDTITLE" > $WORK/boot/isolinux/isolinux.cfg
 echo "label local
 menu label Boot from ^hard drive
 kernel chain.c32
-append hd0" >> $WORK/boot/isolinux/isolinux.cfg
+append hd0" >> "${WORK}"/boot/isolinux/isolinux.cfg
 #END HD BOOT OPTION#
 #START WRITE
-for i in $MCDDIR/plugins/*.sh;do
+for i in "${MCDDIR}"/plugins/*.sh;do
 	[ ! -x $i ]&&chmod +x $i
 	$i writecfg
 done
@@ -513,22 +513,22 @@ j="0"
 for i in *.im[agz]; do
 	test -r "$i" || continue
 	BASICNAME=$(echo $i|sed 's/\.im.//')
-	echo label "$BASICNAME" >> $WORK/boot/isolinux/isolinux.cfg
-	echo kernel memdisk >> $WORK/boot/isolinux/isolinux.cfg
-	echo initrd /boot/$j.img >> $WORK/boot/isolinux/isolinux.cfg
+	echo label "$BASICNAME" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	echo kernel memdisk >> "${WORK}"/boot/isolinux/isolinux.cfg
+	echo initrd /boot/$j.img >> "${WORK}"/boot/isolinux/isolinux.cfg
 	j=$( expr $j + 1 )
 done
 #END DISK IMAGE ENTRY#
 
 #BEGIN GRUB4DOS ENTRY#
-if [ -f $WORK/boot/grub.exe ];then
+if [ -f "${WORK}"/boot/grub.exe ];then
 echo "label grub4dos
 menu label ^GRUB4DOS
-kernel /boot/grub.exe">>$WORK/boot/isolinux/isolinux.cfg
-elif [ -f $WORK/boot/riplinux/grub4dos/grub.exe ];then
+kernel /boot/grub.exe">>"${WORK}"/boot/isolinux/isolinux.cfg
+elif [ -f "${WORK}"/boot/riplinux/grub4dos/grub.exe ];then
 echo "label grub4dos
 menu label ^GRUB4DOS
-kernel /boot/riplinux/grub4dos/grub.exe">>$WORK/boot/isolinux/isolinux.cfg
+kernel /boot/riplinux/grub4dos/grub.exe">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
 #END GRUB4DOS ENTRY#
 
@@ -537,22 +537,22 @@ if [ $GAMES = 1 ];then
 echo "label games
 menu label ^Games on disk images
 com32 menu.c32
-append games.cfg">>$WORK/boot/isolinux/isolinux.cfg
+append games.cfg">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
 #END GAMES ENTRY#
 
 #BEGIN MEMTEST ENTRY#
-if [ -f $WORK/boot/memtest ];then
+if [ -f "${WORK}"/boot/memtest ];then
 echo "label memtest
 menu label ^Memtest86+
-kernel /boot/memtest">>$WORK/boot/isolinux/isolinux.cfg
+kernel /boot/memtest">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
 #END MEMTEST ENTRY#
 ##END ISOLINUX MENU CODE##
 
 if [ $GAMES = 1 ];then
 k="0"
-cat > $WORK/boot/isolinux/games.cfg << "EOF"
+cat > "${WORK}"/boot/isolinux/games.cfg << "EOF"
 default menu.c32
 timeout 300
 
@@ -561,24 +561,24 @@ EOF
 for i in games/*.im[agz]; do
 	test -r "$i" || continue
 	BASICNAME=$(echo $i|sed 's/\.im.//'|sed 's/games\///')
-	echo label "$BASICNAME" >> $WORK/boot/isolinux/games.cfg
-	echo kernel memdisk >> $WORK/boot/isolinux/games.cfg
-	echo initrd /boot/games/$k.img >> $WORK/boot/isolinux/games.cfg
+	echo label "$BASICNAME" >> "${WORK}"/boot/isolinux/games.cfg
+	echo kernel memdisk >> "${WORK}"/boot/isolinux/games.cfg
+	echo initrd /boot/games/$k.img >> "${WORK}"/boot/isolinux/games.cfg
 	k=$( expr $k + 1 )
 done
 echo "label back
 menu label Back to main menu
 com32 menu.c32
-append isolinux.cfg">>$WORK/boot/isolinux/games.cfg
+append isolinux.cfg">>"${WORK}"/boot/isolinux/games.cfg
 fi
 
 if [ -d includes ] && [ "$(echo empty/.* empty/*)" != 'empty/. empty/.. empty/*' ] ;then
  echo "Copying includes..."
- cp -r includes/* $WORK/
+ cp -r includes/* "${WORK}"/
 fi
 
 if $DEBUG;then
-	chmod -R a+w $WORK/boot/isolinux #So regular users can edit menus
+	chmod -R a+w "${WORK}"/boot/isolinux #So regular users can edit menus
 	echo "    Dropping to $(whoami) prompt. Type \"exit\" to build the ISO image."
 	echo "    Don't do anything hasty."
 	echo "PS1=\"    mcd debug# \"">/tmp/mcdprompt
@@ -594,11 +594,11 @@ if $MD5;then
 		MD5SUM=md5
 	fi
 	if $VERBOSE;then
-		find $WORK/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin \
-		-exec $MD5SUM '{}' \; | sed "s^$WORK^^g" | tee $WORK/md5sum.txt
+		find "${WORK}"/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin \
+		-exec $MD5SUM '{}' \; | sed "s^"${WORK}"^^g" | tee "${WORK}"/md5sum.txt
 	else
-		find $WORK/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin\
-		-exec $MD5SUM '{}' \; | sed "s^$WORK^^g" > $WORK/md5sum.txt
+		find "${WORK}"/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin\
+		-exec $MD5SUM '{}' \; | sed "s^"${WORK}"^^g" > "${WORK}"/md5sum.txt
 	fi
 fi
 
@@ -614,28 +614,28 @@ EXTRAARGS=""
 if ! $VERBOSE;then
 	EXTRAARGS="$EXTRAARGS -quiet"
 fi
-if [ ! -f $TAGS/win9x ];then
+if [ ! -f "${TAGS}"/win9x ];then
 	EXTRAARGS="$EXTRAARGS -iso-level 4" #To ensure that Windows 9x installation CDs boot properly
 fi
 echo "Building CD image..."
-$GENERATOR -o "$OUTPUT" \
+$GENERATOR -o ""${OUTPUT}"" \
 -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
 -no-emul-boot -boot-load-size 4 -boot-info-table \
 -r -J $EXTRAARGS \
--V "$CDLABEL" $WORK/
-rm -rf $WORK/
+-V "$CDLABEL" "${WORK}"/
+rm -rf "${WORK}"/
 
 echo "Running isohybrid..."
 #if which isohybrid > /dev/null;then
-#	isohybrid "$OUTPUT" 2> /dev/null || echo "The installed isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
+#	isohybrid ""${OUTPUT}"" 2> /dev/null || echo "The installed isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
 #else
-	$TAGS/isohybrid "$OUTPUT" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
-	rm $TAGS/isohybrid
+	"${TAGS}"/isohybrid ""${OUTPUT}"" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
+	rm "${TAGS}"/isohybrid
 #fi
 if [ $(whoami) == "root" ];then
-	chmod 666 "$OUTPUT"
+	chmod 666 ""${OUTPUT}""
 fi
-rm -r $TAGS $MNT
+rm -r "${TAGS}" $MNT
 
 if $TESTISO;then
 	RAM_FREE=$(free -m|awk 'NR == 3 {print $4}') #Current free RAM in MB, without buffers/cache
@@ -650,11 +650,11 @@ if $TESTISO;then
 		RAM_TO_USE=128
 	fi
 	if which kvm &> /dev/null;then
-		kvm -m $RAM_TO_USE -cdrom "$OUTPUT"&
+		kvm -m $RAM_TO_USE -cdrom ""${OUTPUT}""&
 	elif which qemu &> /dev/null;then
-		qemu -m $RAM_TO_USE -cdrom "$OUTPUT"&
+		qemu -m $RAM_TO_USE -cdrom ""${OUTPUT}""&
 	else
-		echo "Cannot test $OUTPUT in a VM. Please install qemu or qemu-kvm."
+		echo "Cannot test "${OUTPUT}" in a VM. Please install qemu or qemu-kvm."
 	fi
 fi
 

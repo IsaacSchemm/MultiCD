@@ -105,7 +105,7 @@ tinycorecommon () {
 	if [ ! -z "$1" ] && [ -f $1.iso ];then
 		mcdmount $1
 		mkdir $WORK/boot/tinycore
-		cp $MNT/$1/boot/bzImage $WORK/boot/tinycore/vmlinuz #Linux kernel - 4.0 or newer
+		cp $MNT/$1/boot/vmlinuz $WORK/boot/tinycore/vmlinuz #Linux kernel - 4.0 or newer
 		cp $MNT/$1/boot/*.gz $WORK/boot/tinycore/ #Copy any initrd there may be - this works for microcore too
 		if [ -d $MNT/$1/tce ];then
 			cp -r $MNT/$1/tce $WORK/
