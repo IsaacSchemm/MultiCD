@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #AVG Rescue CD plugin for multicd.sh
-#version 6.2
+#version 6.9
 #Copyright for this script (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,11 +32,11 @@ elif [ $1 = copy ];then
 	if [ -f avg.iso ];then
 		echo "Copying AVG Rescue CD..."
 		mcdmount avg
-		mkdir $WORK/boot/avg
-		cp $MNT/avg/isolinux/vmlinuz $WORK/boot/avg/
-		cp $MNT/avg/isolinux/initrd.lzm $WORK/boot/avg/
-		cp $MNT/avg/CHANGELOG $WORK/boot/avg/
-		cp $MNT/avg/arl-version $WORK/
+		mkdir "${WORK}"/boot/avg
+		cp "${MNT}"/avg/isolinux/vmlinuz "${WORK}"/boot/avg/
+		cp "${MNT}"/avg/isolinux/initrd.lzm "${WORK}"/boot/avg/
+		cp "${MNT}"/avg/CHANGELOG "${WORK}"/boot/avg/
+		cp "${MNT}"/avg/arl-version "${WORK}"/
 		umcdmount avg
 	fi
 elif [ $1 = writecfg ];then
@@ -46,7 +46,7 @@ if [ -f avg.iso ];then
 #else
 #	AVGVER=""
 #fi
-AVGVER=" ($(cat $WORK/arl-version))"
+AVGVER=" ($(cat "${WORK}"/arl-version))"
 echo "MENU BEGIN --> AVG Rescue CD$AVGVER
 
 label arl
@@ -72,7 +72,7 @@ label back
 	menu label Back to main menu
 	com32 menu.c32
 	append isolinux.cfg
-menu end" >> $WORK/boot/isolinux/isolinux.cfg
+menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

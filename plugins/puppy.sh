@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Puppy Linux plugin for multicd.sh
-#version 6.7 (last functional change: 6.6)
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,9 +27,9 @@ if [ $1 = links ];then
 elif [ $1 = scan ];then
 	if [ -f puppy.iso ];then
 		echo "Puppy Linux"
-		#touch $TAGS/puppy.needsname #Comment out this line and multicd.sh won't ask for a custom name for this ISO
-		touch $TAGS/puppies/puppy
-		mkdir -p $TAGS/puppies
+		#touch "${TAGS}"/puppy.needsname #Comment out this line and multicd.sh won't ask for a custom name for this ISO
+		touch "${TAGS}"/puppies/puppy
+		mkdir -p "${TAGS}"/puppies
 	fi
 elif [ $1 = copy ];then
 	if [ -f puppy.iso ];then
@@ -39,8 +39,8 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 #BEGIN PUPPY ENTRY#
 if [ -f puppy.iso ];then
-if [ -f $TAGS/puppy.name ] && [ "$(cat $TAGS/puppy.name)" != "" ];then
-	PUPNAME=$(cat $TAGS/puppy.name) #User-entered name
+if [ -f "${TAGS}"/puppy.name ] && [ "$(cat "${TAGS}"/puppy.name)" != "" ];then
+	PUPNAME=$(cat "${TAGS}"/puppy.name) #User-entered name
 elif [ -f puppy.defaultname ] && [ "$(cat puppy.defaultname)" != "" ];then
 	PUPNAME=$(cat puppy.defaultname) #Default name based on the automatic links made in isoaliases()
 else
@@ -49,7 +49,7 @@ fi
 if [ -f puppy.version ] && [ "$(cat puppy.version)" != "" ];then
 	PUPNAME="$PUPNAME $(cat puppy.version)" #Version based on isoaliases()
 fi
-if [ -d $WORK/puppy ];then
+if [ -d "${WORK}"/puppy ];then
 	EXTRAARGS="psubdir=puppy"
 	KERNELPATH="/puppy"
 else
@@ -71,7 +71,7 @@ initrd $KERNELPATH/initrd.gz
 #kernel $KERNELPATH/vmlinuz
 #append pmedia=cd pfix=noram $EXTRAARGS
 #initrd $KERNELPATH/initrd.gz
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 #END PUPPY ENTRY#
 else

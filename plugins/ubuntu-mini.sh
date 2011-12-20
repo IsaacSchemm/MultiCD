@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Ubuntu installer plugin for multicd.sh
-#version 6.6 (last fuctional change: 5.0)
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,9 +30,9 @@ elif [ $1 = copy ];then
 	if [ -f ubuntu-mini.iso ];then
 		echo "Copying Ubuntu netboot installer..."
 		mcdmount ubuntu-mini
-		mkdir $WORK/boot/ubuntu
-		cp $MNT/ubuntu-mini/linux $WORK/boot/ubuntu/linux
-		cp $MNT/ubuntu-mini/initrd.gz $WORK/boot/ubuntu/initrd.gz
+		mkdir "${WORK}"/boot/ubuntu
+		cp "${MNT}"/ubuntu-mini/linux "${WORK}"/boot/ubuntu/linux
+		cp "${MNT}"/ubuntu-mini/initrd.gz "${WORK}"/boot/ubuntu/initrd.gz
 		umcdmount ubuntu-mini
 	fi
 elif [ $1 = writecfg ];then
@@ -54,7 +54,7 @@ if [ -f ubuntu-mini.iso ];then
 	menu label Install Ubuntu (CLI) - expert mode
 		kernel /boot/ubuntu/linux
 		append tasks=standard pkgsel/language-pack-patterns= pkgsel/install-language-support=false priority=low vga=normal initrd=/boot/ubuntu/initrd.gz -- 
-	" >> $WORK/boot/isolinux/isolinux.cfg
+	" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

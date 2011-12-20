@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #openSUSE installer plugin for multicd.sh
-#version 6.2
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,10 +32,10 @@ elif [ $1 = copy ];then
 	if [ -f opensuse-net.iso ];then
 		echo "Copying openSUSE netboot installer..."
 		mcdmount opensuse-net
-		mkdir -p $WORK/boot/opensuse
-		awk '/^VERSION/ {print $2}' $MNT/opensuse-net/content > $TAGS/opensuse-net.version
-		cp $MNT/opensuse-net/boot/i386/loader/linux $WORK/boot/opensuse/linux
-		cp $MNT/opensuse-net/boot/i386/loader/initrd $WORK/boot/opensuse/initrd
+		mkdir -p "${WORK}"/boot/opensuse
+		awk '/^VERSION/ {print $2}' "${MNT}"/opensuse-net/content > "${TAGS}"/opensuse-net.version
+		cp "${MNT}"/opensuse-net/boot/i386/loader/linux "${WORK}"/boot/opensuse/linux
+		cp "${MNT}"/opensuse-net/boot/i386/loader/initrd "${WORK}"/boot/opensuse/initrd
 		umcdmount opensuse-net
 	fi
 elif [ $1 = writecfg ];then
@@ -43,11 +43,11 @@ if [ -f opensuse-net.iso ];then
 echo "menu begin --> ^openSUSE netboot
 
 label opensuse-kernel
-  menu label Install ^openSUSE $(cat $TAGS/opensuse-net.version) (from mirrors.kernel.org)
+  menu label Install ^openSUSE $(cat "${TAGS}"/opensuse-net.version) (from mirrors.kernel.org)
   kernel /boot/opensuse/linux
-  append initrd=/boot/opensuse/initrd splash=silent showopts install=ftp://mirrors.kernel.org/opensuse/distribution/"$(cat $TAGS/opensuse-net.version)"/repo/oss
+  append initrd=/boot/opensuse/initrd splash=silent showopts install=ftp://mirrors.kernel.org/opensuse/distribution/"$(cat "${TAGS}"/opensuse-net.version)"/repo/oss
 label opensuse
-  menu label Install openSUSE $(cat $TAGS/opensuse-net.version) (specify mirror)
+  menu label Install openSUSE $(cat "${TAGS}"/opensuse-net.version) (specify mirror)
   kernel /boot/opensuse/linux
   append initrd=/boot/opensuse/initrd splash=silent showopts
 label opensuse-repair
@@ -64,7 +64,7 @@ label back
   append isolinux.cfg
 
 menu end
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

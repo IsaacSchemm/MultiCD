@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Mandriva Linux plugin for multicd.sh
 #version 6.9
 #Copyright (c) 2011 Isaac Schemm
@@ -33,15 +33,15 @@ elif [ $1 = copy ];then
 	if [ -f mandriva.iso ];then
 		echo "Copying Mandriva Linux..."
 		mcdmount mandriva
-		if [ -d $WORK/LiveOS ];then
+		if [ -d "${WORK}"/LiveOS ];then
 			echo "Warning: \$WORK/LiveOS exists. Mandriva Linux conflicts with another CD on the ISO."
 		fi
-		cp -r $MNT/mandriva/LiveOS $WORK/
-		mkdir -p $WORK/boot/mandriva
-		cp $MNT/mandriva/isolinux/vmlinuz* $WORK/boot/mandriva
-		cp $MNT/mandriva/isolinux/initrd* $WORK/boot/mandriva
-		cp $MNT/mandriva/isolinux/isolinux.cfg $WORK/boot/mandriva/mandriva.cfg
-		cp $MNT/mandriva/isolinux/splash.jpg $WORK/boot/mandriva/
+		cp -r "${MNT}"/mandriva/LiveOS "${WORK}"/
+		mkdir -p "${WORK}"/boot/mandriva
+		cp "${MNT}"/mandriva/isolinux/vmlinuz* "${WORK}"/boot/mandriva
+		cp "${MNT}"/mandriva/isolinux/initrd* "${WORK}"/boot/mandriva
+		cp "${MNT}"/mandriva/isolinux/isolinux.cfg "${WORK}"/boot/mandriva/mandriva.cfg
+		cp "${MNT}"/mandriva/isolinux/splash.jpg "${WORK}"/boot/mandriva/
 		umcdmount mandriva
 	fi
 elif [ $1 = writecfg ];then
@@ -57,17 +57,17 @@ elif [ $1 = writecfg ];then
 		menu label --> ^Mandriva$(getVersion) Menu
 		com32 vesamenu.c32
 		append /boot/$BASENAME/$BASENAME.cfg
-		" >> $WORK/boot/isolinux/isolinux.cfg
+		" >> "${WORK}"/boot/isolinux/isolinux.cfg
 
 		echo "label back
 		menu label --> ^Back to main menu
 		com32 menu.c32
 		append /boot/isolinux/isolinux.cfg
-		" >> $WORK/boot/$BASENAME/$BASENAME.cfg
-		sed -i -e 's^menu background splash^menu background /boot/mandriva/splash^g' $WORK/boot/$BASENAME/$BASENAME.cfg
-		sed -i -e 's^kernel vmlinuz^kernel /boot/mandriva/vmlinuz^g' $WORK/boot/$BASENAME/$BASENAME.cfg
-		sed -i -e 's^initrd=initrd^initrd=/boot/mandriva/initrd^g' $WORK/boot/$BASENAME/$BASENAME.cfg
-		sed -i -e "s/CDLABEL=[^ ]*/CDLABEL=${CDLABEL}/g" $WORK/boot/$BASENAME/$BASENAME.cfg
+		" >> "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+		sed -i -e 's^menu background splash^menu background /boot/mandriva/splash^g' "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+		sed -i -e 's^kernel vmlinuz^kernel /boot/mandriva/vmlinuz^g' "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+		sed -i -e 's^initrd=initrd^initrd=/boot/mandriva/initrd^g' "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+		sed -i -e "s/CDLABEL=[^ ]*/CDLABEL=${CDLABEL}/g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

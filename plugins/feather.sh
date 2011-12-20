@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Feather Linux plugin for multicd.sh
-#version 6.1
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,11 +30,11 @@ elif [ $1 = copy ];then
 	if [ -f feather.iso ];then
 		echo "Copying Feather..."
 		mcdmount feather
-		mkdir $WORK/FEATHER
-		cp -R $MNT/feather/KNOPPIX/* $WORK/FEATHER/ #Compressed filesystem
-		mkdir $WORK/boot/feather
-		cp $MNT/feather/boot/isolinux/linux24 $WORK/boot/feather/linux24
-		cp $MNT/feather/boot/isolinux/minirt24.gz $WORK/boot/feather/minirt24.gz
+		mkdir "${WORK}"/FEATHER
+		cp -R "${MNT}"/feather/KNOPPIX/* "${WORK}"/FEATHER/ #Compressed filesystem
+		mkdir "${WORK}"/boot/feather
+		cp "${MNT}"/feather/boot/isolinux/linux24 "${WORK}"/boot/feather/linux24
+		cp "${MNT}"/feather/boot/isolinux/minirt24.gz "${WORK}"/boot/feather/minirt24.gz
 		umcdmount feather
 	fi
 elif [ $1 = writecfg ];then
@@ -51,7 +51,7 @@ LABEL feather-2
 MENU LABEL Feather Linux (boot to command line)
 KERNEL /boot/feather/linux24
 APPEND ramdisk_size=100000 init=/etc/init lang=us apm=power-off vga=791 initrd=/boot/feather/minirt24.gz knoppix_dir=FEATHER nomce quiet 2 BOOT_IMAGE=knoppix
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

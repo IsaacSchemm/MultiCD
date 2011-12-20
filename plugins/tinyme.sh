@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #TinyMe plugin for multicd.sh
-#version 6.6 (last functional change: 5.0)
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,15 +30,15 @@ elif [ $1 = copy ];then
 	if [ -f tinyme.iso ];then
 		echo "Copying TinyMe..."
 		mcdmount tinyme
-		cp $MNT/tinyme/livecd.sqfs $WORK/livecd.sqfs #Compressed filesystem
-		mkdir -p $WORK/boot/tinyme
-		cp $MNT/tinyme/isolinux/vmlinuz $WORK/boot/tinyme/vmlinuz
-		cp $MNT/tinyme/isolinux/initrd.gz $WORK/boot/tinyme/initrd.gz
+		cp "${MNT}"/tinyme/livecd.sqfs "${WORK}"/livecd.sqfs #Compressed filesystem
+		mkdir -p "${WORK}"/boot/tinyme
+		cp "${MNT}"/tinyme/isolinux/vmlinuz "${WORK}"/boot/tinyme/vmlinuz
+		cp "${MNT}"/tinyme/isolinux/initrd.gz "${WORK}"/boot/tinyme/initrd.gz
 		umcdmount tinyme
 	fi
 elif [ $1 = writecfg ];then
 if [ -f tinyme.iso ];then
-cat >> $WORK/boot/isolinux/isolinux.cfg << "EOF"
+cat >> "${WORK}"/boot/isolinux/isolinux.cfg << "EOF"
 label LiveCD
     menu label ^TinyMe - LiveCD
     kernel /boot/tinyme/vmlinuz

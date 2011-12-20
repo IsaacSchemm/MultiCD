@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #DSL plugin for multicd.sh
-#version 6.0
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,10 +30,10 @@ elif [ $1 = copy ];then
 	if [ -f dsl.iso ];then
 		echo "Copying Damn Small Linux..."
 		mcdmount dsl
-		mkdir $WORK/KNOPPIX
-		cp -r $MNT/dsl/KNOPPIX/* $WORK/KNOPPIX/ #Compressed filesystem. We put it here so DSL's installer can find it.
-		cp $MNT/dsl/boot/isolinux/linux24 $WORK/boot/isolinux/linux24 #Kernel. See above.
-		cp $MNT/dsl/boot/isolinux/minirt24.gz $WORK/boot/isolinux/minirt24.gz #Initial ramdisk. See above.
+		mkdir "${WORK}"/KNOPPIX
+		cp -r "${MNT}"/dsl/KNOPPIX/* "${WORK}"/KNOPPIX/ #Compressed filesystem. We put it here so DSL's installer can find it.
+		cp "${MNT}"/dsl/boot/isolinux/linux24 "${WORK}"/boot/isolinux/linux24 #Kernel. See above.
+		cp "${MNT}"/dsl/boot/isolinux/minirt24.gz "${WORK}"/boot/isolinux/minirt24.gz #Initial ramdisk. See above.
 		umcdmount dsl
 	fi
 elif [ $1 = writecfg ];then
@@ -96,7 +96,7 @@ com32 menu.c32
 append isolinux.cfg
 
 MENU END
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

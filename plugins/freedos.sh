@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #FreeDOS installer plugin for multicd.sh
-#version 6.7
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,18 +33,18 @@ elif [ $1 = copy ];then
 	if [ -f freedos.iso ];then
 		echo "Copying FreeDOS..."
 		mcdmount freedos
-		mkdir $WORK/boot/freedos
-		cp -r $MNT/freedos/freedos $WORK/ #Core directory with the packages
-		cp $MNT/freedos/setup.bat $WORK/setup.bat #FreeDOS setup
-		cp $MNT/freedos/isolinux/data/fdboot.img $WORK/boot/freedos/fdboot.img #Initial DOS boot image
-		if [ -d $MNT/freedos/fdos ];then
-			cp -r $MNT/freedos/fdos $WORK/ #Live CD
+		mkdir "${WORK}"/boot/freedos
+		cp -r "${MNT}"/freedos/freedos "${WORK}"/ #Core directory with the packages
+		cp "${MNT}"/freedos/setup.bat "${WORK}"/setup.bat #FreeDOS setup
+		cp "${MNT}"/freedos/isolinux/data/fdboot.img "${WORK}"/boot/freedos/fdboot.img #Initial DOS boot image
+		if [ -d "${MNT}"/freedos/fdos ];then
+			cp -r "${MNT}"/freedos/fdos "${WORK}"/ #Live CD
 		fi
-		if [ -d $MNT/freedos/gemapps ];then
-			cp -r $MNT/freedos/gemapps $WORK/ #OpenGEM
+		if [ -d "${MNT}"/freedos/gemapps ];then
+			cp -r "${MNT}"/freedos/gemapps "${WORK}"/ #OpenGEM
 		fi
-		if [ -f $MNT/freedos/gem.bat ];then
-			cp -r $MNT/freedos/gem.bat $WORK/ #OpenGEM setup
+		if [ -f "${MNT}"/freedos/gem.bat ];then
+			cp -r "${MNT}"/freedos/gem.bat "${WORK}"/ #OpenGEM setup
 		fi
 		umcdmount freedos
 	fi
@@ -59,7 +59,7 @@ elif [ $1 = writecfg ];then
 		menu label ^$NAME
 		kernel memdisk
 		append initrd=/boot/freedos/fdboot.img
-		" >> $WORK/boot/isolinux/isolinux.cfg
+		" >> "${WORK}"/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

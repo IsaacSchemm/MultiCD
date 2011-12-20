@@ -107,9 +107,9 @@ fi
 export WORK="$(pwd)/multicd-working"
 #MNT: the directory inside which new folders will be made to mount the ISO images.
 export MNT="$(pwd)/temporary-mountpoints"
-mkdir -p $MNT
+mkdir -p "${MNT}"
 #TAGS: used to store small text files (temporary)
-export TAGS="$MNT/tags"
+export TAGS="${MNT}/tags"
 
 if [ $(whoami) = root ] && uname|grep -q Linux;then
 	export EXTRACTOR=mount #When possible, loop-mount is preferred because it is faster (files are copied once, not twice, before the ISO is generated) and because it runs without an X server. However, it is only available to root, which opens up security risks.
@@ -635,7 +635,7 @@ echo "Running isohybrid..."
 if [ $(whoami) == "root" ];then
 	chmod 666 ""${OUTPUT}""
 fi
-rm -r "${TAGS}" $MNT
+rm -r "${TAGS}" "${MNT}"
 
 if $TESTISO;then
 	RAM_FREE=$(free -m|awk 'NR == 3 {print $4}') #Current free RAM in MB, without buffers/cache

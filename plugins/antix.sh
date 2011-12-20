@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #antiX Linux plugin for multicd.sh
-#version 6.4
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,10 +30,10 @@ elif [ $1 = copy ];then
 	if [ -f antix.iso ];then
 		echo "Copying AntiX..."
 		mcdmount antix
-		cp -r $MNT/antix/antiX $WORK/ #Everything in antiX but the kernel and initrd
-		mkdir -p $WORK/boot/antix
-		cp $MNT/antix/boot/vmlinuz $WORK/boot/antix/vmlinuz #Kernel
-		cp $MNT/antix/boot/initrd.gz $WORK/boot/antix/initrd.gz #Initrd
+		cp -r "${MNT}"/antix/antiX "${WORK}"/ #Everything in antiX but the kernel and initrd
+		mkdir -p "${WORK}"/boot/antix
+		cp "${MNT}"/antix/boot/vmlinuz "${WORK}"/boot/antix/vmlinuz #Kernel
+		cp "${MNT}"/antix/boot/initrd.gz "${WORK}"/boot/antix/initrd.gz #Initrd
 		umcdmount antix
 	fi
 elif [ $1 = writecfg ];then
@@ -41,7 +41,7 @@ if [ -f antix.iso ];then
 echo "label anitX
 menu label ^antiX
 com32 menu.c32
-append antix.menu" >> $WORK/boot/isolinux/isolinux.cfg
+append antix.menu" >> "${WORK}"/boot/isolinux/isolinux.cfg
 echo "DEFAULT menu.c32
 TIMEOUT 0
 PROMPT 0
@@ -85,7 +85,7 @@ label back
 menu label ^Back to main menu
 com32 menu.c32
 append isolinux.cfg
-" > $WORK/boot/isolinux/antix.menu
+" > "${WORK}"/boot/isolinux/antix.menu
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Wolvix plugin for multicd.sh
-#version 6.6
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,21 +30,21 @@ elif [ $1 = copy ];then
 	if [ -f wolvix.iso ];then
 		echo "Copying Wolvix..."
 		mcdmount wolvix
-		cp -r $MNT/wolvix/wolvix $WORK/ #The Wolvix folder with all its files
+		cp -r "${MNT}"/wolvix/wolvix "${WORK}"/ #The Wolvix folder with all its files
 		#The kernel/initrd must be here for the installer
-		if [ ! -f $WORK/boot/vmlinuz ]] && [ ! -f $WORK/boot/initrd.gz ];then
-			cp $MNT/wolvix/boot/vmlinuz $WORK/boot/vmlinuz
-			cp $MNT/wolvix/boot/initrd.gz $WORK/boot/initrd.gz
+		if [ ! -f "${WORK}"/boot/vmlinuz ]] && [ ! -f "${WORK}"/boot/initrd.gz ];then
+			cp "${MNT}"/wolvix/boot/vmlinuz "${WORK}"/boot/vmlinuz
+			cp "${MNT}"/wolvix/boot/initrd.gz "${WORK}"/boot/initrd.gz
 		else
-			mkdir -p $WORK/boot/wolvix
-			cp $MNT/wolvix/boot/vmlinuz $WORK/boot/wolvix/vmlinuz
-			cp $MNT/wolvix/boot/initrd.gz $WORK/boot/wolvix/initrd.gz
+			mkdir -p "${WORK}"/boot/wolvix
+			cp "${MNT}"/wolvix/boot/vmlinuz "${WORK}"/boot/wolvix/vmlinuz
+			cp "${MNT}"/wolvix/boot/initrd.gz "${WORK}"/boot/wolvix/initrd.gz
 		fi
 		umcdmount wolvix
 	fi
 elif [ $1 = writecfg ];then
 if [ -f wolvix.iso ];then
-	if [ -f $WORK/boot/wolvix/vmlinuz ];then
+	if [ -f "${WORK}"/boot/wolvix/vmlinuz ];then
 		KERNELPATH="/boot/wolvix"
 	else
 		KERNELPATH="/boot"
@@ -53,7 +53,7 @@ if [ -f wolvix.iso ];then
 	menu label ^Wolvix GNU/Linux (login as root, password is toor)
 	kernel $KERNELPATH/vmlinuz
 	append changes=wolvixsave.xfs max_loop=255 initrd=$KERNELPATH/initrd.gz ramdisk_size=6666 root=/dev/ram0 rw vga=791 splash=silent
-	" >> $WORK/boot/isolinux/isolinux.cfg
+	" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

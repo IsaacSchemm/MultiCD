@@ -65,3 +65,4 @@
 #v6.6 - Several bugfixes. Added a second plugin for Windows 7 Recovery (can be loaded from RAM. (May 26, 2011)
 #v6.7 - Added archboot, zorin, redobackup, pinguy, fusion, sabayon; updated porteus & finnix. Command-line options changed. Added a -o option for changing the output filename. KDE's ark or GNOME's file-roller can now be used to extract ISOs, so you don't need to be root. (June 30, 2011)
 #v6.8 - Added XBMC, several updates (September 15, 2011)
+#v6.9 - Updateds tinycore, added lots of quotes around variables for better operation in folders with spaces. (UNREL)

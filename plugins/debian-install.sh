@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Debian netinst (i386) plugin for multicd.sh
-#version 6.6
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,15 +32,15 @@ elif [ $1 = copy ];then
 	if [ -f debian-install.iso ];then
 		echo "Copying Debian netinst..."
 		mcdmount debian-install
-		if [ ! -d $WORK/.disk ];then
-			cp -r $MNT/debian-install/.disk $WORK
+		if [ ! -d "${WORK}"/.disk ];then
+			cp -r "${MNT}"/debian-install/.disk "${WORK}"
 		else
-			echo "Debian GNU/Linux (MultiCD) $(date -u)" > $WORK/.disk/info
+			echo "Debian GNU/Linux (MultiCD) $(date -u)" > "${WORK}"/.disk/info
 		fi
-		cp -r $MNT/debian-install/dists $WORK
-		cp -r $MNT/debian-install/install.386 $WORK
-		cp -r $MNT/debian-install/pool $WORK
-		cp $MNT/debian-install/dedication.txt $WORK || true
+		cp -r "${MNT}"/debian-install/dists "${WORK}"
+		cp -r "${MNT}"/debian-install/install.386 "${WORK}"
+		cp -r "${MNT}"/debian-install/pool "${WORK}"
+		cp "${MNT}"/debian-install/dedication.txt "${WORK}" || true
 		umcdmount debian-install
 	fi
 elif [ $1 = writecfg ];then
@@ -91,7 +91,7 @@ elif [ $1 = writecfg ];then
 			com32 menu.c32
 			append isolinux.cfg
 
-		menu end" >> $WORK/boot/isolinux/isolinux.cfg
+		menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #EASEUS Disk Copy plugin for multicd.sh
-#version 6.0
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,9 +30,9 @@ elif [ $1 = copy ];then
 	if [ -f diskcopy.iso ];then
 		echo "Copying EASUS Disk Copy..."
 		mcdmount diskcopy
-		mkdir -p $WORK/boot/diskcopy
-		cp $MNT/diskcopy/bzImage $WORK/boot/diskcopy/bzImage
-		cp $MNT/diskcopy/initrd.img $WORK/boot/diskcopy/initrd.img
+		mkdir -p "${WORK}"/boot/diskcopy
+		cp "${MNT}"/diskcopy/bzImage "${WORK}"/boot/diskcopy/bzImage
+		cp "${MNT}"/diskcopy/initrd.img "${WORK}"/boot/diskcopy/initrd.img
 		umcdmount diskcopy
 	fi
 elif [ $1 = writecfg ];then
@@ -41,7 +41,7 @@ echo "label diskcopy
 menu label ^EASEUS Disk Copy
 kernel /boot/diskcopy/bzImage
 append initrd=/boot/diskcopy/initrd.img
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #INSERT plugin for multicd.sh
-#version 6.1
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,10 +30,10 @@ elif [ $1 = copy ];then
 	if [ -f insert.iso ];then
 		echo "Copying INSERT..."
 		mcdmount insert
-		cp -R $MNT/insert/INSERT $WORK/ #Compressed filesystem
-		mkdir $WORK/boot/insert
-		cp $MNT/insert/isolinux/vmlinuz $WORK/boot/insert/vmlinuz
-		cp $MNT/insert/isolinux/miniroot.lz $WORK/boot/insert/miniroot.lz
+		cp -R "${MNT}"/insert/INSERT "${WORK}"/ #Compressed filesystem
+		mkdir "${WORK}"/boot/insert
+		cp "${MNT}"/insert/isolinux/vmlinuz "${WORK}"/boot/insert/vmlinuz
+		cp "${MNT}"/insert/isolinux/miniroot.lz "${WORK}"/boot/insert/miniroot.lz
 		umcdmount insert
 	fi
 elif [ $1 = writecfg ];then
@@ -54,7 +54,7 @@ LABEL failsafe
 menu label INSERT (failsafe)
 KERNEL /boot/insert/vmlinuz
 APPEND ramdisk_size=100000 init=/etc/init lang=en vga=normal atapicd nosound noapic noacpi pnpbios=off acpi=off nofstab noscsi nodma noapm nousb nopcmcia nofirewire noagp nomce nodhcp xmodule=vesa initrd=/boot/insert/miniroot.lz BOOT_IMAGE=insert
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

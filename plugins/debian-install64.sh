@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Debian netinst (amd64) plugin for multicd.sh
-#version 6.6
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,15 +32,15 @@ elif [ $1 = copy ];then
 	if [ -f debian-install64.iso ];then
 		echo "Copying Debian netinst (amd64)..."
 		mcdmount debian-install64
-		if [ ! -d $WORK/.disk ];then
-			cp -r $MNT/debian-install64/.disk $WORK
+		if [ ! -d "${WORK}"/.disk ];then
+			cp -r "${MNT}"/debian-install64/.disk "${WORK}"
 		else
-			echo "Debian GNU/Linux - Unofficial Installation Media (MultiCD) $(date -u)" > $WORK/.disk/info
+			echo "Debian GNU/Linux - Unofficial Installation Media (MultiCD) $(date -u)" > "${WORK}"/.disk/info
 		fi
-		cp -r $MNT/debian-install64/dists $WORK
-		cp -r $MNT/debian-install64/install.amd $WORK
-		cp -r $MNT/debian-install64/pool $WORK
-		cp $MNT/debian-install64/dedication.txt $WORK || true
+		cp -r "${MNT}"/debian-install64/dists "${WORK}"
+		cp -r "${MNT}"/debian-install64/install.amd "${WORK}"
+		cp -r "${MNT}"/debian-install64/pool "${WORK}"
+		cp "${MNT}"/debian-install64/dedication.txt "${WORK}" || true
 		umcdmount debian-install64
 	fi
 elif [ $1 = writecfg ];then
@@ -91,7 +91,7 @@ elif [ $1 = writecfg ];then
 			com32 menu.c32
 			append isolinux.cfg
 
-		menu end" >> $WORK/boot/isolinux/isolinux.cfg
+		menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

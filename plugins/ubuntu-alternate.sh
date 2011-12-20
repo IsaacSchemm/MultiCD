@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Debian install CD/DVD plugin for multicd.sh
-#version 6.2
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,28 +31,28 @@ elif [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu-alternate.iso ];then
-		if [ -d $WORK/pool ];then
+		if [ -d "${WORK}"/pool ];then
 			echo "NOT copying Ubuntu alternate installer - some sort of Ubuntu/Debian installer is already present."
-			touch $TAGS/ubuntu-not-copied
+			touch "${TAGS}"/ubuntu-not-copied
 		else
 			echo "Copying Ubuntu alternate installer..."
 			mcdmount ubuntu-alternate
-			cp $MNT/ubuntu-alternate/cdromupgrade $WORK || true #Not essential
-			cp -r $MNT/ubuntu-alternate/.disk $WORK
-			cp -r $MNT/ubuntu-alternate/dists $WORK
-			cp -r $MNT/ubuntu-alternate/doc $WORK || true
-			cp -r $MNT/ubuntu-alternate/install $WORK
-			cp -r $MNT/ubuntu-alternate/pool $WORK
-			cp -r $MNT/ubuntu-alternate/preseed $WORK
-			cp -r $MNT/ubuntu-alternate/README.diskdefines $WORK
-			cp -r $MNT/ubuntu-alternate/ubuntu $WORK
+			cp "${MNT}"/ubuntu-alternate/cdromupgrade "${WORK}" || true #Not essential
+			cp -r "${MNT}"/ubuntu-alternate/.disk "${WORK}"
+			cp -r "${MNT}"/ubuntu-alternate/dists "${WORK}"
+			cp -r "${MNT}"/ubuntu-alternate/doc "${WORK}" || true
+			cp -r "${MNT}"/ubuntu-alternate/install "${WORK}"
+			cp -r "${MNT}"/ubuntu-alternate/pool "${WORK}"
+			cp -r "${MNT}"/ubuntu-alternate/preseed "${WORK}"
+			cp -r "${MNT}"/ubuntu-alternate/README.diskdefines "${WORK}"
+			cp -r "${MNT}"/ubuntu-alternate/ubuntu "${WORK}"
 			umcdmount ubuntu-alternate
 		fi
 	fi
 elif [ $1 = writecfg ];then
-if [ -f ubuntu-alternate.iso ] && [ ! -f $TAGS/ubuntu-not-copied ];then
-if [ -f $WORK/README.diskdefines ];then
-	CDNAME="$(grep DISKNAME $WORK/README.diskdefines|awk '{for (i=3; i<NF+1; i++) { printf $i; printf " " } printf "\n" }')"
+if [ -f ubuntu-alternate.iso ] && [ ! -f "${TAGS}"/ubuntu-not-copied ];then
+if [ -f "${WORK}"/README.diskdefines ];then
+	CDNAME="$(grep DISKNAME "${WORK}"/README.diskdefines|awk '{for (i=3; i<NF+1; i++) { printf $i; printf " " } printf "\n" }')"
 else
 	CDNAME="Ubuntu alternate installer"
 fi
@@ -72,7 +72,7 @@ label rescue
   kernel /install/vmlinuz
   append  rescue/enable=true vga=788 initrd=/install/initrd.gz --
 
-menu end" >> $WORK/boot/isolinux/isolinux.cfg
+menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Debian installer plugin for multicd.sh
-#version 6.0
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,9 +30,9 @@ elif [ $1 = copy ];then
 	if [ -f debian-mini.iso ];then
 		echo "Copying Debian netboot installer..."
 		mcdmount debian-mini
-		mkdir $WORK/boot/debian
-		cp $MNT/debian-mini/linux $WORK/boot/debian/linux
-		cp $MNT/debian-mini/initrd.gz $WORK/boot/debian/initrd.gz
+		mkdir "${WORK}"/boot/debian
+		cp "${MNT}"/debian-mini/linux "${WORK}"/boot/debian/linux
+		cp "${MNT}"/debian-mini/initrd.gz "${WORK}"/boot/debian/initrd.gz
 		umcdmount debian-mini
 	fi
 elif [ $1 = writecfg ];then
@@ -45,7 +45,7 @@ LABEL dexpert
 menu label Install Debian - expert mode
 	kernel /boot/debian/linux
 	append priority=low vga=normal initrd=/boot/debian/initrd.gz -- 
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

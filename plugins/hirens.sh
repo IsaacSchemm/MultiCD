@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Hiren's BootCD (11.0) plugin for multicd.sh
-#version 6.6
+#version 6.9
 #Copyright for this script (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,21 +38,21 @@ elif [ $1 = copy ];then
 		echo "Copying Hiren's BootCD..."
 		mcdmount hirens
 		if [ -f hirens/BootCD.txt ];then
-			head -n 1 $MNT/hirens/BootCD.txt |sed -e 's/\t//g'>$TAGS/hirens.name
+			head -n 1 "${MNT}"/hirens/BootCD.txt |sed -e 's/\t//g'>"${TAGS}"/hirens.name
 		else
 			echo "Warning: No BootCD.txt in hirens.iso" 1>&2
-			echo "Hiren's BootCD" > $TAGS/hirens.name
+			echo "Hiren's BootCD" > "${TAGS}"/hirens.name
 		fi
-		cp -r $MNT/hirens/HBCD $WORK/
+		cp -r "${MNT}"/hirens/HBCD "${WORK}"/
 		umcdmount hirens
 	fi
 elif [ $1 = writecfg ];then
 if [ -f hirens.iso ];then
 echo "label hirens
-menu label --> ^$(cat $TAGS/hirens.name) - main menu
+menu label --> ^$(cat "${TAGS}"/hirens.name) - main menu
 com32 menu.c32
-append /HBCD/isolinux.cfg" >> $WORK/boot/isolinux/isolinux.cfg
-rm $TAGS/hirens.name
+append /HBCD/isolinux.cfg" >> "${WORK}"/boot/isolinux/isolinux.cfg
+rm "${TAGS}"/hirens.name
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

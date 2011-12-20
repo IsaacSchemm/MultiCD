@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Windows 7 Recovery Disc (from RAM) plugin for multicd.sh
-#version 6.6
+#version 6.9
 #Copyright for this script (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,7 +29,7 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f win7recovery-ram.iso ];then
 		echo "Copying Windows 7 Recovery Disc..."
-		cp win7recovery-ram.iso $WORK/
+		cp win7recovery-ram.iso "${WORK}"/
 	fi
 elif [ $1 = writecfg ];then
 if [ -f win7recovery-ram.iso ];then
@@ -46,7 +46,7 @@ if [ -f win7recovery-ram.iso ];then
 	menu label Windows ^7 Recovery Disc (load ISO to RAM)
 	kernel memdisk
 	initrd /win7recovery-ram.iso
-	append iso">>$WORK/boot/isolinux/isolinux.cfg
+	append iso">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

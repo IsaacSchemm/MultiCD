@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #PCLinuxOS LXDE plugin for multicd.sh
-#version 6.6 (last functional change: 5.3)
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm, PsynoKhi0
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,25 +32,25 @@ elif [ $1 = copy ];then
 	if [ -f pclx.iso ];then
 		echo "Copying PCLinuxOS LXDE..."
 		mcdmount pclx
-		mkdir $WORK/pclosLXDE
+		mkdir "${WORK}"/pclosLXDE
 		# Kernel, initrd
-		cp -r $MNT/pclx/isolinux $WORK/pclosLXDE/isolinux
+		cp -r "${MNT}"/pclx/isolinux "${WORK}"/pclosLXDE/isolinux
 		# Empty boot folder, don't ask me...
-		# cp -r pclinuxos/boot $WORK/pclosLXDE/boot
+		# cp -r pclinuxos/boot "${WORK}"/pclosLXDE/boot
 		# Filesystem
-		cp $MNT/pclx/livecd.sqfs $WORK/pclosLXDE/livecd.sqfs
+		cp "${MNT}"/pclx/livecd.sqfs "${WORK}"/pclosLXDE/livecd.sqfs
 		# Remove memtest and mediacheck
-		if [ -f $WORK/pclosLXDE/isolinux/memtest ];then
-			rm $WORK/pclosLXDE/isolinux/memtest 
+		if [ -f "${WORK}"/pclosLXDE/isolinux/memtest ];then
+			rm "${WORK}"/pclosLXDE/isolinux/memtest 
 		fi
-		if [ -f $WORK/pclosLXDE/isolinux/mediacheck ];then
-			rm $WORK/pclosLXDE/isolinux/mediacheck
+		if [ -f "${WORK}"/pclosLXDE/isolinux/mediacheck ];then
+			rm "${WORK}"/pclosLXDE/isolinux/mediacheck
 		fi
 		umcdmount pclx
 	fi
 elif [ $1 = writecfg ];then
 if [ -f pclx.iso ];then
-cat >> $WORK/boot/isolinux/isolinux.cfg << "EOF"
+cat >> "${WORK}"/boot/isolinux/isolinux.cfg << "EOF"
 label LiveCD
     menu label ^PCLinuxOS LXDE Live
     kernel /pclosLXDE/isolinux/vmlinuz

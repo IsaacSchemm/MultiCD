@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #DBAN plugin for multicd.sh
-#version 6.0
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,8 +30,8 @@ elif [ $1 = copy ];then
 	if [ -f dban.iso ];then
 		echo "Copying DBAN..."
 		mcdmount dban
-		mkdir -p $WORK/boot/dban1
-		cp $MNT/dban/dban.bzi $WORK/boot/dban1/dban.bzi
+		mkdir -p "${WORK}"/boot/dban1
+		cp "${MNT}"/dban/dban.bzi "${WORK}"/boot/dban1/dban.bzi
 		umcdmount dban
 	fi
 elif [ $1 = writecfg ];then
@@ -124,7 +124,7 @@ APPEND nuke=\"dwipe --method prng --rounds 8 --verify off\" floppy=0,16,cmos
 #MENU HIDE
 #KERNEL /boot/dban1/kernel.bzi
 #APPEND initrd=/boot/dban1/initrd.gz root=/dev/ram0 init=/rc nuke=\"dwipe --method quick\"
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 #END DBAN ENTRY#
 else

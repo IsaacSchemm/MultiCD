@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Linux Mint Debian Edition plugin for multicd.sh
-#version 6.1
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm, Zirafarafa
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -35,7 +35,7 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f mintdebian.iso ];then
-cat >> $WORK/boot/isolinux/isolinux.cfg << EOF
+cat >> "${WORK}"/boot/isolinux/isolinux.cfg << EOF
 label mintdebian
 menu label --> Linux Mint ^Debian Edition Menu
 com32 vesamenu.c32

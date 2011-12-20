@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Elastix plugin for multicd.sh
-#version 6.7 (last functional change: 6.0)
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,22 +25,22 @@ set -e
 if [ $1 = scan ];then
 	if [ -f elastix.iso ];then
 		echo "Elastix"
-		#touch $TAGS/redhats/elastix
+		#touch "${TAGS}"/redhats/elastix
 	fi
 elif [ $1 = copy ];then
 	if [ -f elastix.iso ];then
 		echo "Copying Elastix..."
 		mcdmount elastix
-		cp -r $MNT/elastix/isolinux $WORK/boot/elastix
-		cp -r $MNT/elastix/Elastix $WORK/
-		if [ -d $WORK/images ];then
+		cp -r "${MNT}"/elastix/isolinux "${WORK}"/boot/elastix
+		cp -r "${MNT}"/elastix/Elastix "${WORK}"/
+		if [ -d "${WORK}"/images ];then
 			echo "There is already a folder called \"images\". Are you adding another Red Hat-based distro?"
 			echo "Copying anyway - be warned that on the final CD, something might not work properly."
 		fi
-		cp -r $MNT/elastix/images $WORK/
-		cp -r $MNT/elastix/repodata $WORK/
-		cp $MNT/elastix/.discinfo $WORK/
-		cp $MNT/elastix/* $WORK/ 2>/dev/null || true
+		cp -r "${MNT}"/elastix/images "${WORK}"/
+		cp -r "${MNT}"/elastix/repodata "${WORK}"/
+		cp "${MNT}"/elastix/.discinfo "${WORK}"/
+		cp "${MNT}"/elastix/* "${WORK}"/ 2>/dev/null || true
 		umcdmount elastix
 	fi
 elif [ $1 = writecfg ];then
@@ -48,7 +48,7 @@ elif [ $1 = writecfg ];then
 		echo "label elastixmenu
 		menu label --> ^Elastix
 		config /boot/isolinux/elastix.cfg
-		" >> $WORK/boot/isolinux/isolinux.cfg
+		" >> "${WORK}"/boot/isolinux/isolinux.cfg
 		echo "default linux
 		prompt 1
 		timeout 600
@@ -77,7 +77,7 @@ elif [ $1 = writecfg ];then
 		menu label Back to main menu
 		com32 menu.c32
 		append /boot/isolinux/isolinux.cfg
-		" > $WORK/boot/isolinux/elastix.cfg
+		" > "${WORK}"/boot/isolinux/elastix.cfg
 	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

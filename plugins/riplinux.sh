@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #RIPLinuX plugin for multicd.sh
-#version 6.7 (last functional change: 5.6.1)
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,17 +32,17 @@ elif [ $1 = copy ];then
 	if [ -f riplinux.iso ];then
 		echo "Copying RIP Linux..."
 		mcdmount riplinux
-		mkdir -p $WORK/boot/riplinux
-		cp -r $MNT/riplinux/boot/doc $WORK/boot/ #Documentation
-		cp -r $MNT/riplinux/boot/grub4dos $WORK/boot/riplinux/ #GRUB4DOS :)
-		cp $MNT/riplinux/boot/kernel32 $WORK/boot/riplinux/kernel32 #32-bit kernel
-		cp $MNT/riplinux/boot/kernel64 $WORK/boot/riplinux/kernel64 #64-bit kernel
-		cp $MNT/riplinux/boot/rootfs.cgz $WORK/boot/riplinux/rootfs.cgz #Initrd
-		cp $MNT/riplinux/boot/isolinux/isolinux.cfg $WORK/boot/isolinux/riplinux.cfg
-		sed -i -e 's/\/boot\/kernel/\/boot\/riplinux\/kernel/g' $WORK/boot/isolinux/riplinux.cfg #Fix the riplinux.cfg
-		sed -i -e 's/\/boot\/rootfs.cgz/\/boot\/riplinux\/rootfs.cgz/g' $WORK/boot/isolinux/riplinux.cfg
-		sed -i -e 's/\/boot\/kernel/\/boot\/riplinux\/kernel/g' $WORK/boot/riplinux/grub4dos/menu-cd.lst #Fix the menu.lst
-		sed -i -e 's/\/boot\/rootfs.cgz/\/boot\/riplinux\/rootfs.cgz/g' $WORK/boot/riplinux/grub4dos/menu-cd.lst
+		mkdir -p "${WORK}"/boot/riplinux
+		cp -r "${MNT}"/riplinux/boot/doc "${WORK}"/boot/ #Documentation
+		cp -r "${MNT}"/riplinux/boot/grub4dos "${WORK}"/boot/riplinux/ #GRUB4DOS :)
+		cp "${MNT}"/riplinux/boot/kernel32 "${WORK}"/boot/riplinux/kernel32 #32-bit kernel
+		cp "${MNT}"/riplinux/boot/kernel64 "${WORK}"/boot/riplinux/kernel64 #64-bit kernel
+		cp "${MNT}"/riplinux/boot/rootfs.cgz "${WORK}"/boot/riplinux/rootfs.cgz #Initrd
+		cp "${MNT}"/riplinux/boot/isolinux/isolinux.cfg "${WORK}"/boot/isolinux/riplinux.cfg
+		sed -i -e 's/\/boot\/kernel/\/boot\/riplinux\/kernel/g' "${WORK}"/boot/isolinux/riplinux.cfg #Fix the riplinux.cfg
+		sed -i -e 's/\/boot\/rootfs.cgz/\/boot\/riplinux\/rootfs.cgz/g' "${WORK}"/boot/isolinux/riplinux.cfg
+		sed -i -e 's/\/boot\/kernel/\/boot\/riplinux\/kernel/g' "${WORK}"/boot/riplinux/grub4dos/menu-cd.lst #Fix the menu.lst
+		sed -i -e 's/\/boot\/rootfs.cgz/\/boot\/riplinux\/rootfs.cgz/g' "${WORK}"/boot/riplinux/grub4dos/menu-cd.lst
 		umcdmount riplinux
 	fi
 elif [ $1 = writecfg ];then
@@ -51,12 +51,12 @@ elif [ $1 = writecfg ];then
 		menu label ^RIPLinuX
 		com32 menu.c32
 		append riplinux.cfg
-		" >> $WORK/boot/isolinux/isolinux.cfg
+		" >> "${WORK}"/boot/isolinux/isolinux.cfg
 		echo "label back
 		menu label Back to main menu
 		com32 menu.c32
 		append isolinux.cfg
-		" >> $WORK/boot/isolinux/riplinux.cfg
+		" >> "${WORK}"/boot/isolinux/riplinux.cfg
 	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

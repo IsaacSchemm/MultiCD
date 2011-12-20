@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #SliTaz plugin for multicd.sh
-#version 6.6 (last functional change: 5.0)
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,14 +30,14 @@ elif [ $1 = copy ];then
 	if [ -f slitaz.iso ];then
 		echo "Copying SliTaz..."
 		mcdmount slitaz
-		mkdir -p $WORK/boot/slitaz
-		cp $MNT/slitaz/boot/bzImage $WORK/boot/slitaz/bzImage #Kernel
-		cp $MNT/slitaz/boot/rootfs.gz $WORK/boot/slitaz/rootfs.gz #Root filesystem
+		mkdir -p "${WORK}"/boot/slitaz
+		cp "${MNT}"/slitaz/boot/bzImage "${WORK}"/boot/slitaz/bzImage #Kernel
+		cp "${MNT}"/slitaz/boot/rootfs.gz "${WORK}"/boot/slitaz/rootfs.gz #Root filesystem
 		umcdmount slitaz
 	fi
 elif [ $1 = writecfg ];then
 if [ -f slitaz.iso ];then
-cat >> $WORK/boot/isolinux/isolinux.cfg << "EOF"
+cat >> "${WORK}"/boot/isolinux/isolinux.cfg << "EOF"
 label slitaz
 	menu label ^SliTaz GNU/Linux
 	kernel /boot/slitaz/bzImage

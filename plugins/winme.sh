@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Windows Me Setup plugin for multicd.sh
-#version 6.3
+#version 6.9
 #Copyright for this script (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,15 +31,15 @@ elif [ $1 = copy ];then
 	if [ -f winme.iso ];then
 		echo "Copying Windows Me..."
 		mcdmount winme
-		cp -r $MNT/winme/win9x $WORK/
-		rm -r $WORK/win9x/ols
-		if [ -f $TAGS/9xextras ];then
-			cp -r $MNT/winme/add-ons $WORK/win9x/add-ons
-			cp -r $MNT/winme/tools $WORK/win9x/tools
+		cp -r "${MNT}"/winme/win9x "${WORK}"/
+		rm -r "${WORK}"/win9x/ols
+		if [ -f "${TAGS}"/9xextras ];then
+			cp -r "${MNT}"/winme/add-ons "${WORK}"/win9x/add-ons
+			cp -r "${MNT}"/winme/tools "${WORK}"/win9x/tools
 		fi
 		umcdmount winme
 		dd if=winme.iso bs=716800 skip=1 count=3 of=/tmp/dat
-		dd if=/tmp/dat bs=1474560 count=1 of=$WORK/boot/winme.img
+		dd if=/tmp/dat bs=1474560 count=1 of="${WORK}"/boot/winme.img
 		rm /tmp/dat
 	fi
 elif [ $1 = writecfg ];then
@@ -47,7 +47,7 @@ if [ -f winme.iso ];then
 echo "label winme
 menu label ^Windows Me Setup
 kernel memdisk
-initrd /boot/winme.img">>$WORK/boot/isolinux/isolinux.cfg
+initrd /boot/winme.img">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Windows 98 SE Setup plugin for multicd.sh
-#version 6.3
+#version 6.9
 #Copyright for this script (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,18 +31,18 @@ elif [ $1 = copy ];then
 	if [ -f win98se.iso ];then
 		echo "Copying Windows 98 SE..."
 		mcdmount win98se
-		cp -r $MNT/win98se/win98 $WORK/
-		rm -r $WORK/win98/ols
-		if [ -f $TAGS/9xextras ];then
-			cp -r $MNT/win98se/add-ons $WORK/win98/add-ons
-			cp -r $MNT/win98se/tools $WORK/win98/tools
+		cp -r "${MNT}"/win98se/win98 "${WORK}"/
+		rm -r "${WORK}"/win98/ols
+		if [ -f "${TAGS}"/9xextras ];then
+			cp -r "${MNT}"/win98se/add-ons "${WORK}"/win98/add-ons
+			cp -r "${MNT}"/win98se/tools "${WORK}"/win98/tools
 		fi
 		umcdmount win98se
 		dd if=win98se.iso bs=43008 skip=1 count=35 of=/tmp/dat
-		dd if=/tmp/dat bs=1474560 count=1 of=$WORK/boot/win98se.img
+		dd if=/tmp/dat bs=1474560 count=1 of="${WORK}"/boot/win98se.img
 		rm /tmp/dat
 		if which mdel > /dev/null;then
-			mdel -i $WORK/boot/win98se.img ::JO.SYS #Disable HD/CD boot prompt - not needed, but a nice idea
+			mdel -i "${WORK}"/boot/win98se.img ::JO.SYS #Disable HD/CD boot prompt - not needed, but a nice idea
 		fi
 	fi
 elif [ $1 = writecfg ];then
@@ -50,7 +50,7 @@ if [ -f win98se.iso ];then
 echo "label win98se
 menu label ^Windows 98 Second Edition Setup
 kernel memdisk
-initrd /boot/win98se.img">>$WORK/boot/isolinux/isolinux.cfg
+initrd /boot/win98se.img">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

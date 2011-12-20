@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #CDlinux plugin for multicd.sh
-#version 6.0
+#version 6.9
 #Copyright (c) 2010 PsynoKhi0, Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,13 +30,13 @@ elif [ $1 = copy ];then
 	if [ -f cdl.iso ];then
 		echo "Copying CDlinux..."
 		mcdmount cdl
-		cp -r $MNT/cdl/CDlinux $WORK/CDlinux #Everything in one folder
-		rm $WORK/CDlinux/boot/memtest.bin.gz #Remove redundant memtest
+		cp -r "${MNT}"/cdl/CDlinux "${WORK}"/CDlinux #Everything in one folder
+		rm "${WORK}"/CDlinux/boot/memtest.bin.gz #Remove redundant memtest
 		umcdmount cdl
 	fi
 elif [ $1 = writecfg ];then
 if [ -f cdl.iso ];then
-#CDLinux uses country codes longer than two letters, so I don't think I'll get much out of $TAGS/lang here.
+#CDLinux uses country codes longer than two letters, so I don't think I'll get much out of "${TAGS}"/lang here.
 echo "menu begin --> ^CDlinux
 
 label cdlinux-en_US
@@ -104,7 +104,7 @@ label back
 	com32 menu.c32
 	append isolinux.cfg
 menu end
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

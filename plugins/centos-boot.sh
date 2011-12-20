@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #CentOS installer plugin for multicd.sh
 #version 6.9
 #Copyright (c) 2011 Isaac Schemm
@@ -32,20 +32,20 @@ elif [ $1 = copy ];then
 	if [ -f centos-boot.iso ];then
 		echo "Copying CentOS netboot installer..."
 		mcdmount centos-boot
-		mkdir $WORK/boot/centos
-		if [ -f $MNT/centos-boot/isolinux/vmlinuz ];then
-			cp $MNT/centos-boot/isolinux/vmlinuz $WORK/boot/centos/vmlinuz
-			cp $MNT/centos-boot/isolinux/initrd.img $WORK/boot/centos/initrd.img
-		elif [ -f $MNT/centos-boot/isolinux/vmlinuz0 ];then
-			cp $MNT/centos-boot/isolinux/vmlinuz0 $WORK/boot/centos/vmlinuz
-			cp $MNT/centos-boot/isolinux/initrd0.img $WORK/boot/centos/initrd.img
+		mkdir "${WORK}"/boot/centos
+		if [ -f "${MNT}"/centos-boot/isolinux/vmlinuz ];then
+			cp "${MNT}"/centos-boot/isolinux/vmlinuz "${WORK}"/boot/centos/vmlinuz
+			cp "${MNT}"/centos-boot/isolinux/initrd.img "${WORK}"/boot/centos/initrd.img
+		elif [ -f "${MNT}"/centos-boot/isolinux/vmlinuz0 ];then
+			cp "${MNT}"/centos-boot/isolinux/vmlinuz0 "${WORK}"/boot/centos/vmlinuz
+			cp "${MNT}"/centos-boot/isolinux/initrd0.img "${WORK}"/boot/centos/initrd.img
 		fi
-		if [ -d $WORK/images ];then
+		if [ -d "${WORK}"/images ];then
 			echo "There is already an \"images\" folder on the multicd. You might have another Red Hat-based distro on it."
 			echo "CentOS's \"images\" folder won't be copied; instead, these files will be downloaded before the installer starts."
 		else
 			#Commenting out the below line will save about 100MB on the CD, but it will have to be downloaded when you install Scientific Linux
-			cp -R $MNT/centos-boot/images $WORK/
+			cp -R "${MNT}"/centos-boot/images "${WORK}"/
 		fi
 		umcdmount centos-boot
 	fi
@@ -69,7 +69,7 @@ elif [ $1 = writecfg ];then
 		label centosrescue
 		menu label ^Rescue installed CentOS system
 		kernel /boot/centos/vmlinuz
-		append initrd=/boot/centos/initrd.img rescue" >> $WORK/boot/isolinux/isolinux.cfg
+		append initrd=/boot/centos/initrd.img rescue" >> "${WORK}"/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

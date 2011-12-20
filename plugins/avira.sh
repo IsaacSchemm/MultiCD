@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Avira Rescue CD plugin for multicd.sh
-#version 6.3
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #modified quick and dirty by T.Ma.X. N060d9 to work with avira Rescue CD
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,19 +30,19 @@ elif [ $1 = copy ];then
 	if [ -f avira.iso ];then
 		echo "Copying Avira Rescue CD..."
 		mcdmount avira
-		cp -r $MNT/avira/* $WORK/
+		cp -r "${MNT}"/avira/* "${WORK}"/
 				
-		mv $WORK/vmlinuz $WORK/boot/isolinux/aviravmlinuz #Kernel
-		mv $WORK/initrd.gz $WORK/boot/isolinux/avirainitrd.gz #Initial ramdisk. See above.
-		mv $WORK/welcome.msg $WORK/licenses/welcome.msg
-		mv $WORK/license.txt $WORK/licenses/license.txt
-		mv $WORK/licenses $WORK/aviralicenses
-		rm $WORK/boot.cat $WORK/isolinux.bin $WORK/isolinux.cfg 		
+		mv "${WORK}"/vmlinuz "${WORK}"/boot/isolinux/aviravmlinuz #Kernel
+		mv "${WORK}"/initrd.gz "${WORK}"/boot/isolinux/avirainitrd.gz #Initial ramdisk. See above.
+		mv "${WORK}"/welcome.msg "${WORK}"/licenses/welcome.msg
+		mv "${WORK}"/license.txt "${WORK}"/licenses/license.txt
+		mv "${WORK}"/licenses "${WORK}"/aviralicenses
+		rm "${WORK}"/boot.cat "${WORK}"/isolinux.bin "${WORK}"/isolinux.cfg 		
 		umcdmount avira
 	fi
 elif [ $1 = writecfg ];then
 if [ -f avira.iso ];then
-VERSION=$(sed -n '/AVIRA/p' $WORK/aviralicenses/welcome.msg | awk '{print substr($5,1,7)}') #extract Avira Version from file
+VERSION=$(sed -n '/AVIRA/p' "${WORK}"/aviralicenses/welcome.msg | awk '{print substr($5,1,7)}') #extract Avira Version from file
 echo "menu begin --> Avira Rescue CD $VERSION
 
 label 1
@@ -70,7 +70,7 @@ label back
    com32 menu.c32
 
 MENU END
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

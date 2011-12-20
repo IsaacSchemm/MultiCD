@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #WeakNet Linux plugin for multicd.sh
-#version 6.6
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -45,7 +45,7 @@ if [ -f weaknet.iso ];then
 	menu label --> $WKNAME Menu
 	com32 vesamenu.c32
 	append /boot/weaknet/weaknet.cfg
-	" >> $WORK/boot/isolinux/isolinux.cfg
+	" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

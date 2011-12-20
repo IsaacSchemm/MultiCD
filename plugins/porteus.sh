@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Porteus plugin for multicd.sh
-#version 6.7
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,31 +32,32 @@ elif [ $1 = copy ];then
 	if [ -f porteus.iso ];then
 		echo "Copying Porteus..."
 		mcdmount porteus
-		if [ -f $TAGS/porteuslist ];then
-			mkdir $WORK/porteus
-			for i in `ls $MNT/porteus/porteus|sed -e '/^base$/ d'`;do
-				cp -R $MNT/porteus/porteus/$i $WORK/porteus/ #Copy everything but the base modules
+		if [ -f "${TAGS}"/porteuslist ];then
+			mkdir "${WORK}"/porteus
+			for i in `ls "${MNT}"/porteus/porteus|sed -e '/^base$/ d'`;do
+				cp -R "${MNT}"/porteus/porteus/$i "${WORK}"/porteus/ #Copy everything but the base modules
 			done
-			mkdir $WORK/porteus/base
-			for i in `cat $TAGS/porteuslist`;do
-				cp $MNT/porteus/porteus/base/${i}* $WORK/porteus/base/ #Copy only the modules you wanted
+			mkdir "${WORK}"/porteus/base
+			for i in `cat "${TAGS}"/porteuslist`;do
+				cp "${MNT}"/porteus/porteus/base/${i}* "${WORK}"/porteus/base/ #Copy only the modules you wanted
 			done
-			cp $MNT/porteus/porteus/base/000-* $WORK/porteus/base/ #kernel is required
-			cp $MNT/porteus/porteus/base/001-* $WORK/porteus/base/ #core module is required
-			rm $TAGS/porteuslist
+			cp "${MNT}"/porteus/porteus/base/000-* "${WORK}"/porteus/base/ #kernel is required
+			cp "${MNT}"/porteus/porteus/base/001-* "${WORK}"/porteus/base/ #core module is required
+			rm "${TAGS}"/porteuslist
 		else
-			cp -R $MNT/porteus/porteus $WORK/ #Copy everything
+			cp -R "${MNT}"/porteus/porteus "${WORK}"/ #Copy everything
 		fi
-		mkdir -p $WORK/boot/porteus
-		cp $MNT/porteus/boot/vmlinuz $WORK/boot/porteus/vmlinuz
-		cp $MNT/porteus/boot/initrd.xz $WORK/boot/porteus/initrd.xz
+		mkdir -p "${WORK}"/boot/porteus
+		cp "${MNT}"/porteus/boot/vmlinuz "${WORK}"/boot/porteus/vmlinuz
+		cp "${MNT}"/porteus/boot/initrd.xz "${WORK}"/boot/porteus/initrd.xz
 		umcdmount porteus
 		##########
 		if [ "$(ls -1 *.xzm 2> /dev/null;true)" != "" ];then
 			echo "Copying Porteus modules..."
+			mkdir -p "${WORK}/porteus/modules"
 		fi
 		for i in `ls -1 *.xzm 2> /dev/null;true`; do
-			cp $i $WORK/porteus/modules/ #Copy the .xzm module to the modules folder
+			cp "${i}" "${WORK}"/porteus/modules/ #Copy the .xzm module to the modules folder
 			if $VERBOSE;then
 				echo \(Copied $i\)
 			fi
@@ -64,7 +65,7 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 	if [ -f porteus.iso ];then
-		if [ -f $WORK/porteus/base/002-xorg.xzm ];then
+		if [ -f "${WORK}"/porteus/base/002-xorg.xzm ];then
 			if [ -f porteus.version ] && [ "$(cat porteus.version)" != "" ];then
 				PORTEUSVER=" $(cat porteus.version)"
 			else
@@ -152,7 +153,7 @@ elif [ $1 = writecfg ];then
 			    Run the plop boot manager.
 			    This utility provides handy boot-USB options for
 			    machines with vintage/defective BIOS
-			ENDTEXT" >> $WORK/boot/isolinux/isolinux.cfg
+			ENDTEXT" >> "${WORK}"/boot/isolinux/isolinux.cfg
 		else
 			echo "LABEL p-text
 			MENU LABEL Porteus$PORTEUSVER Text mode
@@ -171,7 +172,7 @@ elif [ $1 = writecfg ];then
 			    Run Porteus the same as above,
 			    but first copy all data to RAM
 			    to get huge speed
-			ENDTEXT" >> $WORK/boot/isolinux/isolinux.cfg
+			ENDTEXT" >> "${WORK}"/boot/isolinux/isolinux.cfg
 		fi
 	fi
 else

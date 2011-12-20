@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Damn Vulnerable Linux plugin for multicd.sh
-#version 6.0
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,10 +30,10 @@ elif [ $1 = copy ];then
 	if [ -f dvl.iso ];then
 		echo "Copying Damn Vulnerable Linux..."
 		mcdmount dvl
-		cp -r $MNT/dvl/BT $WORK/
-		mkdir $WORK/boot/dvl
-		cp $MNT/dvl/boot/vmlinuz $WORK/boot/dvl/vmlinuz
-		cp $MNT/boot/initrd.gz $WORK/boot/dvl/initrd.gz
+		cp -r "${MNT}"/dvl/BT "${WORK}"/
+		mkdir "${WORK}"/boot/dvl
+		cp "${MNT}"/dvl/boot/vmlinuz "${WORK}"/boot/dvl/vmlinuz
+		cp "${MNT}"/boot/initrd.gz "${WORK}"/boot/dvl/initrd.gz
 		umcdmount dvl
 	fi
 elif [ $1 = writecfg ];then
@@ -49,7 +49,7 @@ menu label Damn Vulnerable Linux (dvlsafe)
 kernel /boot/dvl/vmlinuz
 initrd /boot/dvl/initrd.gz
 append vga=769 max_loop=255 init=linuxrc load_ramdisk=1 prompt_ramdisk=0 ramdisk_size=4444 root=/dev/ram0 rw
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

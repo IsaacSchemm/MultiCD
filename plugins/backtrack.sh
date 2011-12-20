@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #BackTrack plugin for multicd.sh (designed for BackTrack 4)
-#version 6.6
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -45,7 +45,7 @@ elif [ $1 = writecfg ];then
 		menu label --> BackTrack$VERSION Menu
 		com32 menu.c32
 		append /boot/backtrack/backtrack.cfg
-		" >> $WORK/boot/isolinux/isolinux.cfg
+		" >> "${WORK}"/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #DeLi Linux plugin for multicd.sh
-#version 6.0
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,8 +30,8 @@ elif [ $1 = copy ];then
 	if [ -f deli.iso ];then
 		echo "Copying DeLi Linux..."
 		mcdmount deli
-		cp -r $MNT/deli/isolinux $WORK/ #Kernel and filesystem
-		cp -r $MNT/deli/pkg $WORK/ #Packages
+		cp -r "${MNT}"/deli/isolinux "${WORK}"/ #Kernel and filesystem
+		cp -r "${MNT}"/deli/pkg "${WORK}"/ #Packages
 		umcdmount deli
 	fi
 elif [ $1 = writecfg ];then
@@ -44,7 +44,7 @@ echo "label deli-ide
 label deli-scsi
 	menu label ^DeLi Linux - SCSI
 	kernel /isolinux/scsi
-	append initrd=/isolinux/initrd.gz load_ramdisk=1 prompt_ramdisk=0 ramdisk_size=6464 rw root=/dev/ram" >> $WORK/boot/isolinux/isolinux.cfg
+	append initrd=/isolinux/initrd.gz load_ramdisk=1 prompt_ramdisk=0 ramdisk_size=6464 rw root=/dev/ram" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

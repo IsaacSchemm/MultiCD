@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Endian Firewall Community Edition plugin for multicd.sh
-#version 6.6
+#version 6.9
 #Copyright (c) 2010 PsynoKhi0, Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,13 +30,13 @@ elif [ $1 = copy ];then
 	if [ -f efw.iso ];then
 		echo "Copying Endian Firewall..."
 		mcdmount efw
-		mkdir -p $WORK/boot/endian/
-		cp $MNT/efw/boot/isolinux/vmlinuz $WORK/boot/endian/ #Kernel
-		cp $MNT/efw/boot/isolinux/instroot.gz $WORK/boot/endian/ #Filesystem
-		cp -r $MNT/efw/data $WORK/ #data and rpms folders are located
-		cp -r $MNT/efw/rpms $WORK/ #at the root of the original CD
-		cp $MNT/efw/LICENSE.txt $WORK/EFW-LICENSE.txt #License terms
-		cp $MNT/efw/README.txt $WORK/EFW-README.txt
+		mkdir -p "${WORK}"/boot/endian/
+		cp "${MNT}"/efw/boot/isolinux/vmlinuz "${WORK}"/boot/endian/ #Kernel
+		cp "${MNT}"/efw/boot/isolinux/instroot.gz "${WORK}"/boot/endian/ #Filesystem
+		cp -r "${MNT}"/efw/data "${WORK}"/ #data and rpms folders are located
+		cp -r "${MNT}"/efw/rpms "${WORK}"/ #at the root of the original CD
+		cp "${MNT}"/efw/LICENSE.txt "${WORK}"/EFW-LICENSE.txt #License terms
+		cp "${MNT}"/efw/README.txt "${WORK}"/EFW-README.txt
 		umcdmount efw
 	fi
 elif [ $1 = writecfg ];then
@@ -68,7 +68,7 @@ label back
 	com32 menu.c32
 	append isolinux.cfg
 menu end
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

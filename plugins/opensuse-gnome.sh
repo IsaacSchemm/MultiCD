@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #openSUSE live CD/DVD plugin for multicd.sh
-#version 6.2
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,18 +32,18 @@ elif [ $1 = copy ];then
 	if [ -f opensuse-gnome.iso ];then
 		echo "Copying openSUSE GNOME Live CD..."
 		mcdmount opensuse-gnome
-		mkdir -p $WORK/boot/opensuse-gnome
-		cp $MNT/opensuse-gnome/openSUSE* $WORK/
-		cp $MNT/opensuse-gnome/config.isoclient $WORK/
-		mkdir $WORK/boot/susegnom
-		cp $MNT/opensuse-gnome/boot/i386/loader/linux $WORK/boot/susegnom/linux
-		cp $MNT/opensuse-gnome/boot/i386/loader/initrd $WORK/boot/susegnom/initrd
+		mkdir -p "${WORK}"/boot/opensuse-gnome
+		cp "${MNT}"/opensuse-gnome/openSUSE* "${WORK}"/
+		cp "${MNT}"/opensuse-gnome/config.isoclient "${WORK}"/
+		mkdir "${WORK}"/boot/susegnom
+		cp "${MNT}"/opensuse-gnome/boot/i386/loader/linux "${WORK}"/boot/susegnom/linux
+		cp "${MNT}"/opensuse-gnome/boot/i386/loader/initrd "${WORK}"/boot/susegnom/initrd
 		umcdmount opensuse-gnome
 	fi
 elif [ $1 = writecfg ];then
 if [ -f opensuse-gnome.iso ];then
-	if [ -f $TAGS/lang-full ];then
-		LANGADD="lang=$(cat $TAGS/lang-full)"
+	if [ -f "${TAGS}"/lang-full ];then
+		LANGADD="lang=$(cat "${TAGS}"/lang-full)"
 	fi
 	echo "label openSUSE_Live_(GNOME)
 	  menu label ^openSUSE Live (GNOME)
@@ -55,7 +55,7 @@ if [ -f opensuse-gnome.iso ];then
 	  kernel /boot/susegnom/linux
 	  initrd /boot/susegnom/initrd
 	  append ramdisk_size=512000 ramdisk_blocksize=4096 splash=silent quiet preloadlog=/dev/null liveinstall showopts $LANGADD
-	" >> $WORK/boot/isolinux/isolinux.cfg
+	" >> "${WORK}"/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

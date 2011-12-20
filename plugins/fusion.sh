@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Fusion Linux plugin for multicd.sh
-#version 6.7
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,15 +33,15 @@ elif [ $1 = copy ];then
 	if [ -f fusion.iso ];then
 		echo "Copying Fusion Linux..."
 		mcdmount fusion
-		if [ -d $WORK/LiveOS ];then
+		if [ -d "${WORK}"/LiveOS ];then
 			echo "Warning: \$WORK/LiveOS exists. Fusion Linux conflicts with another CD on the ISO."
 		fi
-		cp -r $MNT/fusion/LiveOS $WORK/
-		mkdir -p $WORK/boot/fusion
-		cp $MNT/fusion/isolinux/vmlinuz* $WORK/boot/fusion
-		cp $MNT/fusion/isolinux/initrd* $WORK/boot/fusion
-		cp $MNT/fusion/isolinux/isolinux.cfg $WORK/boot/fusion/fusion.cfg
-		cp $MNT/fusion/isolinux/splash.jpg $WORK/boot/fusion/
+		cp -r "${MNT}"/fusion/LiveOS "${WORK}"/
+		mkdir -p "${WORK}"/boot/fusion
+		cp "${MNT}"/fusion/isolinux/vmlinuz* "${WORK}"/boot/fusion
+		cp "${MNT}"/fusion/isolinux/initrd* "${WORK}"/boot/fusion
+		cp "${MNT}"/fusion/isolinux/isolinux.cfg "${WORK}"/boot/fusion/fusion.cfg
+		cp "${MNT}"/fusion/isolinux/splash.jpg "${WORK}"/boot/fusion/
 		umcdmount fusion
 	fi
 elif [ $1 = writecfg ];then
@@ -56,17 +56,17 @@ elif [ $1 = writecfg ];then
 		menu label --> ^Fusion Linux$(getVersion) Menu
 		com32 vesamenu.c32
 		append /boot/$BASENAME/$BASENAME.cfg
-		" >> $WORK/boot/isolinux/isolinux.cfg
+		" >> "${WORK}"/boot/isolinux/isolinux.cfg
 
 		echo "label back
 		menu label --> ^Back to main menu
 		com32 menu.c32
 		append /boot/isolinux/isolinux.cfg
-		" >> $WORK/boot/$BASENAME/$BASENAME.cfg
-		sed -i -e 's^menu background splash^menu background /boot/fusion/splash^g' $WORK/boot/$BASENAME/$BASENAME.cfg
-		sed -i -e 's^kernel vmlinuz^kernel /boot/fusion/vmlinuz^g' $WORK/boot/$BASENAME/$BASENAME.cfg
-		sed -i -e 's^initrd=initrd^initrd=/boot/fusion/initrd^g' $WORK/boot/$BASENAME/$BASENAME.cfg
-		sed -i -e "s/CDLABEL=[^ ]*/CDLABEL=${CDLABEL}/g" $WORK/boot/$BASENAME/$BASENAME.cfg
+		" >> "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+		sed -i -e 's^menu background splash^menu background /boot/fusion/splash^g' "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+		sed -i -e 's^kernel vmlinuz^kernel /boot/fusion/vmlinuz^g' "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+		sed -i -e 's^initrd=initrd^initrd=/boot/fusion/initrd^g' "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+		sed -i -e "s/CDLABEL=[^ ]*/CDLABEL=${CDLABEL}/g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

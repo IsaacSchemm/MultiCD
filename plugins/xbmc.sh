@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #XBMC plugin for multicd.sh
-#version 6.8
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,9 +32,9 @@ elif [ $1 = copy ];then
 	if [ -f xbmc.iso ];then
 		echo "Copying XBMC..."
 		mcdmount xbmc
-		cp -r $MNT/xbmc/live $WORK/boot/xbmc
+		cp -r "${MNT}"/xbmc/live "${WORK}"/boot/xbmc
 		umcdmount xbmc
-		rm $WORK/live/memtest||true
+		rm "${WORK}"/live/memtest||true
 	fi
 elif [ $1 = writecfg ];then
 if [ -f xbmc.iso ];then
@@ -53,7 +53,7 @@ if [ -f xbmc.iso ];then
 	initrd /boot/xbmc/initrd.img
 	append boot=live xbmc=nodiskmount quiet loglevel=0 persistent quickreboot quickusbmodules notimezone noaccessibility noapparmor noaptcdrom noautologin noxautologin noconsolekeyboard nofastboot nognomepanel nohosts nokpersonalizer nolanguageselector nolocales nonetworking nopowermanagement noprogramcrashes nojockey nosudo noupdatenotifier nouser nopolkitconf noxautoconfig noxscreensaver nopreseed union=aufs live-media-path=/boot/xbmc
 
-	menu end" >> $WORK/boot/isolinux/isolinux.cfg
+	menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

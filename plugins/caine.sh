@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Caine plugin for multicd.sh
-#version 6.6
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,17 +30,17 @@ elif [ $1 = copy ];then
     if [ -f caine.iso ];then
         echo "Copying Caine..."
         mcdmount caine
-        cp -R $MNT/caine/casper $WORK/boot/caine #Live system
-        cp $MNT/caine/README.diskdefines $WORK/
-        mkdir $WORK/CaineFiles
+        cp -R "${MNT}"/caine/casper "${WORK}"/boot/caine #Live system
+        cp "${MNT}"/caine/README.diskdefines "${WORK}"/
+        mkdir "${WORK}"/CaineFiles
         for item in AutoPlay autorun.exe autorun.inf comdlg32.ocx files license.txt page5 preseed Programs RegOcx4Vista.bat rw_common tabctl32.ocx vbrun60.exe WinTaylor.exe; do
-            [[ -a $MNT/caine/$item ]] && cp -R $MNT/caine/$item $WORK/CaineFiles
+            [[ -a "${MNT}"/caine/$item ]] && cp -R "${MNT}"/caine/$item "${WORK}"/CaineFiles
         done
         umcdmount caine
     fi
 elif [ $1 = writecfg ];then
-    if [ -f $TAGS/lang ];then
-        LANGCODE=$(cat $TAGS/lang)
+    if [ -f "${TAGS}"/lang ];then
+        LANGCODE=$(cat "${TAGS}"/lang)
     else
         LANGCODE=en
     fi
@@ -49,7 +49,7 @@ elif [ $1 = writecfg ];then
         kernel /boot/caine/vmlinuz
         initrd /boot/caine/initrd.gz
         append live-media-path=/boot/caine ignore_uuid noprompt persistent BOOT_IMAGE=/casper/vmlinuz file=/cdrom/CaineFiles/custom.seed boot=casper -- debian-installer/language=$LANGCODE console-setup/layoutcode=$LANGCODE
-        " >> $WORK/boot/isolinux/isolinux.cfg
+        " >> "${WORK}"/boot/isolinux/isolinux.cfg
     fi
 else
     echo "Usage: $0 {scan|copy|writecfg}"

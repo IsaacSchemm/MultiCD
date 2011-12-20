@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Sabayon plugin for multicd.sh
-#version 6.7
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,13 +33,13 @@ elif [ $1 = copy ];then
 	if [ -f sabayon.iso ];then
 		echo "Copying Sabayon Linux..."
 		mcdmount sabayon
-		mkdir $WORK/boot/sabayon
-		cp $MNT/sabayon/boot/sabayon $WORK/boot/sabayon/sabayon
-		cp $MNT/sabayon/boot/sabayon.igz $WORK/boot/sabayon/sabayon.igz
-		cp $MNT/sabayon/livecd $WORK/livecd #Not sure if this is needed
-		cp $MNT/sabayon/livecd.squashfs $WORK/boot/sabayon/livecd.squashfs
-		cp $MNT/sabayon/pkglist $WORK/pkglist #Not sure if this is needed
-		cp $MNT/sabayon/isolinux/txt.cfg $WORK/boot/sabayon/sabayon.cfg
+		mkdir "${WORK}"/boot/sabayon
+		cp "${MNT}"/sabayon/boot/sabayon "${WORK}"/boot/sabayon/sabayon
+		cp "${MNT}"/sabayon/boot/sabayon.igz "${WORK}"/boot/sabayon/sabayon.igz
+		cp "${MNT}"/sabayon/livecd "${WORK}"/livecd #Not sure if this is needed
+		cp "${MNT}"/sabayon/livecd.squashfs "${WORK}"/boot/sabayon/livecd.squashfs
+		cp "${MNT}"/sabayon/pkglist "${WORK}"/pkglist #Not sure if this is needed
+		cp "${MNT}"/sabayon/isolinux/txt.cfg "${WORK}"/boot/sabayon/sabayon.cfg
 		umcdmount sabayon
 	fi
 elif [ $1 = writecfg ];then
@@ -48,16 +48,16 @@ elif [ $1 = writecfg ];then
 		menu label --> ^Sabayon Linux$(getVersion) Menu
 		com32 menu.c32
 		append /boot/sabayon/sabayon.cfg
-		" >> $WORK/boot/isolinux/isolinux.cfg
-		sed -i -e 's@default sabayon@default menu\.c32@g' $WORK/boot/sabayon/sabayon.cfg
-		sed -i -e 's@/boot/sabayon@/boot/sabayon/sabayon@g' $WORK/boot/sabayon/sabayon.cfg
-		sed -i -e 's@/livecd.squashfs@/boot/sabayon/livecd.squashfs@g' $WORK/boot/sabayon/sabayon.cfg
-		sed -i -e 's@cdroot_type=udf@cdroot_type=iso9660@g' $WORK/boot/sabayon/sabayon.cfg #MultiCD doesn't use UDF, so this needs to be changed
+		" >> "${WORK}"/boot/isolinux/isolinux.cfg
+		sed -i -e 's@default sabayon@default menu\.c32@g' "${WORK}"/boot/sabayon/sabayon.cfg
+		sed -i -e 's@/boot/sabayon@/boot/sabayon/sabayon@g' "${WORK}"/boot/sabayon/sabayon.cfg
+		sed -i -e 's@/livecd.squashfs@/boot/sabayon/livecd.squashfs@g' "${WORK}"/boot/sabayon/sabayon.cfg
+		sed -i -e 's@cdroot_type=udf@cdroot_type=iso9660@g' "${WORK}"/boot/sabayon/sabayon.cfg #MultiCD doesn't use UDF, so this needs to be changed
 		echo "label back
 		menu label ^Back to main menu
 		com32 menu.c32
 		append /boot/isolinux/isolinux.cfg
-		" >> $WORK/boot/sabayon/sabayon.cfg
+		" >> "${WORK}"/boot/sabayon/sabayon.cfg
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Pentoo plugin for multicd.sh
-#version 6.4
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,24 +34,24 @@ elif [ $1 = copy ];then
         echo "Copying Pentoo Linux..."
         mcdmount pentoo
 
-        mkdir -p $WORK/boot/pentoo
+        mkdir -p "${WORK}"/boot/pentoo
         for item in modules tools win32 image.squashfs livecd; do
-            cp -r $MNT/pentoo/$item $WORK/boot/pentoo
+            cp -r "${MNT}"/pentoo/$item "${WORK}"/boot/pentoo
         done
         for item in pentoo isolinux.cfg pentoo.igz; do
-            cp -r $MNT/pentoo/isolinux/$item $WORK/boot/pentoo
+            cp -r "${MNT}"/pentoo/isolinux/$item "${WORK}"/boot/pentoo
         done
 
         # Fix the isolinux.cfg
-        sed -i 's@loop=/image.squashfs@loop=/boot/pentoo/image.squashfs subdir=/boot/pentoo@' $WORK/boot/pentoo/isolinux.cfg
-        sed -i 's@kernel @kernel /boot/pentoo/@' $WORK/boot/pentoo/isolinux.cfg
-        sed -i 's@initrd=@initrd=/boot/pentoo/@' $WORK/boot/pentoo/isolinux.cfg
+        sed -i 's@loop=/image.squashfs@loop=/boot/pentoo/image.squashfs subdir=/boot/pentoo@' "${WORK}"/boot/pentoo/isolinux.cfg
+        sed -i 's@kernel @kernel /boot/pentoo/@' "${WORK}"/boot/pentoo/isolinux.cfg
+        sed -i 's@initrd=@initrd=/boot/pentoo/@' "${WORK}"/boot/pentoo/isolinux.cfg
 
         umcdmount pentoo
     fi
 elif [ $1 = writecfg ];then
 if [ -f pentoo.iso ];then
-cat >> $WORK/boot/isolinux/isolinux.cfg << EOF
+cat >> "${WORK}"/boot/isolinux/isolinux.cfg << EOF
 label pentoo
 menu label ---> ^Pentoo Menu
 com32 menu.c32
@@ -59,7 +59,7 @@ append /boot/pentoo/isolinux.cfg
 
 EOF
 
-cat >> $WORK/boot/pentoo/isolinux.cfg << EOF
+cat >> "${WORK}"/boot/pentoo/isolinux.cfg << EOF
 
 label back
 menu label Back to main menu

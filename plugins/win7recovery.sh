@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Windows 7 Recovery Disc plugin for multicd.sh
-#version 6.6
+#version 6.9
 #Copyright for this script (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,9 +30,9 @@ elif [ $1 = copy ];then
 	if [ -f win7recovery.iso ];then
 		echo "Copying Windows 7 Recovery Disc..."
 		mcdmount win7recovery
-		cp $MNT/win7recovery/boot/* $WORK/boot/
-		cp -r $MNT/win7recovery/sources $WORK/
-		cp $MNT/win7recovery/bootmgr $WORK/
+		cp "${MNT}"/win7recovery/boot/* "${WORK}"/boot/
+		cp -r "${MNT}"/win7recovery/sources "${WORK}"/
+		cp "${MNT}"/win7recovery/bootmgr "${WORK}"/
 		umcdmount win7recovery
 	fi
 elif [ $1 = writecfg ];then
@@ -49,7 +49,7 @@ if [ -f win7recovery.iso ];then
 	echo "label win7recovery
 	menu label Windows ^7$TYPE Recovery Disc (direct from CD)
 	kernel chain.c32
-	append boot ntldr=/bootmgr">>$WORK/boot/isolinux/isolinux.cfg
+	append boot ntldr=/bootmgr">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

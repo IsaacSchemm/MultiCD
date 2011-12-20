@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Macpup plugin for multicd.sh
-#version 6.7 (last functional change: 6.6)
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,8 +25,8 @@ set -e
 if [ $1 = scan ];then
 	if [ -f macpup.iso ];then
 		echo "Macpup"
-		mkdir -p $TAGS/puppies
-		touch $TAGS/puppies/macpup
+		mkdir -p "${TAGS}"/puppies
+		touch "${TAGS}"/puppies/macpup
 	fi
 elif [ $1 = copy ];then
 	if [ -f macpup.iso ];then
@@ -35,15 +35,15 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 	if [ -f macpup.iso ];then
-		if [ -f $TAGS/macpup.name ] && [ "$(cat $TAGS/macpup.name)" != "" ];then
-			PUPNAME=$(cat $TAGS/macpup.name)
+		if [ -f "${TAGS}"/macpup.name ] && [ "$(cat "${TAGS}"/macpup.name)" != "" ];then
+			PUPNAME=$(cat "${TAGS}"/macpup.name)
 		else
 			PUPNAME="Macpup"
 		fi
-		if [ -d $WORK/macpup ];then
+		if [ -d "${WORK}"/macpup ];then
 			EXTRAARGS="psubdir=macpup"
 		fi
-		if [ -d $WORK/macpup ];then
+		if [ -d "${WORK}"/macpup ];then
 			EXTRAARGS="psubdir=macpup"
 			KERNELPATH="/macpup"
 		else
@@ -65,7 +65,7 @@ elif [ $1 = writecfg ];then
 		#kernel $KERNELPATH/vmlinuz
 		#append pmedia=cd pfix=noram $EXTRAARGS
 		#initrd $KERNELPATH/initrd.gz
-		" >> $WORK/boot/isolinux/isolinux.cfg
+		" >> "${WORK}"/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

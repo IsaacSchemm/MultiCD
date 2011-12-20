@@ -1,22 +1,22 @@
 #!/bin/sh
 mcdmount () {
-	# $MNT is defined in multicd.sh and is normally in /tmp
+	# "${MNT}" is defined in multicd.sh and is normally in /tmp
 	# $1 is the argument passed to mcdmount - used for both ISO name and mount folder name
-	if [ $EXTRACTOR = mount ] && grep -q $MNT/$1 /etc/mtab ; then
-		umount $MNT/$1
+	if [ $EXTRACTOR = mount ] && grep -q "${MNT}"/$1 /etc/mtab ; then
+		umount "${MNT}"/$1
 	fi
-	if [ -d $MNT/$1 ];then
-		rm -r $MNT/$1
+	if [ -d "${MNT}"/$1 ];then
+		rm -r "${MNT}"/$1
 	fi
-	mkdir $MNT/$1
+	mkdir "${MNT}"/$1
 	if [ $EXTRACTOR = file-roller ];then
-		file-roller -e $MNT/$1 $1.iso
-		chmod -R +w $MNT/$1 #To avoid confirmation prompts on BSD cp
+		file-roller -e "${MNT}"/$1 $1.iso
+		chmod -R +w "${MNT}"/$1 #To avoid confirmation prompts on BSD cp
 	elif [ $EXTRACTOR = ark ];then
-		ark -b -o $MNT/$1 $1.iso
-		chmod -R +w $MNT/$1 #To avoid confirmation prompts on BSD cp
+		ark -b -o "${MNT}"/$1 $1.iso
+		chmod -R +w "${MNT}"/$1 #To avoid confirmation prompts on BSD cp
 	elif [ $EXTRACTOR = mount ];then
-		mount -o loop $1.iso $MNT/$1/
+		mount -o loop $1.iso "${MNT}"/$1/
 	else
 		echo "mcdmount function: \$EXTRACTOR not defined! (this is a bug in multicd.sh)"
 		exit 1
@@ -24,26 +24,26 @@ mcdmount () {
 }
 umcdmount () {
 	if [ $EXTRACTOR = mount ];then
-		umount $MNT/$1;rmdir $MNT/$1
+		umount "${MNT}"/$1;rmdir "${MNT}"/$1
 	else
-		rm -r $MNT/$1
+		rm -r "${MNT}"/$1
 	fi
 }
 
 isoaliases () {
-	true > $TAGS/linklist #Clears the file that keeps track of the links.
+	true > "${TAGS}"/linklist #Clears the file that keeps track of the links.
 
 	#The data from START LINKS to END LINKS is not copied when combine.sh makes a single file.
-	#In that case, this is instead handled by adding " >> $TAGS/linklist" to each line in the "links" section of a plugin.
+	#In that case, this is instead handled by adding " >> "${TAGS}"/linklist" to each line in the "links" section of a plugin.
 	#START LINKS#
-	for i in $MCDDIR/plugins/*;do
+	for i in "${MCDDIR}"/plugins/*;do
 		if ! ($i links|grep -q Usage);then
-			$i links >> $TAGS/linklist
+			$i links >> "${TAGS}"/linklist
 		fi
 	done
 	#END LINKS#
 
-	cat $TAGS/linklist|while read i;do
+	cat "${TAGS}"/linklist|while read i;do
 
 		DEFAULTNAME=$(echo "$i"|awk '{print $NF}')
 		LINKNAME=$(echo "$i"|awk '{LESS=NF-1; print $LESS}') #What should be linked to
@@ -69,7 +69,7 @@ isoaliases () {
 
 					ISOBASENAME=$(echo $LINKTO|sed -e 's/\.iso//g')
 
-					touch $TAGS/madelinks #This function will pause for 1 second if this file exists, so the notifications are readable
+					touch "${TAGS}"/madelinks #This function will pause for 1 second if this file exists, so the notifications are readable
 
 					CUTOUT1=$(echo "$i"|awk 'BEGIN {FS = "*"} ; {print $1}') #The parts of the ISO name before the asterisk
 					CUTOUT2=$(echo "$i"|awk '{print $1}'|awk 'BEGIN {FS = "*"} ; {print $2}') #The parts after the asterisk
@@ -84,7 +84,7 @@ isoaliases () {
 					fi
 					if [ "$DEFAULTNAME" != "none" ];then
 						#The last field of the row will be the default name when multicd.sh asks the user to enter a name (activated with "i" option.)
-						#This could also be used by the menu-writing portion of the plugin script if $TAGS/whatever.name (created by the "i" option) is not present.
+						#This could also be used by the menu-writing portion of the plugin script if "${TAGS}"/whatever.name (created by the "i" option) is not present.
 						#Underscores are replaced with spaces. Asterisks are replaced with the $VERSION found above.
 						echo $DEFAULTNAME|sed -e 's/_/ /g' -e "s/\*/$VERSION/g">$ISOBASENAME.defaultname
 					fi
@@ -94,9 +94,9 @@ isoaliases () {
 			done
 		fi
 	done
-	if [ -f $TAGS/madelinks ];then
+	if [ -f "${TAGS}"/madelinks ];then
 		#If the file exists, remove it, then pause for 1 second so the notifications can be seen.
-		rm $TAGS/madelinks
+		rm "${TAGS}"/madelinks
 		sleep 1
 	fi
 }
@@ -104,14 +104,14 @@ isoaliases () {
 tinycorecommon () {
 	if [ ! -z "$1" ] && [ -f $1.iso ];then
 		mcdmount $1
-		mkdir $WORK/boot/tinycore
-		cp $MNT/$1/boot/vmlinuz $WORK/boot/tinycore/vmlinuz #Linux kernel - 4.0 or newer
-		cp $MNT/$1/boot/*.gz $WORK/boot/tinycore/ #Copy any initrd there may be - this works for microcore too
-		if [ -d $MNT/$1/tce ];then
-			cp -r $MNT/$1/tce $WORK/
+		mkdir "${WORK}"/boot/tinycore
+		cp "${MNT}"/$1/boot/vmlinuz "${WORK}"/boot/tinycore/vmlinuz #Linux kernel - 4.0 or newer
+		cp "${MNT}"/$1/boot/*.gz "${WORK}"/boot/tinycore/ #Copy any initrd there may be - this works for microcore too
+		if [ -d "${MNT}"/$1/tce ];then
+			cp -r "${MNT}"/$1/tce "${WORK}"/
 		fi
-		if [ -d $MNT/$1/cde ];then
-			cp -r $MNT/$1/cde $WORK/
+		if [ -d "${MNT}"/$1/cde ];then
+			cp -r "${MNT}"/$1/cde "${WORK}"/
 		fi
 		sleep 1
 		umcdmount $1
@@ -124,15 +124,15 @@ puppycommon () {
 	if [ ! -z "$1" ] && [ -f $1.iso ];then
 		mcdmount $1
 		#The installer will only work if Puppy is in the root dir of the disc
-		if [ -f $TAGS/puppies/$1.inroot ];then
-			cp $MNT/$1/*.sfs $WORK/
-			cp $MNT/$1/vmlinuz $WORK/vmlinuz
-			cp $MNT/$1/initrd.gz $WORK/initrd.gz
+		if [ -f "${TAGS}"/puppies/$1.inroot ];then
+			cp "${MNT}"/$1/*.sfs "${WORK}"/
+			cp "${MNT}"/$1/vmlinuz "${WORK}"/vmlinuz
+			cp "${MNT}"/$1/initrd.gz "${WORK}"/initrd.gz
 		else
-			mkdir $WORK/$1
-			cp $MNT/$1/*.sfs $WORK/$1/
-			cp $MNT/$1/vmlinuz $WORK/$1/vmlinuz
-			cp $MNT/$1/initrd.gz $WORK/$1/initrd.gz
+			mkdir "${WORK}"/$1
+			cp "${MNT}"/$1/*.sfs "${WORK}"/$1/
+			cp "${MNT}"/$1/vmlinuz "${WORK}"/$1/vmlinuz
+			cp "${MNT}"/$1/initrd.gz "${WORK}"/$1/initrd.gz
 		fi
 		umcdmount $1
 	else
@@ -143,36 +143,36 @@ puppycommon () {
 ubuntucommon () {
 	if [ ! -z "$1" ] && [ -f $1.iso ];then
 		mcdmount $1
-		cp -R $MNT/$1/casper $WORK/boot/$1 #Live system
-		if [ -d $MNT/$1/preseed ];then
-			cp -R $MNT/$1/preseed $WORK/boot/$1
+		cp -R "${MNT}"/$1/casper "${WORK}"/boot/$1 #Live system
+		if [ -d "${MNT}"/$1/preseed ];then
+			cp -R "${MNT}"/$1/preseed "${WORK}"/boot/$1
 		fi
 		# Fix the isolinux.cfg
-		if [ -f $MNT/$1/isolinux/text.cfg ];then
+		if [ -f "${MNT}"/$1/isolinux/text.cfg ];then
 			UBUCFG=text.cfg
-		elif [ -f $MNT/$1/isolinux/txt.cfg ];then
+		elif [ -f "${MNT}"/$1/isolinux/txt.cfg ];then
 			UBUCFG=txt.cfg
 		else
 			UBUCFG=isolinux.cfg #For custom-made live CDs like Weaknet and Zorin
 		fi
-		cp $MNT/$1/isolinux/splash.* \
-		$MNT/$1/isolinux/bg_redo.png \
-		$WORK/boot/$1/ 2> /dev/null || true #Splash screen - only if the filename is splash.something or bg_redo.png
-		cp $MNT/$1/isolinux/$UBUCFG $WORK/boot/$1/$1.cfg
+		cp "${MNT}"/$1/isolinux/splash.* \
+		"${MNT}"/$1/isolinux/bg_redo.png \
+		"${WORK}"/boot/$1/ 2> /dev/null || true #Splash screen - only if the filename is splash.something or bg_redo.png
+		cp "${MNT}"/$1/isolinux/$UBUCFG "${WORK}"/boot/$1/$1.cfg
 		echo "label back
 		menu label Back to main menu
 		com32 menu.c32
 		append /boot/isolinux/isolinux.cfg
-		" >> $WORK/boot/$1/$1.cfg
-		sed -i "s@menu background @menu background /boot/$1/@g" $WORK/boot/$1/$1.cfg #If it uses a splash screen, update the .cfg to show the new location
-		sed -i "s@MENU BACKGROUND @MENU BACKGROUND /boot/$1/@g" $WORK/boot/$1/$1.cfg #uppercase
-		sed -i "s@default live@default menu.c32@g" $WORK/boot/$1/$1.cfg #Show menu instead of boot: prompt
-		sed -i "s@file=/cdrom/preseed/@file=/cdrom/boot/$1/preseed/@g" $WORK/boot/$1/$1.cfg #Preseed folder moved - not sure if ubiquity uses this
-		sed -i "s^initrd=/casper/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" $WORK/boot/$1/$1.cfg #Initrd moved, ignore_uuid added
-		sed -i "s^kernel /casper/^kernel /boot/$1/^g" $WORK/boot/$1/$1.cfg #Kernel moved
-		sed -i "s^KERNEL /casper/^KERNEL /boot/$1/^g" $WORK/boot/$1/$1.cfg #For uppercase KERNEL
-		if [ -f $TAGS/lang ] && [ "$(cat $TAGS/lang)" != "en" ];then
-			sed -i "s^initrd=/boot/$1/^debian-installer/language=$(cat $TAGS/lang) console-setup/layoutcode?=$(cat $TAGS/lang) initrd=/boot/$1/^g" $WORK/boot/$1/$1.cfg #Add language codes to cmdline
+		" >> "${WORK}"/boot/$1/$1.cfg
+		sed -i "s@menu background @menu background /boot/$1/@g" "${WORK}"/boot/$1/$1.cfg #If it uses a splash screen, update the .cfg to show the new location
+		sed -i "s@MENU BACKGROUND @MENU BACKGROUND /boot/$1/@g" "${WORK}"/boot/$1/$1.cfg #uppercase
+		sed -i "s@default live@default menu.c32@g" "${WORK}"/boot/$1/$1.cfg #Show menu instead of boot: prompt
+		sed -i "s@file=/cdrom/preseed/@file=/cdrom/boot/$1/preseed/@g" "${WORK}"/boot/$1/$1.cfg #Preseed folder moved - not sure if ubiquity uses this
+		sed -i "s^initrd=/casper/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #Initrd moved, ignore_uuid added
+		sed -i "s^kernel /casper/^kernel /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #Kernel moved
+		sed -i "s^KERNEL /casper/^KERNEL /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #For uppercase KERNEL
+		if [ -f "${TAGS}"/lang ] && [ "$(cat "${TAGS}"/lang)" != "en" ];then
+			sed -i "s^initrd=/boot/$1/^debian-installer/language=$(cat "${TAGS}"/lang) console-setup/layoutcode?=$(cat "${TAGS}"/lang) initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #Add language codes to cmdline
 		fi
 		umcdmount $1
 	else

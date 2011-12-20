@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Arch Linux (dual i686/x86_64) installer plugin for multicd.sh
-#version 6.8
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,7 +32,7 @@ elif [ $1 = copy ];then
 	if [ -f archdual.iso ];then
 		echo "Copying Arch Linux Dual..."
 		mcdmount archdual
-		cp -r $MNT/archdual/arch $WORK/archdual
+		cp -r "${MNT}"/archdual/arch "${WORK}"/archdual
 		umcdmount archdual
 	fi
 elif [ $1 = writecfg ];then
@@ -51,20 +51,20 @@ elif [ $1 = writecfg ];then
 		MENU HIDE
 		CONFIG /archdual/boot/syslinux/syslinux_32only.cfg
 		APPEND /archdual/boot/syslinux/
-		" >> $WORK/boot/isolinux/isolinux.cfg
+		" >> "${WORK}"/boot/isolinux/isolinux.cfg
 		for i in 32 64;do
-			sed -i -e 's^/arch/boot^/archdual/boot^g' $WORK/archdual/boot/syslinux/syslinux_arch${i}.cfg
-			sed -i -e 's^archisobasedir=arch^archisobasedir=archdual^g' $WORK/archdual/boot/syslinux/syslinux_arch${i}.cfg
-			sed -i -e "s^archisolabel=ARCH_201108^archisolabel=$CDLABEL^g" $WORK/archdual/boot/syslinux/syslinux_arch${i}.cfg
+			sed -i -e 's^/arch/boot^/archdual/boot^g' "${WORK}"/archdual/boot/syslinux/syslinux_arch${i}.cfg
+			sed -i -e 's^archisobasedir=arch^archisobasedir=archdual^g' "${WORK}"/archdual/boot/syslinux/syslinux_arch${i}.cfg
+			sed -i -e "s^archisolabel=ARCH_201108^archisolabel=$CDLABEL^g" "${WORK}"/archdual/boot/syslinux/syslinux_arch${i}.cfg
 		done
-		sed -i -e 's^/arch/boot/memtest^/boot/memtest^g' $WORK/archdual/boot/syslinux/syslinux_tail.cfg
-		sed -i -e 's^MENU ROWS 7^MENU ROWS 8^g' $WORK/archdual/boot/syslinux/syslinux_head.cfg
+		sed -i -e 's^/arch/boot/memtest^/boot/memtest^g' "${WORK}"/archdual/boot/syslinux/syslinux_tail.cfg
+		sed -i -e 's^MENU ROWS 7^MENU ROWS 8^g' "${WORK}"/archdual/boot/syslinux/syslinux_head.cfg
 		echo "
 		label back
 		menu label ^Back to main menu
 		config /boot/isolinux/isolinux.cfg
 		append /boot/isolinux
-		" >> $WORK/archdual/boot/syslinux/syslinux_tail.cfg
+		" >> "${WORK}"/archdual/boot/syslinux/syslinux_tail.cfg
 	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

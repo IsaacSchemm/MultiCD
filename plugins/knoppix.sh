@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Knoppix plugin for multicd.sh
-#version 6.3
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,14 +32,14 @@ elif [ $1 = copy ];then
 	if [ -f knoppix.iso ];then
 		echo "Copying Knoppix..."
 		mcdmount knoppix
-		mkdir $WORK/KNOPPIX6
+		mkdir "${WORK}"/KNOPPIX6
 		#Compressed filesystem and docs. We have to call it KNOPPIX6 because DSL uses KNOPPIX, and if we change that DSL's installer won't work.
-		for i in $(ls $MNT/knoppix/KNOPPIX*|grep -v '^KNOPPIX2$');do
-			cp -r $MNT/knoppix/KNOPPIX/$i $WORK/KNOPPIX6/
+		for i in $(ls "${MNT}"/knoppix/KNOPPIX*|grep -v '^KNOPPIX2$');do
+			cp -r "${MNT}"/knoppix/KNOPPIX/$i "${WORK}"/KNOPPIX6/
 		done
-		mkdir -p $WORK/boot/knoppix
-		cp $MNT/knoppix/boot/isolinux/linux $WORK/boot/knoppix/linux
-		cp $MNT/knoppix/boot/isolinux/minirt.gz $WORK/boot/knoppix/minirt.gz
+		mkdir -p "${WORK}"/boot/knoppix
+		cp "${MNT}"/knoppix/boot/isolinux/linux "${WORK}"/boot/knoppix/linux
+		cp "${MNT}"/knoppix/boot/isolinux/minirt.gz "${WORK}"/boot/knoppix/minirt.gz
 		umcdmount knoppix
 	fi
 elif [ $1 = writecfg ];then
@@ -49,8 +49,8 @@ elif [ $1 = writecfg ];then
 		else
 			KNOPPIXVER=""
 		fi
-		if [ -f $TAGS/lang ];then
-			LANGCODE=$(cat $TAGS/lang)
+		if [ -f "${TAGS}"/lang ];then
+			LANGCODE=$(cat "${TAGS}"/lang)
 		else
 			if echo $KNOPPIXVER|grep DE;then
 				LANGCODE=de
@@ -93,7 +93,7 @@ elif [ $1 = writecfg ];then
 		com32 menu.c32
 		append isolinux.cfg
 
-		MENU END" >> $WORK/boot/isolinux/isolinux.cfg
+		MENU END" >> "${WORK}"/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Scientific Linux installer plugin for multicd.sh
 #version 6.9
 #Copyright (c) 2011 Isaac Schemm
@@ -32,20 +32,20 @@ elif [ $1 = copy ];then
 	if [ -f scientific-boot.iso ];then
 		echo "Copying Scientific Linux netboot installer..."
 		mcdmount scientific-boot
-		mkdir $WORK/boot/sci
-		if [ -f $MNT/scientific-boot/isolinux/vmlinuz ];then
-			cp $MNT/scientific-boot/isolinux/vmlinuz $WORK/boot/sci/vmlinuz
-			cp $MNT/scientific-boot/isolinux/initrd.img $WORK/boot/sci/initrd.img
-		elif [ -f $MNT/scientific-boot/isolinux/vmlinuz0 ];then
-			cp $MNT/scientific-boot/isolinux/vmlinuz0 $WORK/boot/sci/vmlinuz
-			cp $MNT/scientific-boot/isolinux/initrd0.img $WORK/boot/sci/initrd.img
+		mkdir "${WORK}"/boot/sci
+		if [ -f "${MNT}"/scientific-boot/isolinux/vmlinuz ];then
+			cp "${MNT}"/scientific-boot/isolinux/vmlinuz "${WORK}"/boot/sci/vmlinuz
+			cp "${MNT}"/scientific-boot/isolinux/initrd.img "${WORK}"/boot/sci/initrd.img
+		elif [ -f "${MNT}"/scientific-boot/isolinux/vmlinuz0 ];then
+			cp "${MNT}"/scientific-boot/isolinux/vmlinuz0 "${WORK}"/boot/sci/vmlinuz
+			cp "${MNT}"/scientific-boot/isolinux/initrd0.img "${WORK}"/boot/sci/initrd.img
 		fi
-		if [ -d $WORK/images ];then
+		if [ -d "${WORK}"/images ];then
 			echo "There is already an \"images\" folder on the multicd. You might have another Red Hat-based distro on it."
 			echo "Scientific Linux's \"images\" folder won't be copied; instead, these files will be downloaded before the installer starts."
 		else
 			#Commenting out the below line will save about 100MB on the CD, but it will have to be downloaded when you install Scientific Linux
-			cp -R $MNT/scientific-boot/images $WORK/
+			cp -R "${MNT}"/scientific-boot/images "${WORK}"/
 		fi
 		umcdmount scientific-boot
 	fi
@@ -73,7 +73,7 @@ elif [ $1 = writecfg ];then
 		label scirescue
 		menu label ^Rescue installed system
 		kernel /boot/sci/vmlinuz
-		append initrd=/boot/sci/initrd.img rescue" >> $WORK/boot/isolinux/isolinux.cfg
+		append initrd=/boot/sci/initrd.img rescue" >> "${WORK}"/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

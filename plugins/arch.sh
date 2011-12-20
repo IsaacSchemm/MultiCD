@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Arch Linux installer plugin for multicd.sh
-#version 6.8
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,8 +33,8 @@ elif [ $1 = copy ];then
 	if [ -f arch.iso ];then
 		echo "Copying Arch Linux..."
 		mcdmount arch
-		cp -r $MNT/arch/arch $WORK/
-		rm $WORK/arch/boot/memtest || true
+		cp -r "${MNT}"/arch/arch "${WORK}"/
+		rm "${WORK}"/arch/boot/memtest || true
 		umcdmount arch
 	fi
 elif [ $1 = writecfg ];then
@@ -43,15 +43,15 @@ if [ -f arch.iso ];then
 	menu label --> ^Arch Linux ($(getVersion arch))
 	CONFIG /arch/boot/syslinux/syslinux.cfg
 	APPEND /arch/boot/syslinux/
-	" >> $WORK/boot/isolinux/isolinux.cfg
-	sed -i -e 's^/arch/boot/memtest^/boot/memtest^g' $WORK/arch/boot/syslinux/syslinux.cfg
-	sed -i -e 's^MENU ROWS 6^MENU ROWS 7^g' $WORK/arch/boot/syslinux/syslinux.cfg
+	" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	sed -i -e 's^/arch/boot/memtest^/boot/memtest^g' "${WORK}"/arch/boot/syslinux/syslinux.cfg
+	sed -i -e 's^MENU ROWS 6^MENU ROWS 7^g' "${WORK}"/arch/boot/syslinux/syslinux.cfg
 	echo "
 	label back
 	menu label ^Back to main menu
 	config /boot/isolinux/isolinux.cfg
 	append /boot/isolinux
-	" >> $WORK/arch/boot/syslinux/syslinux.cfg
+	" >> "${WORK}"/arch/boot/syslinux/syslinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

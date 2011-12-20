@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #ophcrack plugin for multicd.sh
-#version 6.5
+#version 6.9
 #Copyright (c) 2011 yogurt06/Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,29 +36,29 @@ elif [ $1 = copy ];then
 	if [ -f ophxp.iso ];then
 		echo "Copying OPH Crack XP..."
 		mcdmount ophxp
-		mkdir $WORK/boot/ophcrack/
-		cp -r $MNT/ophxp/tables $WORK/tables
-		cp $MNT/ophxp/boot/bzImage $WORK/boot/ophcrack/bzImage
-		cp $MNT/ophxp/boot/ophcrack.cfg $WORK/boot/ophcrack/ophcrack.cfg
-		cp $MNT/ophxp/boot/splash.png $WORK/boot/ophcrack/splash.png
-		cp $MNT/ophxp/boot/rootfs.gz $WORK/boot/ophcrack/rootfs.gz
+		mkdir "${WORK}"/boot/ophcrack/
+		cp -r "${MNT}"/ophxp/tables "${WORK}"/tables
+		cp "${MNT}"/ophxp/boot/bzImage "${WORK}"/boot/ophcrack/bzImage
+		cp "${MNT}"/ophxp/boot/ophcrack.cfg "${WORK}"/boot/ophcrack/ophcrack.cfg
+		cp "${MNT}"/ophxp/boot/splash.png "${WORK}"/boot/ophcrack/splash.png
+		cp "${MNT}"/ophxp/boot/rootfs.gz "${WORK}"/boot/ophcrack/rootfs.gz
 		umcdmount ophxp
 	fi
 	if [ -f ophvista.iso ] && [ ! -f ophxp.iso ];then
 		echo "Copying OPH Crack Vista..."
 		mcdmount ophvista
-		mkdir $WORK/boot/ophcrack/
-		cp -r $MNT/ophvista/tables $WORK/tables
-		cp $MNT/ophvista/boot/bzImage $WORK/boot/ophcrack/bzImage
-		cp $MNT/ophvista/boot/ophcrack.cfg $WORK/boot/ophcrack/ophcrack.cfg
-		cp $MNT/ophvista/boot/splash.png $WORK/boot/ophcrack/splash.png
-		cp $MNT/ophvista/boot/rootfs.gz $WORK/boot/ophcrack/rootfs.gz
+		mkdir "${WORK}"/boot/ophcrack/
+		cp -r "${MNT}"/ophvista/tables "${WORK}"/tables
+		cp "${MNT}"/ophvista/boot/bzImage "${WORK}"/boot/ophcrack/bzImage
+		cp "${MNT}"/ophvista/boot/ophcrack.cfg "${WORK}"/boot/ophcrack/ophcrack.cfg
+		cp "${MNT}"/ophvista/boot/splash.png "${WORK}"/boot/ophcrack/splash.png
+		cp "${MNT}"/ophvista/boot/rootfs.gz "${WORK}"/boot/ophcrack/rootfs.gz
 		umcdmount ophvista
 	fi
 	if [ -f ophvista.iso ] && [ -f ophxp.iso ];then
 		echo "Getting OPH Crack Vista tables..."
 		mcdmount ophvista
-		cp -r $MNT/ophvista/tables $WORK
+		cp -r "${MNT}"/ophvista/tables "${WORK}"
 		umcdmount ophvista
 	fi
 elif [ $1 = writecfg ];then
@@ -77,17 +77,17 @@ elif [ $1 = writecfg ];then
 		echo "label ophcrack
 		menu label --> ophcrack $name
 		com32 vesamenu.c32
-		append ophcrack.menu" >> $WORK/boot/isolinux/isolinux.cfg
+		append ophcrack.menu" >> "${WORK}"/boot/isolinux/isolinux.cfg
 
-		sed 's/\/boot\//\/boot\/ophcrack\//g' $WORK/boot/ophcrack/ophcrack.cfg > $WORK/boot/isolinux/ophcrack.menu
+		sed 's/\/boot\//\/boot\/ophcrack\//g' "${WORK}"/boot/ophcrack/ophcrack.cfg > "${WORK}"/boot/isolinux/ophcrack.menu
 		
 		echo "
 		label back
 		menu label Back to main menu
 		com32 menu.c32
-		append /boot/isolinux/isolinux.cfg" >> $WORK/boot/isolinux/ophcrack.menu
+		append /boot/isolinux/isolinux.cfg" >> "${WORK}"/boot/isolinux/ophcrack.menu
 
-		rm $WORK/boot/ophcrack/ophcrack.cfg
+		rm "${WORK}"/boot/ophcrack/ophcrack.cfg
 	fi
 #elif [ $1 = category ];then
 #	echo "tools"

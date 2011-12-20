@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Arch Linux archboot.iso installer plugin for multicd.sh
-#version 6.7
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,17 +32,17 @@ elif [ $1 = copy ];then
 	if [ -f archboot.iso ];then
 		echo "Copying Arch Linux Installer..."
 		mcdmount archboot
-		mkdir -p $WORK/boot/archboot
+		mkdir -p "${WORK}"/boot/archboot
 		for i in vmlinuz vmlts vm64 vm64lts initrd.img initrdlts.img initrd64.img initrd64lts.img;do
-			cp $MNT/archboot/boot/$i $WORK/boot/archboot/$i
+			cp "${MNT}"/archboot/boot/$i "${WORK}"/boot/archboot/$i
 		done
-		cp -r $MNT/archboot/core-* $WORK/ #packages
+		cp -r "${MNT}"/archboot/core-* "${WORK}"/ #packages
 		umcdmount archboot
 	fi
 elif [ $1 = writecfg ];then
 	if [ -f archboot.iso ];then
-		if [ -f $TAGS/lang-full ];then
-			LANG="$(cat $TAGS/lang-full)"
+		if [ -f "${TAGS}"/lang-full ];then
+			LANG="$(cat "${TAGS}"/lang-full)"
 		else
 			LANG="en_US"
 		fi
@@ -89,7 +89,7 @@ elif [ $1 = writecfg ];then
 		LINUX /boot/archboot/vm64lts
 		APPEND initrd=/boot/archboot/initrd64lts.img rootdelay=10
 	
-		menu end" >> $WORK/boot/isolinux/isolinux.cfg
+		menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #NetbootCD 4.x tc+nb.iso plugin for multicd.sh
-#version 6.6
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,11 +30,11 @@ elif [ $1 = copy ];then
 	if [ -f tc+nb.iso ];then
 		echo "Copying NetbootCD / Tiny Core / GRUB4DOS..."
 		mcdmount tc+nb
-		mkdir -p ${WORK}/boot/tc+nb
-		cp ${MNT}/tc+nb/isolinux/kexec.bzI ${WORK}/boot/tc+nb/
-		cp ${MNT}/tc+nb/isolinux/nbinit*.gz ${WORK}/boot/tc+nb/nbinit.gz
-		cp ${MNT}/tc+nb/isolinux/tinycore.gz ${WORK}/boot/tc+nb/
-		cp ${MNT}/tc+nb/isolinux/grub.exe ${WORK}/boot/tc+nb/
+		mkdir -p "${WORK}"/boot/tc+nb
+		cp "${MNT}"/tc+nb/isolinux/kexec.bzI "${WORK}"/boot/tc+nb/
+		cp "${MNT}"/tc+nb/isolinux/nbinit*.gz "${WORK}"/boot/tc+nb/nbinit.gz
+		cp "${MNT}"/tc+nb/isolinux/tinycore.gz "${WORK}"/boot/tc+nb/
+		cp "${MNT}"/tc+nb/isolinux/grub.exe "${WORK}"/boot/tc+nb/
 		sleep 1;umcdmount tc+nb
 	fi
 elif [ $1 = writecfg ];then
@@ -44,20 +44,20 @@ elif [ $1 = writecfg ];then
 		KERNEL /boot/tc+nb/kexec.bzI
 		initrd /boot/tc+nb/nbinit.gz
 		APPEND quiet
-		" >> ${WORK}/boot/isolinux/isolinux.cfg
-		if [ -f ${WORK}/boot/tc+nb/tinycore.gz ];then
+		" >> "${WORK}"/boot/isolinux/isolinux.cfg
+		if [ -f "${WORK}"/boot/tc+nb/tinycore.gz ];then
 			echo "LABEL tc+nb-tinycore
 			MENU LABEL ^Tiny Core Linux (tc+nb.iso)
 			KERNEL /boot/tc+nb/kexec.bzI
 			INITRD /boot/tc+nb/tinycore.gz
 			APPEND quiet
-			" >> ${WORK}/boot/isolinux/isolinux.cfg
+			" >> "${WORK}"/boot/isolinux/isolinux.cfg
 		fi
-		if [ -f ${WORK}/boot/tc+nb/grub.exe ];then
+		if [ -f "${WORK}"/boot/tc+nb/grub.exe ];then
 			echo "LABEL tc+nb-grub
 			MENU LABEL ^GRUB4DOS (tc+nb.iso)
 			KERNEL /boot/tc+nb/grub.exe
-			" >> ${WORK}/boot/isolinux/isolinux.cfg
+			" >> "${WORK}"/boot/isolinux/isolinux.cfg
 		fi
 	fi
 else

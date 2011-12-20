@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #NT Password Editor plugin for multicd.sh
-#version 6.2
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,10 +29,10 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f ntpasswd.iso ];then
 		mcdmount ntpasswd
-		mkdir $WORK/boot/ntpasswd
-		cp $MNT/ntpasswd/vmlinuz $WORK/boot/ntpasswd/vmlinuz
-		cp $MNT/ntpasswd/initrd.cgz $WORK/boot/ntpasswd/initrd.cgz
-		cp $MNT/ntpasswd/scsi.cgz $WORK/boot/ntpasswd/scsi.cgz #Alternate initrd
+		mkdir "${WORK}"/boot/ntpasswd
+		cp "${MNT}"/ntpasswd/vmlinuz "${WORK}"/boot/ntpasswd/vmlinuz
+		cp "${MNT}"/ntpasswd/initrd.cgz "${WORK}"/boot/ntpasswd/initrd.cgz
+		cp "${MNT}"/ntpasswd/scsi.cgz "${WORK}"/boot/ntpasswd/scsi.cgz #Alternate initrd
 		umcdmount ntpasswd
 	fi
 elif [ $1 = writecfg ];then
@@ -41,7 +41,7 @@ echo "label ntpasswd
 menu label ^NT Offline Password & Registry Editor
 kernel /boot/ntpasswd/vmlinuz
 append rw vga=1 init=/linuxrc initrd=/boot/ntpasswd/initrd.cgz,/boot/ntpasswd/scsi.cgz
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

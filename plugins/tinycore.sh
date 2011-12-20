@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Tiny Core Linux (also multicore) plugin for multicd.sh
 #version 6.9
 #Copyright (c) 2010 Isaac Schemm
@@ -39,8 +39,8 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 #BEGIN TINY CORE ENTRY#
 if [ -f tinycore.iso ];then
-	if [ -f $TAGS/tinycore.name ] && [ "$(cat $TAGS/tinycore.name)" != "" ];then
-		TCNAME=$(cat $TAGS/tinycore.name)
+	if [ -f "${TAGS}"/tinycore.name ] && [ "$(cat "${TAGS}"/tinycore.name)" != "" ];then
+		TCNAME=$(cat "${TAGS}"/tinycore.name)
 	elif [ -f tinycore.defaultname ] && [ "$(cat tinycore.defaultname)" != "" ];then
 		TCNAME=$(cat tinycore.defaultname)
 	else
@@ -49,12 +49,12 @@ if [ -f tinycore.iso ];then
 	if [ -f tinycore.version ] && [ "$(cat tinycore.version)" != "" ];then
 		TCNAME="$TCNAME $(cat tinycore.version)"
 	fi
-	for i in $(ls $WORK/boot/tinycore|grep '\.gz');do
+	for i in $(ls "${WORK}"/boot/tinycore|grep '\.gz');do
 		echo "label tinycore-$i
 		menu label ^$TCNAME
 		kernel /boot/tinycore/vmlinuz
 		append quiet
-		initrd /boot/tinycore/$(basename $i)">>$WORK/boot/isolinux/isolinux.cfg
+		initrd /boot/tinycore/$(basename $i)">>"${WORK}"/boot/isolinux/isolinux.cfg
 	done
 fi
 #END TINY CORE ENTRY#

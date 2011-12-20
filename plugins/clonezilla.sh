@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Clonezilla plugin for multicd.sh
-#version 6.0
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,11 +30,11 @@ elif [ $1 = copy ];then
 	if [ -f clonezilla.iso ];then
 		echo "Copying Clonezilla..."
 		mcdmount clonezilla
-		cp $MNT/clonezilla/isolinux/ocswp.png $WORK/boot/isolinux/ocswp.png #Boot menu logo
-		cp -R $MNT/clonezilla/live $WORK/boot/clonezilla #Another Debian Live-based ISO
-		sed '/MENU BEGIN Memtest/,/MENU END/d' $MNT/clonezilla/isolinux/isolinux.cfg > $WORK/boot/isolinux/clonezil.cfg #Remove FreeDOS and Memtest
+		cp "${MNT}"/clonezilla/isolinux/ocswp.png "${WORK}"/boot/isolinux/ocswp.png #Boot menu logo
+		cp -R "${MNT}"/clonezilla/live "${WORK}"/boot/clonezilla #Another Debian Live-based ISO
+		sed '/MENU BEGIN Memtest/,/MENU END/d' "${MNT}"/clonezilla/isolinux/isolinux.cfg > "${WORK}"/boot/isolinux/clonezil.cfg #Remove FreeDOS and Memtest
 		umcdmount clonezilla
-		rm $WORK/boot/clonezilla/memtest
+		rm "${WORK}"/boot/clonezilla/memtest
 	fi
 elif [ $1 = writecfg ];then
 if [ -f clonezilla.iso ];then
@@ -42,15 +42,15 @@ echo "label clonezilla
 menu label --> ^Clonezilla
 com32 vesamenu.c32
 append clonezil.cfg
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 #GNU sed syntax
-sed -i -e 's/\/live\//\/boot\/clonezilla\//g' $WORK/boot/isolinux/clonezil.cfg #Change directory to /boot/clonezilla
-sed -i -e 's/append initrd=/append live-media-path=\/boot\/clonezilla initrd=/g' $WORK/boot/isolinux/clonezil.cfg #Tell the kernel we moved it
+sed -i -e 's/\/live\//\/boot\/clonezilla\//g' "${WORK}"/boot/isolinux/clonezil.cfg #Change directory to /boot/clonezilla
+sed -i -e 's/append initrd=/append live-media-path=\/boot\/clonezilla initrd=/g' "${WORK}"/boot/isolinux/clonezil.cfg #Tell the kernel we moved it
 echo "label back
 menu label Back to main menu
 com32 menu.c32
 append isolinux.cfg
-" >> $WORK/boot/isolinux/clonezil.cfg
+" >> "${WORK}"/boot/isolinux/clonezil.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

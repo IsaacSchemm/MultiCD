@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Vyatta plugin for multicd.sh
-#version 6.6 (last functional change: 5.6)
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm, PsynoKhi0
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,12 +30,12 @@ elif [ $1 = copy ];then
 	if [ -f vyatta.iso ];then
 		echo "Copying Vyatta..."
 		mcdmount vyatta
-		cp -r $MNT/vyatta/live $WORK/Vyatta #Pretty much everything except documentation/help
+		cp -r "${MNT}"/vyatta/live "${WORK}"/Vyatta #Pretty much everything except documentation/help
 		umcdmount vyatta
 	fi
 elif [ $1 = writecfg ];then
 if [ -f vyatta.iso ];then
-cat >> $WORK/boot/isolinux/isolinux.cfg << "EOF"
+cat >> "${WORK}"/boot/isolinux/isolinux.cfg << "EOF"
 label vyatta-live
 	menu label ^Vyatta - Live
 	kernel /Vyatta/vmlinuz1

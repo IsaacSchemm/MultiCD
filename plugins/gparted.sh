@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #GParted Live plugin for multicd.sh
 #version 6.9
 #Copyright (c) 2011 Isaac Schemm
@@ -32,13 +32,13 @@ elif [ $1 = copy ];then
 	if [ -f gparted.iso ];then
 		echo "Copying GParted Live..."
 		mcdmount gparted
-		cp -R $MNT/gparted/live $WORK/boot/gparted #Compressed filesystem and kernel/initrd
-		rm $WORK/boot/gparted/memtest || true #Remember how we needed to do this with Debian Live? They use the same framework
+		cp -R "${MNT}"/gparted/live "${WORK}"/boot/gparted #Compressed filesystem and kernel/initrd
+		rm "${WORK}"/boot/gparted/memtest || true #Remember how we needed to do this with Debian Live? They use the same framework
 		umcdmount gparted
 	fi
 elif [ $1 = writecfg ];then
 if [ -f gparted.iso ];then
-	if [ -f $WORK/gparted/vmlinuz1 ];then
+	if [ -f "${WORK}"/gparted/vmlinuz1 ];then
 		AP="1"
 	else
 		AP=""
@@ -92,7 +92,7 @@ label GParted Live failsafe mode
   nosmp vga=normal nosplash
   ENDTEXT
 MENU END
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

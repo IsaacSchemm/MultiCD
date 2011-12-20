@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Mandriva installer plugin for multicd.sh
-#version 6.5
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,14 +30,14 @@ elif [ $1 = copy ];then
 	if [ -f mandriva-boot.iso ];then
 		echo "Copying Mandriva netboot installer..."
 		mcdmount mandriva-boot
-		mkdir $WORK/boot/mandriva
-		cp -r $MNT/mandriva-boot/isolinux/alt0 $WORK/boot/mandriva/
-		cp -r $MNT/mandriva-boot/isolinux/alt1 $WORK/boot/mandriva/
+		mkdir "${WORK}"/boot/mandriva
+		cp -r "${MNT}"/mandriva-boot/isolinux/alt0 "${WORK}"/boot/mandriva/
+		cp -r "${MNT}"/mandriva-boot/isolinux/alt1 "${WORK}"/boot/mandriva/
 		umcdmount mandriva-boot
 	fi
 elif [ $1 = writecfg ];then
 if [ -f mandriva-boot.iso ];then
-cat >> $WORK/boot/isolinux/isolinux.cfg << "EOF"
+cat >> "${WORK}"/boot/isolinux/isolinux.cfg << "EOF"
 label alt0
   menu label Install ^Mandriva
   kernel /boot/mandriva/alt0/vmlinuz

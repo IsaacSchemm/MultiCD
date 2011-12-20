@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Archiso-live plugin for multicd.sh
-#version 6.2
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,10 +32,10 @@ elif [ $1 = copy ];then
 	if [ -f archiso-live.iso ];then
 		echo "Copying Archiso-live..."
 		mcdmount archiso-live
-		mkdir $WORK/boot/archiso-live
-		cp $MNT/archiso-live/boot/vmlinuz $WORK/boot/archiso-live/vmlinuz
-		cp $MNT/archiso-live/boot/initrd.img $WORK/boot/archiso-live/initrd.img
-		cp -r $MNT/archiso-live/archiso-live $WORK/ #Compressed filesystems
+		mkdir "${WORK}"/boot/archiso-live
+		cp "${MNT}"/archiso-live/boot/vmlinuz "${WORK}"/boot/archiso-live/vmlinuz
+		cp "${MNT}"/archiso-live/boot/initrd.img "${WORK}"/boot/archiso-live/initrd.img
+		cp -r "${MNT}"/archiso-live/archiso-live "${WORK}"/ #Compressed filesystems
 		umcdmount archiso-live
 	fi
 elif [ $1 = writecfg ];then
@@ -63,7 +63,7 @@ ENDTEXT
 MENU LABEL Boot archiso-live with baseonly$VERSION
 KERNEL /boot/archiso-live/vmlinuz
 APPEND initrd=/boot/archiso-live/initrd.img locale=en_US.UTF-8 load=overlay cdname=archiso-live session=lxde baseonly
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

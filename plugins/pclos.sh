@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #PCLinuxOS plugin for multicd.sh
-#version 6.6 (last functional change: 6.2)
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm, PsynoKhi0
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,17 +32,17 @@ elif [ $1 = copy ];then
 	if [ -f pclos.iso ];then
 		echo "Copying PCLinuxOS..."
 		mcdmount pclos
-		mkdir $WORK/PCLinuxOS
+		mkdir "${WORK}"/PCLinuxOS
 		# Kernel, initrd
-		cp -r $MNT/pclos/isolinux $WORK/PCLinuxOS/isolinux
+		cp -r "${MNT}"/pclos/isolinux "${WORK}"/PCLinuxOS/isolinux
 		# Filesystem
-		cp $MNT/pclos/livecd.sqfs $WORK/PCLinuxOS/livecd.sqfs
+		cp "${MNT}"/pclos/livecd.sqfs "${WORK}"/PCLinuxOS/livecd.sqfs
 		# Remove memtest and mediacheck
-		if [ -f $WORK/PCLinuxOS/isolinux/memtest ];then
-			rm $WORK/PCLinuxOS/isolinux/memtest
+		if [ -f "${WORK}"/PCLinuxOS/isolinux/memtest ];then
+			rm "${WORK}"/PCLinuxOS/isolinux/memtest
 		fi
-		if [ -f $WORK/PCLinuxOS/isolinux/mediacheck ];then
-			rm $WORK/PCLinuxOS/isolinux/mediacheck
+		if [ -f "${WORK}"/PCLinuxOS/isolinux/mediacheck ];then
+			rm "${WORK}"/PCLinuxOS/isolinux/mediacheck
 		fi
 		umcdmount pclos
 	fi
@@ -81,7 +81,7 @@ label Copy_to_ram
 label back
     menu label ^Back to main menu
     com32 menu.c32
-    append isolinux.cfg" >> $WORK/boot/isolinux/isolinux.cfg
+    append isolinux.cfg" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

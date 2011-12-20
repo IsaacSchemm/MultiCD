@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Austrumi plugin for multicd.sh
-#version 5.9
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,8 +29,8 @@ if [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f austrumi.iso ];then
 		mcdmount austrumi
-		cp -r $MNT/austrumi/austrumi $WORK/ #This folder also has the kernel and initrd
-		cp $MNT/austrumi/isolinux.cfg $WORK/boot/isolinux/al.menu
+		cp -r "${MNT}"/austrumi/austrumi "${WORK}"/ #This folder also has the kernel and initrd
+		cp "${MNT}"/austrumi/isolinux.cfg "${WORK}"/boot/isolinux/al.menu
 		umcdmount austrumi
 	fi
 elif [ $1 = writecfg ];then
@@ -39,7 +39,7 @@ echo "label austrumilinux
 	menu label ^Austrumi
 	com32 vesamenu.c32
 	append al.menu
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

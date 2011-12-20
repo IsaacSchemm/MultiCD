@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Parted Magic plugin for multicd.sh
-#version 6.8
+#version 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,12 +32,12 @@ elif [ $1 = copy ];then
 	if [ -f pmagic.iso ];then
 		echo "Copying Parted Magic..."
 		mcdmount pmagic
-		cp -r $MNT/pmagic/pmagic $WORK/ #kernel/initrd & modules
-		if [ ! -f $WORK/boot/isolinux/linux.c32 ];then
-			cp $MNT/pmagic/boot/syslinux/linux.c32 $WORK/boot/isolinux
+		cp -r "${MNT}"/pmagic/pmagic "${WORK}"/ #kernel/initrd & modules
+		if [ ! -f "${WORK}"/boot/isolinux/linux.c32 ];then
+			cp "${MNT}"/pmagic/boot/syslinux/linux.c32 "${WORK}"/boot/isolinux
 		fi
-		cp $MNT/pmagic/boot/syslinux/syslinux.cfg $WORK/boot/isolinux/pmagic.cfg
-		if [ -f $MNT/pmagic/mkgriso ];then cp $MNT/pmagic/mkgriso $WORK;fi
+		cp "${MNT}"/pmagic/boot/syslinux/syslinux.cfg "${WORK}"/boot/isolinux/pmagic.cfg
+		if [ -f "${MNT}"/pmagic/mkgriso ];then cp "${MNT}"/pmagic/mkgriso "${WORK}";fi
 		umcdmount pmagic
 	fi
 elif [ $1 = writecfg ];then
@@ -51,13 +51,13 @@ if [ -f pmagic.iso ];then
 	menu label ^Parted Magic$VERSION
 	com32 menu.c32
 	append /boot/isolinux/pmagic.cfg
-	" >> $WORK/boot/isolinux/isolinux.cfg
+	" >> "${WORK}"/boot/isolinux/isolinux.cfg
 
 	echo "label back
 	menu label Back to main menu
 	com32 menu.c32
 	append /boot/isolinux/isolinux.cfg
-	" >> $WORK/boot/isolinux/pmagic.cfg
+	" >> "${WORK}"/boot/isolinux/pmagic.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

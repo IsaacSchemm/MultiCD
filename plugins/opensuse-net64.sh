@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #openSUSE 64-bit installer plugin for multicd.sh
-#version 6.2
+#version 6.9
 #Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,10 +32,10 @@ elif [ $1 = copy ];then
 	if [ -f opensuse-net64.iso ];then
 		echo "Copying openSUSE 64-bit netboot installer..."
 		mcdmount opensuse-net64
-		mkdir -p $WORK/boot/opensuse
-		awk '/^VERSION/ {print $2}' $MNT/opensuse-net64/content > $TAGS/opensuse-net.version
-		cp $MNT/opensuse-net64/boot/x86_64/loader/linux $WORK/boot/opensuse/linux64
-		cp $MNT/opensuse-net64/boot/x86_64/loader/initrd $WORK/boot/opensuse/initrd64
+		mkdir -p "${WORK}"/boot/opensuse
+		awk '/^VERSION/ {print $2}' "${MNT}"/opensuse-net64/content > "${TAGS}"/opensuse-net.version
+		cp "${MNT}"/opensuse-net64/boot/x86_64/loader/linux "${WORK}"/boot/opensuse/linux64
+		cp "${MNT}"/opensuse-net64/boot/x86_64/loader/initrd "${WORK}"/boot/opensuse/initrd64
 		umcdmount opensuse-net64
 	fi
 elif [ $1 = writecfg ];then
@@ -43,11 +43,11 @@ if [ -f opensuse-net64.iso ];then
 echo "menu begin --> ^openSUSE netboot (x86_64)
 
 label opensuse-kernel
-  menu label Install ^openSUSE $(cat $TAGS/opensuse-net.version) x86_64 (from mirrors.kernel.org)
+  menu label Install ^openSUSE $(cat "${TAGS}"/opensuse-net.version) x86_64 (from mirrors.kernel.org)
   kernel /boot/opensuse/linux64
-  append initrd=/boot/opensuse/initrd64 splash=silent showopts install=ftp://mirrors.kernel.org/opensuse/distribution/"$(cat $TAGS/opensuse-net.version)"/repo/oss
+  append initrd=/boot/opensuse/initrd64 splash=silent showopts install=ftp://mirrors.kernel.org/opensuse/distribution/"$(cat "${TAGS}"/opensuse-net.version)"/repo/oss
 label opensuse
-  menu label Install openSUSE $(cat $TAGS/opensuse-net.version) x86_64 (specify mirror)
+  menu label Install openSUSE $(cat "${TAGS}"/opensuse-net.version) x86_64 (specify mirror)
   kernel /boot/opensuse/linux64
   append initrd=/boot/opensuse/initrd64 splash=silent showopts
 label opensuse-repair
@@ -64,7 +64,7 @@ label back
   append isolinux.cfg
 
 menu end
-" >> $WORK/boot/isolinux/isolinux.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. $MCDDIR/functions.sh
+. "${MCDDIR}"/functions.sh
 #Linux Mint plugin for multicd.sh
 #version 6.9
 #Copyright (c) 2011 Isaac Schemm
@@ -41,8 +41,8 @@ getLinuxmintName () {
 		VERSION=""
 	fi
 	#get name
-	if [ -f $TAGS/$BASENAME.name ] && [ "$(cat $TAGS/$BASENAME.name)" != "" ];then
-		UBUNAME=$(cat $TAGS/$BASENAME.name)
+	if [ -f "${TAGS}"/$BASENAME.name ] && [ "$(cat "${TAGS}"/$BASENAME.name)" != "" ];then
+		UBUNAME=$(cat "${TAGS}"/$BASENAME.name)
 	elif [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
 		UBUNAME="$(cat $BASENAME.defaultname) ${VERSION}"
 	else
@@ -59,7 +59,7 @@ elif [ $1 = scan ];then
 	if $(linuxmintExists);then
 		for i in *.linuxmint.iso; do
 			getLinuxmintName
-			echo > $TAGS/$(echo $i|sed -e 's/\.iso/\.needsname/g') #Comment out this line and multicd.sh won't ask for a custom name for this ISO
+			echo > "${TAGS}"/$(echo $i|sed -e 's/\.iso/\.needsname/g') #Comment out this line and multicd.sh won't ask for a custom name for this ISO
 		done
 	fi
 elif [ $1 = copy ];then
@@ -79,7 +79,7 @@ elif [ $1 = writecfg ];then
 			menu label --> $UBUNAME Menu
 			com32 menu.c32
 			append /boot/$BASENAME/$BASENAME.cfg
-			" >> $WORK/boot/isolinux/isolinux.cfg
+			" >> "${WORK}"/boot/isolinux/isolinux.cfg
 		done
 	fi
 else
