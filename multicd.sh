@@ -5,8 +5,8 @@ set -e
 export MCDDIR="."
 . "${MCDDIR}"/functions.sh
 
-MCDVERSION="6.8"
-#multicd.sh 6.8
+MCDVERSION="6.9"
+#multicd.sh 6.9
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy

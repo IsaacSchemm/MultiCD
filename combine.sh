@@ -1,11 +1,11 @@
 #!/bin/sh
-#combine.sh version 6.7 - combine multicd.sh plugins into one script
+#combine.sh version 6.9 - combine multicd.sh plugins into one script
 #Under MIT/X11 license - see multicd.sh
 set -e
 if [ "$1" != "" ];then
 	OUTPUT="$1"
 else
-	OUTPUT=combined-multicd.sh
+	OUTPUT=multicd-single-file.sh
 fi
 
 if [ ! -f multicd.sh ] || [ ! -d plugins ] || [ -d functions.sh ];then
@@ -13,7 +13,10 @@ if [ ! -f multicd.sh ] || [ ! -d plugins ] || [ -d functions.sh ];then
 	exit 1
 fi
 rm working*.sh 2>/dev/null ||true
-sed -n '/#!\/bin\/bash/,/#START PREPARE/p' multicd.sh > working0.sh
+echo "#!/bin/bash
+#This is the single-file version of multicd.sh, compiled on: $(date)
+" > working0.sh
+sed -n '/set -e/,/#START PREPARE/p' multicd.sh >> working0.sh
 sed -n '/#!\/bin\/sh/,/#START LINKS/p' functions.sh >> working0.sh
 sed -n '/#END LINKS/,/#END FUNCTIONS/p' functions.sh >> working3.sh
 sed -n '/#END PREPARE/,/#START SCAN/p' multicd.sh >> working3.sh
