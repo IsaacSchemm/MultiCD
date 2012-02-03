@@ -5,8 +5,8 @@ set -e
 export MCDDIR="."
 . "${MCDDIR}"/functions.sh
 
-MCDVERSION="6.9"
-#multicd.sh 6.9
+MCDVERSION="7.0"
+#multicd.sh 7.0
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,6 +26,9 @@ MCDVERSION="6.9"
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
+
+#Needs to be changed when a new version of syslinux comes out.
+RECENT_SYSLINUX="4.05"
 
 mcdclean() {
 	for i in *;do
@@ -410,13 +413,13 @@ if [ ! -f "${WORK}"/boot/isolinux/isolinux.bin ];then
 	echo "Downloading SYSLINUX..."
 	if $VERBOSE ;then #These will only be run if there is no syslinux.tar.gz
 		#Both of these need to be changed when a new version of syslinux comes out.
-		if ! wget -t 1 -O syslinux.tar.gz http://ftp.ntu.edu.tw/linux/boot/syslinux/4.xx/syslinux-4.04.tar.gz;then
+		if ! wget -t 1 -O syslinux.tar.gz https://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-$RECENT_SYSLINUX.tar.gz;then
 			echo "Error: could not download SYSLINUX. Please update the URL in $0."
 			rm syslinux.tar.gz
 			false #quits script
 		fi
 	else
-		if ! wget -t 1 -qO syslinux.tar.gz http://ftp.ntu.edu.tw/linux/boot/syslinux/4.xx/syslinux-4.04.tar.gz;then
+		if ! wget -t 1 -qO syslinux.tar.gz https://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-$RECENT_SYSLINUX.tar.gz;then
 			echo "Error: could not download SYSLINUX. Please update the URL in $0."
 			rm syslinux.tar.gz
 			false #quits script
