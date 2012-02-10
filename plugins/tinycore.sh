@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Tiny Core Linux (also multicore) plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2010 Isaac Schemm
+#version 7.0
+#Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +51,7 @@ if [ -f tinycore.iso ];then
 	fi
 	for i in $(ls "${WORK}"/boot/tinycore|grep '\.gz');do
 		echo "label tinycore-$i
-		menu label ^$TCNAME
+		menu label ^$TCNAME ($(basename $i))
 		kernel /boot/tinycore/vmlinuz
 		append quiet
 		initrd /boot/tinycore/$(basename $i)">>"${WORK}"/boot/isolinux/isolinux.cfg
