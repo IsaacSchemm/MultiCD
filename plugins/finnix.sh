@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-. ./functions.sh
+. "${MCDDIR}"/functions.sh
 #Finnix plugin for multicd.sh
 #version 7.0
 #Copyright (c) 2011 Rorschach, Isaac Schemm

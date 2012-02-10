@@ -23,7 +23,7 @@ Terminal=false
 Exec=multicd gui
 Icon=multicd
 Type=Application
-Categories=Application;System;
+Categories=Application;Utility;System;
 Name=MultiCD
 Comment=Build a custom CD/DVD/USB image from multiple live CDs" > $TEMPDIR/usr/share/applications/multicd.desktop
 
