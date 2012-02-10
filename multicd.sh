@@ -50,7 +50,7 @@ fi
 if [ "$1" = "gui" ];then
 	if which zenity &> /dev/null;then
 		DIR=$(zenity --file-selection --directory --filename=$HOME/ --title="MultiCD - Choose directory")
-		cd $DIR
+		cd "$DIR"
 		RUN="$0 -w"
 	else
 		RUN="$0 give-error"

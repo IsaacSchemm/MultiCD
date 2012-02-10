@@ -26,7 +26,7 @@ afc34a521ac57d3743282f5fe451da8b  plugins/efw.sh
 e32bf7ad879e53c0ee3b96898726591e  plugins/feather.sh
 da11bc9cdb5d94133a53ef1a344d627e  plugins/fedora-boot64.sh
 9db5913d97c7866dfe1cf71c1dcb3f00  plugins/fedora-boot.sh
-4ee910c9d7e88c695b9cedd5c9b895a3  plugins/finnix.sh
+1de8fa1a20af897e8b28705ca5c6f808  plugins/finnix.sh
 2cdda2dc196c4a10eefc98bcbecef22d  plugins/freedos.sh
 3a4282ee55983209f08a49ce8b610781  plugins/fusion.sh
 dd871f4610bcdba0f54b30c66378d3a7  plugins/geexbox.sh
