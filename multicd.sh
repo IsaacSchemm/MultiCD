@@ -116,6 +116,8 @@ export TAGS="${MNT}/tags"
 
 if [ $(whoami) = root ] && uname|grep -q Linux;then
 	export EXTRACTOR=mount #When possible, loop-mount is preferred because it is faster (files are copied once, not twice, before the ISO is generated) and because it runs without an X server. However, it is only available to root, which opens up security risks.
+elif which fuseiso &> /dev/null; then
+	export EXTRACTOR=fuseiso
 elif which file-roller &> /dev/null;then
 	export EXTRACTOR=file-roller #file-roller is a GNOME application
 elif which ark &> /dev/null;then
@@ -394,6 +396,7 @@ if [ -f syslinux.tar.gz ];then
 	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 "${WORK}"/boot/isolinux/
 	cp /tmp/syslinux-*/com32/modules/chain.c32 "${WORK}"/boot/isolinux/
 	cp /tmp/syslinux-*/utils/isohybrid "${TAGS}"/isohybrid
+	chmod -R +w $WORK/boot/isolinux
 	chmod +x "${TAGS}"/isohybrid
 	rm -r /tmp/syslinux-*/
 #elif [ -d /usr/lib/syslinux ];then
