@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 . "${MCDDIR}"/functions.sh
-#Tiny Core Linux (also multicore) plugin for multicd.sh
-#version 7.0
+#Tiny Core Linux (also Core, CorePlus) plugin for multicd.sh
+#version 7.1
 #Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,10 +23,9 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "multicore-current.iso tinycore.iso none"
-	echo "multicore_*.iso tinycore.iso none"
-	echo "tinycore-current.iso tinycore.iso none"
-	echo "tinycore_*.iso tinycore.iso none"
+	echo "CorePlus-*.iso tinycore.iso none"
+	echo "TinyCore-*.iso tinycore.iso none"
+	echo "Core-*.iso tinycore.iso none"
 elif [ $1 = scan ];then
 	if [ -f tinycore.iso ];then
 		echo "Tiny Core Linux"
@@ -53,7 +52,7 @@ if [ -f tinycore.iso ];then
 		echo "label tinycore-$i
 		menu label ^$TCNAME ($(basename $i))
 		kernel /boot/tinycore/vmlinuz
-		append quiet
+		append quiet cde showapps
 		initrd /boot/tinycore/$(basename $i)">>"${WORK}"/boot/isolinux/isolinux.cfg
 	done
 fi
