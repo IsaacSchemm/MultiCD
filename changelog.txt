@@ -1,3 +1,5 @@
+#This is the changelog for official MultiCD releases. It may eventually be phased out, in favor of downloading the newest version from git directly.
+
 #Changelog:
 #v1.0 - first released version, with DSL, Puppy and GParted support
 #v1.1 - added TinyMe support, added -quiet option to mkisofs
@@ -67,3 +69,4 @@
 #v6.8 - Added XBMC, several updates (September 15, 2011)
 #v6.9 - Updateds tinycore, added lots of quotes around variables for better operation in folders with spaces. (unreleased)
 #v7.0 - Several fixes. (February 10, 2012)
+#v7.1 - Updated netbootcd.sh. (UNRELEASED)

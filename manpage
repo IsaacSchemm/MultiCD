@@ -1,4 +1,4 @@
-.\” This is the manpage for MultiCD.
+.\” This is the manpage for MultiCD, used in the (unsupported) Debian package.
 .\” UNKNOWN DATE and MCD VER are replaced with the current date by buildpkg.sh when making the .deb package.
 .TH MULTICD 1 UNKNOWN_DATE MCD_VER "MultiCD"
 .SH NAME
