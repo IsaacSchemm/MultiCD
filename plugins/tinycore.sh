@@ -34,6 +34,17 @@ elif [ $1 = copy ];then
 	if [ -f tinycore.iso ];then
 		echo "Copying Tiny Core..."
 		tinycorecommon tinycore
+		#--------------------#
+		for i in `ls -1 *.tcz 2> /dev/null;true`;do
+			mkdir -p "${WORK}"/cde
+			echo "Copying: $i"
+			cp $i "${WORK}"/cde/optional/"$i"
+		done
+		#regenerate onboot.lst
+		true > "${WORK}"/cde/onboot.lst
+		for i in "${WORK}"/cde/optional/*;do
+			echo $(basename "$i") >> "${WORK}"/cde/onboot.lst
+		done
 	fi
 elif [ $1 = writecfg ];then
 #BEGIN TINY CORE ENTRY#

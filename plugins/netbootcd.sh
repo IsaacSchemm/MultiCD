@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 . "${MCDDIR}"/functions.sh
-#NetbootCD 4.x plugin for multicd.sh
-#version 6.9
+#NetbootCD 4.8+ plugin for multicd.sh
+#version 7.1
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,21 +33,62 @@ elif [ $1 = copy ];then
 		echo "Copying NetbootCD..."
 		mcdmount netbootcd
 		mkdir -p "${WORK}"/boot/nbcd
-		if [ -d "${MNT}"/netbootcd/boot/isolinux ];then #version 6.9
-			cp "${MNT}"/netbootcd/boot/kexec.bzI "${WORK}"/boot/nbcd/kexec.bzI
-			cp "${MNT}"/netbootcd/boot/*.gz "${WORK}"/boot/nbcd/
-			cp "${MNT}"/netbootcd/boot/isolinux/isolinux.cfg "${WORK}"/boot/nbcd/include.cfg
-			sed -i -e '0,/label nbcd/Id' "${WORK}"/boot/nbcd/include.cfg
-			sed -i -e 's^/boot^/boot/nbcd^g' "${WORK}"/boot/nbcd/include.cfg
-			sed -i -e 's/menu default//g' "${WORK}"/boot/nbcd/include.cfg
-		else #version 6.9
-			cp "${MNT}"/netbootcd/isolinux/kexec.bzI "${WORK}"/boot/nbcd/kexec.bzI
-			cp "${MNT}"/netbootcd/isolinux/*.gz "${WORK}"/boot/nbcd/
-			echo "LABEL netbootcd
-			MENU LABEL ^NetbootCD $(getVersion netbootcd)
-			KERNEL /boot/nbcd/kexec.bzI
-			initrd /boot/nbcd/nbinit.gz
-			APPEND quiet" >> "${WORK}"/boot/nbcd/include.cfg
+		cp "${MNT}"/netbootcd/boot/kexec.bzI "${WORK}"/boot/nbcd/kexec.bzI
+		cp "${MNT}"/netbootcd/boot/nbinit4.gz "${WORK}"/boot/nbcd/nbinit4.gz
+		if [ -d "${MNT}"/netbootcd/cde ];then #combined cd with CorePlus
+			if [ -d "${WORK}"/cde ];then
+				echo "NOTE: combining TCZ folders of TinyCore and NetbootCD+CorePlus."
+			fi
+			cp -r "${MNT}"/netbootcd/cde "${WORK}"
+			for i in `ls -1 *.tcz 2> /dev/null;true`;do
+				echo "Copying: $i"
+				cp $i "${WORK}"/cde/optional/"$i"
+			done
+			#regenerate onboot.lst
+			true > "${WORK}"/cde/onboot.lst
+			for i in "${WORK}"/cde/optional/*.tcz;do
+				echo $(basename "$i") >> "${WORK}"/cde/onboot.lst
+			#	cd $(dirname "$i")
+			#	VAR="$(md5sum $i)"
+			#	cd -
+			#	echo "$VAR" > $i.md5.txt
+			#	echo > $i.dep
+			done
+			cp "${MNT}"/netbootcd/boot/core.gz "${WORK}"/boot/nbcd/
+			echo "LABEL nbcd-tinycore
+			menu label Start CorePlus 4.2.1 on top of NetbootCD 4.8
+			kernel /boot/nbcd/kexec.bzI
+			initrd /boot/nbcd/nbinit4.gz
+			append quiet cde showapps
+			text help
+	Uses the initrd of NetbootCD with the TCZ extensions of
+	CorePlus. The result is that CorePlus is loaded first,
+	and NetbootCD is run when you choose \"Exit To Prompt\".
+			endtext
+			
+			LABEL nbcd
+			menu label Start ^NetbootCD 4.8
+			kernel /boot/nbcd/kexec.bzI
+			initrd /boot/nbcd/nbinit4.gz
+			append quiet showapps
+			
+			LABEL core-kexec
+			menu label Start ^Core 4.2.1
+			kernel /boot/nbcd/kexec.bzI
+			initrd /boot/nbcd/core.gz
+			append quiet showapps
+			
+			LABEL tinycore-kexec
+			menu label Start Core^Plus 4.2.1 (with desktop)
+			kernel /boot/nbcd/kexec.bzI
+			initrd /boot/nbcd/core.gz
+			append quiet cde showapps" > "${WORK}"/boot/nbcd/include.cfg
+		else
+			echo "LABEL nbcd
+			menu label Start ^NetbootCD 4.8
+			kernel /boot/nbcd/kexec.bzI
+			initrd /boot/nbcd/nbinit4.gz
+			append quiet showapps" > "${WORK}"/boot/nbcd/include.cfg
 		fi
 		sleep 1;umcdmount netbootcd
 	fi

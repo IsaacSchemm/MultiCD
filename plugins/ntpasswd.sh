@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #NT Password Editor plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2010 Isaac Schemm
+#version 7.1
+#Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,9 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "cd??????.iso ntpasswd.iso none"
+elif [ $1 = scan ];then
 	if [ -f ntpasswd.iso ];then
 		echo "NT Password Editor"
 	fi
@@ -44,7 +46,7 @@ append rw vga=1 init=/linuxrc initrd=/boot/ntpasswd/initrd.cgz,/boot/ntpasswd/sc
 " >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi
