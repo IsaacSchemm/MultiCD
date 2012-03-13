@@ -36,7 +36,7 @@ elif [ $1 = copy ];then
 		mkdir "${WORK}"/boot/freedos
 		cp -r "${MNT}"/freedos/freedos "${WORK}"/ #Core directory with the packages
 		cp "${MNT}"/freedos/setup.bat "${WORK}"/setup.bat #FreeDOS setup
-		cp "${MNT}"/freedos/isolinux/data/fdboot.img "${WORK}"/boot/freedos/fdboot.img #Initial DOS boot image
+		cp "${MNT}"/freedos/isolinux/fdboot.img "${WORK}"/boot/freedos/fdboot.img #Initial DOS boot image
 		if [ -d "${MNT}"/freedos/fdos ];then
 			cp -r "${MNT}"/freedos/fdos "${WORK}"/ #Live CD
 		fi
