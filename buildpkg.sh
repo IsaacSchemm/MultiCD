@@ -1,9 +1,11 @@
 #!/bin/sh
 
+#This script builds the tarball, single-file script, and Debian package (experimental) for MultiCD.
+
 VERSION=$(./multicd.sh -V)
 
 #build tarball
-tar -cvzf multicd-$VERSION.tar.gz buildpkg.sh changelog.txt combine.sh functions.sh isos.txt multicd.sh plugins plugins.md5
+tar -cvzf multicd-$VERSION.tar.gz buildpkg.sh changelog.txt combine.sh functions.sh multicd.sh plugins plugins.md5
 
 #build combined .sh
 ./combine.sh multicd-$VERSION.sh
@@ -34,7 +36,7 @@ on $(date -u).
 
 MultiCD main script copyright:
 
-Copyright (c) 2011 Isaac Schemm
+Copyright (c) 2012 Isaac Schemm
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the \"Software\"), to deal
@@ -66,8 +68,8 @@ Version: $VERSION
 Section: utils
 Priority: optional
 Architecture: all
-Depends: bash, linux-image | ark | file-roller, genisoimage | mkisofs, awk, sed
-Recommends: dialog, wget, zenity
+Depends: bash, linux-image | fuseiso | ark | file-roller, genisoimage | mkisofs, awk, sed
+Recommends: dialog, wget, fuseiso, zenity
 Installed-Size: $(du $TEMPDIR/usr --apparent-size --total|tail -n 1|awk '{print $1}')
 Maintainer: Isaac Schemm <isaacschemm@gmail.com>
 Description: Shell script to build live CDs/DVDs from one or more images
