@@ -32,7 +32,10 @@ elif [ $1 = copy ];then
 		mcdmount slitaz
 		mkdir -p "${WORK}"/boot/slitaz
 		cp "${MNT}"/slitaz/boot/bzImage "${WORK}"/boot/slitaz/bzImage #Kernel
-		cp "${MNT}"/slitaz/boot/rootfs.gz "${WORK}"/boot/slitaz/rootfs.gz #Root filesystem
+		cp "${MNT}"/slitaz/boot/rootfs1.gz "${WORK}"/boot/slitaz/rootfs1.gz #Root filesystem
+		cp "${MNT}"/slitaz/boot/rootfs2.gz "${WORK}"/boot/slitaz/rootfs2.gz #Root filesystem
+		cp "${MNT}"/slitaz/boot/rootfs3.gz "${WORK}"/boot/slitaz/rootfs3.gz #Root filesystem
+		cp "${MNT}"/slitaz/boot/rootfs4.gz "${WORK}"/boot/slitaz/rootfs4.gz #Root filesystem
 		umcdmount slitaz
 	fi
 elif [ $1 = writecfg ];then
@@ -41,7 +44,7 @@ cat >> "${WORK}"/boot/isolinux/isolinux.cfg << "EOF"
 label slitaz
 	menu label ^SliTaz GNU/Linux
 	kernel /boot/slitaz/bzImage
-	append initrd=/boot/slitaz/rootfs.gz rw root=/dev/null vga=normal
+	append initrd=/boot/slitaz/rootfs4.gz,/boot/slitaz/rootfs3.gz,/boot/slitaz/rootfs2.gz,/boot/slitaz/rootfs1.gz rw root=/dev/null vga=normal autologin
 EOF
 fi
 else
