@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #PCLinuxOS plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2010 Isaac Schemm, PsynoKhi0
+#version 6.9+bugfix1
+#Copyright (c) 2012 Isaac Schemm, PsynoKhi0
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -81,7 +81,8 @@ label Copy_to_ram
 label back
     menu label ^Back to main menu
     com32 menu.c32
-    append isolinux.cfg" >> "${WORK}"/boot/isolinux/isolinux.cfg
+    append isolinux.cfg
+menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
