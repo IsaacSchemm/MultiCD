@@ -32,19 +32,47 @@ elif [ $1 = copy ];then
 		mcdmount slitaz
 		mkdir -p "${WORK}"/boot/slitaz
 		cp "${MNT}"/slitaz/boot/bzImage "${WORK}"/boot/slitaz/bzImage #Kernel
-		cp "${MNT}"/slitaz/boot/rootfs1.gz "${WORK}"/boot/slitaz/rootfs1.gz #Root filesystem
-		cp "${MNT}"/slitaz/boot/rootfs2.gz "${WORK}"/boot/slitaz/rootfs2.gz #Root filesystem
-		cp "${MNT}"/slitaz/boot/rootfs3.gz "${WORK}"/boot/slitaz/rootfs3.gz #Root filesystem
-		cp "${MNT}"/slitaz/boot/rootfs4.gz "${WORK}"/boot/slitaz/rootfs4.gz #Root filesystem
+		cp "${MNT}"/slitaz/boot/rootfs1.gz "${WORK}"/boot/slitaz/rootfs1.gz #Root filesystem 1
+		cp "${MNT}"/slitaz/boot/rootfs2.gz "${WORK}"/boot/slitaz/rootfs2.gz #Root filesystem 2
+		cp "${MNT}"/slitaz/boot/rootfs3.gz "${WORK}"/boot/slitaz/rootfs3.gz #Root filesystem 3
+		cp "${MNT}"/slitaz/boot/rootfs4.gz "${WORK}"/boot/slitaz/rootfs4.gz #Root filesystem 4
+		cp "${MNT}"/slitaz/boot/gpxe "${WORK}"/boot/slitaz/gpxe #PXE bootloader
 		umcdmount slitaz
 	fi
 elif [ $1 = writecfg ];then
 if [ -f slitaz.iso ];then
 cat >> "${WORK}"/boot/isolinux/isolinux.cfg << "EOF"
-label slitaz
-	menu label ^SliTaz GNU/Linux
+menu begin --> SliTaz GNU/Linux
+
+label core
+	menu label SliTaz core Live
 	kernel /boot/slitaz/bzImage
 	append initrd=/boot/slitaz/rootfs4.gz,/boot/slitaz/rootfs3.gz,/boot/slitaz/rootfs2.gz,/boot/slitaz/rootfs1.gz rw root=/dev/null vga=normal autologin
+
+label gtkonly
+	menu label SliTaz gtkonly Live
+	kernel /boot/slitaz/bzImage
+	append initrd=/boot/slitaz/rootfs4.gz,/boot/slitaz/rootfs3.gz,/boot/slitaz/rootfs2.gz rw root=/dev/null vga=normal autologin
+
+label justx
+	menu label SliTaz justx Live
+	kernel /boot/slitaz/bzImage
+	append initrd=/boot/slitaz/rootfs4.gz,/boot/slitaz/rootfs3.gz rw root=/dev/null vga=normal autologin
+
+label base
+	menu label SliTaz base Live
+	kernel /boot/slitaz/bzImage
+	append initrd=/boot/slitaz/rootfs4.gz rw root=/dev/null vga=normal autologin
+
+label web zeb
+	menu label Web Boot
+	kernel /boot/slitaz/gpxe
+
+label back
+	menu label Back to main menu
+	com32 menu.c32
+
+menu end
 EOF
 fi
 else
