@@ -2,7 +2,7 @@
 3e50436a9d0c8bef6b95385add288ed9  plugins/archboot.sh
 6ea36703273f41dc876958e0c1d032f6  plugins/archdual.sh
 ae0580a03576937c1b7288ed59a18f16  plugins/archiso-live.sh
-9f40d8ff2dca5b03633ebdca1a7e544a  plugins/arch.sh
+bf0befe16784114f3e61fd8e15daff9f  plugins/arch.sh
 3fed7807651079bdfe35facc2f36cc1a  plugins/austrumi.sh
 dfca0e4634f56d4c09d07f0a83f6f046  plugins/avg.sh
 5292dbd91ac0969b2c9d7f083cb17f33  plugins/avira.sh
@@ -27,7 +27,7 @@ e32bf7ad879e53c0ee3b96898726591e  plugins/feather.sh
 da11bc9cdb5d94133a53ef1a344d627e  plugins/fedora-boot64.sh
 9db5913d97c7866dfe1cf71c1dcb3f00  plugins/fedora-boot.sh
 1de8fa1a20af897e8b28705ca5c6f808  plugins/finnix.sh
-526095d056e21103fe4ba890cf452a3d  plugins/freedos.sh
+1a0df67895eca07af5f69f5ac0e74850  plugins/freedos.sh
 3a4282ee55983209f08a49ce8b610781  plugins/fusion.sh
 dd871f4610bcdba0f54b30c66378d3a7  plugins/geexbox.sh
 14491150cd29c97ecabb910cbe52f6d5  plugins/gparted.sh
@@ -59,7 +59,7 @@ f627c7d0afc218c6f0245ca91bac83c9  plugins/pinguy.sh
 718f9b58e0b3751d8a552a6d43937186  plugins/pmagic.sh
 0424daa1280da6f860a94212c04987ec  plugins/porteus.sh
 4d68c53b5bee1fd27a65be174efb8e7b  plugins/puppy2.sh
-0bd2d25995c9487eac2610054d6144f1  plugins/puppy.sh
+37e662abd1da594823d4a9c017d5b0d0  plugins/puppy.sh
 82ccc87e963f06657f48812aa2dd6156  plugins/redobackup.sh
 03d176c16cea389f481512402391597d  plugins/riplinux.sh
 7f03e55f4299238e17761b71260041fa  plugins/sabayon.sh
@@ -68,11 +68,11 @@ d667be19e1259281aac4e0533b407ae8  plugins/slax.sh
 118aa9d73c38ff88b4436aee305d5f01  plugins/slitaz.sh
 d46e8cf071ceead08e7209e91747657c  plugins/sysrcd.sh
 d31a81e94254f9de5e09825ab1917f9a  plugins/tc+nb.sh
-e43bb078cd9ad87fb527b7cdc5d71f0c  plugins/tinycore.sh
+486c4b989c384e19646528cb60b98597  plugins/tinycore.sh
 8a2d16f9ccc58a8d0a19e8634d868480  plugins/tinyme.sh
 620da4d35a21f5bf17ede321c9d51425  plugins/trk.sh
 aab2009853c309639d4e50287024c4c7  plugins/ubcd.sh
-b3ac43843c6344cd6128f910d4ce51d7  plugins/ubuntu-alternate.sh
+37395a45d49ebd20bb97a8f7fc6f21a7  plugins/ubuntu-alternate.sh
 8ed598bee014c7377daace9b8466a2b3  plugins/ubuntu-mini.sh
 6223ec9ae40b206a95fb52acc34ff16a  plugins/ubuntu.sh
 55bf4d66cf867bc9090b0dcbb3c648f0  plugins/vyatta.sh

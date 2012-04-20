@@ -23,11 +23,12 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
+	#Only one will be included
 	echo "ubuntu-*-alternate-i386.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(32-bit)"
 	echo "ubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(64-bit)"
 elif [ $1 = scan ];then
 	if [ -f ubuntu-alternate.iso ];then
-		echo "Ubuntu alternate installer (only one of these can be included)"
+		echo "Ubuntu alternate installer"
 	fi
 elif [ $1 = copy ];then
 	if [ -f ubuntu-alternate.iso ];then

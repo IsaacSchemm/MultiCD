@@ -23,6 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
+	#Only one will be included
 	echo "CorePlus-*.iso tinycore.iso none"
 	echo "TinyCore-*.iso tinycore.iso none"
 	echo "Core-*.iso tinycore.iso none"

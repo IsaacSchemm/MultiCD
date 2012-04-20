@@ -16,7 +16,7 @@ mcdmount () {
 		ark -b -o "${MNT}"/$1 $1.iso
 		chmod -R +w "${MNT}"/$1 #To avoid confirmation prompts on BSD cp
 	elif [ $EXTRACTOR = mount ];then
-		mount -o loop $1.iso "${MNT}"/$1/
+		mount -o loop,ro $1.iso "${MNT}"/$1/
 	elif [ $EXTRACTOR = fuseiso ];then
 		fuseiso $1.iso $MNT/$1 -orw,umask=0000
 	else
@@ -63,7 +63,7 @@ isoaliases () {
 					LINKTO=$LINKNAME #The intended link name.
 				else
 					#Adds the counter number and an underscore to the beginning of the link name.
-					#This is done for all link names with more than one matching ISO, but only plugins that support multiples (i.e. ubuntu.sh) will pick up the extra ISO names.
+					#I'm not sure if any plugins use this. I know that if this happens, any later aliasing rules for the same LINKNAME will be skipped. :(
 					#This might cause a little (harmless) clutter in the working directory.
 					LINKTO=${COUNTER}_${LINKNAME}
 				fi
@@ -125,22 +125,22 @@ tinycorecommon () {
 	fi
 }
 puppycommon () {
-	if [ ! -z "$1" ] && [ -f $1.iso ];then
-		mcdmount $1
+	if [ ! -z "$1.puppy" ] && [ -f $1.puppy.iso ];then
+		mcdmount $1.puppy
 		#The installer will only work if Puppy is in the root dir of the disc
 		if [ -f "${TAGS}"/puppies/$1.inroot ];then
-			cp "${MNT}"/$1/*.sfs "${WORK}"/
-			cp "${MNT}"/$1/vmlinuz "${WORK}"/vmlinuz
-			cp "${MNT}"/$1/initrd.gz "${WORK}"/initrd.gz
+			cp "${MNT}"/$1.puppy/*.sfs "${WORK}"/
+			cp "${MNT}"/$1.puppy/vmlinuz "${WORK}"/vmlinuz
+			cp "${MNT}"/$1.puppy/initrd.gz "${WORK}"/initrd.gz
 		else
 			mkdir "${WORK}"/$1
-			cp "${MNT}"/$1/*.sfs "${WORK}"/$1/
-			cp "${MNT}"/$1/vmlinuz "${WORK}"/$1/vmlinuz
-			cp "${MNT}"/$1/initrd.gz "${WORK}"/$1/initrd.gz
+			cp "${MNT}"/$1.puppy/*.sfs "${WORK}"/$1/
+			cp "${MNT}"/$1.puppy/vmlinuz "${WORK}"/$1/vmlinuz
+			cp "${MNT}"/$1.puppy/initrd.gz "${WORK}"/$1/initrd.gz
 		fi
-		umcdmount $1
+		umcdmount $1.puppy
 	else
-		echo "$0: \"$1\" is empty or not an ISO, so it will not be copied. This is a bug."
+		echo "$0: \"$1.puppy\" is empty or not an ISO, so it will not be copied. This is a bug."
 		exit 1
 	fi
 }

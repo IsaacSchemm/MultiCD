@@ -23,6 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
+	#Only one will be included
 	echo "fdfullcd.iso freedos.iso FreeDOS_Full_CD"
 	echo "fdbasecd.iso freedos.iso FreeDOS_Base_CD"
 elif [ $1 = scan ];then

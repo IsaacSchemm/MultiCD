@@ -44,6 +44,8 @@ mcdclean() {
 if [ "$1" = "clean" ];then
 	mcdclean
 	exit 0 #quit program
+else
+	mcdclean
 fi
 
 #GUI helper - calls a terminal emulator which calls another multicd
@@ -665,7 +667,6 @@ if $TESTISO;then
 fi
 
 echo "Cleaning current directory..."
-mcdclean
 
 if $WAIT;then
 	echo "Done. Press ENTER to exit."

@@ -23,6 +23,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
+	#Only one will be included
 	echo "archlinux-*-netinstall-i686.iso arch.iso none"
 	echo "archlinux-*-netinstall-x86_64.iso arch.iso none"
 elif [ $1 = scan ];then
