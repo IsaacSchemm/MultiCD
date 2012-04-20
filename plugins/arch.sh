@@ -39,19 +39,27 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f arch.iso ];then
-	echo "label arch
-	menu label --> ^Arch Linux ($(getVersion arch))
+	echo "LABEL arch
+	MENU LABEL --> ^Arch Linux ($(getVersion arch))
 	CONFIG /arch/boot/syslinux/syslinux.cfg
 	APPEND /arch/boot/syslinux/
 	" >> "${WORK}"/boot/isolinux/isolinux.cfg
-	sed -i -e 's^/arch/boot/memtest^/boot/memtest^g' "${WORK}"/arch/boot/syslinux/syslinux.cfg
-	sed -i -e 's^MENU ROWS 6^MENU ROWS 7^g' "${WORK}"/arch/boot/syslinux/syslinux.cfg
+	# sed -i -e 's^/arch/boot/memtest^/boot/memtest^g' "${WORK}"/arch/boot/syslinux/syslinux.cfg
+	# sed -i -e 's^MENU ROWS 6^MENU ROWS 7^g' "${WORK}"/arch/boot/syslinux/syslinux.cfg
+	if [ -f "${WORK}"/arch/boot/syslinux/syslinux_arch32.cfg ];then
+	    sed -i -e "s/archisolabel=[A-Za-z0-9_]*/archisolabel=${CDLABEL}/" \
+	    "${WORK}"/arch/boot/syslinux/syslinux_arch32.cfg
+	fi
+	if [ -f "${WORK}"/arch/boot/syslinux/syslinux_arch64.cfg ];then
+	    sed -i -e "s/archisolabel=[A-Za-z0-9_]*/archisolabel=${CDLABEL}/" \
+	    "${WORK}"/arch/boot/syslinux/syslinux_arch64.cfg
+	fi
 	echo "
-	label back
-	menu label ^Back to main menu
-	config /boot/isolinux/isolinux.cfg
-	append /boot/isolinux
-	" >> "${WORK}"/arch/boot/syslinux/syslinux.cfg
+	LABEL back
+	MENU LABEL ^Back to main menu..
+	CONFIG /boot/isolinux/isolinux.cfg
+	APPEND /boot/isolinux
+" >> "${WORK}"/arch/boot/syslinux/syslinux_tail.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

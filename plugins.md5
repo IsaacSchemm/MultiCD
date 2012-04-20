@@ -2,7 +2,7 @@
 3e50436a9d0c8bef6b95385add288ed9  plugins/archboot.sh
 6ea36703273f41dc876958e0c1d032f6  plugins/archdual.sh
 ae0580a03576937c1b7288ed59a18f16  plugins/archiso-live.sh
-6ed58a7978004bf5bc1cd7f3464346e6  plugins/arch.sh
+9f40d8ff2dca5b03633ebdca1a7e544a  plugins/arch.sh
 3fed7807651079bdfe35facc2f36cc1a  plugins/austrumi.sh
 dfca0e4634f56d4c09d07f0a83f6f046  plugins/avg.sh
 5292dbd91ac0969b2c9d7f083cb17f33  plugins/avira.sh
@@ -27,7 +27,7 @@ e32bf7ad879e53c0ee3b96898726591e  plugins/feather.sh
 da11bc9cdb5d94133a53ef1a344d627e  plugins/fedora-boot64.sh
 9db5913d97c7866dfe1cf71c1dcb3f00  plugins/fedora-boot.sh
 1de8fa1a20af897e8b28705ca5c6f808  plugins/finnix.sh
-2cdda2dc196c4a10eefc98bcbecef22d  plugins/freedos.sh
+526095d056e21103fe4ba890cf452a3d  plugins/freedos.sh
 3a4282ee55983209f08a49ce8b610781  plugins/fusion.sh
 dd871f4610bcdba0f54b30c66378d3a7  plugins/geexbox.sh
 14491150cd29c97ecabb910cbe52f6d5  plugins/gparted.sh
@@ -36,6 +36,7 @@ fbb2f248adb50206bbebd0e7bdaca9ad  plugins/grml64.sh
 46ef2a26b713e2bc5c0efd33eaf4b65a  plugins/hirens.sh
 64b669416abd89883ea9eedd56c6b9e0  plugins/insert.sh
 23b23aad9bba45d8023aad4cc38afee2  plugins/ipcop.sh
+9c9cad0f8236b98a90e822af6b708b7c  plugins/kav.sh
 a6e52042a2c75da2b06d7fb391d693b3  plugins/kdusmall.sh
 0964de78af421c23accd38298d1f19ca  plugins/kduxp.sh
 9bfc13537a9dd45ae307125d7519e80a  plugins/knoppix.sh
@@ -44,13 +45,13 @@ b333398e24dcb25870ef7eaeaebb1c23  plugins/linuxmint.sh
 29630f6ce7f2e9dc4de61bee12a14053  plugins/mandriva-boot.sh
 bc29ecdca98467283d81536125e40162  plugins/mandriva.sh
 ba1da3975f1547e133184045ec32823a  plugins/mintdebian.sh
-83fc0b597906110026d4268f7d889f41  plugins/netbootcd.sh
-e4a3cecd956b8228de9fe41e4669c203  plugins/ntpasswd.sh
+2ac20db72d1ae2728c8a033ef818e99a  plugins/netbootcd.sh
+a2911ac8a6d031be1e8121e4e39e3c4b  plugins/ntpasswd.sh
 d3436d7e3fa207e34aa9ffa6807a94ec  plugins/opensuse-gnome.sh
 ece876a6b09d859b27faeb3f0535f4f4  plugins/opensuse-net64.sh
 37a9827ac4c6d824ab8c5805f876bd9b  plugins/opensuse-net.sh
 2b6c7bb1e3f35237e8e3bfe0180d33d4  plugins/ophcrack.sh
-ac4f2045bf35e2c959330909b0af3465  plugins/pclos.sh
+5745659a338c88bb8d4acb92b4557bc4  plugins/pclos.sh
 49b351e58416d4cd9eec3e244760284b  plugins/pclx.sh
 5073f8a79a3b0c105313f0102a8d05c1  plugins/pentoo.sh
 fcd0e8cf1501d110ddd33aa19e23c8ad  plugins/ping.sh
@@ -64,10 +65,10 @@ f627c7d0afc218c6f0245ca91bac83c9  plugins/pinguy.sh
 7f03e55f4299238e17761b71260041fa  plugins/sabayon.sh
 2e66ae3e35b0d63cca51d3cc3abf48fe  plugins/scientific-boot.sh
 759503e60e9c01bc520dcab9b96f5c54  plugins/slax.sh
-6989476e979b03b14a0c01cfc48e779b  plugins/slitaz.sh
+118aa9d73c38ff88b4436aee305d5f01  plugins/slitaz.sh
 d46e8cf071ceead08e7209e91747657c  plugins/sysrcd.sh
 d31a81e94254f9de5e09825ab1917f9a  plugins/tc+nb.sh
-9ca153f9bad015d018e551160ed0518d  plugins/tinycore.sh
+e43bb078cd9ad87fb527b7cdc5d71f0c  plugins/tinycore.sh
 8a2d16f9ccc58a8d0a19e8634d868480  plugins/tinyme.sh
 620da4d35a21f5bf17ede321c9d51425  plugins/trk.sh
 aab2009853c309639d4e50287024c4c7  plugins/ubcd.sh
