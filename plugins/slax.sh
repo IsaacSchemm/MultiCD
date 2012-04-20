@@ -71,67 +71,52 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 #BEGIN SLAX ENTRY#
 if [ -f slax.iso ];then
-if [ -f "${WORK}"/slax/base/002-xorg.lzm ];then
-if [ -f slax.version ] && [ "$(cat slax.version)" != "" ];then
-	SLAXVER=" $(cat slax.version)"
-else
-	SLAXVER=""
-fi
-echo "LABEL xconf
-MENU LABEL ^Slax$SLAXVER Graphics mode (KDE)
-KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.lz ramdisk_size=6666 root=/dev/ram0 rw vga=791 splash=silent quiet autoexec=xconf;telinit~4  changes=/slax/
+	if [ -f "${MNT}"/slax/boot/initrd.lz ];then
+		SUFFIX=lz
+	else
+		SUFFIX=gz
+	fi
+	if [ -f slax.version ] && [ "$(cat slax.version)" != "" ];then
+		SLAXVER=" $(cat slax.version)"
+	else
+		SLAXVER=""
+	fi
+	if [ -f "${WORK}"/slax/base/002-xorg.lzm ];then
+		echo "LABEL xconf
+		MENU LABEL ^Slax$SLAXVER Graphics mode (KDE)
+		KERNEL /boot/slax/vmlinuz
+		APPEND initrd=/boot/slax/initrd.$SUFFIX ramdisk_size=6666 root=/dev/ram0 rw vga=791 splash=silent quiet autoexec=xconf;telinit~4  changes=/slax/
 
-LABEL lxde
-MENU LABEL Slax$SLAXVER (LXDE) (if available)
-KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.lz ramdisk_size=6666 root=/dev/ram0 rw vga=791 splash=silent quiet autoexec=lxde;xconf;telinit~4 changes=/slax/
+		LABEL lxde
+		MENU LABEL Slax$SLAXVER (LXDE) (if available)
+		KERNEL /boot/slax/vmlinuz
+		APPEND initrd=/boot/slax/initrd.$SUFFIX ramdisk_size=6666 root=/dev/ram0 rw vga=791 splash=silent quiet autoexec=lxde;xconf;telinit~4 changes=/slax/
 
-LABEL copy2ram
-MENU LABEL Slax$SLAXVER Graphics mode, Copy To RAM
-KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.lz ramdisk_size=6666 root=/dev/ram0 rw vga=791 splash=silent quiet copy2ram autoexec=xconf;telinit~4
+		LABEL copy2ram
+		MENU LABEL Slax$SLAXVER Graphics mode, Copy To RAM
+		KERNEL /boot/slax/vmlinuz
+		APPEND initrd=/boot/slax/initrd.$SUFFIX ramdisk_size=6666 root=/dev/ram0 rw vga=791 splash=silent quiet copy2ram autoexec=xconf;telinit~4
 
-LABEL startx
-MENU LABEL Slax$SLAXVER Graphics VESA mode
-KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.lz ramdisk_size=6666 root=/dev/ram0 rw autoexec=telinit~4  changes=/slax/
+		LABEL startx
+		MENU LABEL Slax$SLAXVER Graphics VESA mode
+		KERNEL /boot/slax/vmlinuz
+		APPEND initrd=/boot/slax/initrd.$SUFFIX ramdisk_size=6666 root=/dev/ram0 rw autoexec=telinit~4  changes=/slax/
 
-LABEL slax
-MENU LABEL Slax$SLAXVER Text mode
-KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.lz ramdisk_size=6666 root=/dev/ram0 rw  changes=/slax/" >> "${WORK}"/boot/isolinux/isolinux.cfg
-elif [ -f "${WORK}"/slax/base/002-xorg.lzm ];then
-echo "LABEL xconf
-MENU LABEL ^Slax$SLAXVER Graphics mode (KDE)
-KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.gz ramdisk_size=6666 root=/dev/ram0 rw autoexec=xconf;telinit~4  changes=/slax/
+		LABEL slax
+		MENU LABEL Slax$SLAXVER Text mode
+		KERNEL /boot/slax/vmlinuz
+		APPEND initrd=/boot/slax/initrd.$SUFFIX ramdisk_size=6666 root=/dev/ram0 rw  changes=/slax/" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	else
+		echo "LABEL slax
+		MENU LABEL ^Slax$SLAXVER Text mode
+		KERNEL /boot/slax/vmlinuz
+		APPEND initrd=/boot/slax/initrd.$SUFFIX ramdisk_size=6666 root=/dev/ram0 rw  changes=/slax/
 
-LABEL copy2ram
-MENU LABEL Slax$SLAXVER Graphics mode, Copy To RAM
-KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.gz ramdisk_size=6666 root=/dev/ram0 rw copy2ram autoexec=xconf;telinit~4
-
-LABEL startx
-MENU LABEL Slax$SLAXVER Graphics VESA mode
-KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.gz ramdisk_size=6666 root=/dev/ram0 rw autoexec=telinit~4  changes=/slax/
-
-LABEL slax
-MENU LABEL Slax$SLAXVER Text mode
-KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.gz ramdisk_size=6666 root=/dev/ram0 rw  changes=/slax/" >> "${WORK}"/boot/isolinux/isolinux.cfg
-else
-echo "LABEL slax
-MENU LABEL ^Slax$SLAXVER Text mode
-KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.$SUFFIX ramdisk_size=6666 root=/dev/ram0 rw  changes=/slax/
-
-LABEL slax2ram
-MENU LABEL Slax$SLAXVER Text mode, Copy To RAM
-KERNEL /boot/slax/vmlinuz
-APPEND initrd=/boot/slax/initrd.$SUFFIX ramdisk_size=6666 root=/dev/ram0 rw copy2ram" >> "${WORK}"/boot/isolinux/isolinux.cfg
-fi
+		LABEL slax2ram
+		MENU LABEL Slax$SLAXVER Text mode, Copy To RAM
+		KERNEL /boot/slax/vmlinuz
+		APPEND initrd=/boot/slax/initrd.$SUFFIX ramdisk_size=6666 root=/dev/ram0 rw copy2ram" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	fi
 fi
 #END SLAX ENTRY#
 else
