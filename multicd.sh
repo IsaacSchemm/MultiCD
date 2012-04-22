@@ -667,6 +667,7 @@ if $TESTISO;then
 fi
 
 echo "Cleaning current directory..."
+mcdclean
 
 if $WAIT;then
 	echo "Done. Press ENTER to exit."

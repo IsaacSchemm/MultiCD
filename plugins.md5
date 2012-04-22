@@ -30,6 +30,7 @@ da11bc9cdb5d94133a53ef1a344d627e  plugins/fedora-boot64.sh
 1a0df67895eca07af5f69f5ac0e74850  plugins/freedos.sh
 3a4282ee55983209f08a49ce8b610781  plugins/fusion.sh
 dd871f4610bcdba0f54b30c66378d3a7  plugins/geexbox.sh
+ceb3fab711d574f0126c88071bd6f3a3  plugins/generic.sh
 14491150cd29c97ecabb910cbe52f6d5  plugins/gparted.sh
 fbb2f248adb50206bbebd0e7bdaca9ad  plugins/grml64.sh
 42301b2054c3f6560fdf15953cfc1c29  plugins/grml.sh
