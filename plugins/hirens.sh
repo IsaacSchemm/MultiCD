@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Hiren's BootCD (11.0) plugin for multicd.sh
-#version 6.9
-#Copyright for this script (c) 2011 Isaac Schemm
+#version 20120424
+#Copyright for this script (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,9 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "Hiren's.BootCD.*.iso hirens.iso none"
+elif [ $1 = scan ];then
 	if [ -f hirens.iso ];then
 		echo "Hiren's BootCD (Not open source - do not distribute)"
 		DUPLICATES=false #Initialize variable
@@ -55,7 +57,7 @@ append /HBCD/isolinux.cfg" >> "${WORK}"/boot/isolinux/isolinux.cfg
 rm "${TAGS}"/hirens.name
 fi
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi

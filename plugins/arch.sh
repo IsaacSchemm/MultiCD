@@ -47,13 +47,9 @@ if [ -f arch.iso ];then
 	" >> "${WORK}"/boot/isolinux/isolinux.cfg
 	# sed -i -e 's^/arch/boot/memtest^/boot/memtest^g' "${WORK}"/arch/boot/syslinux/syslinux.cfg
 	# sed -i -e 's^MENU ROWS 6^MENU ROWS 7^g' "${WORK}"/arch/boot/syslinux/syslinux.cfg
-	if [ -f "${WORK}"/arch/boot/syslinux/syslinux_arch32.cfg ];then
+	if [ -f "${WORK}"/arch/boot/syslinux/syslinux.cfg ];then
 	    sed -i -e "s/archisolabel=[A-Za-z0-9_]*/archisolabel=${CDLABEL}/" \
-	    "${WORK}"/arch/boot/syslinux/syslinux_arch32.cfg
-	fi
-	if [ -f "${WORK}"/arch/boot/syslinux/syslinux_arch64.cfg ];then
-	    sed -i -e "s/archisolabel=[A-Za-z0-9_]*/archisolabel=${CDLABEL}/" \
-	    "${WORK}"/arch/boot/syslinux/syslinux_arch64.cfg
+	    "${WORK}"/arch/boot/syslinux/syslinux.cfg
 	fi
 	echo "
 	LABEL back
