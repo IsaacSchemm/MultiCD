@@ -1,8 +1,7 @@
 960c75c3dccb4152c0b4a893b5c34235  plugins/antix.sh
 3e50436a9d0c8bef6b95385add288ed9  plugins/archboot.sh
-67b24037952c9d03d7cc37bf4766a515  plugins/archdual.sh
 ae0580a03576937c1b7288ed59a18f16  plugins/archiso-live.sh
-d903bf5a1c3b9f107b2f451af618522d  plugins/arch.sh
+8aa18aa7e6d98a879b7925d9d2ffdfed  plugins/arch.sh
 3fed7807651079bdfe35facc2f36cc1a  plugins/austrumi.sh
 dfca0e4634f56d4c09d07f0a83f6f046  plugins/avg.sh
 5292dbd91ac0969b2c9d7f083cb17f33  plugins/avira.sh
