@@ -24,6 +24,8 @@ set -e
 #THE SOFTWARE.
 if [ $1 = links ];then
 	#Only one will be included
+	echo "archlinux-*-netinstall-dual.iso archdual.iso none"
+	echo "archlinux-*-core-dual.iso archdual.iso none"
 	echo "archlinux-*-netinstall-i686.iso arch.iso none"
 	echo "archlinux-*-netinstall-x86_64.iso arch.iso none"
 	echo "archlinux-*-core-i686.iso arch.iso none"
@@ -36,32 +38,54 @@ elif [ $1 = copy ];then
 	if [ -f arch.iso ];then
 		echo "Copying Arch Linux..."
 		mcdmount arch
-		if [ -f "${MNT}"/boot/syslinux/syslinux_arch32.cfg ] && [ -f "${MNT}"/boot/syslinux/syslinux_arch64.cfg ];then
-			echo 'PLEASE NOTE: this is an Arch dual ISO. You should name this archdual.iso (or archlinux-*-netinstall-dual.iso) instead of arch.iso'
-		fi
-		cp -r "${MNT}"/arch/arch "${WORK}"/
-		rm "${WORK}"/arch/boot/memtest || true
+		cp -r "${MNT}"/arch/arch "${WORK}"
 		umcdmount arch
 	fi
 elif [ $1 = writecfg ];then
 if [ -f arch.iso ];then
-	echo "LABEL arch
-	MENU LABEL --> ^Arch Linux ($(getVersion arch))
-	CONFIG /arch/boot/syslinux/syslinux.cfg
-	APPEND /arch/boot/syslinux/
-	" >> "${WORK}"/boot/isolinux/isolinux.cfg
-	# sed -i -e 's^/arch/boot/memtest^/boot/memtest^g' "${WORK}"/arch/boot/syslinux/syslinux.cfg
-	# sed -i -e 's^MENU ROWS 6^MENU ROWS 7^g' "${WORK}"/arch/boot/syslinux/syslinux.cfg
-	if [ -f "${WORK}"/arch/boot/syslinux/syslinux.cfg ];then
-	    sed -i -e "s/archisolabel=[A-Za-z0-9_]*/archisolabel=${CDLABEL}/" \
-	    "${WORK}"/arch/boot/syslinux/syslinux.cfg
+	if [ -f "${MNT}"/boot/syslinux/syslinux_arch32.cfg ] && [ -f "${MNT}"/boot/syslinux/syslinux_arch64.cfg ];then
+		echo "label arch
+		menu label --> ^Arch Linux ($(getVersion arch))
+		KERNEL /arch/boot/syslinux/ifcpu64.c32
+		APPEND have64 -- nohave64
+	
+		LABEL have64
+		MENU HIDE
+		CONFIG /arch/boot/syslinux/syslinux_both.cfg
+		APPEND /arch/boot/syslinux/
+	
+		LABEL nohave64
+		MENU HIDE
+		CONFIG /arch/boot/syslinux/syslinux_32only.cfg
+		APPEND /arch/boot/syslinux/
+		" >> "${WORK}"/boot/isolinux/isolinux.cfg
+		for i in 32 64;do
+		    sed -i -e "s/archisolabel=[A-Za-z0-9_]*/archisolabel=${CDLABEL}/" \
+		    "${WORK}"/arch/boot/syslinux/syslinux_arch${i}.cfg
+		done
+		echo "
+		label back
+		menu label ^Back to main menu
+		config /boot/isolinux/isolinux.cfg
+		append /boot/isolinux
+		" >> "${WORK}"/arch/boot/syslinux/syslinux_tail.cfg
+	else
+		echo "LABEL arch
+		MENU LABEL --> ^Arch Linux ($(getVersion arch))
+		CONFIG /arch/boot/syslinux/syslinux.cfg
+		APPEND /arch/boot/syslinux/
+		" >> "${WORK}"/boot/isolinux/isolinux.cfg
+		if [ -f "${WORK}"/arch/boot/syslinux/syslinux.cfg ];then
+		    sed -i -e "s/archisolabel=[A-Za-z0-9_]*/archisolabel=${CDLABEL}/" \
+		    "${WORK}"/arch/boot/syslinux/syslinux.cfg
+		fi
+		echo "
+		LABEL back
+		MENU LABEL ^Back to main menu..
+		CONFIG /boot/isolinux/isolinux.cfg
+		APPEND /boot/isolinux
+		" >> "${WORK}"/arch/boot/syslinux/syslinux_tail.cfg
 	fi
-	echo "
-	LABEL back
-	MENU LABEL ^Back to main menu..
-	CONFIG /boot/isolinux/isolinux.cfg
-	APPEND /boot/isolinux
-" >> "${WORK}"/arch/boot/syslinux/syslinux_tail.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
