@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Arch Linux (dual i686/x86_64) installer plugin for multicd.sh
-#version 6.9
+#version 20120426
 #Copyright (c) 2011 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,6 +24,7 @@ set -e
 #THE SOFTWARE.
 if [ $1 = links ];then
 	echo "archlinux-*-netinstall-dual.iso archdual.iso none"
+	echo "archlinux-*-core-dual.iso archdual.iso none"
 elif [ $1 = scan ];then
 	if [ -f archdual.iso ];then
 		echo "Arch Linux Dual"
