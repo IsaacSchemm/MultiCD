@@ -23,9 +23,15 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	#Only one will be included
+	#Only one will be included, because only one can be used.
 	echo "ubuntu-*-alternate-i386.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(32-bit)"
 	echo "ubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(64-bit)"
+	echo "kubuntu-*-alternate-i386.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(32-bit)"
+	echo "kubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(64-bit)"
+	echo "xubuntu-*-alternate-i386.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(32-bit)"
+	echo "xubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(64-bit)"
+	echo "lubuntu-*-alternate-i386.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(32-bit)"
+	echo "lubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(64-bit)"
 elif [ $1 = scan ];then
 	if [ -f ubuntu-alternate.iso ];then
 		echo "Ubuntu alternate installer"
@@ -52,6 +58,9 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f ubuntu-alternate.iso ] && [ ! -f "${TAGS}"/ubuntu-not-copied ];then
+cd "$WORK"
+PRESEED=$(echo preseed/*ubuntu*|awk '{print $1}')
+cd -
 if [ -f "${WORK}"/README.diskdefines ];then
 	CDNAME="$(grep DISKNAME "${WORK}"/README.diskdefines|awk '{for (i=3; i<NF+1; i++) { printf $i; printf " " } printf "\n" }')"
 else
@@ -62,12 +71,12 @@ echo "menu begin --> ^$CDNAME
 label install
   menu label ^Install Ubuntu
   kernel /install/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed vga=788 initrd=/install/initrd.gz quiet --
+  append  file=/cdrom/$PRESEED vga=788 initrd=/install/initrd.gz quiet --
 
 label expert
   menu label ^Expert install
   kernel /install/vmlinuz
-  append  file=/cdrom/preseed/ubuntu.seed priority=low vga=788 initrd=/install/initrd.gz --
+  append  file=/cdrom/$PRESEED priority=low vga=788 initrd=/install/initrd.gz --
 label rescue
   menu label ^Rescue a broken system
   kernel /install/vmlinuz
