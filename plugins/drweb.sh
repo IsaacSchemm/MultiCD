@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Dr.Web LiveCD plugin for multicd.sh
-#version 6.0.0.120512 (20120512)
+#version 7.0 (20120512)
 #Copyright for this script (c) 2012 LightDot lightdot@gmail.com
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
