@@ -201,7 +201,7 @@ if $INTERACTIVE;then
 		exit 1
 	fi
 
-	dialog --inputbox "What would you like the title of the CD's main menu to be?" 8 70 "MultiCD - Created $(date +"%b %d, %Y")" 2> /tmp/cdtitle
+	dialog --inputbox "What would you like the title of the CD's main menu to be?" 8 70 "MultiCD - Created $(LANG=C date +"%b %d, %Y")" 2> /tmp/cdtitle
 	CDTITLE=$(cat /tmp/cdtitle)
 	rm /tmp/cdtitle
 
@@ -314,7 +314,7 @@ Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> "${TA
 		done
 	fi
 else
-	CDTITLE="MultiCD - Created $(date +"%b %d, %Y")"
+	CDTITLE="MultiCD - Created $(LANG=C date +"%b %d, %Y")"
 	export CDLABEL=MultiCD
 	MENUCOLOR=44
 	TEXTCOLOR=37
@@ -454,6 +454,7 @@ if $MEMTEST;then
 		fi
 		if [ -f memtest ] && [ "$(wc -c memtest)" != "0 memtest" ];then
 			cp memtest "${WORK}"/boot/memtest
+			echo 'v4.20' > memtestver
 		else
 			echo "Download of memtest failed."
 		fi
@@ -469,8 +470,13 @@ echo "Writing isolinux.cfg..."
 #Don't move this part. You can change the timeout and menu title, however.
 echo "DEFAULT menu.c32
 TIMEOUT 0
-PROMPT 0
-menu title $CDTITLE" > "${WORK}"/boot/isolinux/isolinux.cfg
+PROMPT 0" > "${WORK}"/boot/isolinux/isolinux.cfg
+#ccTLD is used for the keyboard in SYSLINUX
+#In the future I may use $TAGS/lang for this
+if [ $ccTLD ];then #PDV
+	echo "KBDMAP maps/$ccTLD.ktl" >> "${WORK}"/boot/isolinux/isolinux.cfg
+fi
+echo "menu title $CDTITLE" >> "${WORK}"/boot/isolinux/isolinux.cfg
 #END HEADER#
 
 #BEGIN COLOR CODE#
@@ -552,7 +558,7 @@ fi
 #BEGIN MEMTEST ENTRY#
 if [ -f "${WORK}"/boot/memtest ];then
 echo "label memtest
-menu label ^Memtest86+
+menu label ^Memtest86+ $(cat memtestver)
 kernel /boot/memtest">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
 #END MEMTEST ENTRY#

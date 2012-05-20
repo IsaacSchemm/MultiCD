@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #SystemRescueCd plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2010 Isaac Schemm
+#version 7.0
+#Copyright (c) 2010-2012 Isaac Schemm and Pascal De Vuyst
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -34,44 +34,48 @@ elif [ $1 = copy ];then
 		mcdmount sysrcd
 		mkdir "${WORK}"/boot/sysrcd
 		cp "${MNT}"/sysrcd/sysrcd.* "${WORK}"/boot/sysrcd/ #Compressed filesystem
+		cp -R "${MNT}"/sysrcd/bootdisk "${WORK}"/boot/sysrcd/ #PDV system tools from floppy disk image
+		cp -R "${MNT}"/sysrcd/ntpasswd "${WORK}"/boot/sysrcd/ #PDV NTPASSWD
 		cp "${MNT}"/sysrcd/isolinux/altker* "${WORK}"/boot/sysrcd/ #Kernels
 		cp "${MNT}"/sysrcd/isolinux/rescue* "${WORK}"/boot/sysrcd/ #Kernels
 		cp "${MNT}"/sysrcd/isolinux/initram.igz "${WORK}"/boot/sysrcd/initram.igz #Initrd
 		cp "${MNT}"/sysrcd/version "${WORK}"/boot/sysrcd/version
+		cp "${MNT}"/sysrcd/isolinux/isolinux.cfg "${WORK}"/boot/isolinux/sysrcd.cfg #PDV
+		cp "${MNT}"/sysrcd/isolinux/*.msg "${WORK}"/boot/isolinux #PDV
+		if [ $ccTLD ];then #PDV
+			cp -R "${MNT}"/sysrcd/isolinux/maps "${WORK}"/boot/isolinux #PDV
+		fi
 		umcdmount sysrcd
 	fi
 elif [ $1 = writecfg ];then
 if [ -f sysrcd.iso ];then
+#<PDV>
 VERSION=$(cat "${WORK}"/boot/sysrcd/version)
-echo "menu begin --> ^System Rescue Cd ($VERSION)
+echo "label sysrcd
+menu label --> ^SystemRescueCd $VERSION
+com32 vesamenu.c32
+append sysrcd.cfg
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
+#GNU sed syntax
+sed -i -e 's/LINUX /LINUX \/boot\/sysrcd\//g' -e 's/INITRD /INITRD \/boot\/sysrcd\//g' -e 's/\/bootdisk/\/boot\/sysrcd\/bootdisk/g' -e 's/\/ntpasswd/\/boot\/sysrcd\/ntpasswd/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV Change directory to /boot/sysrcd
+sed -i -e 's/APPEND maps/append maps/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV don't change APPEND maps lines
+sed -i -e 's/APPEND/APPEND subdir=\/boot\/sysrcd/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV Tell the kernel we moved it
+if [ $ccTLD ];then #PDV
+	sed -i -e 's/APPEND\([[:print:]]*setkmap\)/append\1/g' "${WORK}"/boot/isolinux/sysrcd.cfg #don't change APPEND lines with setkmap
+        sed -i -e 's/APPEND/APPEND setkmap='$ccTLD'/g' "${WORK}"/boot/isolinux/sysrcd.cfg #add setkmap=$ccTLD
+	sed -i -e 's/append\([[:print:]]*setkmap\)/APPEND\1/g' -e 's/append maps/APPEND maps/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV revert changes
+fi
+sed -i -e '/LABEL local[1-2]/,/^$/d' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV remove Boot from hard disk entries
+if $MEMTEST; then #PDV remove memtest
+	sed -i -e '/LABEL memtest/,/^$/d' "${WORK}"/boot/isolinux/sysrcd.cfg
+	rm "${WORK}"/boot/sysrcd/bootdisk/memtestp
+fi
 
-label rescuecd0
-menu label ^SystemRescueCd 32-bit
-kernel /boot/sysrcd/rescuecd
-append initrd=/boot/sysrcd/initram.igz subdir=/boot/sysrcd
-label rescuecd1
-menu label SystemRescueCd 64-bit
-kernel /boot/sysrcd/rescue64
-append initrd=/boot/sysrcd/initram.igz subdir=/boot/sysrcd
-label rescuecd2
-menu label SystemRescueCd 32-bit (alternate kernel)
-kernel /boot/sysrcd/altker32
-append initrd=/boot/sysrcd/initram.igz video=ofonly subdir=/boot/sysrcd
-label rescuecd3
-menu label SystemRescueCd 64-bit (alternate kernel)
-kernel /boot/sysrcd/altker64
-append initrd=/boot/sysrcd/initram.igz video=ofonly subdir=/boot/sysrcd
-label rescuecd-rootauto
-menu label SysRCD: rescue installed Linux (root=auto; 32-bit)
-kernel /boot/sysrcd/rescuecd
-append initrd=/boot/sysrcd/initram.igz root=auto subdir=/boot/sysrcd
-
-label back
+echo "label back
 menu label Back to main menu
 com32 menu.c32
-append isolinux.cfg
-
-menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
+append isolinux.cfg" >> "${WORK}"/boot/isolinux/sysrcd.cfg
+#</PDV>
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
