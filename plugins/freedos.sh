@@ -24,6 +24,7 @@ set -e
 #THE SOFTWARE.
 if [ $1 = links ];then
 	#Only one will be included
+	echo "fd11src.iso freedos.iso FreeDOS_1.1"
 	echo "fdfullcd.iso freedos.iso FreeDOS_Full_CD"
 	echo "fdbasecd.iso freedos.iso FreeDOS_Base_CD"
 elif [ $1 = scan ];then
