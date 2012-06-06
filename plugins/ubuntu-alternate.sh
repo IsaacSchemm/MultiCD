@@ -52,7 +52,8 @@ elif [ $1 = copy ];then
 			cp -r "${MNT}"/ubuntu-alternate/pool "${WORK}"
 			cp -r "${MNT}"/ubuntu-alternate/preseed "${WORK}"
 			cp -r "${MNT}"/ubuntu-alternate/README.diskdefines "${WORK}"
-			cp -r "${MNT}"/ubuntu-alternate/ubuntu "${WORK}"
+			#cp -r "${MNT}"/ubuntu-alternate/ubuntu "${WORK}"
+			ln -s . "${MNT}"/ubuntu-alternate/ubuntu
 			umcdmount ubuntu-alternate
 		fi
 	fi

@@ -9,7 +9,9 @@ f755262d18d5e492a12a30b98322fd81  plugins/backtrack.sh
 da638e6276042fb9e5582f7f1526e410  plugins/caine.sh
 e2da76dfd9ea7b78e3d7341802dec94e  plugins/cdlinux.sh
 849145693d5eff647e448296b36709ce  plugins/centos-boot.sh
-a75c57e03983d08faca6bb57dcd28e96  plugins/clonezilla.sh
+ff3eb78db05c2c1e2ccbd80cfe94880e  plugins/clonezilla486.sh
+0a9e34390b4d656b43584834b91fba55  plugins/clonezilla686.sh
+9b0b2b3efab7ab5ce08e266afa53573a  plugins/clonezilla.sh
 926227d6643872b9c5e867bae760eeb6  plugins/dban.sh
 0319eb18cecee5409fe0bc6f692b6ab1  plugins/debian-install64.sh
 35e22fc8beab94b0f50371908ee13e25  plugins/debian-install.sh
@@ -18,6 +20,7 @@ ce849ff67ef898581f93ebb875f74612  plugins/debian-mini.sh
 c31ad92c82ea1a360303a4ca28e14301  plugins/deli.sh
 5bd40552b8f60c100312e9807c14da49  plugins/diskcopy.sh
 bf2ebe49ae4a5c297ff02e1a3c06b4fc  plugins/doudoulinux.sh
+386ef2792633b55b07ae2811ba00f451  plugins/drweb.sh
 d0cb9c83e93329040c87a0fffe5c863a  plugins/dsl.sh
 80032c2f652923c965830724344be670  plugins/dvl.sh
 afc34a521ac57d3743282f5fe451da8b  plugins/efw.sh
@@ -67,13 +70,13 @@ f627c7d0afc218c6f0245ca91bac83c9  plugins/pinguy.sh
 2e66ae3e35b0d63cca51d3cc3abf48fe  plugins/scientific-boot.sh
 d667be19e1259281aac4e0533b407ae8  plugins/slax.sh
 118aa9d73c38ff88b4436aee305d5f01  plugins/slitaz.sh
-d46e8cf071ceead08e7209e91747657c  plugins/sysrcd.sh
+ef5e857519ee2df71d2c7dcc093ebd56  plugins/sysrcd.sh
 d31a81e94254f9de5e09825ab1917f9a  plugins/tc+nb.sh
 486c4b989c384e19646528cb60b98597  plugins/tinycore.sh
 8a2d16f9ccc58a8d0a19e8634d868480  plugins/tinyme.sh
 620da4d35a21f5bf17ede321c9d51425  plugins/trk.sh
 aab2009853c309639d4e50287024c4c7  plugins/ubcd.sh
-37395a45d49ebd20bb97a8f7fc6f21a7  plugins/ubuntu-alternate.sh
+a08d2c2e3d6222ec029a304c221116ed  plugins/ubuntu-alternate.sh
 8ed598bee014c7377daace9b8466a2b3  plugins/ubuntu-mini.sh
 6223ec9ae40b206a95fb52acc34ff16a  plugins/ubuntu.sh
 55bf4d66cf867bc9090b0dcbb3c648f0  plugins/vyatta.sh
