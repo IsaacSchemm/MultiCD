@@ -47,6 +47,7 @@ b333398e24dcb25870ef7eaeaebb1c23  plugins/linuxmint.sh
 05729368f31c3de6b1ddc6760939e369  plugins/macpup.sh
 29630f6ce7f2e9dc4de61bee12a14053  plugins/mandriva-boot.sh
 bc29ecdca98467283d81536125e40162  plugins/mandriva.sh
+50b6b5f61c84dcae0dbec8f77adcd40d  plugins/mepis.sh
 ba1da3975f1547e133184045ec32823a  plugins/mintdebian.sh
 2ac20db72d1ae2728c8a033ef818e99a  plugins/netbootcd.sh
 a2911ac8a6d031be1e8121e4e39e3c4b  plugins/ntpasswd.sh
