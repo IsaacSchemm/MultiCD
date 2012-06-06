@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #FreeDOS installer plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2011 Isaac Schemm
+#version 20120606
+#Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,11 @@ elif [ $1 = copy ];then
 		mkdir "${WORK}"/boot/freedos
 		cp -r "${MNT}"/freedos/freedos "${WORK}"/ #Core directory with the packages
 		cp "${MNT}"/freedos/setup.bat "${WORK}"/setup.bat #FreeDOS setup
-		cp "${MNT}"/freedos/isolinux/fdboot.img "${WORK}"/boot/freedos/fdboot.img #Initial DOS boot image
+		if [ -f "${MNT}"/freedos/isolinux/fdboot.img ];then
+			cp "${MNT}"/freedos/isolinux/fdboot.img "${WORK}"/boot/freedos/fdboot.img #Initial DOS boot image
+		else
+			cp "${MNT}"/freedos/data/fdboot.img "${WORK}"/boot/freedos/fdboot.img
+		fi
 		if [ -d "${MNT}"/freedos/fdos ];then
 			cp -r "${MNT}"/freedos/fdos "${WORK}"/ #Live CD
 		fi
