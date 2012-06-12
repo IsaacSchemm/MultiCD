@@ -1,7 +1,7 @@
 960c75c3dccb4152c0b4a893b5c34235  plugins/antix.sh
 3e50436a9d0c8bef6b95385add288ed9  plugins/archboot.sh
 ae0580a03576937c1b7288ed59a18f16  plugins/archiso-live.sh
-8aa18aa7e6d98a879b7925d9d2ffdfed  plugins/arch.sh
+f565e535664031389693b697645e88d1  plugins/arch.sh
 3fed7807651079bdfe35facc2f36cc1a  plugins/austrumi.sh
 dfca0e4634f56d4c09d07f0a83f6f046  plugins/avg.sh
 5292dbd91ac0969b2c9d7f083cb17f33  plugins/avira.sh
@@ -39,7 +39,7 @@ fbb2f248adb50206bbebd0e7bdaca9ad  plugins/grml64.sh
 42301b2054c3f6560fdf15953cfc1c29  plugins/grml.sh
 48c4309e49d23490e3e9c37bee6cabf3  plugins/hirens.sh
 64b669416abd89883ea9eedd56c6b9e0  plugins/insert.sh
-c676617368431b528e45a1219de4790c  plugins/ipcop.sh
+18e77c47b418715a5213fd7764fa1c79  plugins/ipcop.sh
 9c9cad0f8236b98a90e822af6b708b7c  plugins/kav.sh
 a6e52042a2c75da2b06d7fb391d693b3  plugins/kdusmall.sh
 0964de78af421c23accd38298d1f19ca  plugins/kduxp.sh

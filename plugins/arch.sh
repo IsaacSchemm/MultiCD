@@ -24,8 +24,8 @@ set -e
 #THE SOFTWARE.
 if [ $1 = links ];then
 	#Only one will be included
-	echo "archlinux-*-netinstall-dual.iso archdual.iso none"
-	echo "archlinux-*-core-dual.iso archdual.iso none"
+	echo "archlinux-*-netinstall-dual.iso arch.iso none"
+	echo "archlinux-*-core-dual.iso arch.iso none"
 	echo "archlinux-*-netinstall-i686.iso arch.iso none"
 	echo "archlinux-*-netinstall-x86_64.iso arch.iso none"
 	echo "archlinux-*-core-i686.iso arch.iso none"
@@ -75,10 +75,10 @@ if [ -f arch.iso ];then
 		CONFIG /arch/boot/syslinux/syslinux.cfg
 		APPEND /arch/boot/syslinux/
 		" >> "${WORK}"/boot/isolinux/isolinux.cfg
-		if [ -f "${WORK}"/arch/boot/syslinux/syslinux.cfg ];then
+		for i in "${WORK}"/arch/boot/syslinux/*.cfg;do
 		    sed -i -e "s/archisolabel=[A-Za-z0-9_]*/archisolabel=${CDLABEL}/" \
-		    "${WORK}"/arch/boot/syslinux/syslinux.cfg
-		fi
+		    "$i"
+		done
 		echo "
 		LABEL back
 		MENU LABEL ^Back to main menu..

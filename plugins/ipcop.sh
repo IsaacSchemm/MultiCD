@@ -38,8 +38,8 @@ elif [ $1 = copy ];then
 			echo "Copying anyway - be warned that on the final CD, something might not work properly."
 		fi
 		cp -r "${MNT}"/ipcop/images "${WORK}"/
-		cp "${MNT}"/ipcop/*.tgz "${WORK}" #for version 1
-		cp "${MNT}"/ipcop/*.tar.gz "${WORK}" #for version 2
+		cp "${MNT}"/ipcop/*.tgz "${WORK}" 2> /dev/null || true #for version 1
+		cp "${MNT}"/ipcop/*.tar.gz "${WORK}" 2> /dev/null || true #for version 2
 		cp -r "${MNT}"/ipcop/doc "${WORK}"/boot/ipcop/ || true
 		cp "${MNT}"/ipcop/*.txt "${WORK}"/boot/ipcop/ || true
 		umcdmount ipcop
@@ -62,22 +62,22 @@ elif [ $1 = writecfg ];then
 		DISPLAY /boot/ipcop/f1.txt
 		PROMPT 1
 		DEFAULT /boot/ipcop/vmlinuz
-		APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT.gz root=/dev/ram0 rw
+		APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT root=/dev/ram0 rw
 		LABEL nopcmcia 
 		  KERNEL /boot/ipcop/vmlinuz
-		  APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT.gz root=/dev/ram0 rw nopcmcia
+		  APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT root=/dev/ram0 rw nopcmcia
 		LABEL noscsi
 		  KERNEL /boot/ipcop/vmlinuz
-		  APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT.gz root=/dev/ram0 rw scsi=none
+		  APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT root=/dev/ram0 rw scsi=none
 		LABEL nousb
 		  KERNEL /boot/ipcop/vmlinuz
-		  APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT.gz root=/dev/ram0 rw nousb
+		  APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT root=/dev/ram0 rw nousb
 		LABEL nousborpcmcia
 		  KERNEL v/boot/ipcop/mlinuz
-		  APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT.gz root=/dev/ram0 rw nousb nopcmcia
+		  APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT root=/dev/ram0 rw nousb nopcmcia
 		LABEL dma
 		  KERNEL /boot/ipcop/vmlinuz
-		  APPEND initrd=/boot/ipcop/$INSTROOT.gz root=/dev/ram0 rw
+		  APPEND initrd=/boot/ipcop/$INSTROOT root=/dev/ram0 rw
 		LABEL memtest
 		  KERNEL /boot/memtest
 		  APPEND -
