@@ -38,7 +38,7 @@ for i in $(echo plugins/*.sh);do
 		sed -n '/\$1 = copy/,/\$1 = writecfg/p' $i|sed -e '1d' -e '$d' >> working6.sh #Copy portion
 		sed -n '/\$1 = writecfg/,/scan|copy|writecfg/p' $i|sed -e '1d' -e 'N;$!P;$!D;$d' >> working8.sh #isolinux.cfg portion
 	else
-		echo "Note: $i not being included (it doesn't seem to be a real plugin, because it doesn't contain the string \"scan|copy|writecfg\".)"
+		echo "Note: $i being skipped (it doesn't contain the string \"scan|copy|writecfg\")."
 	fi
 done
 sed -i -e 's/$/ >> $TAGS\/linklist/g' working2.sh
