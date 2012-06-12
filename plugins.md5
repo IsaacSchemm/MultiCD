@@ -12,6 +12,7 @@ e2da76dfd9ea7b78e3d7341802dec94e  plugins/cdlinux.sh
 ff3eb78db05c2c1e2ccbd80cfe94880e  plugins/clonezilla486.sh
 0a9e34390b4d656b43584834b91fba55  plugins/clonezilla686.sh
 9b0b2b3efab7ab5ce08e266afa53573a  plugins/clonezilla.sh
+0da1fb6115004301703cb1070a7ce6f4  plugins/connos.sh
 926227d6643872b9c5e867bae760eeb6  plugins/dban.sh
 0319eb18cecee5409fe0bc6f692b6ab1  plugins/debian-install64.sh
 35e22fc8beab94b0f50371908ee13e25  plugins/debian-install.sh
