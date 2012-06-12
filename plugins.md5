@@ -12,7 +12,7 @@ e2da76dfd9ea7b78e3d7341802dec94e  plugins/cdlinux.sh
 ff3eb78db05c2c1e2ccbd80cfe94880e  plugins/clonezilla486.sh
 0a9e34390b4d656b43584834b91fba55  plugins/clonezilla686.sh
 9b0b2b3efab7ab5ce08e266afa53573a  plugins/clonezilla.sh
-0da1fb6115004301703cb1070a7ce6f4  plugins/connos.sh
+0b373849cf9dfd538f6557f95046f132  plugins/connos.sh
 926227d6643872b9c5e867bae760eeb6  plugins/dban.sh
 0319eb18cecee5409fe0bc6f692b6ab1  plugins/debian-install64.sh
 35e22fc8beab94b0f50371908ee13e25  plugins/debian-install.sh
@@ -39,7 +39,7 @@ fbb2f248adb50206bbebd0e7bdaca9ad  plugins/grml64.sh
 42301b2054c3f6560fdf15953cfc1c29  plugins/grml.sh
 48c4309e49d23490e3e9c37bee6cabf3  plugins/hirens.sh
 64b669416abd89883ea9eedd56c6b9e0  plugins/insert.sh
-23b23aad9bba45d8023aad4cc38afee2  plugins/ipcop.sh
+c676617368431b528e45a1219de4790c  plugins/ipcop.sh
 9c9cad0f8236b98a90e822af6b708b7c  plugins/kav.sh
 a6e52042a2c75da2b06d7fb391d693b3  plugins/kdusmall.sh
 0964de78af421c23accd38298d1f19ca  plugins/kduxp.sh

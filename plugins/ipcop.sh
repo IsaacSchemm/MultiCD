@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #IPCop plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2010 Isaac Schemm
+#version 20120612
+#Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +22,11 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "ipcop-*-install-cd.i486.iso ipcop.iso none"
+elif [ $1 = scan ];then
 	if [ -f ipcop.iso ];then
 		echo "IPCop"
-		#touch "${TAGS}"/redhats/ipcop
 	fi
 elif [ $1 = copy ];then
 	if [ -f ipcop.iso ];then
@@ -37,13 +38,19 @@ elif [ $1 = copy ];then
 			echo "Copying anyway - be warned that on the final CD, something might not work properly."
 		fi
 		cp -r "${MNT}"/ipcop/images "${WORK}"/
-		cp "${MNT}"/ipcop/*.tgz "${WORK}"
+		cp "${MNT}"/ipcop/*.tgz "${WORK}" #for version 1
+		cp "${MNT}"/ipcop/*.tar.gz "${WORK}" #for version 2
 		cp -r "${MNT}"/ipcop/doc "${WORK}"/boot/ipcop/ || true
 		cp "${MNT}"/ipcop/*.txt "${WORK}"/boot/ipcop/ || true
 		umcdmount ipcop
 	fi
 elif [ $1 = writecfg ];then
 	if [ -f ipcop.iso ];then
+		if [ -f "${WORK}"/boot/ipcop/instroot.img ];then
+			INSTROOT="instroot.img"
+		else
+			INSTROOT="instroot.gz"
+		fi
 		echo "label ipcopmenu
 		menu label --> ^IPCop
 		config /boot/isolinux/ipcop.cfg
@@ -55,22 +62,22 @@ elif [ $1 = writecfg ];then
 		DISPLAY /boot/ipcop/f1.txt
 		PROMPT 1
 		DEFAULT /boot/ipcop/vmlinuz
-		APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw
+		APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT.gz root=/dev/ram0 rw
 		LABEL nopcmcia 
 		  KERNEL /boot/ipcop/vmlinuz
-		  APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw nopcmcia
+		  APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT.gz root=/dev/ram0 rw nopcmcia
 		LABEL noscsi
 		  KERNEL /boot/ipcop/vmlinuz
-		  APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw scsi=none
+		  APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT.gz root=/dev/ram0 rw scsi=none
 		LABEL nousb
 		  KERNEL /boot/ipcop/vmlinuz
-		  APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw nousb
+		  APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT.gz root=/dev/ram0 rw nousb
 		LABEL nousborpcmcia
 		  KERNEL v/boot/ipcop/mlinuz
-		  APPEND ide=nodma initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw nousb nopcmcia
+		  APPEND ide=nodma initrd=/boot/ipcop/$INSTROOT.gz root=/dev/ram0 rw nousb nopcmcia
 		LABEL dma
 		  KERNEL /boot/ipcop/vmlinuz
-		  APPEND initrd=/boot/ipcop/instroot.gz root=/dev/ram0 rw
+		  APPEND initrd=/boot/ipcop/$INSTROOT.gz root=/dev/ram0 rw
 		LABEL memtest
 		  KERNEL /boot/memtest
 		  APPEND -

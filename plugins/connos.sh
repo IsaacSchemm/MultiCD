@@ -36,7 +36,7 @@ elif [ $1 = copy ];then
 		cp "${MNT}/connos/boot/isolinux/vmlinuz" "${WORK}/boot/connos"
 		cp "${MNT}/connos/boot/isolinux/initrd.img" "${WORK}/boot/connos"
 		mkdir -p "${WORK}/os"
-		cp "${MNT}/connos/os/*" "${WORK}/os"
+		cp "${MNT}"/connos/os/* "${WORK}/os"
 		umcdmount connos
 	fi
 elif [ $1 = writecfg ];then
