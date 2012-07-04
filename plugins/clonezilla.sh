@@ -22,7 +22,9 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ] && [ "$2" = "686" ];then
+	echo "clonezilla-live-*-i686-pae.iso clonezilla686.iso none"
+elif [ $1 = scan ];then
 	if [ -f clonezilla$2.iso ];then
 		echo "Clonezilla $2"
 	fi
