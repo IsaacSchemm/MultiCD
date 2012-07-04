@@ -35,9 +35,9 @@ elif [ $1 = copy ];then
 		#mkdir "${WORK}"/conf
 		mkdir "${WORK}"/boot/grml64
 		cp -r "${MNT}"/grml64/live/* "${WORK}"/grml64 #Compressed filesystem.
-		cp "${MNT}"/grml64/boot/grml64/linux26 "${WORK}"/boot/grml64/ #Kernel. See above.
-		cp "${MNT}"/grml64/boot/grml64/initrd.gz "${WORK}"/boot/grml64/initrd.gz #Initial ramdisk. See above.
-		cp "${MNT}"/grml64/GRML/grml-version "${WORK}"/boot/grml64/grml-version
+		cp "${MNT}"/grml64/boot/grml64full/vmlinuz "${WORK}"/boot/grml64/ #Kernel. See above.
+		cp "${MNT}"/grml64/boot/grml64full/initrd.img "${WORK}"/boot/grml64/ #Initial ramdisk. See above.
+		cp "${MNT}"/grml64/GRML/grml64-full/grml-version "${WORK}"/boot/grml64/grml-version
 		#cp "${MNT}"/grml64/conf/bootid.txt "${WORK}"/conf/ #not needed for booting with ignore_bootid
 #getting  files into one and with write access:
 		cp "${MNT}"/grml64/boot/isolinux/default.cfg "${WORK}"/boot/grml64/grml.cfg #isolinux menufile - temporary
@@ -54,7 +54,8 @@ if [ -f grml64.iso ];then
 	sed -i".bak" '2d' "${WORK}"/boot/grml64/grml.cfg
 	sed -i".bak" '/menu end/ i\label back\n   menu label Back to main menu...\n   com32 menu.c32\n'  "${WORK}"/boot/grml64/grml.cfg #insert back to main menu
 
-	sed -i -e 's^boot=live^boot=live live-media-path=/grml ignore_bootid^g' "${WORK}"/boot/grml64/grml.cfg
+	sed -i -e 's^boot=live live-media-path=/live/grml64-full/^boot=live live-media-path=/grml64/grml64-full/ ignore_bootid^g' "${WORK}"/boot/grml64/grml.cfg
+	sed -i -e 's^/boot/grml64full/^/boot/grml64/^g' "${WORK}"/boot/grml64/grml.cfg
 
 	if [ -f "${WORK}"/boot/grml64/grml.cfg.bak ];then
 		rm "${WORK}"/boot/grml64/grml.cfg.bak #bak file from sed not needed
