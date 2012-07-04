@@ -641,9 +641,9 @@ rm -rf "${WORK}"/
 
 echo "Running isohybrid..."
 #if which isohybrid > /dev/null;then
-#	isohybrid ""${OUTPUT}"" 2> /dev/null || echo "The installed isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
+#	isohybrid ""${OUTPUT}"" 2> /dev/null || echo "The installed isohybrid gave an error status of $?. The ISO might not work on a flash drive."
 #else
-	"${TAGS}"/isohybrid ""${OUTPUT}"" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a USB flash drive."
+	"${TAGS}"/isohybrid ""${OUTPUT}"" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a flash drive."
 	rm "${TAGS}"/isohybrid
 #fi
 if [ $(whoami) == "root" ];then
