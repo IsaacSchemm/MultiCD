@@ -454,7 +454,7 @@ if $MEMTEST;then
 		fi
 		if [ -f memtest ] && [ "$(wc -c memtest)" != "0 memtest" ];then
 			cp memtest "${WORK}"/boot/memtest
-			echo 'v4.20' > memtestver
+			echo 'v4.20' > "${TAGS}/memtestver"
 		else
 			echo "Download of memtest failed."
 		fi
@@ -558,7 +558,7 @@ fi
 #BEGIN MEMTEST ENTRY#
 if [ -f "${WORK}"/boot/memtest ];then
 echo "label memtest
-menu label ^Memtest86+ $(cat memtestver)
+menu label ^Memtest86+ $(cat ${TAGS}/memtestver)
 kernel /boot/memtest">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
 #END MEMTEST ENTRY#

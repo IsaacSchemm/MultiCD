@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 . "${MCDDIR}"/functions.sh
-#GRML64 plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2011 Isaac Schemm, T.Ma.X. N060d9
+#GRML64 Full plugin for multicd.sh
+#version 20120704
+#Copyright (c) 2012 Isaac Schemm, etc.
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
 #in the Software without restriction, including without limitation the rights
@@ -22,7 +22,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "grml64_*.iso grml64.iso none"
+	echo "grml64-full*.iso grml64.iso none"
 elif [ $1 = scan ];then
 	if [ -f grml64.iso ];then
 		echo "GRML64"

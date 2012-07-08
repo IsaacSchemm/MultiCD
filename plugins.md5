@@ -11,7 +11,7 @@ e2da76dfd9ea7b78e3d7341802dec94e  plugins/cdlinux.sh
 849145693d5eff647e448296b36709ce  plugins/centos-boot.sh
 ff3eb78db05c2c1e2ccbd80cfe94880e  plugins/clonezilla486.sh
 0a9e34390b4d656b43584834b91fba55  plugins/clonezilla686.sh
-9b0b2b3efab7ab5ce08e266afa53573a  plugins/clonezilla.sh
+5c87898267e7ee9a8e477b189e22ab84  plugins/clonezilla.sh
 0b373849cf9dfd538f6557f95046f132  plugins/connos.sh
 926227d6643872b9c5e867bae760eeb6  plugins/dban.sh
 0319eb18cecee5409fe0bc6f692b6ab1  plugins/debian-install64.sh
@@ -35,8 +35,8 @@ da11bc9cdb5d94133a53ef1a344d627e  plugins/fedora-boot64.sh
 dd871f4610bcdba0f54b30c66378d3a7  plugins/geexbox.sh
 ceb3fab711d574f0126c88071bd6f3a3  plugins/generic.sh
 14491150cd29c97ecabb910cbe52f6d5  plugins/gparted.sh
-fbb2f248adb50206bbebd0e7bdaca9ad  plugins/grml64.sh
-42301b2054c3f6560fdf15953cfc1c29  plugins/grml.sh
+d4b7b17fd2f2a9b3c2e3845eac77d5e6  plugins/grml64.sh
+721cff418162d1b1f06f27f81b845818  plugins/grml.sh
 48c4309e49d23490e3e9c37bee6cabf3  plugins/hirens.sh
 64b669416abd89883ea9eedd56c6b9e0  plugins/insert.sh
 18e77c47b418715a5213fd7764fa1c79  plugins/ipcop.sh

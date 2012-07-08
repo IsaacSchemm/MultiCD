@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 . "${MCDDIR}"/functions.sh
-#GRML plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2011 Isaac Schemm, T.Ma.X. N060d9
+#GRML32 Full plugin for multicd.sh
+#version 20120704
+#Copyright (c) 2012 Isaac Schemm, etc.
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
 #in the Software without restriction, including without limitation the rights
@@ -22,7 +22,7 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = links ];then
-	echo "grml_*.iso grml.iso none"
+	echo "grml32-full*.iso grml.iso none"
 elif [ $1 = scan ];then
 	if [ -f grml.iso ];then
 		echo "GRML"
@@ -35,10 +35,10 @@ elif [ $1 = copy ];then
 		mkdir "${WORK}"/conf
 		mkdir "${WORK}"/boot/grml
 		cp -r "${MNT}"/grml/live/* "${WORK}"/grml #Compressed filesystem.
-		cp "${MNT}"/grml/boot/grml/linux26 "${WORK}"/boot/grml/ #Kernel. See above.
-		cp "${MNT}"/grml/boot/grml/initrd.gz "${WORK}"/boot/grml/initrd.gz #Initial ramdisk. See above.
-		cp "${MNT}"/grml/GRML/grml-version "${WORK}"/boot/grml/grml-version
-		cp "${MNT}"/grml/conf/bootid.txt "${WORK}"/conf/ #needed for booting
+		cp "${MNT}"/grml/boot/grml32full/vmlinuz "${WORK}"/boot/grml/ #Kernel. See above.
+		cp "${MNT}"/grml/boot/grml32full/initrd.img "${WORK}"/boot/grml/initrd.img #Initial ramdisk. See above.
+		cp "${MNT}"/grml/GRML/grml32-full/grml-version "${WORK}"/boot/grml/grml-version
+		#cp "${MNT}"/grml/conf/bootid.txt "${WORK}"/conf/ #not needed for booting with ignore_bootid
 #getting  files into one and with write access:
 		cp "${MNT}"/grml/boot/isolinux/default.cfg "${WORK}"/boot/grml/grml.cfg #isolinux menufile - temporary
 		cat "${MNT}"/grml/boot/isolinux/grml.cfg >> "${WORK}"/boot/grml/grml.cfg #adding to menufile
@@ -54,7 +54,8 @@ if [ -f grml.iso ];then
 	sed -i".bak" '2d' "${WORK}"/boot/grml/grml.cfg
 	sed -i".bak" '/menu end/ i\label back\n   menu label Back to main menu...\n   com32 menu.c32\n'  "${WORK}"/boot/grml/grml.cfg #insert back to main menu
 
-	sed -i -e 's^boot=live^boot=live live-media-path=/grml^g' "${WORK}"/boot/grml/grml.cfg
+	sed -i -e 's^boot=live live-media-path=/live/grml32-full/^boot=live live-media-path=/grml/grml32-full/ ignore_bootid^g' "${WORK}"/boot/grml/grml.cfg
+	sed -i -e 's^/boot/grml32full/^/boot/grml/^g' "${WORK}"/boot/grml64/grml.cfg
 
 	if [ -f "${WORK}"/boot/grml/grml.cfg.bak ];then
 		rm "${WORK}"/boot/grml/grml.cfg.bak #bak file from sed not needed
