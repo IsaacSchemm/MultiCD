@@ -33,10 +33,10 @@ elif [ $1 = copy ];then
 		echo "Copying Arch Linux Installer..."
 		mcdmount archboot
 		mkdir -p "${WORK}"/boot/archboot
-		for i in vmlinuz vmlts vm64 vm64lts initrd.img initrdlts.img initrd64.img initrd64lts.img;do
+		for i in vmlinuz_i686 vmlinuz_i686_lts vmlinuz_x86_64 vmlinuz_x86_64_lts initramfs_i686.img initramfs_x86_64.img;do
 			cp "${MNT}"/archboot/boot/$i "${WORK}"/boot/archboot/$i
 		done
-		cp -r "${MNT}"/archboot/core-* "${WORK}"/ #packages
+		cp -r "${MNT}"/archboot/packages "${WORK}"/ #packages
 		umcdmount archboot
 	fi
 elif [ $1 = writecfg ];then
@@ -59,8 +59,8 @@ elif [ $1 = writecfg ];then
 		It allows you to install Arch Linux or perform system maintenance.
 		ENDTEXT
 		MENU LABEL Boot Arch Linux (i686)
-		LINUX /boot/archboot/vmlinuz
-		APPEND initrd=/boot/archboot/initrd.img rootdelay=10
+		LINUX /boot/archboot/vmlinuz_i686
+		APPEND initrd=/boot/archboot/initramfs_i686.img rootdelay=10
 
 		LABEL arch64
 		TEXT HELP
@@ -68,8 +68,8 @@ elif [ $1 = writecfg ];then
 		It allows you to install Arch Linux or perform system maintenance.
 		ENDTEXT
 		MENU LABEL Boot Arch Linux (x86_64)
-		LINUX /boot/archboot/vm64
-		APPEND initrd=/boot/archboot/initrd64.img rootdelay=10
+		LINUX /boot/archboot/vmlinuz_x86_64
+		APPEND initrd=/boot/archboot/initramfs_x86_64.img rootdelay=10
 
 		LABEL arch-lts
 		TEXT HELP
@@ -77,8 +77,8 @@ elif [ $1 = writecfg ];then
 		It allows you to install Arch Linux or perform system maintenance.
 		ENDTEXT
 		MENU LABEL Boot Arch Linux LTS (i686)
-		LINUX /boot/archboot/vmlts
-		APPEND initrd=/boot/archboot/initrdlts.img rootdelay=10
+		LINUX /boot/archboot/vmlinuz_i686_lts
+		APPEND initrd=/boot/archboot/initramfs_i686.img rootdelay=10
 
 		LABEL arch64-lts
 		TEXT HELP
@@ -86,8 +86,8 @@ elif [ $1 = writecfg ];then
 		It allows you to install Arch Linux or perform system maintenance.
 		ENDTEXT
 		MENU LABEL Boot Arch Linux LTS (x86_64)
-		LINUX /boot/archboot/vm64lts
-		APPEND initrd=/boot/archboot/initrd64lts.img rootdelay=10
+		LINUX /boot/archboot/vmlinuz_x86_64_lts
+		APPEND initrd=/boot/archboot/initramfs_x86_64.img rootdelay=10
 	
 		menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 	fi
