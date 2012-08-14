@@ -471,7 +471,7 @@ echo "Writing isolinux.cfg..."
 echo "DEFAULT menu.c32
 TIMEOUT 0
 PROMPT 0" > "${WORK}"/boot/isolinux/isolinux.cfg
-#ccTLD is used for the keyboard in SYSLINUX
+#ccTLD is used for the keyboard in SYSLINUX. It only works if SystemRescueCD is included (it needs the ktl file)
 #In the future I may use $TAGS/lang for this
 if [ $ccTLD ];then #PDV
 	echo "KBDMAP maps/$ccTLD.ktl" >> "${WORK}"/boot/isolinux/isolinux.cfg
