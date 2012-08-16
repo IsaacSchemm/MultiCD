@@ -214,7 +214,7 @@ if $INTERACTIVE;then
 	echo $(echo -e "\r\033[0;$(cat /tmp/color)m")Color chosen.$(echo -e '\033[0;39m')
 	rm /tmp/color
 
-	dialog --menu "What menu TEXT color would you like?" 0 0 0 30 black 31 red 32 green 33 brown 34 blue 35 magenta 36 cyan 37 white 2> /tmp/color
+	dialog --menu "What menu TEXT color would you like?" 0 0 0 37 white 30 black 31 red 32 green 33 brown 34 blue 35 magenta 36 cyan 2> /tmp/color
 	TEXTCOLOR=$(cat /tmp/color)
 	echo $(echo -e "\r\033[0;$(cat /tmp/color)m")Color chosen.$(echo -e '\033[0;39m')
 	rm /tmp/color
@@ -316,11 +316,14 @@ Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> "${TA
 		done
 	fi
 else
+	#Do these things if interactive options are not enabled with "-i"
 	CDTITLE="MultiCD - Created $(LANG=C date +"%b %d, %Y")"
 	export CDLABEL=MultiCD
 	MENUCOLOR=44
 	TEXTCOLOR=37
-	#echo en > "${TAGS}"/lang
+	if [ $ccTLD ];then 
+		echo $ccTLD > "${TAGS}"/lang
+	fi
 	touch "${TAGS}"/9xextras
 	for i in puppies debians;do
 		if [ $(find "${TAGS}"/$i -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
