@@ -55,12 +55,13 @@ getDebianName () {
 
 if [ $1 = links ];then
 	echo "binary.iso binary.debian.iso none"
-	echo "debian-live-*.iso debian-live.debian.iso Debian_Live:_*"
+	echo "debian-live-*.iso debian-live.debian.iso Debian_Live:"
 elif [ $1 = scan ];then
 	if $(debianExists);then
 		for i in *.debian.iso; do
 			getDebianName
 			echo > "${TAGS}"/$(echo $i|sed -e 's/\.iso/\.needsname/g') #Comment out this line and multicd.sh won't ask for a custom name for this ISO
+			touch "${TAGS}"/debians/$(echo $i|sed -e 's/\.iso//g')
 		done
 	fi
 elif [ $1 = copy ];then
@@ -70,9 +71,18 @@ elif [ $1 = copy ];then
 			BASENAME=$(echo $i|sed -e 's/\.iso//g')
 			mcdmount $BASENAME
 			cp "${MNT}"/$BASENAME/isolinux/live.cfg "${WORK}"/boot/isolinux/$BASENAME.cfg
-			cp -r "${MNT}"/$BASENAME/live "${WORK}"/$BASENAME #Copy live folder - usually all that is needed
-			if [ -d "${MNT}"/$BASENAME/install ] && [ ! -d "${WORK}"/install ];then
-				cp -r "${MNT}"/$BASENAME/install "${WORK}"/ #Doesn't hurt to check
+			if [ -f "$TAGS"/debians/$BASENAME.inroot ];then
+				cp -r "${MNT}"/$BASENAME/live "${WORK}"/live
+				if [ -d "${MNT}"/$BASENAME/install ];then
+					cp -r "${MNT}"/$BASENAME/install "${WORK}"/
+					cp -r "${MNT}"/$BASENAME/.disk "${WORK}"/ || true
+					cp -r "${MNT}"/$BASENAME/dists "${WORK}"/ || true
+					cp -r "${MNT}"/$BASENAME/pool "${WORK}"/ || true
+				else
+					echo "Warning: You selected $BASENAME to be installable, but there is no \"install\" folder on the disk."
+				fi
+			else
+				cp -r "${MNT}"/$BASENAME/live "${WORK}"/$BASENAME
 			fi
 			umcdmount $BASENAME
 		done
@@ -93,6 +103,10 @@ elif [ $1 = writecfg ];then
 			sed -e "s^/live/^/$BASENAME/^g" | \
 			sed -e "s/boot=live/boot=live live-media-path=\/$BASENAME/g" > /tmp/$BASENAME.cfg
 			mv /tmp/$BASENAME.cfg "${WORK}"/boot/isolinux/$BASENAME.cfg
+
+			if [ ! -f "$TAGS"/debians/$BASENAME.inroot ];then
+				sed -i '/\/install\//d' "${WORK}"/boot/isolinux/$BASENAME.cfg
+			fi
 
 			echo "label back
 			menu label Back to main menu

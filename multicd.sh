@@ -141,7 +141,7 @@ fi
 if [ -d "${TAGS}" ];then rm -r "${TAGS}";fi
 mkdir -p "${TAGS}"
 mkdir "${TAGS}"/puppies
-#mkdir "${TAGS}"/redhats (Not used anymore)
+mkdir "${TAGS}"/debians
 chmod -R 777 "${TAGS}"
 
 #START PREPARE#
@@ -276,20 +276,22 @@ Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> "${TA
 		sh puppychooser
 		touch "${TAGS}"/puppies/$(cat puppyresult).inroot
 		rm puppychooser puppyresult
-	fi
-	#if [ $(find "${TAGS}"/redhats -maxdepth 1 -type f|wc -l) -gt 1 ] && which dialog &> /dev/null;then
-	#	echo "dialog --radiolist \"Which Red Hat/Fedora variant should have its files stored on the CD, so they don't need to be downloaded later?\" 13 45 6 \\">puppychooser
-	#	for i in "${TAGS}"/redhats/*;do
-	#		echo $(basename $i) \"\" off \\ >> redhatchooser
-	#	done
-	#	echo "2> rehdatresult" >> redhatchooser
-	#	sh redhatchooser
-	#	touch "${TAGS}"/redhats/$(cat redhatresult).images
-	#	rm redhatchooser redhatresult
-	#fi
-	if [ $(find "${TAGS}"/puppies -maxdepth 1 -type f|wc -l) -eq 1 ];then
+	elif [ $(find "${TAGS}"/puppies -maxdepth 1 -type f|wc -l) -eq 1 ];then
 		NAME=$(ls "${TAGS}"/puppies)
 		true>$(find "${TAGS}"/puppies -maxdepth 1 -type f).inroot
+	fi
+	if [ $(find "${TAGS}"/debians -maxdepth 1 -type f|wc -l) -gt 1 ] && which dialog &> /dev/null;then
+		echo "dialog --radiolist \"Which Debian-Live variant would you like to be installable to HD from the disc?\" 13 45 6 \\">debianschooser
+		for i in "${TAGS}"/debians/*;do
+			echo $(basename $i) \"\" off \\ >> debianschooser
+		done
+		echo "2> debiansresult" >> debianschooser
+		sh debianschooser
+		touch "${TAGS}"/debians/$(cat debiansresult).inroot
+		rm debianschooser debiansresult
+	elif [ $(find "${TAGS}"/debians -maxdepth 1 -type f|wc -l) -eq 1 ];then
+		NAME=$(ls "${TAGS}"/debians)
+		true>$(find "${TAGS}"/debians -maxdepth 1 -type f).inroot
 	fi
 	if which dialog &> /dev/null;then
 		for i in $(find "${TAGS}" -maxdepth 1 -name \*.needsname);do
@@ -320,9 +322,9 @@ else
 	TEXTCOLOR=37
 	#echo en > "${TAGS}"/lang
 	touch "${TAGS}"/9xextras
-	for i in puppies;do
+	for i in puppies debians;do
 		if [ $(find "${TAGS}"/$i -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
-			touch $(find "${TAGS}"/$i -maxdepth 1 -type f|head -n 1) #This way, the first one alphabetically will be in the root dir
+			touch $(find "${TAGS}"/$i -maxdepth 1 -type f|head -n 1).inroot #This way, the first one alphabetically will be in the root dir
 		fi
 	done
 	for i in $(find "${TAGS}" -maxdepth 1 -name \*.needsname);do
