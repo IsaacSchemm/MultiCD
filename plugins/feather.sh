@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Feather Linux plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2010 Isaac Schemm
+#version 20120815
+#Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,9 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "feather-*.iso feather.iso none"
+elif [ $1 = scan ];then
 	if [ -f feather.iso ];then
 		echo "Feather"
 	fi
@@ -39,22 +41,27 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f feather.iso ];then
+if [ $(cat "${TAGS}"/lang) ];then
+	LANGCODE=$(cat "${TAGS}"/lang)
+else
+	LANGCODE=us
+fi
 echo "LABEL feather
 MENU LABEL ^Feather Linux
 KERNEL /boot/feather/linux24
-APPEND ramdisk_size=100000 init=/etc/init lang=us apm=power-off vga=791 initrd=/boot/feather/minirt24.gz knoppix_dir=FEATHER nomce quiet BOOT_IMAGE=knoppix
+APPEND ramdisk_size=100000 init=/etc/init lang=$LANGCODE apm=power-off vga=791 initrd=/boot/feather/minirt24.gz knoppix_dir=FEATHER nomce quiet BOOT_IMAGE=knoppix
 LABEL feather-toram
 MENU LABEL Feather Linux (load to RAM)
 KERNEL /boot/feather/linux24
-APPEND ramdisk_size=100000 init=/etc/init lang=us apm=power-off vga=791 initrd=/boot/feather/minirt24.gz knoppix_dir=FEATHER nomce quiet toram BOOT_IMAGE=knoppix
+APPEND ramdisk_size=100000 init=/etc/init lang=$LANGCODE apm=power-off vga=791 initrd=/boot/feather/minirt24.gz knoppix_dir=FEATHER nomce quiet toram BOOT_IMAGE=knoppix
 LABEL feather-2
 MENU LABEL Feather Linux (boot to command line)
 KERNEL /boot/feather/linux24
-APPEND ramdisk_size=100000 init=/etc/init lang=us apm=power-off vga=791 initrd=/boot/feather/minirt24.gz knoppix_dir=FEATHER nomce quiet 2 BOOT_IMAGE=knoppix
+APPEND ramdisk_size=100000 init=/etc/init lang=$LANGCODE apm=power-off vga=791 initrd=/boot/feather/minirt24.gz knoppix_dir=FEATHER nomce quiet 2 BOOT_IMAGE=knoppix
 " >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi

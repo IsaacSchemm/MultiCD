@@ -26,7 +26,7 @@ d0cb9c83e93329040c87a0fffe5c863a  plugins/dsl.sh
 80032c2f652923c965830724344be670  plugins/dvl.sh
 afc34a521ac57d3743282f5fe451da8b  plugins/efw.sh
 01ffee02a141f565871abe77968acf80  plugins/elastix.sh
-e32bf7ad879e53c0ee3b96898726591e  plugins/feather.sh
+255246db23adb02a89272d05a59da28b  plugins/feather.sh
 da11bc9cdb5d94133a53ef1a344d627e  plugins/fedora-boot64.sh
 9db5913d97c7866dfe1cf71c1dcb3f00  plugins/fedora-boot.sh
 1de8fa1a20af897e8b28705ca5c6f808  plugins/finnix.sh
