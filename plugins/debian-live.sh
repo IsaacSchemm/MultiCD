@@ -99,13 +99,12 @@ elif [ $1 = writecfg ];then
 			com32 menu.c32
 			append $BASENAME.cfg" >> "${WORK}"/boot/isolinux/isolinux.cfg
 
-			cat "${WORK}"/boot/isolinux/$BASENAME.cfg | sed '/memtest/d' | sed '/Memory test/d' | \
-			sed -e "s^/live/^/$BASENAME/^g" | \
-			sed -e "s/boot=live/boot=live live-media-path=\/$BASENAME/g" > /tmp/$BASENAME.cfg
-			mv /tmp/$BASENAME.cfg "${WORK}"/boot/isolinux/$BASENAME.cfg
+			sed -i -e '/memtest/d' -e '/Memory test/d' "${WORK}"/boot/isolinux/$BASENAME.cfg
 
 			if [ ! -f "$TAGS"/debians/$BASENAME.inroot ];then
-				sed -i '/\/install\//d' "${WORK}"/boot/isolinux/$BASENAME.cfg
+				sed -i -e "s^/live/^/$BASENAME/^g" \
+				-e "s/boot=live/boot=live live-media-path=\/$BASENAME/g" \
+				-e '/\/install\//d' "${WORK}"/boot/isolinux/$BASENAME.cfg
 			fi
 
 			echo "label back

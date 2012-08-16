@@ -16,7 +16,7 @@ ff3eb78db05c2c1e2ccbd80cfe94880e  plugins/clonezilla486.sh
 926227d6643872b9c5e867bae760eeb6  plugins/dban.sh
 0319eb18cecee5409fe0bc6f692b6ab1  plugins/debian-install64.sh
 35e22fc8beab94b0f50371908ee13e25  plugins/debian-install.sh
-434c5aeb37f912d847b55603dea9a562  plugins/debian-live.sh
+10d02a12bb90e15207f0569bc7042758  plugins/debian-live.sh
 ce849ff67ef898581f93ebb875f74612  plugins/debian-mini.sh
 c31ad92c82ea1a360303a4ca28e14301  plugins/deli.sh
 5bd40552b8f60c100312e9807c14da49  plugins/diskcopy.sh
