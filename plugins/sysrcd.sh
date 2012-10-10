@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #SystemRescueCd plugin for multicd.sh
-#version 7.0
+#version 20121010
 #Copyright (c) 2010-2012 Isaac Schemm and Pascal De Vuyst
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -42,7 +42,7 @@ elif [ $1 = copy ];then
 		cp "${MNT}"/sysrcd/version "${WORK}"/boot/sysrcd/version
 		cp "${MNT}"/sysrcd/isolinux/isolinux.cfg "${WORK}"/boot/isolinux/sysrcd.cfg #PDV
 		cp "${MNT}"/sysrcd/isolinux/*.msg "${WORK}"/boot/isolinux #PDV
-		if [ $ccTLD ];then #PDV
+		if [ -f "${TAGS}"/lang ];then #PDV
 			cp -R "${MNT}"/sysrcd/isolinux/maps "${WORK}"/boot/isolinux #PDV
 		fi
 		umcdmount sysrcd
@@ -60,9 +60,9 @@ append sysrcd.cfg
 sed -i -e 's/LINUX /LINUX \/boot\/sysrcd\//g' -e 's/INITRD /INITRD \/boot\/sysrcd\//g' -e 's/\/bootdisk/\/boot\/sysrcd\/bootdisk/g' -e 's/\/ntpasswd/\/boot\/sysrcd\/ntpasswd/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV Change directory to /boot/sysrcd
 sed -i -e 's/APPEND maps/append maps/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV don't change APPEND maps lines
 sed -i -e 's/APPEND/APPEND subdir=\/boot\/sysrcd/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV Tell the kernel we moved it
-if [ $ccTLD ];then #PDV
+if [ -f "$TAGS"/lang ];then #PDV
 	sed -i -e 's/APPEND\([[:print:]]*setkmap\)/append\1/g' "${WORK}"/boot/isolinux/sysrcd.cfg #don't change APPEND lines with setkmap
-        sed -i -e 's/APPEND/APPEND setkmap='$ccTLD'/g' "${WORK}"/boot/isolinux/sysrcd.cfg #add setkmap=$ccTLD
+        sed -i -e 's/APPEND/APPEND setkmap='$(cat "${TAGS}"/lang)'/g' "${WORK}"/boot/isolinux/sysrcd.cfg #add setkmap=[language]
 	sed -i -e 's/append\([[:print:]]*setkmap\)/APPEND\1/g' -e 's/append maps/APPEND maps/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV revert changes
 fi
 sed -i -e '/LABEL local[1-2]/,/^$/d' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV remove Boot from hard disk entries

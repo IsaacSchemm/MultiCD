@@ -221,14 +221,8 @@ if $INTERACTIVE;then
 
 	dialog --inputbox "Enter the language code for the language you would like to use.\n\
 Leaving this empty will leave the choice up to the plugin (usually English.)\n\
-Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "" 2> "${TAGS}"/lang-full
+Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "${LANGFULL}" 2> "${TAGS}"/lang-full
 	LANGFULL="$(cat "${TAGS}"/lang-full)"
-	if [ "$LANGFULL" = "" ];then
-		rm "${TAGS}"/lang-full #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
-	else
-		#Get two-letter code (e.g. the first part) for plugins that only use that part of the lang code
-		cat "${TAGS}"/lang-full|awk -F_ '{print $1}' > "${TAGS}"/lang
-	fi
 	if [ -f slax.iso ];then
 		dialog --checklist "Slax modules to include:" 13 45 6 \
 		002 Xorg on \
@@ -321,9 +315,9 @@ else
 	export CDLABEL=MultiCD
 	MENUCOLOR=44
 	TEXTCOLOR=37
-	if [ $ccTLD ];then 
-		echo $ccTLD > "${TAGS}"/lang
-	fi
+#	if [ $ccTLD ];then 
+#		echo $ccTLD > "${TAGS}"/lang
+#	fi
 	touch "${TAGS}"/9xextras
 	for i in puppies debians;do
 		if [ $(find "${TAGS}"/$i -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
@@ -336,6 +330,15 @@ else
 			cp $BASENAME.defaultname "${TAGS}"/$BASENAME.name
 		fi
 	done
+fi
+
+if [ "$LANGFULL" = "" ];then
+	if [ -f "${TAGS}"/lang-full ];then
+		rm "${TAGS}"/lang-full #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
+	fi
+else
+	#Get two-letter code (e.g. the first part) for plugins that only use that part of the lang code
+	head -c 2 < "${TAGS}"/lang-full > "${TAGS}"/lang
 fi
 
 if [ -d "${WORK}" ];then
@@ -476,10 +479,10 @@ echo "Writing isolinux.cfg..."
 echo "DEFAULT menu.c32
 TIMEOUT 0
 PROMPT 0" > "${WORK}"/boot/isolinux/isolinux.cfg
-#ccTLD is used for the keyboard in SYSLINUX. It only works if SystemRescueCD is included (it needs the ktl file)
-#In the future I may use $TAGS/lang for this
-if [ $ccTLD ];then #PDV
-	echo "KBDMAP maps/$ccTLD.ktl" >> "${WORK}"/boot/isolinux/isolinux.cfg
+#Changed to use $TAGS/lang instead of the old $ccTLD
+if [ -f ${TAGS}/lang ];then #PDV
+	LANGCODE=$(cat "${TAGS}"/lang)
+	echo "KBDMAP maps/${LANGCODE}.ktl" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 echo "menu title $CDTITLE" >> "${WORK}"/boot/isolinux/isolinux.cfg
 #END HEADER#

@@ -1,3 +1,3 @@
 #!/bin/sh
-export ccTLD=be
+export LANGFULL=be_BE
 ./multicd.sh $*
