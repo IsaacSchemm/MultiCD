@@ -42,7 +42,7 @@ elif [ $1 = copy ];then
 		cp "${MNT}"/sysrcd/version "${WORK}"/boot/sysrcd/version
 		cp "${MNT}"/sysrcd/isolinux/isolinux.cfg "${WORK}"/boot/isolinux/sysrcd.cfg #PDV
 		cp "${MNT}"/sysrcd/isolinux/*.msg "${WORK}"/boot/isolinux #PDV
-		if [ -f "${TAGS}"/lang ];then #PDV
+		if [ -f "${TAGS}"/country ];then #PDV
 			cp -R "${MNT}"/sysrcd/isolinux/maps "${WORK}"/boot/isolinux #PDV
 		fi
 		umcdmount sysrcd
@@ -61,9 +61,9 @@ sed -i -e 's/LINUX /LINUX \/boot\/sysrcd\//g' -e 's/INITRD /INITRD \/boot\/sysrc
 sed -i -e 's/APPEND maps/append maps/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV don't change APPEND maps lines
 sed -i -e 's/APPEND/APPEND subdir=\/boot\/sysrcd/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV Tell the kernel we moved it
 sed -i -e 's/KERNEL ifcpu64.c32/KERNEL ifcpu64.c32\nMENU HIDE/g' "${WORK}"/boot/isolinux/sysrcd.cfg #Hide auto-selecting 32/64 bit entries (I can't get these to work)
-if [ -f "$TAGS"/lang ];then #PDV
+if [ -f "$TAGS"/country ];then #PDV
 	sed -i -e 's/APPEND\([[:print:]]*setkmap\)/append\1/g' "${WORK}"/boot/isolinux/sysrcd.cfg #don't change APPEND lines with setkmap
-        sed -i -e 's/APPEND/APPEND setkmap='$(cat "${TAGS}"/lang)'/g' "${WORK}"/boot/isolinux/sysrcd.cfg #add setkmap=[language]
+        sed -i -e 's/APPEND/APPEND setkmap='$(cat "${TAGS}"/country)'/g' "${WORK}"/boot/isolinux/sysrcd.cfg #add setkmap=[language]
 	sed -i -e 's/append\([[:print:]]*setkmap\)/APPEND\1/g' -e 's/append maps/APPEND maps/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV revert changes
 fi
 sed -i -e '/LABEL local[1-2]/,/^$/d' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV remove Boot from hard disk entries

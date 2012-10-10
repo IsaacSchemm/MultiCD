@@ -481,10 +481,10 @@ echo "Writing isolinux.cfg..."
 echo "DEFAULT menu.c32
 TIMEOUT 0
 PROMPT 0" > "${WORK}"/boot/isolinux/isolinux.cfg
-#Changed to use $TAGS/lang instead of the old $ccTLD
-if [ -f ${TAGS}/lang ];then #PDV
-	LANGCODE=$(cat "${TAGS}"/lang)
-	echo "KBDMAP maps/${LANGCODE}.ktl" >> "${WORK}"/boot/isolinux/isolinux.cfg
+#Changed to use $TAGS/country instead of the old $ccTLD
+if [ -f ${TAGS}/country ];then #PDV
+	KCODE=$(cat "${TAGS}"/country)
+	echo "KBDMAP maps/${KCODE}.ktl" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 echo "menu title $CDTITLE" >> "${WORK}"/boot/isolinux/isolinux.cfg
 #END HEADER#

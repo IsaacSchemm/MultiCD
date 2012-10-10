@@ -53,7 +53,7 @@ append clonezil$2.cfg
 #GNU sed syntax
 sed -i -e 's/\/live\//\/boot\/clonezilla'$2'\//g' "${WORK}"/boot/isolinux/clonezil$2.cfg #Change directory to /boot/clonezilla
 sed -i -e 's/append initrd=/append live-media-path=\/boot\/clonezilla'$2' initrd=/g' "${WORK}"/boot/isolinux/clonezil$2.cfg #Tell the kernel we moved it
-if [ -f "${TAGS}"/lang ] && [ $(cat "${TAGS}"/lang) == "be" ];then #PDV
+if [ -f "${TAGS}"/country ] && [ $(cat "${TAGS}"/country) == "be" ];then #PDV
 	sed -i -e 's/ocs_live_keymap=\"\"/ocs_live_keymap=\"\/usr\/share\/keymaps\/i386\/azerty\/be2-latin1.kmap.gz\"/' "${WORK}"/boot/isolinux/clonezil$2.cfg #set keymap
 	##sed -i -e 's/ocs_lang=\"\"/ocs_lang=\"en_US.UTF-8\"/' "${WORK}"/boot/isolinux/clonezil$2.cfg #english menu language
 fi
