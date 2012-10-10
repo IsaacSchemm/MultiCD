@@ -60,6 +60,7 @@ append sysrcd.cfg
 sed -i -e 's/LINUX /LINUX \/boot\/sysrcd\//g' -e 's/INITRD /INITRD \/boot\/sysrcd\//g' -e 's/\/bootdisk/\/boot\/sysrcd\/bootdisk/g' -e 's/\/ntpasswd/\/boot\/sysrcd\/ntpasswd/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV Change directory to /boot/sysrcd
 sed -i -e 's/APPEND maps/append maps/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV don't change APPEND maps lines
 sed -i -e 's/APPEND/APPEND subdir=\/boot\/sysrcd/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV Tell the kernel we moved it
+sed -i -e 's/KERNEL ifcpu64.c32/KERNEL ifcpu64.c32\nMENU HIDE/g' "${WORK}"/boot/isolinux/sysrcd.cfg #Hide auto-selecting 32/64 bit entries (I can't get these to work)
 if [ -f "$TAGS"/lang ];then #PDV
 	sed -i -e 's/APPEND\([[:print:]]*setkmap\)/append\1/g' "${WORK}"/boot/isolinux/sysrcd.cfg #don't change APPEND lines with setkmap
         sed -i -e 's/APPEND/APPEND setkmap='$(cat "${TAGS}"/lang)'/g' "${WORK}"/boot/isolinux/sysrcd.cfg #add setkmap=[language]

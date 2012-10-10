@@ -339,6 +339,8 @@ if [ "$LANGFULL" = "" ];then
 else
 	#Get two-letter code (e.g. the first part) for plugins that only use that part of the lang code
 	head -c 2 < "${TAGS}"/lang-full > "${TAGS}"/lang
+	#Get country code (e.g. the last part) which can hopefully be used for keyboard layouts (not tested)
+	cat "${TAGS}"/lang-full | tail -c 3 | tr '[A-Z]' '[a-z]' > "${TAGS}"/country
 fi
 
 if [ -d "${WORK}" ];then
