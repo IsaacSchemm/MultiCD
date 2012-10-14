@@ -5,9 +5,9 @@ set -e
 export MCDDIR="."
 . "${MCDDIR}"/functions.sh
 
-MCDVERSION="7.0"
-#multicd.sh 7.0
-#Copyright (c) 2011 Isaac Schemm
+MCDVERSION="7.1"
+#multicd.sh 7.1
+#Copyright (c) 2012	 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -221,8 +221,12 @@ if $INTERACTIVE;then
 
 	dialog --inputbox "Enter the language code for the language you would like to use.\n\
 Leaving this empty will leave the choice up to the plugin (usually English.)\n\
-Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "${LANGFULL}" 2> "${TAGS}"/lang-full
-	LANGFULL="$(cat "${TAGS}"/lang-full)"
+Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "${LANG}" 2> "${TAGS}"/lang-full
+
+	dialog --inputbox "Enter the code for your keyboard layout.\n
+Leaving this blank will typically default to QWERTY (US).\n\
+Examples: fr (AZERTY France), fr_CH (QWERTZ Switzerland)" 12 50 "${COUNTRY}" 2> "${TAGS}"/country
+
 	if [ -f slax.iso ];then
 		dialog --checklist "Slax modules to include:" 13 45 6 \
 		002 Xorg on \
@@ -318,6 +322,12 @@ else
 #	if [ $ccTLD ];then 
 #		echo $ccTLD > "${TAGS}"/lang
 #	fi
+	if [ "$LANG" ] && [ "$LANG" != "C" ];then
+		echo "$LANG" > "${TAGS}"/lang-full
+	fi
+	if [ $COUNTRY ];then
+		echo "$COUNTRY" > "${TAGS}"/country
+	fi
 	touch "${TAGS}"/9xextras
 	for i in puppies debians;do
 		if [ $(find "${TAGS}"/$i -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
@@ -332,15 +342,15 @@ else
 	done
 fi
 
-if [ "$LANGFULL" = "" ];then
-	if [ -f "${TAGS}"/lang-full ];then
-		rm "${TAGS}"/lang-full #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
+for i in lang-full country;do
+	if [ -f "${TAGS}"/$i ] && [ $(cat "${TAGS}"/$i) = "" ];then
+		cat "${TAGS}"/$i
+		rm "${TAGS}"/$i #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
 	fi
-else
+done
+if [ -f "${TAGS}"/$i ];then
 	#Get two-letter code (e.g. the first part) for plugins that only use that part of the lang code
 	head -c 2 < "${TAGS}"/lang-full > "${TAGS}"/lang
-	#Get country code (e.g. the last part) which can hopefully be used for keyboard layouts (not tested)
-	cat "${TAGS}"/lang-full | tail -c 3 | tr '[A-Z]' '[a-z]' > "${TAGS}"/country
 fi
 
 if [ -d "${WORK}" ];then

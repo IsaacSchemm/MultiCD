@@ -175,8 +175,13 @@ ubuntucommon () {
 		sed -i "s^initrd=/casper/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #Initrd moved, ignore_uuid added
 		sed -i "s^kernel /casper/^kernel /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #Kernel moved
 		sed -i "s^KERNEL /casper/^KERNEL /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #For uppercase KERNEL
-		if [ -f "${TAGS}"/lang ] && [ "$(cat "${TAGS}"/lang)" != "en" ];then
-			sed -i "s^initrd=/boot/$1/^debian-installer/language=$(cat "${TAGS}"/lang) console-setup/layoutcode?=$(cat "${TAGS}"/lang) initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #Add language codes to cmdline
+		if [ -f "${TAGS}"/lang ];then
+			echo added lang
+			sed -i "s^initrd=/boot/$1/^debian-installer/language=$(cat "${TAGS}"/lang) initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #Add language codes to cmdline
+		fi
+		if [ -f "${TAGS}"/country ];then
+			echo added country
+			sed -i "s^initrd=/boot/$1/^console-setup/layoutcode?=$(cat "${TAGS}"/country) initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #Add language codes to cmdline
 		fi
 		umcdmount $1
 	else

@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #SystemRescueCd plugin for multicd.sh
-#version 20121010
+#version 20121013
 #Copyright (c) 2010-2012 Isaac Schemm and Pascal De Vuyst
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -42,10 +42,7 @@ elif [ $1 = copy ];then
 		cp "${MNT}"/sysrcd/version "${WORK}"/boot/sysrcd/version
 		cp "${MNT}"/sysrcd/isolinux/isolinux.cfg "${WORK}"/boot/isolinux/sysrcd.cfg #PDV
 		cp "${MNT}"/sysrcd/isolinux/*.msg "${WORK}"/boot/isolinux #PDV
-		if [ -f "${TAGS}"/country ];then #PDV
-			cp -R "${MNT}"/sysrcd/isolinux/maps "${WORK}"/boot/isolinux #PDV
-		fi
-		umcdmount sysrcd
+		cp -R "${MNT}"/sysrcd/isolinux/maps "${WORK}"/boot/isolinux #Always copy keyboard maps
 	fi
 elif [ $1 = writecfg ];then
 if [ -f sysrcd.iso ];then
