@@ -343,7 +343,7 @@ else
 fi
 
 for i in lang-full country;do
-	if [ -f "${TAGS}"/$i ] && [ $(cat "${TAGS}"/$i) = "" ];then
+	if [ -f "${TAGS}"/$i ] && [ -z $(cat "${TAGS}"/$i) ];then
 		cat "${TAGS}"/$i
 		rm "${TAGS}"/$i #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
 	fi
