@@ -72,7 +72,7 @@ f627c7d0afc218c6f0245ca91bac83c9  plugins/pinguy.sh
 2e66ae3e35b0d63cca51d3cc3abf48fe  plugins/scientific-boot.sh
 d667be19e1259281aac4e0533b407ae8  plugins/slax.sh
 118aa9d73c38ff88b4436aee305d5f01  plugins/slitaz.sh
-ae109eda0907f56a32917b14bbaae220  plugins/sysrcd.sh
+730ca54e4edb3d231b50daed346c54d2  plugins/sysrcd.sh
 d31a81e94254f9de5e09825ab1917f9a  plugins/tc+nb.sh
 486c4b989c384e19646528cb60b98597  plugins/tinycore.sh
 8a2d16f9ccc58a8d0a19e8634d868480  plugins/tinyme.sh
