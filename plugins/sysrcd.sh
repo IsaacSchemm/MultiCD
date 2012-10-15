@@ -57,15 +57,15 @@ append sysrcd.cfg
 #GNU sed syntax
 sed -i -e 's/LINUX /LINUX \/boot\/sysrcd\//g' -e 's/INITRD /INITRD \/boot\/sysrcd\//g' -e 's/\/bootdisk/\/boot\/sysrcd\/bootdisk/g' -e 's/\/ntpasswd/\/boot\/sysrcd\/ntpasswd/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV Change directory to /boot/sysrcd
 sed -i -e 's/APPEND maps/append maps/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV don't change APPEND maps lines
+sed -i -e 's/APPEND rescue64.*rescue32/APPEND initrd=\/boot\/sysrcd\/initram.igz/g' -e 's/ifcpu64.c32/\/boot\/sysrcd\/rescue32/g' "${WORK}"/boot/isolinux/sysrcd.cfg # Remove ifcpu64.c32; just use 32-bit kernel by default
 sed -i -e 's/APPEND/APPEND subdir=\/boot\/sysrcd/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV Tell the kernel we moved it
-sed -i -e 's/KERNEL ifcpu64.c32/KERNEL ifcpu64.c32\nMENU HIDE/g' "${WORK}"/boot/isolinux/sysrcd.cfg #Hide auto-selecting 32/64 bit entries (I can't get these to work; I think it has something to do with sysrcd.cfg not being the default .cfg file, so those aliases at the bottom with MENU HIDE aren't read?)
 if [ -f "$TAGS"/country ];then #PDV
 	sed -i -e 's/APPEND\([[:print:]]*setkmap\)/append\1/g' "${WORK}"/boot/isolinux/sysrcd.cfg #don't change APPEND lines with setkmap
         sed -i -e 's/APPEND/APPEND setkmap='$(cat "${TAGS}"/country)'/g' "${WORK}"/boot/isolinux/sysrcd.cfg #add setkmap=[language]
 	sed -i -e 's/append\([[:print:]]*setkmap\)/APPEND\1/g' -e 's/append maps/APPEND maps/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV revert changes
 fi
 sed -i -e '/LABEL local[1-2]/,/^$/d' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV remove Boot from hard disk entries
-if $MEMTEST; then #PDV remove memtest
+if $MEMTEST; then #PDV remove memtest (not necessary; probably older)
 	sed -i -e '/LABEL memtest/,/^$/d' "${WORK}"/boot/isolinux/sysrcd.cfg
 	rm "${WORK}"/boot/sysrcd/bootdisk/memtestp
 fi
