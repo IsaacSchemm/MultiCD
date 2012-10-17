@@ -80,7 +80,7 @@ d31a81e94254f9de5e09825ab1917f9a  plugins/tc+nb.sh
 aab2009853c309639d4e50287024c4c7  plugins/ubcd.sh
 a08d2c2e3d6222ec029a304c221116ed  plugins/ubuntu-alternate.sh
 8ed598bee014c7377daace9b8466a2b3  plugins/ubuntu-mini.sh
-6223ec9ae40b206a95fb52acc34ff16a  plugins/ubuntu.sh
+9ef5896528d5bd2ba12c565290fa25af  plugins/ubuntu.sh
 55bf4d66cf867bc9090b0dcbb3c648f0  plugins/vyatta.sh
 940dec6cd84e119b0b36aaaef1514fd6  plugins/weaknet.sh
 cf7172c67a326c99be7f055e754da2bc  plugins/win7recovery-ram.sh

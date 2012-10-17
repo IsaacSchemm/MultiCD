@@ -62,7 +62,8 @@ if [ $1 = links ];then
 	echo "xubuntu-*-desktop-amd64.iso amd64.x.ubuntu.iso Xubuntu_(64-bit)"
 	echo "edubuntu-*-dvd-i386.iso i386.x.ubuntu.iso Edubuntu_(32-bit)"
 	echo "edubuntu-*-dvd-amd64.iso amd64.x.ubuntu.iso Edubuntu_(64-bit)"
-	echo "lubuntu-*.iso i386.l.ubuntu.iso Lubuntu_(32-bit)"
+	echo "lubuntu-*-desktop-i386.iso i386.l.ubuntu.iso Lubuntu_(32-bit)"
+	echo "lubuntu-*-desktop-amd64.iso amd64.l.ubuntu.iso Lubuntu_(64-bit)"
 elif [ $1 = scan ];then
 	if $(ubuntuExists);then
 		for i in *.ubuntu.iso; do
