@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Debian netinst (i386) plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2011 Isaac Schemm
+#version 20121017
+#Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,6 @@ elif [ $1 = copy ];then
 		cp -r "${MNT}"/debian-install/dists "${WORK}"
 		cp -r "${MNT}"/debian-install/install.386 "${WORK}"
 		cp -r "${MNT}"/debian-install/pool "${WORK}"
-		cp "${MNT}"/debian-install/dedication.txt "${WORK}" || true
 		umcdmount debian-install
 	fi
 elif [ $1 = writecfg ];then
