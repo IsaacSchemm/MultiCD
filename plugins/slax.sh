@@ -35,7 +35,7 @@ elif [ $1 = copy ];then
 		if [ -f "${TAGS}"/slaxlist ];then
 			mkdir "${WORK}"/slax
 			for i in `ls "${MNT}"/slax/slax|sed -e '/^base$/ d'`;do
-				cp -R "${MNT}"/slax/slax/$i "${WORK}"/slax/ #Copy everything but the base modules
+				cp -r "${MNT}"/slax/slax/$i "${WORK}"/slax/ #Copy everything but the base modules
 			done
 			mkdir "${WORK}"/slax/base
 			for i in `cat "${TAGS}"/slaxlist`;do
@@ -44,7 +44,7 @@ elif [ $1 = copy ];then
 			cp "${MNT}"/slax/slax/base/001-*.lzm "${WORK}"/slax/base/ #Don't forget the core module!
 			rm "${TAGS}"/slaxlist
 		else
-			cp -R "${MNT}"/slax/slax "${WORK}"/ #Copy everything
+			cp -r "${MNT}"/slax/slax "${WORK}"/ #Copy everything
 		fi
 		mkdir -p "${WORK}"/boot/slax
 		cp "${MNT}"/slax/boot/vmlinuz "${WORK}"/boot/slax/vmlinuz

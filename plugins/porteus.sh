@@ -35,7 +35,7 @@ elif [ $1 = copy ];then
 		if [ -f "${TAGS}"/porteuslist ];then
 			mkdir "${WORK}"/porteus
 			for i in `ls "${MNT}"/porteus/porteus|sed -e '/^base$/ d'`;do
-				cp -R "${MNT}"/porteus/porteus/$i "${WORK}"/porteus/ #Copy everything but the base modules
+				cp -r "${MNT}"/porteus/porteus/$i "${WORK}"/porteus/ #Copy everything but the base modules
 			done
 			mkdir "${WORK}"/porteus/base
 			for i in `cat "${TAGS}"/porteuslist`;do
@@ -45,7 +45,7 @@ elif [ $1 = copy ];then
 			cp "${MNT}"/porteus/porteus/base/001-* "${WORK}"/porteus/base/ #core module is required
 			rm "${TAGS}"/porteuslist
 		else
-			cp -R "${MNT}"/porteus/porteus "${WORK}"/ #Copy everything
+			cp -r "${MNT}"/porteus/porteus "${WORK}"/ #Copy everything
 		fi
 		mkdir -p "${WORK}"/boot/porteus
 		cp "${MNT}"/porteus/boot/vmlinuz "${WORK}"/boot/porteus/vmlinuz

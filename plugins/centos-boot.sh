@@ -45,7 +45,7 @@ elif [ $1 = copy ];then
 			echo "CentOS's \"images\" folder won't be copied; instead, these files will be downloaded before the installer starts."
 		else
 			#Commenting out the below line will save about 100MB on the CD, but it will have to be downloaded when you install Scientific Linux
-			cp -R "${MNT}"/centos-boot/images "${WORK}"/
+			cp -r "${MNT}"/centos-boot/images "${WORK}"/
 		fi
 		umcdmount centos-boot
 	fi

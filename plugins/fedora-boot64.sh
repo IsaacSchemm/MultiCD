@@ -46,7 +46,7 @@ elif [ $1 = copy ];then
 			echo "64-bit Fedora's \"images\" folder won't be copied; instead, these files will be downloaded before the installer starts."
 		else
 			#Commenting out the below line will save about 100MB on the CD, but it will have to be downloaded when you install Fedora
-			cp -R "${MNT}"/fedora-boot64/images "${WORK}"/
+			cp -r "${MNT}"/fedora-boot64/images "${WORK}"/
 		fi
 		umcdmount fedora-boot64
 	fi

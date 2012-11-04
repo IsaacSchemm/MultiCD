@@ -45,7 +45,7 @@ elif [ $1 = copy ];then
 			echo "Scientific Linux's \"images\" folder won't be copied; instead, these files will be downloaded before the installer starts."
 		else
 			#Commenting out the below line will save about 100MB on the CD, but it will have to be downloaded when you install Scientific Linux
-			cp -R "${MNT}"/scientific-boot/images "${WORK}"/
+			cp -r "${MNT}"/scientific-boot/images "${WORK}"/
 		fi
 		umcdmount scientific-boot
 	fi

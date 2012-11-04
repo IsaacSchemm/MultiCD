@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Clonezilla plugin for multicd.sh
-#version 20121010
+#version 20121103
 #Copyright (c) 2010-2012 Isaac Schemm and Pascal De Vuyst
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,7 +33,7 @@ elif [ $1 = copy ];then
 		echo "Copying Clonezilla $2..."
 		mcdmount clonezilla$2
 		cp "${MNT}"/clonezilla$2/isolinux/ocswp.png "${WORK}"/boot/isolinux/ocswp.png #Boot menu logo
-		cp -R "${MNT}"/clonezilla$2/live "${WORK}"/boot/clonezilla$2 #Another Debian Live-based ISO
+		cp -r "${MNT}"/clonezilla$2/live "${WORK}"/boot/clonezilla$2 #Another Debian Live-based ISO
 		cp "${MNT}"/clonezilla$2/C* "${WORK}"/boot/clonezilla$2 #PDV Clonezilla-Live-Version and COPYING files
 		cp "${MNT}"/clonezilla$2/isolinux/isolinux.cfg "${WORK}"/boot/isolinux/clonezil$2.cfg #PDV
 		umcdmount clonezilla$2
@@ -53,17 +53,23 @@ append clonezil$2.cfg
 #GNU sed syntax
 sed -i -e 's/\/live\//\/boot\/clonezilla'$2'\//g' "${WORK}"/boot/isolinux/clonezil$2.cfg #Change directory to /boot/clonezilla
 sed -i -e 's/append initrd=/append live-media-path=\/boot\/clonezilla'$2' initrd=/g' "${WORK}"/boot/isolinux/clonezil$2.cfg #Tell the kernel we moved it
-if [ -f "${TAGS}"/country ] && [ $(cat "${TAGS}"/country) == "be" ];then #PDV
-	sed -i -e 's/ocs_live_keymap=\"\"/ocs_live_keymap=\"\/usr\/share\/keymaps\/i386\/azerty\/be2-latin1.kmap.gz\"/' "${WORK}"/boot/isolinux/clonezil$2.cfg #set keymap
-	##sed -i -e 's/ocs_lang=\"\"/ocs_lang=\"en_US.UTF-8\"/' "${WORK}"/boot/isolinux/clonezil$2.cfg #english menu language
+if [ -f "${TAGS}"/country ]; then #PDV
+	if [ $(cat "${TAGS}"/country) = "be" ];then
+		sed -i -e 's/ocs_live_keymap=""/ocs_live_keymap="\/usr\/share\/keymaps\/i386\/azerty\/be2-latin1.kmap.gz"/' "${WORK}"/boot/isolinux/clonezil$2.cfg #set keymap
+	fi
+fi
+if [ -f "${TAGS}"/lang-full ]; then #PDV
+	sed -i -e 's/ocs_lang=""/ocs_lang="'$(cat "${TAGS}"/lang-full)'.UTF-8"/' "${WORK}"/boot/isolinux/clonezil$2.cfg #menu language
 fi
 ##sed -i -e 's/[[:blank:]]ip=frommedia[[:blank:]]/ /' "${WORK}"/boot/isolinux/clonezil$2.cfg #PDV get ip via dhcp
-sed -i -e '/label local/,/ENDTEXT/d' "${WORK}"/boot/isolinux/clonezil$2.cfg #PDV remove entry: Local operating system in harddrive
-if $MEMTEST; then #PDV remove memtest
+if $MEMTEST; then #PDV remove memtest if already in main menu
 	sed -i -e '/MENU BEGIN Memtest/,/MENU END/ s/MENU END//' -e '/MENU BEGIN Memtest/,/ENDTEXT/d' -e '/./,/^$/!d' "${WORK}"/boot/isolinux/clonezil$2.cfg
 	rm "${WORK}"/boot/clonezilla$2/memtest
 fi
-echo "label back
+echo "
+MENU SEPARATOR
+
+label back
 menu label Back to main menu
 com32 menu.c32
 append isolinux.cfg" >> "${WORK}"/boot/isolinux/clonezil$2.cfg

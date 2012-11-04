@@ -221,7 +221,7 @@ if $INTERACTIVE;then
 
 	dialog --inputbox "Enter the language code for the language you would like to use.\n\
 Leaving this empty will leave the choice up to the plugin (usually English.)\n\
-Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "${LANG}" 2> "${TAGS}"/lang-full
+Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "${LANGFULL}" 2> "${TAGS}"/lang-full
 
 	dialog --inputbox "Enter the code for your keyboard layout.\n
 Leaving this blank will typically default to QWERTY (US).\n\
@@ -319,11 +319,8 @@ else
 	export CDLABEL=MultiCD
 	MENUCOLOR=44
 	TEXTCOLOR=37
-#	if [ $ccTLD ];then 
-#		echo $ccTLD > "${TAGS}"/lang
-#	fi
-	if [ "$LANG" ] && [ "$LANG" != "C" ];then
-		echo "$LANG" > "${TAGS}"/lang-full
+	if [ "$LANGFULL" ] && [ "$LANGFULL" != "C" ];then
+		echo "$LANGFULL" > "${TAGS}"/lang-full
 	fi
 	if [ $COUNTRY ];then
 		echo "$COUNTRY" > "${TAGS}"/country
@@ -344,14 +341,13 @@ else
 fi
 
 for i in lang-full country;do
-	if [ -f "${TAGS}"/$i ] && [ -z $(cat "${TAGS}"/$i) ];then
-		cat "${TAGS}"/$i
+	if [ -f "${TAGS}"/$i ] && ( [ -z $(cat "${TAGS}"/$i) ] || [ $(cat "${TAGS}"/$i) = "C" ] ); then
 		rm "${TAGS}"/$i #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
 	fi
 done
-if [ -f "${TAGS}"/$i ];then
+if [ -f "${TAGS}"/lang-full ];then
 	#Get two-letter code (e.g. the first part) for plugins that only use that part of the lang code
-	head -c 2 < "${TAGS}"/lang-full > "${TAGS}"/lang
+	cut -c1-2 < "${TAGS}"/lang-full > "${TAGS}"/lang
 fi
 
 if [ -d "${WORK}" ];then
@@ -464,7 +460,7 @@ if $MEMTEST;then
 		fi
 		if [ -f memtest ] && [ "$(wc -c memtest)" != "0 memtest" ];then
 			cp memtest "${WORK}"/boot/memtest
-			echo 'v4.20' > "${TAGS}/memtestver"
+			echo 'v4.20' > memtestver
 		else
 			echo "Download of memtest failed."
 		fi
@@ -483,8 +479,8 @@ TIMEOUT 0
 PROMPT 0" > "${WORK}"/boot/isolinux/isolinux.cfg
 #Changed to use $TAGS/country instead of the old $ccTLD
 if [ -f ${TAGS}/country ];then #PDV
-	KCODE=$(cat "${TAGS}"/country)
-	echo "KBDMAP maps/${KCODE}.ktl" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	cp -r maps "${WORK}"/boot/isolinux
+	echo "KBDMAP maps/$(cat "${TAGS}"/country).ktl" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 echo "menu title $CDTITLE" >> "${WORK}"/boot/isolinux/isolinux.cfg
 #END HEADER#
@@ -568,7 +564,7 @@ fi
 #BEGIN MEMTEST ENTRY#
 if [ -f "${WORK}"/boot/memtest ];then
 echo "label memtest
-menu label ^Memtest86+ $(cat ${TAGS}/memtestver)
+menu label ^Memtest86+ $(cat memtestver)
 kernel /boot/memtest">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
 #END MEMTEST ENTRY#

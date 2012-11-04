@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Parted Magic plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2011 Isaac Schemm
+#version 20121103
+#Copyright (c) 2011-2012 Isaac Schemm and Pascal De Vuyst
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -32,32 +32,68 @@ elif [ $1 = copy ];then
 	if [ -f pmagic.iso ];then
 		echo "Copying Parted Magic..."
 		mcdmount pmagic
-		cp -r "${MNT}"/pmagic/pmagic "${WORK}"/ #kernel/initrd & modules
+		cp -r "${MNT}"/pmagic/pmagic "${WORK}"/boot/ #kernel/initrd & modules
 		if [ ! -f "${WORK}"/boot/isolinux/linux.c32 ];then
 			cp "${MNT}"/pmagic/boot/syslinux/linux.c32 "${WORK}"/boot/isolinux
 		fi
+		if [ ! -f "${WORK}"/boot/isolinux/reboot.c32 ];then #PDV
+			cp "${MNT}"/pmagic/boot/syslinux/reboot.c32 "${WORK}"/boot/isolinux
+		fi
+		cp -r "${MNT}"/pmagic/boot/* "${WORK}"/boot/pmagic #PDV Extras
+		cp "${MNT}"/pmagic/boot/syslinux/hdt* "${WORK}"/boot/pmagic #PDV add hdt
+		if [ $MEMTEST = "false" ]; then #PDV add memtest
+			cp "${MNT}"/pmagic/boot/syslinux/memtest "${WORK}"/boot/pmagic
+		fi
+		rm -r "$WORK"/boot/pmagic/syslinux #PDV remove syslinux
 		cp "${MNT}"/pmagic/boot/syslinux/syslinux.cfg "${WORK}"/boot/isolinux/pmagic.cfg
-		if [ -f "${MNT}"/pmagic/mkgriso ];then cp "${MNT}"/pmagic/mkgriso "${WORK}";fi
+		cp "${MNT}"/pmagic/boot/syslinux/*.txt "${WORK}"/boot/isolinux #PDV
+		#if [ -f "${MNT}"/pmagic/mkgriso ];then cp "${MNT}"/pmagic/mkgriso "${WORK}";fi
 		umcdmount pmagic
 	fi
 elif [ $1 = writecfg ];then
 if [ -f pmagic.iso ];then
-	if [ -f pmagic.version ] && [ "$(cat pmagic.version)" != "" ];then
-		VERSION=" $(cat pmagic.version)"
+	if [ -f "${WORK}"/boot/pmagic/pmodules/*.SQFS ];then #PDV
+		cd "${WORK}"/boot/pmagic/pmodules/
+		VERSION=" $(ls *.SQFS | sed -e 's/PMAGIC_//' -e 's/.SQFS//')"
 	else
 		VERSION=""
 	fi
 	echo "label pmagic
-	menu label ^Parted Magic$VERSION
+	menu label --> ^Parted Magic$VERSION
 	com32 menu.c32
 	append /boot/isolinux/pmagic.cfg
 	" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	#<PDV>
+	#GNU sed syntax
+	sed -i -e 's/\/boot/\/boot\/pmagic/g' -e 's/\/pmagic/\/boot\/pmagic/g' -e 's/\/boot\/boot/\/boot/g' "${WORK}"/boot/isolinux/pmagic.cfg #Change directory to /boot/pmagic
+	sed -i -e 's/\/boot\/pmagic\/syslinux/\/boot\/isolinux/g' "${WORK}"/boot/isolinux/pmagic.cfg #Change directory to /boot/isolinux
+	sed -i -e 's/APPEND \/boot\/pmagic\/bzImage/APPEND \/boot\/pmagic\/bzImage directory=\/boot/g' "${WORK}"/boot/isolinux/pmagic.cfg #SQFS moved
+	sed -i -e 's/\/boot\/isolinux\/hdt/\/boot\/pmagic\/hdt/' "${WORK}"/boot/isolinux/pmagic.cfg #Change directory to /boot/pmagic
+	if [ -f "${TAGS}"/country ];then
+		sed -i -e 's/APPEND \/boot\/pmagic\/bzImage\([[:print:]]*keymap\)/append \/boot\/pmagic\/bzImage\1/g' "${WORK}"/boot/isolinux/pmagic.cfg #don't change APPEND lines that already have keymap and language
+		if [ -f "${TAGS}"/lang-full ]; then
+			LNG=$(cat "${TAGS}"/lang-full)
+		else
+			LNG=""
+		fi
+		if [ $(cat "${TAGS}"/country) = "be" ];then
+			sed -i -e 's/APPEND \/boot\/pmagic\/bzImage/APPEND \/boot\/pmagic\/bzImage keymap=be-latin1 '$LNG'/' "${WORK}"/boot/isolinux/pmagic.cfg #set keymap and language
+		fi
+		sed -i -e 's/append \/boot\/pmagic\/bzImage\([[:print:]]*keymap\)/APPEND \/boot\/pmagic\/bzImage\1/g' "${WORK}"/boot/isolinux/pmagic.cfg #revert changes
+	fi
+	if $MEMTEST;then
+		sed -i -e '/LABEL memtest/,/^$/d' "${WORK}"/boot/isolinux/pmagic.cfg #remove memtest if already in main menu
+	else
+		sed -i -e 's/\/boot\/isolinux\/memtest/\/boot\/pmagic\/memtest/g' "${WORK}"/boot/isolinux/pmagic.cfg #Change directory to /boot/pmagic
+	fi
+	#</PDV>
+	echo "
+MENU SEPARATOR
 
-	echo "label back
-	menu label Back to main menu
-	com32 menu.c32
-	append /boot/isolinux/isolinux.cfg
-	" >> "${WORK}"/boot/isolinux/pmagic.cfg
+label back
+menu label Back to main menu
+com32 menu.c32
+append /boot/isolinux/isolinux.cfg" >> "${WORK}"/boot/isolinux/pmagic.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

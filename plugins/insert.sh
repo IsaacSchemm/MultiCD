@@ -30,7 +30,7 @@ elif [ $1 = copy ];then
 	if [ -f insert.iso ];then
 		echo "Copying INSERT..."
 		mcdmount insert
-		cp -R "${MNT}"/insert/INSERT "${WORK}"/ #Compressed filesystem
+		cp -r "${MNT}"/insert/INSERT "${WORK}"/ #Compressed filesystem
 		mkdir "${WORK}"/boot/insert
 		cp "${MNT}"/insert/isolinux/vmlinuz "${WORK}"/boot/insert/vmlinuz
 		cp "${MNT}"/insert/isolinux/miniroot.lz "${WORK}"/boot/insert/miniroot.lz

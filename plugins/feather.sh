@@ -33,7 +33,7 @@ elif [ $1 = copy ];then
 		echo "Copying Feather..."
 		mcdmount feather
 		mkdir "${WORK}"/FEATHER
-		cp -R "${MNT}"/feather/KNOPPIX/* "${WORK}"/FEATHER/ #Compressed filesystem
+		cp -r "${MNT}"/feather/KNOPPIX/* "${WORK}"/FEATHER/ #Compressed filesystem
 		mkdir "${WORK}"/boot/feather
 		cp "${MNT}"/feather/boot/isolinux/linux24 "${WORK}"/boot/feather/linux24
 		cp "${MNT}"/feather/boot/isolinux/minirt24.gz "${WORK}"/boot/feather/minirt24.gz

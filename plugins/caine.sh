@@ -30,11 +30,11 @@ elif [ $1 = copy ];then
     if [ -f caine.iso ];then
         echo "Copying Caine..."
         mcdmount caine
-        cp -R "${MNT}"/caine/casper "${WORK}"/boot/caine #Live system
+        cp -r "${MNT}"/caine/casper "${WORK}"/boot/caine #Live system
         cp "${MNT}"/caine/README.diskdefines "${WORK}"/
         mkdir "${WORK}"/CaineFiles
         for item in AutoPlay autorun.exe autorun.inf comdlg32.ocx files license.txt page5 preseed Programs RegOcx4Vista.bat rw_common tabctl32.ocx vbrun60.exe WinTaylor.exe; do
-            [[ -a "${MNT}"/caine/$item ]] && cp -R "${MNT}"/caine/$item "${WORK}"/CaineFiles
+            [[ -a "${MNT}"/caine/$item ]] && cp -r "${MNT}"/caine/$item "${WORK}"/CaineFiles
         done
         umcdmount caine
     fi

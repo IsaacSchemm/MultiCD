@@ -32,7 +32,7 @@ elif [ $1 = copy ];then
 	if [ -f gparted.iso ];then
 		echo "Copying GParted Live..."
 		mcdmount gparted
-		cp -R "${MNT}"/gparted/live "${WORK}"/boot/gparted #Compressed filesystem and kernel/initrd
+		cp -r "${MNT}"/gparted/live "${WORK}"/boot/gparted #Compressed filesystem and kernel/initrd
 		rm "${WORK}"/boot/gparted/memtest || true #Remember how we needed to do this with Debian Live? They use the same framework
 		umcdmount gparted
 	fi

@@ -36,7 +36,7 @@ elif [ $1 = copy ];then
 		cp "${MNT}"/drweb/boot/vmlinuz "${WORK}"/boot/drweb/
 		cp "${MNT}"/drweb/boot/initrd "${WORK}"/boot/drweb/
 		cp "${MNT}"/drweb/boot/config "${WORK}"/boot
-		cp -R "${MNT}"/drweb/boot/module "${WORK}"/boot
+		cp -r "${MNT}"/drweb/boot/module "${WORK}"/boot
 		cp "${MNT}"/drweb/boot/DrWebLiveCD-* "${WORK}"/boot/drweb/
 		umcdmount drweb
 	fi
