@@ -32,9 +32,9 @@ elif [ $1 = copy ];then
 	if [ -f ntpasswd.iso ];then
 		mcdmount ntpasswd
 		mkdir "${WORK}"/boot/ntpasswd
-		cp "${MNT}"/ntpasswd/vmlinuz "${WORK}"/boot/ntpasswd/vmlinuz
-		cp "${MNT}"/ntpasswd/initrd.cgz "${WORK}"/boot/ntpasswd/initrd.cgz
-		cp "${MNT}"/ntpasswd/scsi.cgz "${WORK}"/boot/ntpasswd/scsi.cgz #Alternate initrd
+		cp "${MNT}"/ntpasswd/vmlinuz "${WORK}"/boot/ntpasswd/vmlinuz || cp "${MNT}"/ntpasswd/VMLINUZ "${WORK}"/boot/ntpasswd/vmlinuz
+		cp "${MNT}"/ntpasswd/initrd.cgz "${WORK}"/boot/ntpasswd/initrd.cgz || cp "${MNT}"/ntpasswd/INITRD.CGZ "${WORK}"/boot/ntpasswd/initrd.cgz
+		cp "${MNT}"/ntpasswd/scsi.cgz "${WORK}"/boot/ntpasswd/scsi.cgz || cp "${MNT}"/ntpasswd/scsi.cgz "${WORK}"/boot/ntpasswd/SCSI.CGZ #Alternate initrd
 		umcdmount ntpasswd
 	fi
 elif [ $1 = writecfg ];then
