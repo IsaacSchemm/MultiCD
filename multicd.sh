@@ -331,7 +331,8 @@ else
 	touch "${TAGS}"/9xextras
 	for i in puppies debians;do
 		if [ $(find "${TAGS}"/$i -maxdepth 1 -type f|wc -l) -ge 1 ] && which dialog &> /dev/null;then #Greater or equal to 1 puppy installed
-			touch $(find "${TAGS}"/$i -maxdepth 1 -type f|head -n 1).inroot #This way, the first one alphabetically will be in the root dir
+			FILE=$(find "${TAGS}"/$i -maxdepth 1 -type f|head -n 1)
+			touch "$FILE.inroot" #This way, the first one alphabetically will be in the root dir
 		fi
 	done
 	for i in $(find "${TAGS}" -maxdepth 1 -name \*.needsname);do
@@ -363,9 +364,10 @@ fi
 mkdir -p "${WORK}"/boot/isolinux
 
 #START COPY
+echo "Copying files for each plugin...";
 for i in "${MCDDIR}"/plugins/*.sh;do
-	[ ! -x $i ]&&chmod +x $i
-	$i copy
+	[ ! -x "$i" ]&&chmod +x "$i"
+	"$i" copy
 done
 #END COPY
 
@@ -418,21 +420,9 @@ if [ -f syslinux.tar.gz ];then
 	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 "${WORK}"/boot/isolinux/
 	cp /tmp/syslinux-*/com32/modules/chain.c32 "${WORK}"/boot/isolinux/
 	cp /tmp/syslinux-*/utils/isohybrid "${TAGS}"/isohybrid
-	chmod -R +w $WORK/boot/isolinux
+	chmod -R +w "$WORK/boot/isolinux"
 	chmod +x "${TAGS}"/isohybrid
 	rm -r /tmp/syslinux-*/
-#elif [ -d /usr/lib/syslinux ];then
-#	if [ -f /usr/bin/isohybrid ];then
-#		echo "Copying from installed SYSLINUX files..."
-#		cp /usr/lib/syslinux/isolinux.bin "${WORK}"/boot/isolinux/
-#		cp /usr/lib/syslinux/memdisk "${WORK}"/boot/isolinux/
-#		cp /usr/lib/syslinux/menu.c32 "${WORK}"/boot/isolinux/
-#		cp /usr/lib/syslinux/vesamenu.c32 "${WORK}"/boot/isolinux/
-#		cp /usr/lib/syslinux/chain.c32 "${WORK}"/boot/isolinux/
-#		cp /usr/bin/isohybrid "${TAGS}"
-#	else
-#		echo "The installed SYSLINUX version does not include isohybrid. It might be out of date."
-#	fi
 fi
 if [ ! -f "${WORK}"/boot/isolinux/isolinux.bin ];then
 	echo "Downloading SYSLINUX..."
