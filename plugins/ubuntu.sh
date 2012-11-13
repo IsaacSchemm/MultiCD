@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Ubuntu plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2011 Isaac Schemm
+#version 20121113
+#Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,7 @@ getUbuntuName () {
 	if [ -f "${TAGS}"/$BASENAME.name ] && [ "$(cat "${TAGS}"/$BASENAME.name)" != "" ];then
 		UBUNAME=$(cat "${TAGS}"/$BASENAME.name)
 	elif [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
-		UBUNAME="$(cat $BASENAME.defaultname) ${VERSION}"
+		UBUNAME="$(cat $BASENAME.defaultname)"
 	else
 		UBUNAME="$(echo $BASENAME|sed -e 's/\.ubuntu//g') ${VERSION}"
 	fi
