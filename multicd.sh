@@ -289,18 +289,20 @@ Examples: fr (AZERTY France), fr_CH (QWERTZ Switzerland)" 12 50 "${COUNTRY}" 2> 
 		rm debianschooser debiansresult
 	elif [ $(find "${TAGS}"/debians -maxdepth 1 -type f|wc -l) -eq 1 ];then
 		NAME=$(ls "${TAGS}"/debians)
-		true>$(find "${TAGS}"/debians -maxdepth 1 -type f).inroot
+		TAG_TO_TOUCH=$(find "${TAGS}"/debians -maxdepth 1 -type f).inroot
+		true>"$TAG_TO_TOUCH"
 	fi
 	if which dialog &> /dev/null;then
-		for i in $(find "${TAGS}" -maxdepth 1 -name \*.needsname);do
-			BASENAME=$(basename $i|sed -e 's/\.needsname//g')
+		find "${TAGS}" -maxdepth 1 -name \*.needsname|while read i;do
+			BASENAME=$(basename "$i"|sed -e 's/\.needsname//g')
 			if [ -f $BASENAME.defaultname ];then
 				DEFUALTTEXT=$(cat $BASENAME.defaultname)
 			else
 				DEFAULTTEXT=""
 			fi
+			NAME_FILE=$(echo $i|sed -e 's/needsname/name/g')
 			dialog --inputbox "What would you like $BASENAME to be called on the CD boot menu?\n(Leave blank for the default.)" 10 70 \
-			2> $(echo $i|sed -e 's/needsname/name/g')
+			2> "$NAME_FILE"
 			if [ "$(cat "${TAGS}"/$BASENAME.name)" = "" ] && [ -f $BASENAME.defaultname ];then
 				cp $BASENAME.defaultname "${TAGS}"/$BASENAME.name
 			fi
