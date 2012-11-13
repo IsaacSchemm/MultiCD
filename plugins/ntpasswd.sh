@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #NT Password Editor plugin for multicd.sh
-#version 7.1
+#version 20121113
 #Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,9 +32,9 @@ elif [ $1 = copy ];then
 	if [ -f ntpasswd.iso ];then
 		mcdmount ntpasswd
 		mkdir "${WORK}"/boot/ntpasswd
-		cp "${MNT}"/ntpasswd/vmlinuz "${WORK}"/boot/ntpasswd/vmlinuz || cp "${MNT}"/ntpasswd/VMLINUZ "${WORK}"/boot/ntpasswd/vmlinuz
-		cp "${MNT}"/ntpasswd/initrd.cgz "${WORK}"/boot/ntpasswd/initrd.cgz || cp "${MNT}"/ntpasswd/INITRD.CGZ "${WORK}"/boot/ntpasswd/initrd.cgz
-		cp "${MNT}"/ntpasswd/scsi.cgz "${WORK}"/boot/ntpasswd/scsi.cgz || cp "${MNT}"/ntpasswd/scsi.cgz "${WORK}"/boot/ntpasswd/SCSI.CGZ #Alternate initrd
+		cp "${MNT}"/ntpasswd/[Vv][Mm][Ll][Ii][Nn][Uu][Zz] "${WORK}"/boot/ntpasswd/vmlinuz
+		cp "${MNT}"/ntpasswd/[Ii][Nn][Ii][Tt][Rr][Dd].[Cc][Gg][Zz] "${WORK}"/boot/ntpasswd/initrd.cgz
+		cp "${MNT}"/ntpasswd/[Ss][Cc][Ss][Ii].[Cc][Gg][Zz] "${WORK}"/boot/ntpasswd/scsi.cgz #Alternate initrd
 		umcdmount ntpasswd
 	fi
 elif [ $1 = writecfg ];then
