@@ -480,7 +480,7 @@ echo "DEFAULT menu.c32
 TIMEOUT 0
 PROMPT 0" > "${WORK}"/boot/isolinux/isolinux.cfg
 #Changed to use $TAGS/country instead of the old $ccTLD
-if [ -f ${TAGS}/country ];then #PDV
+if [ -f "${TAGS}/country" ];then #PDV
 	cp -r maps "${WORK}"/boot/isolinux
 	echo "KBDMAP maps/$(cat "${TAGS}"/country).ktl" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi

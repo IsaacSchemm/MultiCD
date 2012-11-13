@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 . "${MCDDIR}"/functions.sh
-#Debian install CD/DVD plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2010 Isaac Schemm
+#Ubuntu alternate install CD plugin for multicd.sh
+#version 20121113
+#Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +26,14 @@ if [ $1 = links ];then
 	#Only one will be included, because only one can be used.
 	echo "ubuntu-*-alternate-i386.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(32-bit)"
 	echo "ubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(64-bit)"
-	echo "kubuntu-*-alternate-i386.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(32-bit)"
-	echo "kubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(64-bit)"
-	echo "xubuntu-*-alternate-i386.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(32-bit)"
-	echo "xubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(64-bit)"
-	echo "lubuntu-*-alternate-i386.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(32-bit)"
-	echo "lubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Ubuntu_alternate_installer_(64-bit)"
+	echo "kubuntu-*-alternate-i386.iso ubuntu-alternate.iso Kubuntu_alternate_installer_(32-bit)"
+	echo "kubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Kubuntu_alternate_installer_(64-bit)"
+	echo "xubuntu-*-alternate-i386.iso ubuntu-alternate.iso Xubuntu_alternate_installer_(32-bit)"
+	echo "xubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Xubuntu_alternate_installer_(64-bit)"
+	echo "lubuntu-*-alternate-i386.iso ubuntu-alternate.iso Lubuntu_alternate_installer_(32-bit)"
+	echo "lubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Lubuntu_alternate_installer_(64-bit)"
+	echo "ubuntu-*-server-i386.iso ubuntu-alternate.iso Ubuntu_server_(32-bit)"
+	echo "ubuntu-*-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
 elif [ $1 = scan ];then
 	if [ -f ubuntu-alternate.iso ];then
 		echo "Ubuntu alternate installer"
@@ -44,7 +46,7 @@ elif [ $1 = copy ];then
 		else
 			echo "Copying Ubuntu alternate installer..."
 			mcdmount ubuntu-alternate
-			cp "${MNT}"/ubuntu-alternate/cdromupgrade "${WORK}" || true #Not essential
+			cp "${MNT}"/ubuntu-alternate/cdromupgrade "${WORK}" 2>&1 || true #Not essential
 			cp -r "${MNT}"/ubuntu-alternate/.disk "${WORK}"
 			cp -r "${MNT}"/ubuntu-alternate/dists "${WORK}"
 			cp -r "${MNT}"/ubuntu-alternate/doc "${WORK}" || true
@@ -53,7 +55,9 @@ elif [ $1 = copy ];then
 			cp -r "${MNT}"/ubuntu-alternate/preseed "${WORK}"
 			cp -r "${MNT}"/ubuntu-alternate/README.diskdefines "${WORK}"
 			#cp -r "${MNT}"/ubuntu-alternate/ubuntu "${WORK}"
-			ln -s . "${MNT}"/ubuntu-alternate/ubuntu
+			if [ ! -e "${MNT}"/ubuntu-alternate/ubuntu ];then
+				ln -s . "${MNT}"/ubuntu-alternate/ubuntu
+			fi
 			umcdmount ubuntu-alternate
 		fi
 	fi

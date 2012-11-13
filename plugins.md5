@@ -78,7 +78,7 @@ d31a81e94254f9de5e09825ab1917f9a  plugins/tc+nb.sh
 8a2d16f9ccc58a8d0a19e8634d868480  plugins/tinyme.sh
 620da4d35a21f5bf17ede321c9d51425  plugins/trk.sh
 aab2009853c309639d4e50287024c4c7  plugins/ubcd.sh
-a08d2c2e3d6222ec029a304c221116ed  plugins/ubuntu-alternate.sh
+ae8b5df525d29954cfc33d4580f844c3  plugins/ubuntu-alternate.sh
 8ed598bee014c7377daace9b8466a2b3  plugins/ubuntu-mini.sh
 0b75d3e5080d09cb2c970dde7294e38e  plugins/ubuntu.sh
 55bf4d66cf867bc9090b0dcbb3c648f0  plugins/vyatta.sh
