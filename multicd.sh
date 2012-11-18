@@ -221,7 +221,7 @@ if $INTERACTIVE;then
 
 	dialog --inputbox "Enter the language code for the language you would like to use.\n\
 Leaving this empty will leave the choice up to the plugin (usually English.)\n\
-Examples: fr_CA = Francais (Canada); es_ES = Espanol (Espana)" 12 50 "${LANGFULL}" 2> "${TAGS}"/lang-full
+Examples: fr_FR = Francais (France); es_ES = Espanol (Espana)" 12 50 "${LANGFULL}" 2> "${TAGS}"/lang-full
 
 	dialog --inputbox "Enter the code for your keyboard layout.\n
 Leaving this blank will typically default to QWERTY (US).\n\
