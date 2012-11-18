@@ -4,3 +4,6 @@
 # [filename].iso    [filename].generic.iso    Default_name_on_menu
 
 hdclone.iso hdclone.generic.iso HDClone
+
+#For backwards compatibility with the old win7recovery-ram.sh plugin (now removed):
+win7recovery-ram.iso win7recovery.generic.iso Windows_^7_Recovery_Disc_(load_ISO_to_RAM)
