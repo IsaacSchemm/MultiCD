@@ -1,0 +1,6 @@
+# This is a list of ISOs supported by SYSLINUX ISO emulation.
+# ISOs listed in this file will be detected by the generic.sh plugin.
+# Format:
+# [filename].iso    [filename].generic.iso    Default_name_on_menu
+
+hdclone.iso hdclone.generic.iso HDClone

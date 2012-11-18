@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Generic ISO emulation plugin for multicd.sh
-#version 20120421
+#version 20121117
 #Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,22 +31,40 @@ genericExists () {
 	fi
 }
 
-if [ $1 = scan ];then
+getGenericName () {
+	BASENAME=$(echo $i|sed -e 's/\.iso//g')
+	#get name
+	if [ -f "${TAGS}"/$BASENAME.name ] && [ "$(cat "${TAGS}"/$BASENAME.name)" != "" ];then
+		ISONAME=$(cat "${TAGS}"/$BASENAME.name)
+	elif [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
+		ISONAME="$(cat $BASENAME.defaultname)"
+	else
+		ISONAME="$(echo $BASENAME|sed -e 's/\.generic//g')"
+	fi
+	#return
+	echo ${ISONAME}
+}
+
+if [ $1 = links ];then
+	if [ -f generic.lst ];then
+		cat generic.lst | sed -e '/^#/d' -e '/^$/d'
+	fi
+elif [ $1 = scan ];then
 	if $(genericExists);then for i in *.generic.iso;do
-		echo "Generic: $i"
+		getGenericName
+		echo > "${TAGS}"/$(echo $i|sed -e 's/\.iso/\.needsname/g') #Comment out this line and multicd.sh won't ask for a custom name for this ISO
 	done;fi
 elif [ $1 = copy ];then
 	if $(genericExists);then for i in *.generic.iso;do
-		echo "Copying $i..."
+		echo "Copying $(getGenericName)..."
 		mkdir -p "${WORK}"/generic
 		cp "$i" "${WORK}"/generic
 	done;fi
 elif [ $1 = writecfg ];then
 	COUNTER=0
 	if $(genericExists);then for i in *.generic.iso;do
-		BASENAME=$(echo $i|sed -e 's/\.generic\.iso//g')
 		echo "label generic-$COUNTER
-		menu label ^$BASENAME
+		menu label ^$(getGenericName)
 		kernel memdisk
 		append iso
 		initrd /generic/$i
