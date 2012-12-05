@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Finnix plugin for multicd.sh
-#version 7.0
-#Copyright (c) 2011 Rorschach, Isaac Schemm
+#version 20121204
+#Copyright (c) 2012 Isaac Schemm, Rorschach
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -34,12 +34,12 @@ elif [ $1 = copy ];then
 		cp -r "${MNT}"/finnix/finnix "${WORK}"/
 		# Copies kernel, and initramdisk
 		mkdir "${WORK}"/boot/finnix
-		cp "${MNT}"/finnix/isolinux/linux "${WORK}"/boot/finnix/
-		cp "${MNT}"/finnix/isolinux/linux64 "${WORK}"/boot/finnix/
-		cp "${MNT}"/finnix/isolinux/initrd.xz "${WORK}"/boot/finnix/
+		cp "${MNT}"/finnix/boot/x86/linux "${WORK}"/boot/finnix/
+		cp "${MNT}"/finnix/boot/x86/linux64 "${WORK}"/boot/finnix/
+		cp "${MNT}"/finnix/boot/x86/initrd.xz "${WORK}"/boot/finnix/
 		# Copies memdisk and Smart Boot Manager
-		cp "${MNT}"/finnix/isolinux/memdisk "${WORK}"/boot/finnix/
-		cp "${MNT}"/finnix/isolinux/sbm.imz "${WORK}"/boot/finnix/
+		cp "${MNT}"/finnix/boot/x86/memdisk "${WORK}"/boot/finnix/
+		cp "${MNT}"/finnix/boot/x86/sbm.imz "${WORK}"/boot/finnix/
 		umcdmount finnix
 	fi
 elif [ $1 = writecfg ];then
