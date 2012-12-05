@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #GRML32 Full plugin for multicd.sh
-#version 20120704
+#version 20121204
 #Copyright (c) 2012 Isaac Schemm, etc.
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -55,7 +55,7 @@ if [ -f grml.iso ];then
 	sed -i".bak" '/menu end/ i\label back\n   menu label Back to main menu...\n   com32 menu.c32\n'  "${WORK}"/boot/grml/grml.cfg #insert back to main menu
 
 	sed -i -e 's^boot=live live-media-path=/live/grml32-full/^boot=live live-media-path=/grml/grml32-full/ ignore_bootid^g' "${WORK}"/boot/grml/grml.cfg
-	sed -i -e 's^/boot/grml32full/^/boot/grml/^g' "${WORK}"/boot/grml64/grml.cfg
+	sed -i -e 's^/boot/grml32full/^/boot/grml/^g' "${WORK}"/boot/grml/grml.cfg
 
 	if [ -f "${WORK}"/boot/grml/grml.cfg.bak ];then
 		rm "${WORK}"/boot/grml/grml.cfg.bak #bak file from sed not needed
