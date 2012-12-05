@@ -5,8 +5,8 @@ set -e
 export MCDDIR="."
 . "${MCDDIR}"/functions.sh
 
-MCDVERSION="7.1"
-#multicd.sh 7.1
+MCDVERSION="20121204"
+#multicd.sh Dec. 4, 2012
 #Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,7 +28,7 @@ MCDVERSION="7.1"
 #THE SOFTWARE.
 
 #Needs to be changed when a new version of syslinux comes out.
-RECENT_SYSLINUX="4.05"
+RECENT_SYSLINUX="4.06"
 
 mcdclean() {
 	for i in *;do
