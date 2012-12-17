@@ -5,8 +5,8 @@ set -e
 export MCDDIR="."
 . "${MCDDIR}"/functions.sh
 
-MCDVERSION="20121204"
-#multicd.sh Dec. 4, 2012
+MCDVERSION="20121217"
+#multicd.sh Dec. 17, 2012
 #Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -416,7 +416,7 @@ if [ -f syslinux.tar.gz ];then
 	cp /tmp/syslinux-*/memdisk/memdisk "${WORK}"/boot/isolinux/
 	cp /tmp/syslinux-*/com32/menu/menu.c32 "${WORK}"/boot/isolinux/
 	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 "${WORK}"/boot/isolinux/
-	cp /tmp/syslinux-*/com32/modules/chain.c32 "${WORK}"/boot/isolinux/
+	cp /tmp/syslinux-*/com32/chain/chain.c32 "${WORK}"/boot/isolinux/
 	cp /tmp/syslinux-*/utils/isohybrid "${TAGS}"/isohybrid
 	chmod -R +w "$WORK/boot/isolinux"
 	chmod +x "${TAGS}"/isohybrid
