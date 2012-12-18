@@ -37,15 +37,17 @@ elif [ $1 = copy ];then
 	fi
 elif [ $1 = writecfg ];then
 if [ -f debian-mini.iso ];then
-echo "LABEL dinstall
-menu label ^Install Debian
+DEBNAME="Debian GNU/Linux mini netinst (i386)"
+echo "menu begin -->^DEBNAME
+
+label ^Install Debian
 	kernel /boot/debian/linux
 	append vga=normal initrd=/boot/debian/initrd.gz -- quiet 
-LABEL dexpert
-menu label Install Debian - expert mode
+label Install Debian - expert mode
 	kernel /boot/debian/linux
 	append priority=low vga=normal initrd=/boot/debian/initrd.gz -- 
-" >> "${WORK}"/boot/isolinux/isolinux.cfg
+
+menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
