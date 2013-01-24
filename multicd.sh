@@ -409,20 +409,7 @@ if [ -f syslinux-4.03.tar.gz ] && [ ! -f syslinux.tar.gz ];then
 	ln -s syslinux-4.03.tar.gz syslinux.tar.gz #Link newest version
 fi
 
-if [ -f syslinux.tar.gz ];then
-	echo "Unpacking and copying SYSLINUX files..."
-	tar -C /tmp -xzf syslinux.tar.gz
-	cp /tmp/syslinux-*/core/isolinux.bin "${WORK}"/boot/isolinux/
-	cp /tmp/syslinux-*/memdisk/memdisk "${WORK}"/boot/isolinux/
-	cp /tmp/syslinux-*/com32/menu/menu.c32 "${WORK}"/boot/isolinux/
-	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 "${WORK}"/boot/isolinux/
-	cp /tmp/syslinux-*/com32/chain/chain.c32 "${WORK}"/boot/isolinux/
-	cp /tmp/syslinux-*/utils/isohybrid "${TAGS}"/isohybrid
-	chmod -R +w "$WORK/boot/isolinux"
-	chmod +x "${TAGS}"/isohybrid
-	rm -r /tmp/syslinux-*/
-fi
-if [ ! -f "${WORK}"/boot/isolinux/isolinux.bin ];then
+if [ ! -f syslinux.tar.gz ];then
 	echo "Downloading SYSLINUX..."
 	if $VERBOSE ;then #These will only be run if there is no syslinux.tar.gz
 		#Both of these need to be changed when a new version of syslinux comes out.
@@ -438,17 +425,18 @@ if [ ! -f "${WORK}"/boot/isolinux/isolinux.bin ];then
 			false #quits script
 		fi
 	fi
-	echo "Unpacking and copying files..."
-	tar -C /tmp -xzf syslinux.tar.gz
-	cp /tmp/syslinux-*/core/isolinux.bin "${WORK}"/boot/isolinux/
-	cp /tmp/syslinux-*/memdisk/memdisk "${WORK}"/boot/isolinux/
-	cp /tmp/syslinux-*/com32/menu/menu.c32 "${WORK}"/boot/isolinux/
-	cp /tmp/syslinux-*/com32/menu/vesamenu.c32 "${WORK}"/boot/isolinux/
-	cp /tmp/syslinux-*/com32/modules/chain.c32 "${WORK}"/boot/isolinux/
-	cp /tmp/syslinux-*/utils/isohybrid "${TAGS}"/isohybrid
-	chmod +x "${TAGS}"/isohybrid
-	rm -r /tmp/syslinux-*/
 fi
+echo "Unpacking and copying SYSLINUX files..."
+tar -C /tmp -xzf syslinux.tar.gz
+cp /tmp/syslinux-*/core/isolinux.bin "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/memdisk/memdisk "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/com32/menu/menu.c32 "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/com32/menu/vesamenu.c32 "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/com32/chain/chain.c32 "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/utils/isohybrid "${TAGS}"/isohybrid
+chmod -R +w "$WORK/boot/isolinux"
+chmod +x "${TAGS}"/isohybrid
+rm -r /tmp/syslinux-*/
 
 if $MEMTEST;then
 	if [ -f memtest ] && [ "$(wc -c memtest)" != "0" ];then

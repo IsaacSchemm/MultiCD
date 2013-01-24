@@ -18,7 +18,7 @@ mcdmount () {
 	elif [ $EXTRACTOR = mount ];then
 		mount -o loop,ro $1.iso "${MNT}"/$1/
 	elif [ $EXTRACTOR = fuseiso ];then
-		fuseiso $1.iso $MNT/$1 -orw,umask=0000
+		fuseiso $1.iso "${MNT}"/$1 -orw,umask=0000
 	else
 		echo "mcdmount function: \$EXTRACTOR not defined! (this is a bug in multicd.sh)"
 		exit 1
@@ -28,7 +28,7 @@ umcdmount () {
 	if [ $EXTRACTOR = mount ];then
 		umount "${MNT}"/$1;rmdir "${MNT}"/$1
 	elif [ $EXTRACTOR = fuseiso ];then
-		fusermount -u $MNT/$1; rmdir $MNT/$1
+		fusermount -u "${MNT}"/$1; rmdir "${MNT}"/$1
 	else
 		rm -r "${MNT}"/$1
 	fi
