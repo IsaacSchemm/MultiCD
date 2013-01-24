@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Parted Magic plugin for multicd.sh
-#version 20121103
-#Copyright (c) 2011-2012 Isaac Schemm and Pascal De Vuyst
+#version 20130129
+#Copyright (c) 2011-2013 Isaac Schemm and Pascal De Vuyst
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -67,7 +67,9 @@ if [ -f pmagic.iso ];then
 	#GNU sed syntax
 	sed -i -e 's/\/boot/\/boot\/pmagic/g' -e 's/\/pmagic/\/boot\/pmagic/g' -e 's/\/boot\/boot/\/boot/g' "${WORK}"/boot/isolinux/pmagic.cfg #Change directory to /boot/pmagic
 	sed -i -e 's/\/boot\/pmagic\/syslinux/\/boot\/isolinux/g' "${WORK}"/boot/isolinux/pmagic.cfg #Change directory to /boot/isolinux
-	sed -i -e 's/APPEND \/boot\/pmagic\/bzImage/APPEND \/boot\/pmagic\/bzImage directory=\/boot/g' "${WORK}"/boot/isolinux/pmagic.cfg #SQFS moved
+ 	# hier muss noch das 64bit Image berücksichtigt werden
+ 	sed -i -e 's/APPEND \/boot\/pmagic\/bzImage64 /APPEND \/boot\/pmagic\/bzImage64 directory=\/boot /g' "${WORK}"/boot/isolinux/pmagic.cfg
+ 	sed -i -e 's/APPEND \/boot\/pmagic\/bzImage /APPEND \/boot\/pmagic\/bzImage directory=\/boot /g' "${WORK}"/boot/isolinux/pmagic.cfg
 	sed -i -e 's/\/boot\/isolinux\/hdt/\/boot\/pmagic\/hdt/' "${WORK}"/boot/isolinux/pmagic.cfg #Change directory to /boot/pmagic
 	if [ -f "${TAGS}"/country ];then
 		sed -i -e 's/APPEND \/boot\/pmagic\/bzImage\([[:print:]]*keymap\)/append \/boot\/pmagic\/bzImage\1/g' "${WORK}"/boot/isolinux/pmagic.cfg #don't change APPEND lines that already have keymap and language
