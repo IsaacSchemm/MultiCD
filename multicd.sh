@@ -5,9 +5,9 @@ set -e
 export MCDDIR="."
 . "${MCDDIR}"/functions.sh
 
-MCDVERSION="20121217"
-#multicd.sh Dec. 17, 2012
-#Copyright (c) 2012 Isaac Schemm
+MCDVERSION="20130127"
+#multicd.sh Jan. 27, 2013
+#Copyright (c) 2013 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -120,13 +120,13 @@ if [ $(whoami) = root ] && uname|grep -q Linux;then
 	export EXTRACTOR=mount #When possible, loop-mount is preferred because it is faster (files are copied once, not twice, before the ISO is generated) and because it runs without an X server. However, it is only available to root, which opens up security risks.
 elif which fuseiso &> /dev/null; then
 	export EXTRACTOR=fuseiso
-elif which file-roller &> /dev/null;then
-	export EXTRACTOR=file-roller #file-roller is a GNOME application
 elif which ark &> /dev/null;then
 	export EXTRACTOR=ark #Ark is a KDE application
+elif which file-roller &> /dev/null;then
+	export EXTRACTOR=file-roller #file-roller is a GNOME application
 else
 	if !(uname|grep -q Linux);then
-		echo "Unless file-roller or ark is installed to extract ISOs, only Linux kernels are supported (due to the use of \"-o loop\")."
+		echo "Unless fuseiso, file-roller or ark is installed to extract ISOs, only Linux kernels are supported (due to the use of \"-o loop\")."
 		exit 1
 	elif [ $(whoami) != "root" ];then
 		echo "Unless file-roller or ark is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
@@ -189,6 +189,14 @@ if [ -f grub.exe ];then
 fi
 if $MEMTEST;then
 	echo "Memtest86+"
+fi
+
+if [ $EXTRACTOR == file-roller ];then
+	FRVER=$(file-roller --version 2>/dev/null|awk '{print $2}'|head -c 3)
+	if [ $(echo "${FRVER}<3.5"|bc) == 0 ];then
+		echo
+		echo "WARNING: versions of file-roller newer than 3.4.xx may not successfully extract ISOs! Installing fuseiso is recommended." 1>&2
+	fi
 fi
 
 echo
