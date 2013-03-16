@@ -27,10 +27,10 @@ if [ $1 = scan ];then
 		echo "OPH Crack XP"
 	fi
 	if [ ! -f ophxp.iso ] && [ -f ophvista.iso ];then
-		echo "OPH Crack Vista"
+		echo "OPH Crack Vista/7"
 	fi
 	if [ -f ophxp.iso ] && [ -f ophvista.iso ];then
-		echo "OPH Crack XP/Vista"
+		echo "OPH Crack XP/Vista/7"
 	fi
 elif [ $1 = copy ];then
 	if [ -f ophxp.iso ];then
@@ -39,24 +39,24 @@ elif [ $1 = copy ];then
 		mkdir "${WORK}"/boot/ophcrack/
 		cp -r "${MNT}"/ophxp/tables "${WORK}"/tables
 		cp "${MNT}"/ophxp/boot/bzImage "${WORK}"/boot/ophcrack/bzImage
-		cp "${MNT}"/ophxp/boot/ophcrack.cfg "${WORK}"/boot/ophcrack/ophcrack.cfg
-		cp "${MNT}"/ophxp/boot/splash.png "${WORK}"/boot/ophcrack/splash.png
+		cp "${MNT}"/ophxp/boot/isolinux/ophcrack.cfg "${WORK}"/boot/ophcrack/ophcrack.cfg
+		cp "${MNT}"/ophxp/boot/isolinux/splash.png "${WORK}"/boot/ophcrack/splash.png
 		cp "${MNT}"/ophxp/boot/rootfs.gz "${WORK}"/boot/ophcrack/rootfs.gz
 		umcdmount ophxp
 	fi
 	if [ -f ophvista.iso ] && [ ! -f ophxp.iso ];then
-		echo "Copying OPH Crack Vista..."
+		echo "Copying OPH Crack Vista/7..."
 		mcdmount ophvista
 		mkdir "${WORK}"/boot/ophcrack/
 		cp -r "${MNT}"/ophvista/tables "${WORK}"/tables
 		cp "${MNT}"/ophvista/boot/bzImage "${WORK}"/boot/ophcrack/bzImage
-		cp "${MNT}"/ophvista/boot/ophcrack.cfg "${WORK}"/boot/ophcrack/ophcrack.cfg
-		cp "${MNT}"/ophvista/boot/splash.png "${WORK}"/boot/ophcrack/splash.png
+		cp "${MNT}"/ophvista/boot/isolinux/ophcrack.cfg "${WORK}"/boot/ophcrack/ophcrack.cfg
+		cp "${MNT}"/ophvista/boot/isolinux/splash.png "${WORK}"/boot/ophcrack/splash.png
 		cp "${MNT}"/ophvista/boot/rootfs.gz "${WORK}"/boot/ophcrack/rootfs.gz
 		umcdmount ophvista
 	fi
 	if [ -f ophvista.iso ] && [ -f ophxp.iso ];then
-		echo "Getting OPH Crack Vista tables..."
+		echo "Getting OPH Crack Vista/7 tables..."
 		mcdmount ophvista
 		cp -r "${MNT}"/ophvista/tables "${WORK}"
 		umcdmount ophvista
@@ -67,10 +67,10 @@ elif [ $1 = writecfg ];then
 		name="XP"
 	fi
 	if [ ! -f ophxp.iso ] && [ -f ophvista.iso ];then
-		name="Vista"
+		name="Vista/7"
 	fi
 	if [ -f ophxp.iso ] && [ -f ophvista.iso ];then
-		name="XP/Vista"
+		name="XP/Vista/7"
 	fi
 
 	if [ -f ophxp.iso ] || [ -f ophvista.iso ];then
