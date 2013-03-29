@@ -23,27 +23,27 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = scan ];then
-	if [ -f debian-mini.iso ];then
-		echo "Debian netboot installer"
+	if [ -f debian-mini64.iso ];then
+		echo "Debian netboot installer (amd64)"
 	fi
 elif [ $1 = copy ];then
-	if [ -f debian-mini.iso ];then
-		echo "Copying Debian netboot installer..."
-		mcdmount debian-mini
+	if [ -f debian-mini64.iso ];then
+		echo "Copying Debian netboot installer (amd64)..."
+		mcdmount debian-mini64
 		mkdir "${WORK}"/boot/debian
-		cp "${MNT}"/debian-mini/linux "${WORK}"/boot/debian/linux
-		cp "${MNT}"/debian-mini/initrd.gz "${WORK}"/boot/debian/initrd.gz
-		umcdmount debian-mini
+		cp "${MNT}"/debian-mini64/linux "${WORK}"/boot/debian/linux
+		cp "${MNT}"/debian-mini64/initrd.gz "${WORK}"/boot/debian/initrd.gz
+		umcdmount debian-mini64
 	fi
 elif [ $1 = writecfg ];then
-if [ -f debian-mini.iso ];then
-DEBNAME="Debian GNU/Linux mini netinst (i386)"
-echo "menu begin -->^DEBNAME
+if [ -f debian-mini64.iso ];then
+DEBNAME="Debian GNU/Linux mini netinst (amd64)"
+echo "menu begin -->^$DEBNAME
 
 label ^Install Debian
 	kernel /boot/debian/linux
 	append vga=normal initrd=/boot/debian/initrd.gz -- quiet 
-label Install Debian - expert mode
+label ^Install Debian - expert mode
 	kernel /boot/debian/linux
 	append priority=low vga=normal initrd=/boot/debian/initrd.gz -- 
 
