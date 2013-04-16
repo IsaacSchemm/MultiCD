@@ -131,7 +131,7 @@ else
 		echo "Unless fuseiso, file-roller or ark is installed to extract ISOs, only Linux kernels are supported (due to the use of \"-o loop\")."
 		exit 1
 	elif [ $(whoami) != "root" ];then
-		echo "Unless file-roller or ark is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
+		echo "Unless file-roller, ark or 7z is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
 		exit 1
 	fi
 fi
