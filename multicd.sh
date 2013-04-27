@@ -120,6 +120,8 @@ if [ $(whoami) = root ] && uname|grep -q Linux;then
 	export EXTRACTOR=mount #When possible, loop-mount is preferred because it is faster (files are copied once, not twice, before the ISO is generated) and because it runs without an X server. However, it is only available to root, which opens up security risks.
 elif which fuseiso &> /dev/null; then
 	export EXTRACTOR=fuseiso
+elif which 7z &> /dev/null;then
+	export EXTRACTOR=7z #7z is a command line application
 elif which ark &> /dev/null;then
 	export EXTRACTOR=ark #Ark is a KDE application
 elif which file-roller &> /dev/null;then
@@ -129,7 +131,7 @@ else
 		echo "Unless fuseiso, file-roller or ark is installed to extract ISOs, only Linux kernels are supported (due to the use of \"-o loop\")."
 		exit 1
 	elif [ $(whoami) != "root" ];then
-		echo "Unless file-roller or ark is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
+		echo "Unless file-roller, ark or 7z is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
 		exit 1
 	fi
 fi

@@ -15,6 +15,9 @@ mcdmount () {
 	elif [ $EXTRACTOR = ark ];then
 		ark -b -o "${MNT}"/$1 $1.iso
 		chmod -R +w "${MNT}"/$1 #To avoid confirmation prompts on BSD cp
+	elif [ $EXTRACTOR = 7z ];then
+		7z x -o"${MNT}"/$1 $1.iso
+		chmod -R +w "${MNT}"/$1 #To avoid confirmation prompts on BSD cp
 	elif [ $EXTRACTOR = mount ];then
 		mount -o loop,ro $1.iso "${MNT}"/$1/
 	elif [ $EXTRACTOR = fuseiso ];then
