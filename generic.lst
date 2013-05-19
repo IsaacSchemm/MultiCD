@@ -1,4 +1,5 @@
 # This is a list of ISOs supported by SYSLINUX ISO emulation.
+# Don't be misled by the small size of this list - a LOT of ISOs will work this way! I just haven't tested very many of them.
 # ISOs listed in this file will be detected by the generic.sh plugin.
 # Format:
 # [filename].iso    [filename].generic.iso    Default_name_on_menu
