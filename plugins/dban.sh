@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #DBAN plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2010 Isaac Schemm
+#version 20130602
+#Copyright (c) 2010-2013 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,9 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "dban-*.iso dban.iso none"
+elif [ $1 = scan ];then
 	if [ -f dban.iso ];then
 		echo "DBAN"
 	fi
@@ -31,7 +33,7 @@ elif [ $1 = copy ];then
 		echo "Copying DBAN..."
 		mcdmount dban
 		mkdir -p "${WORK}"/boot/dban1
-		cp "${MNT}"/dban/dban.bzi "${WORK}"/boot/dban1/dban.bzi
+		cp "${MNT}"/dban/[Dd][Bb][Aa][Nn].[Bb][Zz][Ii] "${WORK}"/boot/dban1/dban.bzi
 		umcdmount dban
 	fi
 elif [ $1 = writecfg ];then
@@ -128,7 +130,7 @@ APPEND nuke=\"dwipe --method prng --rounds 8 --verify off\" floppy=0,16,cmos
 fi
 #END DBAN ENTRY#
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi

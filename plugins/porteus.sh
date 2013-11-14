@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Porteus plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2011 Isaac Schemm
+#version 20130602
+#Copyright (c) 2011-2013 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -48,8 +48,8 @@ elif [ $1 = copy ];then
 			cp -r "${MNT}"/porteus/porteus "${WORK}"/ #Copy everything
 		fi
 		mkdir -p "${WORK}"/boot/porteus
-		cp "${MNT}"/porteus/boot/vmlinuz "${WORK}"/boot/porteus/vmlinuz
-		cp "${MNT}"/porteus/boot/initrd.xz "${WORK}"/boot/porteus/initrd.xz
+		cp "${MNT}"/porteus/boot/syslinux/vmlinuz "${WORK}"/boot/porteus/vmlinuz
+		cp "${MNT}"/porteus/boot/syslinux/initrd.xz "${WORK}"/boot/porteus/initrd.xz
 		umcdmount porteus
 		##########
 		if [ "$(ls -1 *.xzm 2> /dev/null;true)" != "" ];then
@@ -71,107 +71,93 @@ elif [ $1 = writecfg ];then
 			else
 				PORTEUSVER=""
 			fi
-			echo "LABEL p-xconf
-			MENU LABEL ^Porteus$PORTEUSVER Graphics mode (KDE).
+			echo "menu begin --> ^Porteus$PORTEUSVER
+
+			LABEL razor
+			MENU LABEL Graphics mode (Razor)
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/porteus/initrd.xz vga=791 splash=silent quiet autoexec=xconf;telinit~4 changes=/porteus/
+			APPEND initrd=/boot/porteus/initrd.xz changes=/porteus 
 			TEXT HELP
-			    Run Porteus the best way we can.
-			    Try to autoconfigure graphics
-			    card and use the maximum
-			    allowed resolution
+				Run Porteus the best way we can.
+				Try to autoconfigure graphics
+				card and use the maximum
+				allowed resolution
 			ENDTEXT
 
-			LABEL p-lxde
-			MENU LABEL Porteus$PORTEUSVER Graphics mode (LXDE).
+			LABEL fresh
+			MENU LABEL Always Fresh
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/porteus/initrd.xz vga=791 splash=silent quiet autoexec=lxde;xconf;telinit~4 changes=/porteus/
+			APPEND initrd=/boot/porteus/initrd.xz nomagic base_only norootcopy 
 			TEXT HELP
-			    Run Porteus the same as above.
-			    Lightweight LXDE to be
-			    launched as default desktop
+				Normally Porteus saves all changes
+				to the /porteus/changes/ directory
+				on the boot media (if writable)
+				and restores them next boot.
+				Use this option to start a fresh
+				system, changes are not read from
+				or written to any device
 			ENDTEXT
 
-			LABEL p-fresh
-			MENU LABEL Porteus$PORTEUSVER Always Fresh
+			LABEL copy2ram
+			MENU LABEL Copy To RAM
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/porteus/initrd.xz autoexec=xconf;telinit~4
+			APPEND initrd=/boot/porteus/initrd.xz copy2ram 
 			TEXT HELP
-			    Normally Porteus saves all changes
-			    to the /porteus/changes/ directory
-			    on the boot media (if writable)
-			    and restores them next boot.
-			    Use this option to start a fresh
-			    system, no changes are neither
-			    read nor written anywhere
+				Run Porteus the same as above,
+				but first copy all data to RAM
+				to get a huge speed increase
+				(needs >256MB)
 			ENDTEXT
 
-			LABEL p-cp2ram
-			MENU LABEL Porteus$PORTEUSVER Copy To RAM
+			LABEL text
+			MENU LABEL Text mode
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/porteus/initrd.xz vga=791 splash=silent quiet copy2ram autoexec=xconf;telinit~4
+			APPEND initrd=/boot/porteus/initrd.xz 3 
 			TEXT HELP
-			    Run Porteus the same as above,
-			    but first copy all data to RAM
-			    to get huge speed (needs >300MB)
+				Run Porteus in text mode and
+				start the command prompt only
 			ENDTEXT
 
-			LABEL p-startx
-			MENU LABEL Porteus$PORTEUSVER Graphics VESA mode
+			LABEL pxe-boot
+			MENU LABEL Porteus as PXE server
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/porteus/initrd.xz autoexec=telinit~4 changes=/poreus/
+			APPEND initrd=/boot/porteus/initrd.xz autoexec=pxe-boot~& 
 			TEXT HELP
-			    Run Porteus with KDE, but skip
-			    gfx-card config. Force 1024x768
-			    using standard VESA driver
+				Run Porteus as usual, but also
+				initialize a PXE server.
+				This will allow you to boot Porteus
+				on other computers over a network
 			ENDTEXT
 
-			LABEL p-text
-			MENU LABEL Porteus$PORTEUSVER Text mode
-			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/initrd.xz
-			TEXT HELP
-			    Run Porteus in textmode and start
-			    command prompt only
-			ENDTEXT
-
-			LABEL p-pxe
-			MENU LABEL Porteus$PORTEUSVER Porteus as PXE server
-			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/porteus/initrd.xz autoexec=pxe-boot;xconf;telinit~4
-			TEXT HELP
-			    Run Porteus as usual, but also
-			    initialize PXE server.
-			    This will allow you to boot Porteus
-			    on other computers over network
-			ENDTEXT
-
-			LABEL p-plop
+			LABEL plop
 			MENU LABEL PLoP BootManager
-			KERNEL /boot/porteus/plpbt
+			KERNEL plpbt
 			TEXT HELP
-			    Run the plop boot manager.
-			    This utility provides handy boot-USB options for
-			    machines with vintage/defective BIOS
-			ENDTEXT" >> "${WORK}"/boot/isolinux/isolinux.cfg
+				Run the plop boot manager.
+				This utility provides handy
+				boot-USB options for machines
+				with vintage/defective BIOS
+			ENDTEXT
+
+			menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 		else
-			echo "LABEL p-text
-			MENU LABEL Porteus$PORTEUSVER Text mode
+			echo "LABEL text
+			MENU LABEL ^Porteus$PORTEUSVER - Text mode
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/initrd.xz
+			APPEND initrd=/boot/porteus/initrd.xz 3 
 			TEXT HELP
-			    Run Porteus in textmode and start
-			    command prompt only
+				Run Porteus in text mode and
+				start the command prompt only
 			ENDTEXT
 			
-			LABEL p-cp2ram
-			MENU LABEL Porteus$PORTEUSVER Text mode
+			LABEL text
+			MENU LABEL ^Porteus$PORTEUSVER - Text mode (copy to RAM)
 			KERNEL /boot/porteus/vmlinuz
-			APPEND initrd=/boot/initrd.xz copy2ram
+			APPEND initrd=/boot/porteus/initrd.xz 3 copy2ram 
 			TEXT HELP
-			    Run Porteus the same as above,
-			    but first copy all data to RAM
-			    to get huge speed
+				Run Porteus the same as above,
+				but first copy all data to RAM
+				to get huge speed
 			ENDTEXT" >> "${WORK}"/boot/isolinux/isolinux.cfg
 		fi
 	fi
