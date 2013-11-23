@@ -1,9 +1,12 @@
 #!/bin/bash
 set -e
 
-#MCDDIR: directory where functions.sh, plugins.md5 and plugins folder are expected to be. Not used in a combined .sh file.
-export MCDDIR="."
-. "${MCDDIR}"/functions.sh
+#MCDDIR: directory where functions.sh, plugins.md5 and plugins folder are
+#expected to be. Not used in a combined .sh file.
+
+export MCDDIR=$(cd $(dirname $0) && pwd)
+PATH=$PATH:$MCDDIR:$MCDDIR/plugins
+. functions.sh
 
 MCDVERSION="20130127"
 #multicd.sh Jan. 27, 2013

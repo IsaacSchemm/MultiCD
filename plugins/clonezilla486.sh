@@ -1,2 +1,2 @@
 #!/bin/sh
-./plugins/clonezilla.sh $1 486
+clonezilla.sh $1 486
