@@ -4,7 +4,7 @@ trap exit ERR
 #MCDDIR: directory where functions.sh, plugins.md5 and plugins folder are
 #expected to be. Not used in a combined .sh file.
 
-export MCDDIR=$(cd $(dirname $0) && pwd)
+export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
@@ -175,7 +175,7 @@ echo
 
 #START SCAN
 for i in "${MCDDIR}"/plugins/*.sh;do
-	$i scan
+	"$i" scan
 done
 #END SCAN
 
@@ -526,8 +526,8 @@ append hd0" >> "${WORK}"/boot/isolinux/isolinux.cfg
 #END HD BOOT OPTION#
 #START WRITE
 for i in "${MCDDIR}"/plugins/*.sh;do
-	[ ! -x $i ]&&chmod +x $i
-	$i writecfg
+	[ ! -x "$i" ]&&chmod +x "$i"
+	"$i" writecfg
 done
 #END WRITE
 

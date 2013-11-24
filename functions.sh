@@ -44,8 +44,8 @@ isoaliases () {
 	#In that case, this is instead handled by adding " >> "${TAGS}"/linklist" to each line in the "links" section of a plugin.
 	#START LINKS#
 	for i in "${MCDDIR}"/plugins/*;do
-		if ! ($i links|grep -q Usage);then
-			$i links >> "${TAGS}"/linklist
+		if ! ("$i" links|grep -q Usage);then
+			"$i" links >> "${TAGS}"/linklist
 		fi
 	done
 	#END LINKS#
