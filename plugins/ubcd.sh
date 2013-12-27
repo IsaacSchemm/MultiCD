@@ -56,8 +56,8 @@ elif [ $1 = copy ];then
 		done
 		cp "${MNT}"/ubcd/boot/syslinux/reboot.c32 "${WORK}"/boot/isolinux/
 		for i in "${WORK}"/ubcd/menus/*/*.cfg "${WORK}"/ubcd/menus/*/*/*.cfg "${WORK}"/pmagic/boot/*/*.cfg;do
-			sed -i -e 's/\/boot\/syslinux/\/boot\/isolinux/g' $i
-			sed -i -e 's/^COM32 linux.c32 /KERNEL /g' $i
+			sed -i -e 's/\/boot\/syslinux/\/boot\/isolinux/g' "$i"
+			sed -i -e 's/^COM32 linux.c32 /KERNEL /g' "$i"
 		done
 		sed -i -e 's/MENU LABEL GRUB4DOS menu/MENU LABEL Back to main menu/g' -e 's/This entry will bring you to the GRUB4DOS menu./Returns to the MultiCD menu./g' -e 's^BOOT /boot/grub/grldr^COM32 menu.c32\nAPPEND /boot/isolinux/isolinux.cfg^g' "${WORK}"/ubcd/menus/syslinux/main.cfg
 		head -n 1 "${MNT}"/ubcd/ubcd/menus/syslinux/defaults.cfg | awk '{ print $6 }'>"${TAGS}"/ubcdver.tmp.txt
