@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Ultimate Boot CD plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2011 Isaac Schemm
+#version 20131227
+#Copyright (c) 2011-2013 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -57,6 +57,7 @@ elif [ $1 = copy ];then
 		cp "${MNT}"/ubcd/boot/syslinux/reboot.c32 "${WORK}"/boot/isolinux/
 		for i in "${WORK}"/ubcd/menus/*/*.cfg "${WORK}"/ubcd/menus/*/*/*.cfg "${WORK}"/pmagic/boot/*/*.cfg;do
 			sed -i -e 's/\/boot\/syslinux/\/boot\/isolinux/g' $i
+			sed -i -e 's/^COM32 linux.c32 /KERNEL /g' $i
 		done
 		sed -i -e 's/MENU LABEL GRUB4DOS menu/MENU LABEL Back to main menu/g' -e 's/This entry will bring you to the GRUB4DOS menu./Returns to the MultiCD menu./g' -e 's^BOOT /boot/grub/grldr^COM32 menu.c32\nAPPEND /boot/isolinux/isolinux.cfg^g' "${WORK}"/ubcd/menus/syslinux/main.cfg
 		head -n 1 "${MNT}"/ubcd/ubcd/menus/syslinux/defaults.cfg | awk '{ print $6 }'>"${TAGS}"/ubcdver.tmp.txt
