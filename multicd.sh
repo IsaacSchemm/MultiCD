@@ -4,6 +4,8 @@ trap exit ERR
 #MCDDIR: directory where functions.sh, plugins.md5 and plugins folder are
 #expected to be. Not used in a combined .sh file.
 
+ionice -c3 -p $$
+
 export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
