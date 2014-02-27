@@ -8,9 +8,9 @@ export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
-MCDVERSION="20130127"
-#multicd.sh Jan. 27, 2013
-#Copyright (c) 2013 Isaac Schemm
+MCDVERSION="20140227"
+#multicd.sh Feb. 27, 2014
+#Copyright (c) 2014 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -417,8 +417,8 @@ if [ -f grub.exe ];then
  cp grub.exe "${WORK}"/boot/grub.exe
 fi
 
-if [ -f syslinux-4.03.tar.gz ] && [ ! -f syslinux.tar.gz ];then
-	ln -s syslinux-4.03.tar.gz syslinux.tar.gz #Link newest version
+if [ -f syslinux-6.02.tar.gz ] && [ ! -f syslinux.tar.gz ];then
+	ln -s syslinux-6.02.tar.gz syslinux.tar.gz #Link newest version
 fi
 
 if [ ! -f syslinux.tar.gz ];then
@@ -647,13 +647,29 @@ $GENERATOR -o ""${OUTPUT}"" \
 -V "$CDLABEL" "${WORK}"/
 rm -rf "${WORK}"/
 
-echo "Running isohybrid..."
-#if which isohybrid > /dev/null;then
-#	isohybrid ""${OUTPUT}"" 2> /dev/null || echo "The installed isohybrid gave an error status of $?. The ISO might not work on a flash drive."
-#else
-	"${TAGS}"/isohybrid ""${OUTPUT}"" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a flash drive."
+# try to find a working version of isohybrid
+ISOHYBRID="${TAGS}/isohybrid"
+{
+	trap '' ERR
+	"${TAGS}"/isohybrid &> /dev/null
+	if [ $? = 127 ];then
+		echo "Could not run downloaded isohybrid (it's probably 32-bit) - looking for installed version..."
+		rm "$TAGS"/isohybrid
+		ihpath="$(which isohybrid)"
+		if [ -z "$ihpath" ];then
+			echo "WARNING: isohybrid not found."
+			echo "Install isohybrid (syslinux) to use your multicd on a USB drive"
+		else
+			ln -s $ihpath "$TAGS"/isohybrid
+		fi
+	fi
+}
+if [ -f "${TAGS}/isohybrid" ];then
+	echo "Running isohybrid..."
+	"${TAGS}/isohybrid" ""${OUTPUT}"" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a flash drive."
 	rm "${TAGS}"/isohybrid
-#fi
+fi
+
 if [ $(whoami) == "root" ];then
 	chmod 666 ""${OUTPUT}""
 fi
