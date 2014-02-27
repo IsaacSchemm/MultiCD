@@ -39,7 +39,6 @@ mcdclean() {
 			rm -v "$i"
 		fi
 	done
-	rm -fv *.defaultname 2> /dev/null
 	rm -fv *.version 2> /dev/null
 }
 
