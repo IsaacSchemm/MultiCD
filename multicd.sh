@@ -4,7 +4,7 @@ trap exit ERR
 #MCDDIR: directory where functions.sh, plugins.md5 and plugins folder are
 #expected to be. Not used in a combined .sh file.
 
-ionice -c3 -p $$
+ionice -c3 -p $$ || true
 
 export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
@@ -419,14 +419,9 @@ if [ -f grub.exe ];then
  cp grub.exe "${WORK}"/boot/grub.exe
 fi
 
-if [ -f syslinux-6.02.tar.gz ] && [ ! -f syslinux.tar.gz ];then
-	ln -s syslinux-6.02.tar.gz syslinux.tar.gz #Link newest version
-fi
-
 if [ ! -f syslinux.tar.gz ];then
 	echo "Downloading SYSLINUX..."
 	if $VERBOSE ;then #These will only be run if there is no syslinux.tar.gz
-		#Both of these need to be changed when a new version of syslinux comes out.
 		if ! wget -t 1 -O syslinux.tar.gz https://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-$RECENT_SYSLINUX.tar.gz;then
 			echo "Error: could not download SYSLINUX. Please update the URL in $0."
 			rm syslinux.tar.gz
