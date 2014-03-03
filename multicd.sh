@@ -4,7 +4,7 @@ trap exit ERR
 #MCDDIR: directory where functions.sh, plugins.md5 and plugins folder are
 #expected to be. Not used in a combined .sh file.
 
-ionice -c3 -p $$ || true
+ionice -c 2 -n 6 -p $$ || true
 
 export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
@@ -684,8 +684,8 @@ if $TESTISO;then
 	else
 		RAM_TO_USE=128
 	fi
-	if which kvm &> /dev/null;then
-		kvm -m $RAM_TO_USE -cdrom ""${OUTPUT}""&
+	if which qemu-system-x86_64 &> /dev/null;then
+		qemu-system-x86_64 -m $RAM_TO_USE -cdrom ""${OUTPUT}""&
 	elif which qemu &> /dev/null;then
 		qemu -m $RAM_TO_USE -cdrom ""${OUTPUT}""&
 	else
