@@ -93,7 +93,9 @@ isoaliases () {
 						#The last field of the row will be the default name when multicd.sh asks the user to enter a name (activated with "i" option.)
 						#This could also be used by the menu-writing portion of the plugin script if "${TAGS}"/whatever.name (created by the "i" option) is not present.
 						#Underscores are replaced with spaces. Asterisks are replaced with the $VERSION found above.
-						echo $DEFAULTNAME|sed -e 's/_/ /g' -e "s/\*/$VERSION/g">$ISOBASENAME.defaultname
+						if [ ! -f $ISOBASENAME.defaultname ];then
+							echo $DEFAULTNAME|sed -e 's/_/ /g' -e "s/\*/$VERSION/g">$ISOBASENAME.defaultname
+						fi
 					fi
 
 				COUNTER=$(($COUNTER+1))

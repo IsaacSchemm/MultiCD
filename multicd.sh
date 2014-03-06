@@ -42,6 +42,15 @@ mcdclean() {
 		fi
 	done
 	rm -fv *.version 2> /dev/null
+	if [ '*.defaultname' != "$(echo *.defaultname)" ];then
+		for i in *.defaultname;do
+			ISONAME="$(echo $i|sed -e 's/\.defaultname$/\.iso/g')"
+			if [ ! -f $ISONAME ];then
+				echo "Deleting $i (corresponsing ISO does not exist anymore)"
+				rm $i
+			fi
+		done
+	fi
 }
 
 #Clean operation runs here
