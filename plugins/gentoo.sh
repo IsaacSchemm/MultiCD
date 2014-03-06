@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Gentoo live CD plugin for multicd.sh
-#version 20140302
+#version 20140306
 #Copyright (c) 2014 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,39 +22,92 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
+
+gentooExists () {
+	if [ "*.gentoo.iso" != "$(echo *.gentoo.iso)" ];then
+		echo true
+	else
+		echo false
+	fi
+}
+
+getGentooName () {
+	BASENAME=$(echo $i|sed -e 's/\.iso//g')
+	#get version
+	if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then
+		VERSION=" $(cat $BASENAME.version)" #Version based on isoaliases()
+	else
+		VERSION=""
+	fi
+	#get name
+	if [ -f "${TAGS}"/$BASENAME.name ] && [ "$(cat "${TAGS}"/$BASENAME.name)" != "" ];then
+		UBUNAME=$(cat "${TAGS}"/$BASENAME.name)
+	elif [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
+		UBUNAME="$(cat $BASENAME.defaultname)"
+	else
+		UBUNAME="$(echo $BASENAME|sed -e 's/\.gentoo//g') ${VERSION}"
+	fi
+	#return
+	echo ${UBUNAME}
+}
+
+gentoocommon () {
+	if [ ! -z "$1" ] && [ -f $1.iso ];then
+		mcdmount $1
+		mkdir "${WORK}"/boot/$1
+		if [ -f cache/image.squashfs ];then
+			echo "Linking from cache folder to save time. Make sure this is the same file!!"
+			ln cache/image.squashfs "${WORK}"/boot/$1/image.squashfs
+		else
+			cp "${MNT}"/$1/image.squashfs "${WORK}"/boot/$1/
+		fi
+		cp -r "${MNT}"/$1/boot/* "${WORK}"/boot/$1/
+		cp "${MNT}"/$1/isolinux/*.cfg "${WORK}"/boot/$1/
+		cp "${MNT}"/$1/isolinux/*.msg "${WORK}"/boot/$1/
+		cp "${MNT}"/$1/isolinux/*.png "${WORK}"/boot/$1/
+		rm "${WORK}"/boot/$1/memdisk || true
+		touch "${WORK}"/livecd
+		umcdmount $1
+
+		cat "${WORK}"/boot/$1/isolinux.cfg |
+			sed -e "s,/boot/,/boot/$1/,g" -e 's,/boot/$1/memdisk,/boot/isolinux/memdisk,g' -e "s, cdroot, cdroot loop=/boot/$1/image.squashfs,g" |
+			perl -pe "s, ([^ ]*?)\.msg, /boot/${1}/\$1\.msg,g" |
+			perl -pe "s, ([^ ]*?)\.png, /boot/${1}/\$1\.png,g" > /tmp/isolinux-$1.cfg
+		cat /tmp/isolinux-$1.cfg > "${WORK}"/boot/$1/isolinux.cfg
+		rm /tmp/isolinux-$1.cfg
+	else
+		echo "$0: \"$1\" is empty or not an ISO"
+		exit 1
+	fi
+}
+
 if [ $1 = links ];then
-	echo "livedvd-amd64-multilib-*.iso gentoo.iso none"
+	echo "livedvd-amd64-multilib-*.iso amd64-multilib.gentoo.iso Gentoo_*_LiveDVD_(amd64)"
 elif [ $1 = scan ];then
-	if [ -f gentoo.iso ];then
-		echo "Gentoo"
+	if $(gentooExists);then
+		for i in *.gentoo.iso; do
+			getGentooName
+			echo > "${TAGS}"/$(echo $i|sed -e 's/\.iso/\.needsname/g') #Comment out this line and multicd.sh won't ask for a custom name for this ISO
+		done
 	fi
 elif [ $1 = copy ];then
-	if [ -f gentoo.iso ];then
-		echo "Copying Gentoo..."
-		mcdmount gentoo
-		mkdir "${WORK}"/boot/gentoo
-		cp "${MNT}"/gentoo/image.squashfs "${WORK}"/boot/gentoo/
-		cp -r "${MNT}"/gentoo/boot/* "${WORK}"/boot/gentoo/
-		cp "${MNT}"/gentoo/isolinux/*.cfg "${WORK}"/boot/gentoo/
-		cp "${MNT}"/gentoo/isolinux/*.msg "${WORK}"/boot/gentoo/
-		cp "${MNT}"/gentoo/isolinux/*.png "${WORK}"/boot/gentoo/
-		rm "${WORK}"/boot/gentoo/memdisk || true
-		touch "${WORK}"/livecd
-		umcdmount gentoo
+	if $(gentooExists);then
+		for i in *.gentoo.iso; do
+			echo "Copying $(getGentooName)..."
+			gentoocommon $(echo $i|sed -e 's/\.iso//g')
+		done
 	fi
 elif [ $1 = writecfg ];then
-	if [ -f gentoo.iso ];then
-		cat "${WORK}"/boot/gentoo/isolinux.cfg |
-			sed -e 's^/boot/^/boot/gentoo/^g' -e 's^/boot/gentoo/memdisk^/boot/isolinux/memdisk^g' -e 's, cdroot, cdroot loop=/boot/gentoo/image.squashfs,g' |
-			perl -pe 's, ([^ ]*?)\.msg, /boot/gentoo/$1\.msg,g' |
-			perl -pe 's, ([^ ]*?)\.png, /boot/gentoo/$1\.png,g' > /tmp/isolinux.cfg
-		cat /tmp/isolinux.cfg > "${WORK}"/boot/gentoo/isolinux.cfg
-		rm /tmp/isolinux.cfg
+	if $(gentooExists);then
+		for i in *.gentoo.iso; do
+			BASENAME=$(echo $i|sed -e 's/\.iso//g')
+			UBUNAME=$(getGentooName)
 
-		echo "label gentoo
-menu label ^Gentoo
+			echo "label gentoo
+menu label ^${UBUNAME}
 com32 vesamenu.c32
-append /boot/gentoo/isolinux.cfg" >> "${WORK}"/boot/isolinux/isolinux.cfg
+append /boot/$BASENAME/isolinux.cfg" >> "${WORK}"/boot/isolinux/isolinux.cfg
+		done
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
