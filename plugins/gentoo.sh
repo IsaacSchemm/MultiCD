@@ -33,7 +33,7 @@ elif [ $1 = copy ];then
 		echo "Copying Gentoo..."
 		mcdmount gentoo
 		mkdir "${WORK}"/boot/gentoo
-		cp "${MNT}"/gentoo/image.squashfs "${WORK}"/
+		cp "${MNT}"/gentoo/image.squashfs "${WORK}"/boot/gentoo/
 		cp -r "${MNT}"/gentoo/boot/* "${WORK}"/boot/gentoo/
 		cp "${MNT}"/gentoo/isolinux/*.cfg "${WORK}"/boot/gentoo/
 		cp "${MNT}"/gentoo/isolinux/*.msg "${WORK}"/boot/gentoo/
@@ -45,7 +45,7 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 	if [ -f gentoo.iso ];then
 		cat "${WORK}"/boot/gentoo/isolinux.cfg |
-			sed -e 's^/boot/^/boot/gentoo/^g' -e 's^/boot/gentoo/memdisk^/boot/isolinux/memdisk^g' |
+			sed -e 's^/boot/^/boot/gentoo/^g' -e 's^/boot/gentoo/memdisk^/boot/isolinux/memdisk^g' -e 's, cdroot, cdroot loop=/boot/gentoo/image.squashfs,g' |
 			perl -pe 's, ([^ ]*?)\.msg, /boot/gentoo/$1\.msg,g' |
 			perl -pe 's, ([^ ]*?)\.png, /boot/gentoo/$1\.png,g' > /tmp/isolinux.cfg
 		cat /tmp/isolinux.cfg > "${WORK}"/boot/gentoo/isolinux.cfg
