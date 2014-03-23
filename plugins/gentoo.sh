@@ -82,7 +82,8 @@ gentoocommon () {
 }
 
 if [ $1 = links ];then
-	echo "livedvd-amd64-multilib-*.iso amd64-multilib.gentoo.iso Gentoo_*_LiveDVD_(amd64)"
+	echo "livedvd-amd64-multilib-*.iso gentoo64.gentoo.iso Gentoo_*_LiveDVD_(amd64)"
+	echo "livedvd-x86-amd64-32ul-*.iso gentoo32.gentoo.iso Gentoo_*_LiveDVD_(x86)"
 elif [ $1 = scan ];then
 	if $(gentooExists);then
 		for i in *.gentoo.iso; do
