@@ -59,7 +59,7 @@ gentoocommon () {
 			echo "Linking from cache folder to save time. Make sure this is the same file!!"
 			ln cache/image.squashfs "${WORK}"/boot/$1/image.squashfs
 		else
-			cp "${MNT}"/$1/image.squashfs "${WORK}"/boot/$1/
+			ln "${MNT}"/$1/image.squashfs "${WORK}"/boot/$1/ 2>/dev/null || cp -v "${MNT}"/$1/image.squashfs "${WORK}"/boot/$1/
 		fi
 		cp -r "${MNT}"/$1/boot/* "${WORK}"/boot/$1/
 		cp "${MNT}"/$1/isolinux/*.cfg "${WORK}"/boot/$1/
