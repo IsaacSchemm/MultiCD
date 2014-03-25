@@ -56,25 +56,43 @@ isoaliases () {
 		LINKNAME=$(echo "$i"|awk '{LESS=NF-1; print $LESS}') #What should be linked to
 		MATCHING_ISOS=$(echo $i|awk '{LESS=NF-1; for (i=1; i<LESS; i++) print $i }') #Prints all except the last 2 fields. $i is NOT surrounded by quotes, so wildcards are expanded.
 
-		if !( echo $MATCHING_ISOS | grep -q '\*' ) && [ ! -e $LINKNAME ];then
-			#MATCHING_ISOS exists (i.e. the asterisk got expanded) and LINKNAME doesn't exist yet
+		FOUND=false
+		if [ -f "$MATCHING_ISOS" ];then
+			FOUND=true
+		else
+			#probably has an asterisk
+			if [ "$(echo $MATCHING_ISOS)" != "$MATCHING_ISOS" ];then
+				#asterisks expanded
+				FOUND=true
+			fi
+		fi
+
+		if $FOUND;then
 			COUNTER=0
 			for j in $MATCHING_ISOS;do
 				#This is done for each matching ISO.
 
-				if [ $COUNTER = 0 ];then
-					LINKTO=$LINKNAME #The intended link name.
-				else
+				LINKTO=$LINKNAME #The intended link name.
+				while [ -f "$LINKTO" ];do
 					#Adds the counter number and an underscore to the beginning of the link name.
-					#I'm not sure if any plugins use this. I know that if this happens, any later aliasing rules for the same LINKNAME will be skipped. :(
-					#This might cause a little (harmless) clutter in the working directory.
+					#This is used when more than one matching ISO is present - e.g. TinyCore-5.0.iso and TinyCore-5.3.iso
+					COUNTER=$(($COUNTER+1))
 					LINKTO=${COUNTER}_${LINKNAME}
-				fi
+				done
 
 				if [ -e "$j" ] && ln -s $j $LINKTO;then
 					#The ISO that the link should point to exists, and the link was created sucessfully.
 
+					JBASENAME=$(echo $j|sed -e 's/\.iso//g')
 					ISOBASENAME=$(echo $LINKTO|sed -e 's/\.iso//g')
+					if [ -f "$JBASENAME.name" ];then
+						if [ -f "$ISOBASENAME.name" ];then
+							true #echo "Custom name $ISOBASENAME.name exists - not overwriting"
+						else
+							#echo "Custom name $JBASENAME.name found - linking to $ISOBASENAME.name"
+							ln -sv "$JBASENAME.name" "$ISOBASENAME.name"
+						fi
+					fi
 
 					touch "${TAGS}"/madelinks #This function will pause for 1 second if this file exists, so the notifications are readable
 
@@ -83,7 +101,7 @@ isoaliases () {
 					VERSION=$(echo "$j"|awk '{sub(/'"$CUTOUT1"'/,"");sub(/'"$CUTOUT2"'/,"");print}') #Cuts out whatever the asterisk represents (which will be the version number)
 
 					if [ "$VERSION" != "*" ] && [ "$VERSION" != "$j" ];then
-						echo $VERSION > $ISOBASENAME.version #Some plugins (like SystemRescueCD) don't use this, because the version number is on a file in the ISO.
+						echo $VERSION > $ISOBASENAME.version #Some plugins (like SystemRescueCD) don't use this, because the version number is on a file in the ISO. Others don't use it because I forgot it exists.
 						echo "Made a link named $LINKTO pointing to $j (version $VERSION)"
 					else	
 						echo "Made a link named $LINKTO pointing to $j"
@@ -97,12 +115,18 @@ isoaliases () {
 							echo $DEFAULTNAME|sed -e 's/_/ /g' -e "s/\*/$VERSION/g">$ISOBASENAME.defaultname
 						fi
 					fi
-
-				COUNTER=$(($COUNTER+1))
 				fi
 			done
 		fi
 	done
+
+	if [ "$(echo *.name)" != '*.name' ];then
+		echo "Linking all .name files to .defaultname files, overriding when necessary"
+		for i in *.name;do
+			ln -s -fv "$i" "$(echo $i|sed -e 's/\.name/\.defaultname/g')"
+		done
+	fi
+
 	if [ -f "${TAGS}"/madelinks ];then
 		#If the file exists, remove it, then pause for 1 second so the notifications can be seen.
 		rm "${TAGS}"/madelinks
@@ -110,25 +134,6 @@ isoaliases () {
 	fi
 }
 
-tinycorecommon () {
-	if [ ! -z "$1" ] && [ -f $1.iso ];then
-		mcdmount $1
-		mkdir "${WORK}"/boot/tinycore
-		cp "${MNT}"/$1/boot/vmlinuz "${WORK}"/boot/tinycore/vmlinuz #Linux kernel - 4.0 or newer
-		cp "${MNT}"/$1/boot/*.gz "${WORK}"/boot/tinycore/ #Copy any initrd there may be - this works for (old) microcore too
-		if [ -d "${MNT}"/$1/tce ];then
-			cp -r "${MNT}"/$1/tce "${WORK}"/
-		fi
-		if [ -d "${MNT}"/$1/cde ];then
-			cp -r "${MNT}"/$1/cde "${WORK}"/
-		fi
-		sleep 1
-		umcdmount $1
-	else
-		echo "$0: \"$1\" is empty or not an ISO"
-		exit 1
-	fi
-}
 puppycommon () {
 	if [ ! -z "$1.puppy" ] && [ -f $1.puppy.iso ];then
 		mcdmount $1.puppy
