@@ -410,8 +410,8 @@ done
 j="0"
 for i in *.im[agz]; do
 	test -r "$i" || continue
-	cp "$i" "${WORK}"/boot/$j.img
 	echo -n Copying $(echo $i|sed 's/\.im.//')"... "
+	cp "$i" "${WORK}"/boot/$j.img
 	if $VERBOSE;then
 		echo "Saved as "$j".img."
 	else
@@ -554,8 +554,13 @@ done
 j="0"
 for i in *.im[agz]; do
 	test -r "$i" || continue
-	BASICNAME=$(echo $i|sed 's/\.im.//')
+	BASICNAME=$(echo $i|sed -e 's/.im.$//')
 	echo label "$BASICNAME" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	if [ -f "$BASICNAME.name" ];then
+		echo "menu label ^$(cat $BASICNAME.name)" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	else
+		echo "menu label ^$BASICNAME" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	fi
 	echo kernel memdisk >> "${WORK}"/boot/isolinux/isolinux.cfg
 	echo initrd /boot/$j.img >> "${WORK}"/boot/isolinux/isolinux.cfg
 	j=$( expr $j + 1 )
@@ -602,8 +607,13 @@ menu title "Choose a game to play:"
 EOF
 for i in games/*.im[agz]; do
 	test -r "$i" || continue
-	BASICNAME=$(echo $i|sed 's/\.im.//'|sed 's/games\///')
+	BASICNAME=$(echo $i|sed 's/.im.$//'|sed 's/games\///')
 	echo label "$BASICNAME" >> "${WORK}"/boot/isolinux/games.cfg
+	if [ -f "games/$BASICNAME.name" ];then
+		echo "menu label ^$(cat games/$BASICNAME.name)" >> "${WORK}"/boot/isolinux/games.cfg
+	else
+		echo "menu label ^$BASICNAME" >> "${WORK}"/boot/isolinux/games.cfg
+	fi
 	echo kernel memdisk >> "${WORK}"/boot/isolinux/games.cfg
 	echo initrd /boot/games/$k.img >> "${WORK}"/boot/isolinux/games.cfg
 	k=$( expr $k + 1 )
