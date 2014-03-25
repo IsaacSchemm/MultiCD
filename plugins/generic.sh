@@ -58,7 +58,7 @@ elif [ $1 = copy ];then
 	if $(genericExists);then for i in *.generic.iso;do
 		echo "Copying $(getGenericName)..."
 		mkdir -p "${WORK}"/generic
-		cp "$i" "${WORK}"/generic
+		ln -L "$i" "${WORK}"/generic || cp -v "$i" "${WORK}"/generic
 	done;fi
 elif [ $1 = writecfg ];then
 	COUNTER=0
