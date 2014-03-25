@@ -378,7 +378,7 @@ else
 		fi
 	done
 fi
-exit 3
+
 for i in lang-full country;do
 	if [ -f "${TAGS}"/$i ] && ( [ -z $(cat "${TAGS}"/$i) ] || [ $(cat "${TAGS}"/$i) = "C" ] ); then
 		rm "${TAGS}"/$i #The user didn't enter anything - removing this tag file will let the plugin decide which language to use.
