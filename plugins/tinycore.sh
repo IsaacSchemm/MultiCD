@@ -22,6 +22,25 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
+tinycorecommon () {
+if [ ! -z "$1" ] && [ -f $1.iso ];then
+mcdmount $1
+mkdir "${WORK}"/boot/tinycore
+cp "${MNT}"/$1/boot/vmlinuz "${WORK}"/boot/tinycore/vmlinuz #Linux kernel - 4.0 or newer
+cp "${MNT}"/$1/boot/*.gz "${WORK}"/boot/tinycore/ #Copy any initrd there may be - this works for (old) microcore too
+if [ -d "${MNT}"/$1/tce ];then
+cp -r "${MNT}"/$1/tce "${WORK}"/
+fi
+if [ -d "${MNT}"/$1/cde ];then
+cp -r "${MNT}"/$1/cde "${WORK}"/
+fi
+sleep 1
+umcdmount $1
+else
+echo "$0: \"$1\" is empty or not an ISO"
+exit 1
+fi
+}
 if [ $1 = links ];then
 	#Only one will be included
 	echo "CorePlus-*.iso tinycore.iso none"
