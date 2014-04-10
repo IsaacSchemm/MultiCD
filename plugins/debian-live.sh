@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Debian Live plugin for multicd.sh
-#version 20120813
-#Copyright (c) 2012 Isaac Schemm
+#version 20140410
+#Copyright (c) 2014 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -71,8 +71,9 @@ elif [ $1 = copy ];then
 			BASENAME=$(echo $i|sed -e 's/\.iso//g')
 			mcdmount $BASENAME
 			cp "${MNT}"/$BASENAME/isolinux/live.cfg "${WORK}"/boot/isolinux/$BASENAME.cfg
+			LIVEFOLDER=$BASENAME
 			if [ -f "$TAGS"/debians/$BASENAME.inroot ];then
-				cp -r "${MNT}"/$BASENAME/live "${WORK}"/live
+				LIVEFOLDER=live
 				if [ -d "${MNT}"/$BASENAME/install ];then
 					cp -r "${MNT}"/$BASENAME/install "${WORK}"/
 					cp -r "${MNT}"/$BASENAME/.disk "${WORK}"/ || true
@@ -81,12 +82,13 @@ elif [ $1 = copy ];then
 				else
 					echo "Warning: You selected $BASENAME to be installable, but there is no \"install\" folder on the disk."
 				fi
-			else
-				cp -r "${MNT}"/$BASENAME/live "${WORK}"/$BASENAME
 			fi
+			mcdcp -rv "${MNT}"/$BASENAME/live "${WORK}"/$BASENAME
 			umcdmount $BASENAME
 		done
-		rm "${WORK}"/live/memtest||true
+		if [ -f "${WORK}"/live/memtest ];then
+			rm "${WORK}"/live/memtest
+		fi
 	fi
 elif [ $1 = writecfg ];then
 	if $(debianExists);then

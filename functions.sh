@@ -1,4 +1,8 @@
 #!/bin/sh
+mcdcp() {
+	cp -l "$@" 2> /dev/null || cp "$@"
+}
+
 mcdmount () {
 	# "${MNT}" is defined in multicd.sh and is normally in /tmp
 	# $1 is the argument passed to mcdmount - used for both ISO name and mount folder name
