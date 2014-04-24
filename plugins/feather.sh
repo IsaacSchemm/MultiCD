@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Feather Linux plugin for multicd.sh
-#version 20120815
-#Copyright (c) 2012 Isaac Schemm
+#version 20140424
+#Copyright (c) 2014 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ elif [ $1 = copy ];then
 		echo "Copying Feather..."
 		mcdmount feather
 		mkdir "${WORK}"/FEATHER
-		cp -r "${MNT}"/feather/KNOPPIX/* "${WORK}"/FEATHER/ #Compressed filesystem
+		mcdcp -r "${MNT}"/feather/KNOPPIX/* "${WORK}"/FEATHER/ #Compressed filesystem
 		mkdir "${WORK}"/boot/feather
 		cp "${MNT}"/feather/boot/isolinux/linux24 "${WORK}"/boot/feather/linux24
 		cp "${MNT}"/feather/boot/isolinux/minirt24.gz "${WORK}"/boot/feather/minirt24.gz
