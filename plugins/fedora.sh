@@ -57,6 +57,7 @@ fedoracommon () {
 		mcdcp -r "${MNT}"/$1/LiveOS "${WORK}"/boot/$1
 		cp "${MNT}"/$1/isolinux/vmlinuz* "${WORK}"/boot/$1
 		cp "${MNT}"/$1/isolinux/init* "${WORK}"/boot/$1
+		cp "${MNT}"/$1/isolinux/*.png "${WORK}"/boot/$1
 		< "${MNT}"/$1/isolinux/isolinux.cfg sed '/^label memtest/,$d' > "${WORK}"/boot/$1/isolinux.cfg
 		echo "label back
 		menu label Back to main menu
@@ -64,6 +65,7 @@ fedoracommon () {
 		append /boot/isolinux/isolinux.cfg
 		" >> "${WORK}"/boot/$1/isolinux.cfg
 		sed -i "s,kernel vmlinuz,kernel /boot/$1/vmlinuz,g" "${WORK}"/boot/$1/isolinux.cfg
+		sed -i "s,^menu background ,menu background /boot/$1/,g" "${WORK}"/boot/$1/isolinux.cfg
 		sed -i "s,initrd=,rd.live.dir=/boot/$1 initrd=/boot/$1/,g" "${WORK}"/boot/$1/isolinux.cfg
 		sed -i "s,CDLABEL=[^ ]* ,CDLABEL=$CDLABEL ,g" "${WORK}"/boot/$1/isolinux.cfg
 		#if [ -f "${TAGS}"/lang ];then
