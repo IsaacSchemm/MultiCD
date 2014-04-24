@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Generic ISO emulation plugin for multicd.sh
-#version 20121117
-#Copyright (c) 2012 Isaac Schemm
+#version 20140410
+#Copyright (c) 2014 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -58,7 +58,7 @@ elif [ $1 = copy ];then
 	if $(genericExists);then for i in *.generic.iso;do
 		echo "Copying $(getGenericName)..."
 		mkdir -p "${WORK}"/generic
-		ln -L "$i" "${WORK}"/generic || cp -v "$i" "${WORK}"/generic
+		mcdcp -v "$i" "${WORK}"/generic
 	done;fi
 elif [ $1 = writecfg ];then
 	COUNTER=0

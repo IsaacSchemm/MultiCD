@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Gentoo live CD plugin for multicd.sh
-#version 20140306
+#version 20140410
 #Copyright (c) 2014 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -55,12 +55,7 @@ gentoocommon () {
 	if [ ! -z "$1" ] && [ -f $1.iso ];then
 		mcdmount $1
 		mkdir "${WORK}"/boot/$1
-		if [ -f cache/image.squashfs ];then
-			echo "Linking from cache folder to save time. Make sure this is the same file!!"
-			ln cache/image.squashfs "${WORK}"/boot/$1/image.squashfs
-		else
-			ln "${MNT}"/$1/image.squashfs "${WORK}"/boot/$1/ 2>/dev/null || cp -v "${MNT}"/$1/image.squashfs "${WORK}"/boot/$1/
-		fi
+		mcdcp "${MNT}"/$1/image.squashfs "${WORK}"/boot/$1/
 		cp -r "${MNT}"/$1/boot/* "${WORK}"/boot/$1/
 		cp "${MNT}"/$1/isolinux/*.cfg "${WORK}"/boot/$1/
 		cp "${MNT}"/$1/isolinux/*.msg "${WORK}"/boot/$1/

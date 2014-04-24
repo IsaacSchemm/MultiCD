@@ -161,7 +161,7 @@ puppycommon () {
 ubuntucommon () {
 	if [ ! -z "$1" ] && [ -f $1.iso ];then
 		mcdmount $1
-		cp -R "${MNT}"/$1/casper "${WORK}"/boot/$1 #Live system
+		mcdcp -R "${MNT}"/$1/casper "${WORK}"/boot/$1 #Live system
 		if [ -d "${MNT}"/$1/preseed ];then
 			cp -R "${MNT}"/$1/preseed "${WORK}"/boot/$1
 		fi

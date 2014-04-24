@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Fedora LiveOS plugin for multicd.sh
-#version 20140326
+#version 20140410
 #Copyright (c) 2014 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -42,12 +42,11 @@ getFedoraName () {
 		# .name files are not written until after the "wait 2 seconds or press ctrl+c" message
 		ISONAME="$(cat $BASENAME.defaultname)"
 	else
-		# I'm not sure this fallback even occurs with the current multicd.sh
+		# Can occur if you make the *.fedora.iso link yourself
 		ISONAME="$(echo $BASENAME|sed -e 's/\.fedora//g')"
 		if [ -f $BASENAME.version ];then
 			ISONAME="$ISONAME $(cat $BASENAME.version)" #Version based on isoaliases()
 		fi
-		echo "fallback $ISONAME" >&2
 	fi
 	echo ${ISONAME}
 }
@@ -55,12 +54,9 @@ getFedoraName () {
 fedoracommon () {
 	if [ ! -z "$1" ] && [ -f $1.iso ];then
 		mcdmount $1
-		mkdir "${WORK}"/boot/$1
-		for i in "${MNT}"/$1/LiveOS/*;do
-			ln -vL "$i" "${WORK}"/boot/$1/ 2> /dev/null || cp -v "$i" "${WORK}"/boot/$1/
-		done
+		mcdcp -r "${MNT}"/$1/LiveOS "${WORK}"/boot/$1
 		cp "${MNT}"/$1/isolinux/vmlinuz* "${WORK}"/boot/$1
-		cp "${MNT}"/$1/isolinux/initrd* "${WORK}"/boot/$1
+		cp "${MNT}"/$1/isolinux/init* "${WORK}"/boot/$1
 		< "${MNT}"/$1/isolinux/isolinux.cfg sed '/^label memtest/,$d' > "${WORK}"/boot/$1/isolinux.cfg
 		echo "label back
 		menu label Back to main menu
