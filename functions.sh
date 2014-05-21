@@ -22,6 +22,9 @@ mcdmount () {
 	elif [ $EXTRACTOR = 7z ];then
 		7z x -o"${MNT}"/$1 $1.iso
 		chmod -R +w "${MNT}"/$1 #To avoid confirmation prompts on BSD cp
+	elif [ $EXTRACTOR = win7z ];then
+		OUTPATH=$(cygpath -wa "${MNT}"/$1)
+		"${WIN7ZSEARCHPATH}/7z.exe" x -o"$OUTPATH" "$(cygpath -wa $1.iso)"
 	elif [ $EXTRACTOR = mount ];then
 		mount -o loop,ro $1.iso "${MNT}"/$1/
 	elif [ $EXTRACTOR = fuseiso ];then
