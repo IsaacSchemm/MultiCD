@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Clonezilla plugin for multicd.sh
-#version 20121103
-#Copyright (c) 2010-2012 Isaac Schemm and Pascal De Vuyst
+#version 20140601
+#Copyright (c) 2010-2013 Isaac Schemm and Pascal De Vuyst
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -32,10 +32,10 @@ elif [ $1 = copy ];then
 	if [ -f clonezilla$2.iso ];then
 		echo "Copying Clonezilla $2..."
 		mcdmount clonezilla$2
-		cp "${MNT}"/clonezilla$2/isolinux/ocswp.png "${WORK}"/boot/isolinux/ocswp.png #Boot menu logo
+		cp "${MNT}"/clonezilla$2/*linux/ocswp.png "${WORK}"/boot/isolinux/ocswp.png #Boot menu logo
 		cp -r "${MNT}"/clonezilla$2/live "${WORK}"/boot/clonezilla$2 #Another Debian Live-based ISO
 		cp "${MNT}"/clonezilla$2/C* "${WORK}"/boot/clonezilla$2 #PDV Clonezilla-Live-Version and COPYING files
-		cp "${MNT}"/clonezilla$2/isolinux/isolinux.cfg "${WORK}"/boot/isolinux/clonezil$2.cfg #PDV
+		cp "${MNT}"/clonezilla$2/*linux/isolinux.cfg "${WORK}"/boot/isolinux/clonezil$2.cfg #PDV
 		umcdmount clonezilla$2
 	fi
 elif [ $1 = writecfg ];then
