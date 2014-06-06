@@ -1,8 +1,6 @@
 This is the git repository for MultiCD (http://multicd.tuxfamily.org).
 
-Right now, it is hosted in two places:
+Currently, the git repository is hosted only at github:
 https://github.com/IsaacSchemm/MultiCD
-http://git.tuxfamily.org/?p=gitroot/multicd/multicd.git
 
-The MultiCD project is under a copyfree license (the one Wikipedia lists as the "MIT License" in fact.) See multicd.sh for more information.
-Plugins may have their own license terms, but as of February 21, 2012 they are all under those same terms.
+The MultiCD project is under the MIT license. See multicd.sh for more information. All plugins included here are under those same terms.
