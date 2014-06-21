@@ -11,7 +11,7 @@ PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
 MCDVERSION="20140323"
-#multicd.sh Mar. 23, 2014
+#multicd.sh June 21, 2014
 #Copyright (c) 2014 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -720,7 +720,7 @@ if $TESTISO;then
 	else
 		RAM_TO_USE=128
 	fi
-	if which qemu-system-x86_64 &> /dev/null;then
+	if which qemu-system-x86_64 &> /dev/null && uname -m | grep -q 64;then
 		qemu-system-x86_64 -m $RAM_TO_USE -cdrom ""${OUTPUT}""&
 	elif which qemu &> /dev/null;then
 		qemu -m $RAM_TO_USE -cdrom ""${OUTPUT}""&

@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Fedora LiveOS plugin for multicd.sh
-#version 20140410
+#version 20140621
 #Copyright (c) 2014 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -57,7 +57,7 @@ fedoracommon () {
 		mcdcp -r "${MNT}"/$1/LiveOS "${WORK}"/boot/$1
 		cp "${MNT}"/$1/isolinux/vmlinuz* "${WORK}"/boot/$1
 		cp "${MNT}"/$1/isolinux/init* "${WORK}"/boot/$1
-		cp "${MNT}"/$1/isolinux/*.png "${WORK}"/boot/$1
+		cp "${MNT}"/$1/isolinux/*.png "${WORK}"/boot/$1 2> /dev/null || true
 		< "${MNT}"/$1/isolinux/isolinux.cfg sed '/^label memtest/,$d' > "${WORK}"/boot/$1/isolinux.cfg
 		echo "label back
 		menu label Back to main menu
