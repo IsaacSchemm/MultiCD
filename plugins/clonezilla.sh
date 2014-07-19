@@ -37,7 +37,7 @@ elif [ $1 = copy ];then
 		echo "Copying Clonezilla $2..."
 		mcdmount clonezilla$2
 		cp "${MNT}"/clonezilla$2/*linux/ocswp.png "${WORK}"/boot/isolinux/ocswp.png #Boot menu logo
-		mcdcp -r "${MNT}"/clonezilla$2/live "${WORK}"/boot/clonezilla$2 #Another Debian Live-based ISO
+		cp -r "${MNT}"/clonezilla$2/live "${WORK}"/boot/clonezilla$2 #Another Debian Live-based ISO
 		cp "${MNT}"/clonezilla$2/C* "${WORK}"/boot/clonezilla$2 #PDV Clonezilla-Live-Version and COPYING files
 		cp "${MNT}"/clonezilla$2/*linux/isolinux.cfg "${WORK}"/boot/isolinux/cz-$2.cfg #PDV
 		umcdmount clonezilla$2
@@ -45,16 +45,13 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 if [ -f clonezilla$2.iso ];then
 VERSION=$(sed -e 's/^.*[^0-9]\([0-9]*\.[0-9]*\.[0-9]*-[0-9]*\).*$/\1/' "${WORK}"/boot/clonezilla$2/Clonezilla-Live-Version | head -n1)
-echo "label clonezilla$2" >> "${WORK}"/boot/isolinux/isolinux.cfg
 if [ -z $2 ];then
-	echo "menu label --> ^Clonezilla Live $VERSION" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	echo "menu begin >> ^Clonezilla Live $VERSION" >> "${WORK}"/boot/isolinux/isolinux.cfg
 else
-	echo "menu label --> Clonezilla Live $VERSION for ^$2 CPU" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	echo "menu begin >> Clonezilla Live $VERSION for ^$2 CPU" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
-echo "com32 vesamenu.c32
-append cz-$2.cfg
-" >> "${WORK}"/boot/isolinux/isolinux.cfg
 #GNU sed syntax
+sed -i -e "s/^ *MENU LABEL/  MENU LABEL ($2)/g" "${WORK}"/boot/isolinux/cz-$2.cfg
 sed -i -e 's/\/live\//\/boot\/clonezilla'$2'\//g' "${WORK}"/boot/isolinux/cz-$2.cfg #Change directory to /boot/clonezilla
 sed -i -e 's/append initrd=/append live-media-path=\/boot\/clonezilla'$2' initrd=/g' "${WORK}"/boot/isolinux/cz-$2.cfg #Tell the kernel we moved it
 if [ -f "${TAGS}"/country ]; then #PDV
@@ -70,13 +67,10 @@ if $MEMTEST; then #PDV remove memtest if already in main menu
 	sed -i -e '/MENU BEGIN Memtest/,/MENU END/ s/MENU END//' -e '/MENU BEGIN Memtest/,/ENDTEXT/d' -e '/./,/^$/!d' "${WORK}"/boot/isolinux/cz-$2.cfg
 	rm "${WORK}"/boot/clonezilla$2/memtest
 fi
+sed -n '/label .*/,$p' "${WORK}"/boot/isolinux/cz-$2.cfg >> "${WORK}"/boot/isolinux/isolinux.cfg
+rm "${WORK}"/boot/isolinux/cz-$2.cfg
 echo "
-MENU SEPARATOR
-
-label back
-menu label Back to main menu
-com32 menu.c32
-append isolinux.cfg" >> "${WORK}"/boot/isolinux/cz-$2.cfg
+MENU END" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
