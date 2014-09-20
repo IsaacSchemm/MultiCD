@@ -23,53 +23,57 @@ set -e
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
 if [ $1 = scan ];then
-	if [ -f mageia-boot.iso ];then
-		echo "Mageia network installer"
-	fi
+	for iso in mageia-boot.iso mageia-boot-*.iso;do
+		if [ -f mageia-boot.iso ];then
+			echo "Mageia network installer ($iso)"
+		fi
+	done
 elif [ $1 = copy ];then
-	if [ -f mageia-boot.iso ];then
-		echo "Copying Mageia network installer..."
-		mcdmount mageia-boot
-		mkdir "${WORK}"/boot/mageia-boot
-		for i in x86_64;do
-			if [ -d "${MNT}"/mageia-boot/isolinux/$i ];then
-				mkdir "${WORK}"/boot/mageia-boot/$i
-				cp "${MNT}"/mageia-boot/isolinux/$i/vmlinuz "${WORK}"/boot/mageia-boot/$i/vmlinuz
-				cp "${MNT}"/mageia-boot/isolinux/$i/all.rdz "${WORK}"/boot/mageia-boot/$i/all.rdz
-				ech
-			fi
-		done
-		umcdmount mageia-boot
-	fi
+	for iso in mageia-boot.iso mageia-boot-*.iso;do
+		if [ -f "$iso" ];then
+			isobase="$(basename -s.iso "$iso")"
+			echo -n "Copying Mageia network installer... "
+			mcdmount $isobase
+			mkdir -p "${WORK}"/boot/mageia-boot
+			for i in x86_64 i386;do
+				if [ -d "${MNT}"/$isobase/isolinux/$i ];then
+					echo -n "($i)"
+					mkdir "${WORK}"/boot/mageia-boot/$i
+					cp "${MNT}"/$isobase/isolinux/$i/vmlinuz "${WORK}"/boot/mageia-boot/$i/vmlinuz
+					cp "${MNT}"/$isobase/isolinux/$i/all.rdz "${WORK}"/boot/mageia-boot/$i/all.rdz
+				fi
+			done
+			echo
+			umcdmount $isobase
+		fi
+	done
 elif [ $1 = writecfg ];then
-if [ -f mageia-boot.iso ];then
-	for i in x86_64;do
+	for i in x86_64 i386;do
 		if [ -d "${WORK}"/boot/mageia-boot/$i ];then
-			echo "menu begin --> ^ Mageia network installer
+			echo "menu begin --> ^ Mageia network installer ($i)
 
 label mageiaboot-linux
-  kernel mageia-boot/$i/vmlinuz
-  append initrd=mageia-boot/$i/all.rdz  vga=788 splash quiet
+  kernel /boot/mageia-boot/$i/vmlinuz
+  append initrd=/boot/mageia-boot/$i/all.rdz  vga=788 splash quiet
 label mageiaboot-vgalo
-  kernel mageia-boot/$i/vmlinuz
-  append initrd=mageia-boot/$i/all.rdz  vga=785
+  kernel /boot/mageia-boot/$i/vmlinuz
+  append initrd=/boot/mageia-boot/$i/all.rdz  vga=785
 label mageiaboot-vgahi
-  kernel mageia-boot/$i/vmlinuz
-  append initrd=mageia-boot/$i/all.rdz  vga=791
+  kernel /boot/mageia-boot/$i/vmlinuz
+  append initrd=/boot/mageia-boot/$i/all.rdz  vga=791
 label mageiaboot-text
-  kernel mageia-boot/$i/vmlinuz
-  append initrd=mageia-boot/$i/all.rdz  text
+  kernel /boot/mageia-boot/$i/vmlinuz
+  append initrd=/boot/mageia-boot/$i/all.rdz  text
 label mageiaboot-rescue
-  kernel mageia-boot/$i/vmlinuz
-  append initrd=mageia-boot/$i/all.rdz  audit=0 rescue
+  kernel /boot/mageia-boot/$i/vmlinuz
+  append initrd=/boot/mageia-boot/$i/all.rdz  audit=0 rescue
 label mageiaboot-noacpi
-  kernel mageia-boot/$i/vmlinuz
-  append initrd=mageia-boot/$i/all.rdz vga=788 splash quiet acpi=off
+  kernel /boot/mageia-boot/$i/vmlinuz
+  append initrd=/boot/mageia-boot/$i/all.rdz vga=788 splash quiet acpi=off
 
 menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 		fi
 	done
-fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
