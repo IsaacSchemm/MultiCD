@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #GParted Live plugin for multicd.sh
-#version 20140707
+#version 20141214
 #Copyright (c) 2011-2014 Isaac Schemm and others
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,7 +34,8 @@ elif [ $1 = copy ];then
 	if [ -f gparted$2.iso ];then
 		echo "Copying GParted Live for $2..."
 		mcdmount gparted$2
-		mcdcp -r "${MNT}"/gparted$2/live "${WORK}"/boot/gparted$2 #Compressed filesystem and kernel/initrd
+		mkdir "${WORK}"/boot/gparted$2
+		mcdcp -r "${MNT}"/gparted$2/live/* "${WORK}"/boot/gparted$2 #Compressed filesystem and kernel/initrd
 		rm "${WORK}"/boot/gparted$2/memtest || true #Remember how we needed to do this with Debian Live? They use the same framework
 		umcdmount gparted$2
 	fi
