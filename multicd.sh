@@ -33,7 +33,7 @@ MCDVERSION="20140323"
 #THE SOFTWARE.
 
 #Needs to be changed when a new version of syslinux comes out.
-RECENT_SYSLINUX="4.06"
+RECENT_SYSLINUX="6.03"
 
 mcdclean() {
 	if [ -d "$MNT" ];then
@@ -455,12 +455,15 @@ if [ ! -f syslinux.tar.gz ];then
 fi
 echo "Unpacking and copying SYSLINUX files..."
 tar -C /tmp -xzf syslinux.tar.gz
-cp /tmp/syslinux-*/core/isolinux.bin "${WORK}"/boot/isolinux/
-cp /tmp/syslinux-*/memdisk/memdisk "${WORK}"/boot/isolinux/
-cp /tmp/syslinux-*/com32/menu/menu.c32 "${WORK}"/boot/isolinux/
-cp /tmp/syslinux-*/com32/menu/vesamenu.c32 "${WORK}"/boot/isolinux/
-cp /tmp/syslinux-*/com32/chain/chain.c32 "${WORK}"/boot/isolinux/
-cp /tmp/syslinux-*/utils/isohybrid "${TAGS}"/isohybrid
+cp /tmp/syslinux-*/bios/core/isolinux.bin "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/bios/memdisk/memdisk "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/bios/com32/menu/menu.c32 "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/bios/com32/menu/vesamenu.c32 "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/bios/com32/libutil/libutil.c32 "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/bios/com32/menu/menu.c32 "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/bios/com32/elflink/ldlinux/ldlinux.c32 "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/bios/com32/chain/chain.c32 "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/bios/utils/isohybrid "${TAGS}"/isohybrid
 chmod -R +w "$WORK/boot/isolinux"
 chmod +x "${TAGS}"/isohybrid
 rm -r /tmp/syslinux-*/
