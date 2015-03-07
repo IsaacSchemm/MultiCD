@@ -36,21 +36,40 @@ elif [ $1 = copy ];then
 		echo "Copying FreeDOS..."
 		mcdmount freedos
 		mkdir "${WORK}"/boot/freedos
-		cp -r "${MNT}"/freedos/FREEDOS "${WORK}"/ #Core directory with the packages
-		cp "${MNT}"/freedos/SETUP.BAT "${WORK}"/setup.bat #FreeDOS setup
-		if [ -f "${MNT}"/freedos/ISOLINUX/FDBOOT.IMG ];then
-			cp "${MNT}"/freedos/ISOLINUX/FDBOOT.IMG "${WORK}"/boot/freedos/fdboot.img #Initial DOS boot image
+		if [ -d "${MNT}"/freedos/FREEDOS ];then
+			cp -r "${MNT}"/freedos/FREEDOS "${WORK}"/ #Core directory with the packages
+			cp "${MNT}"/freedos/SETUP.BAT "${WORK}"/setup.bat #FreeDOS setup
+			if [ -f "${MNT}"/freedos/ISOLINUX/FDBOOT.IMG ];then
+				cp "${MNT}"/freedos/ISOLINUX/FDBOOT.IMG "${WORK}"/boot/freedos/fdboot.img #Initial DOS boot image
+			else
+				cp "${MNT}"/freedos/DATA/FDBOOT.IMG "${WORK}"/boot/freedos/fdboot.img
+			fi
+			if [ -d "${MNT}"/freedos/FDOS ];then
+				cp -r "${MNT}"/freedos/FDOS "${WORK}"/ #Live CD
+			fi
+			if [ -d "${MNT}"/freedos/GEMAPPS ];then
+				cp -r "${MNT}"/freedos/GEMAPPS "${WORK}"/ #OpenGEM
+			fi
+			if [ -f "${MNT}"/freedos/GEM.BAT ];then
+				cp -r "${MNT}"/freedos/GEM.BAT "${WORK}"/ #OpenGEM setup
+			fi
 		else
-			cp "${MNT}"/freedos/DATA/FDBOOT.IMG "${WORK}"/boot/freedos/fdboot.img
-		fi
-		if [ -d "${MNT}"/freedos/FDOS ];then
-			cp -r "${MNT}"/freedos/FDOS "${WORK}"/ #Live CD
-		fi
-		if [ -d "${MNT}"/freedos/GEMAPPS ];then
-			cp -r "${MNT}"/freedos/GEMAPPS "${WORK}"/ #OpenGEM
-		fi
-		if [ -f "${MNT}"/freedos/GEM.BAT ];then
-			cp -r "${MNT}"/freedos/GEM.BAT "${WORK}"/ #OpenGEM setup
+			cp -r "${MNT}"/freedos/freedos "${WORK}"/ #Core directory with the packages
+			cp "${MNT}"/freedos/setup.bat "${WORK}"/setup.bat #FreeDOS setup
+			if [ -f "${MNT}"/freedos/isolinux/fdboot.img ];then
+				cp "${MNT}"/freedos/isolinux/fdboot.img "${WORK}"/boot/freedos/fdboot.img #Initial DOS boot image
+			else
+				cp "${MNT}"/freedos/data/fdboot.img "${WORK}"/boot/freedos/fdboot.img
+			fi
+			if [ -d "${MNT}"/freedos/fdos ];then
+				cp -r "${MNT}"/freedos/fdos "${WORK}"/ #Live CD
+			fi
+			if [ -d "${MNT}"/freedos/gemapps ];then
+				cp -r "${MNT}"/freedos/gemapps "${WORK}"/ #OpenGEM
+			fi
+			if [ -f "${MNT}"/freedos/gem.bat ];then
+				cp -r "${MNT}"/freedos/gem.bat "${WORK}"/ #OpenGEM setup
+			fi
 		fi
 		umcdmount freedos
 	fi
