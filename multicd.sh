@@ -437,7 +437,7 @@ if [ -f grub.exe ];then
  cp grub.exe "${WORK}"/boot/grub.exe
 fi
 
-if [ ! -f syslinux.tar.gz ];then
+if [ ! -f syslinux.tar.gz ] || ! tar -tf syslinux.tar.gz | grep -q bios/core/isolinux.bin;then
 	echo "Downloading SYSLINUX..."
 	if $VERBOSE ;then #These will only be run if there is no syslinux.tar.gz
 		if ! wget -t 1 -O syslinux.tar.gz https://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-$RECENT_SYSLINUX.tar.gz;then
