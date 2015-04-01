@@ -10,9 +10,9 @@ export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
-MCDVERSION="20140323"
-#multicd.sh June 21, 2014
-#Copyright (c) 2014 Isaac Schemm
+MCDVERSION="20150331"
+#multicd.sh March 31, 2015
+#Copyright (c) 2015 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -715,12 +715,12 @@ if $TESTISO;then
 	else
 		RAM_TO_USE=128
 	fi
-	if which qemu-system-x86_64 &> /dev/null && uname -m | grep -q 64;then
+	if which qemu-system-x86_64 &> /dev/null;then
 		qemu-system-x86_64 -m $RAM_TO_USE -cdrom ""${OUTPUT}""&
 	elif which qemu &> /dev/null;then
 		qemu -m $RAM_TO_USE -cdrom ""${OUTPUT}""&
 	else
-		echo "Cannot test "${OUTPUT}" in a VM. Please install qemu or qemu-kvm."
+		echo "Cannot test "${OUTPUT}" in a VM. Please install qemu or qemu-system-x86_64."
 	fi
 fi
 
