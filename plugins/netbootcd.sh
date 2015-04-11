@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #NetbootCD 4.8+ plugin for multicd.sh
-#version 7.1
-#Copyright (c) 2011 Isaac Schemm
+#version 20150411
+#Copyright (c) 2015 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,11 @@ elif [ $1 = copy ];then
 		echo "Copying NetbootCD..."
 		mcdmount netbootcd
 		mkdir -p "${WORK}"/boot/nbcd
-		cp "${MNT}"/netbootcd/boot/kexec.bzI "${WORK}"/boot/nbcd/kexec.bzI
+		if [ -f "${MNT}"/netbootcd/boot/kexec.bzI ];then
+			cp "${MNT}"/netbootcd/boot/kexec.bzI "${WORK}"/boot/nbcd/kexec.bzI
+		else # I renamed the kernel back to vmlinuz in 6.1
+			cp "${MNT}"/netbootcd/boot/vmlinuz "${WORK}"/boot/nbcd/vmlinuz
+		fi
 		cp "${MNT}"/netbootcd/boot/nbinit4.gz "${WORK}"/boot/nbcd/nbinit4.gz
 		if [ -d "${MNT}"/netbootcd/cde ];then #combined cd with CorePlus
 			if [ -d "${WORK}"/cde ];then
@@ -48,48 +52,11 @@ elif [ $1 = copy ];then
 			true > "${WORK}"/cde/onboot.lst
 			for i in "${WORK}"/cde/optional/*.tcz;do
 				echo $(basename "$i") >> "${WORK}"/cde/onboot.lst
-			#	cd $(dirname "$i")
-			#	VAR="$(md5sum $i)"
-			#	cd -
-			#	echo "$VAR" > $i.md5.txt
-			#	echo > $i.dep
 			done
 			cp "${MNT}"/netbootcd/boot/core.gz "${WORK}"/boot/nbcd/
-			echo "LABEL nbcd-tinycore
-			menu label Start CorePlus 4.2.1 on top of NetbootCD 4.8
-			kernel /boot/nbcd/kexec.bzI
-			initrd /boot/nbcd/nbinit4.gz
-			append quiet cde showapps
-			text help
-	Uses the initrd of NetbootCD with the TCZ extensions of
-	CorePlus. The result is that CorePlus is loaded first,
-	and NetbootCD is run when you choose \"Exit To Prompt\".
-			endtext
-			
-			LABEL nbcd
-			menu label Start ^NetbootCD 4.8
-			kernel /boot/nbcd/kexec.bzI
-			initrd /boot/nbcd/nbinit4.gz
-			append quiet showapps
-			
-			LABEL core-kexec
-			menu label Start ^Core 4.2.1
-			kernel /boot/nbcd/kexec.bzI
-			initrd /boot/nbcd/core.gz
-			append quiet showapps
-			
-			LABEL tinycore-kexec
-			menu label Start Core^Plus 4.2.1 (with desktop)
-			kernel /boot/nbcd/kexec.bzI
-			initrd /boot/nbcd/core.gz
-			append quiet cde showapps" > "${WORK}"/boot/nbcd/include.cfg
-		else
-			echo "LABEL nbcd
-			menu label Start ^NetbootCD 4.8
-			kernel /boot/nbcd/kexec.bzI
-			initrd /boot/nbcd/nbinit4.gz
-			append quiet showapps" > "${WORK}"/boot/nbcd/include.cfg
+			VERSION="$(cat netbootcd.version)"
 		fi
+		cat "${MNT}"/netbootcd/boot/isolinux/isolinux.cfg | grep -A 1000 "LABEL nbcd" | grep -B 1000 "LABEL grub4dos" | head -n -1 | sed -e 's^/boot/^/boot/nbcd/^g' | sed -e 's/$NBCDVER/6.1/g' > "${WORK}"/boot/nbcd/include.cfg
 		sleep 1;umcdmount netbootcd
 	fi
 elif [ $1 = writecfg ];then
