@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 . "${MCDDIR}"/functions.sh
-#Rescatux plugin for multicd.sh
-#version 20120421
-#Copyright (c) 2012 Isaac Schemm
+#EASEUS Disk Copy plugin for multicd.sh
+#version 6.9
+#Copyright (c) 2010 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,36 +22,18 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = links ];then
-	echo "rescatux_*.iso rescatux.iso none"
-elif [ $1 = scan ];then
-	if [ -f rescatux.iso ];then
-		echo "Rescatux"
+if [ $1 = scan ];then
+	if [ -d "${MCDDIR}/backup" ];then
+        echo "Adding files from backup folder"
+        ls -l "backup"
 	fi
 elif [ $1 = copy ];then
-	if [ -f rescatux.iso ];then
-		echo "Copying Rescatux..."
-		mcdmount rescatux
-		cp "${MNT}"/rescatux/isolinux/live.cfg "${WORK}"/boot/isolinux/rescatux.cfg
-		cp -r "${MNT}"/rescatux/live "${WORK}"/rescatux
-
-		umcdmount rescatux
-		#rm rescatux.iso
+	if [ -d "${MCDDIR}/backup" ];then
+		echo "Copying custom backup folder to ISO..."
+		cp -afrvu "${MCDDIR}/backup" "${WORK}"/
 	fi
 elif [ $1 = writecfg ];then
-	if [ -f rescatux.iso ];then
-		echo "label rescatux
-		menu label >> ^Rescatux
-		com32 menu.c32
-		append rescatux.cfg" >> "${WORK}"/boot/isolinux/isolinux.cfg
-		sed -i -e 's^/live/^/rescatux/^g' "${WORK}"/boot/isolinux/rescatux.cfg
-		sed -i -e 's^boot=live^boot=live live-media-path=/rescatux^g' "${WORK}"/boot/isolinux/rescatux.cfg
-		echo "label back
-		menu label Back to main menu
-		com32 menu.c32
-		append /boot/isolinux/isolinux.cfg
-		" >> "${WORK}"/boot/isolinux/rescatux.cfg
-	fi
+    echo "Nothing to do for write config"
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"

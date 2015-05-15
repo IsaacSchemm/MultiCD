@@ -1,0 +1,5 @@
+*.iso
+*.tar.gz
+**/backup/**
+memtest
+memtestver

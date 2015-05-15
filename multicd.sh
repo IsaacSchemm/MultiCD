@@ -455,14 +455,16 @@ if [ ! -f syslinux.tar.gz ] || ! tar -tf syslinux.tar.gz | grep -q bios/core/iso
 fi
 echo "Unpacking and copying SYSLINUX files..."
 tar -C /tmp -xzf syslinux.tar.gz
+# dependencies to be copied, taken from: http://www.syslinux.org/wiki/index.php/Library_modules#Syslinux_modules_working_dependencies
 cp /tmp/syslinux-*/bios/core/isolinux.bin "${WORK}"/boot/isolinux/
 cp /tmp/syslinux-*/bios/memdisk/memdisk "${WORK}"/boot/isolinux/
 cp /tmp/syslinux-*/bios/com32/menu/menu.c32 "${WORK}"/boot/isolinux/
 cp /tmp/syslinux-*/bios/com32/menu/vesamenu.c32 "${WORK}"/boot/isolinux/
-cp /tmp/syslinux-*/bios/com32/libutil/libutil.c32 "${WORK}"/boot/isolinux/
-cp /tmp/syslinux-*/bios/com32/menu/menu.c32 "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/bios/com32/modules/linux.c32 "${WORK}"/boot/isolinux/
 cp /tmp/syslinux-*/bios/com32/elflink/ldlinux/ldlinux.c32 "${WORK}"/boot/isolinux/
 cp /tmp/syslinux-*/bios/com32/chain/chain.c32 "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/bios/com32/libutil/libutil.c32 "${WORK}"/boot/isolinux/
+cp /tmp/syslinux-*/bios/com32/lib/libcom32.c32 "${WORK}"/boot/isolinux/
 cp /tmp/syslinux-*/bios/utils/isohybrid "${TAGS}"/isohybrid
 chmod -R +w "$WORK/boot/isolinux"
 chmod +x "${TAGS}"/isohybrid
