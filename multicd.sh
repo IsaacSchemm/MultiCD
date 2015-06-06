@@ -10,8 +10,8 @@ export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
-MCDVERSION="20150331"
-#multicd.sh March 31, 2015
+MCDVERSION="20150517"
+#multicd.sh May 17, 2015
 #Copyright (c) 2015 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -601,7 +601,7 @@ cat > "${WORK}"/boot/isolinux/games.cfg << "EOF"
 default menu.c32
 timeout 300
 
-menu title "Choose a game to play:"
+menu title Choose a game to play:
 EOF
 for i in games/*.im[agz]; do
 	test -r "$i" || continue
