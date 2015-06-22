@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Trinity Rescue Kit plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2010 Isaac Schemm
+#version 20150622
+#Copyright (c) 2015 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ elif [ $1 = copy ];then
 		mcdmount trk
 		cp -r "${MNT}"/trk/trk3 "${WORK}"/ #TRK files
 		mkdir "${WORK}"/boot/trinity
-		cp "${MNT}"/trk/isolinux.cfg "${WORK}"/boot/isolinux/trk.menu
+		cp "${MNT}"/trk/syslinux.cfg "${WORK}"/boot/isolinux/trk.menu
 		cp "${MNT}"/trk/kernel.trk "${WORK}"/boot/trinity/kernel.trk
 		cp "${MNT}"/trk/initrd.trk "${WORK}"/boot/trinity/initrd.trk
 		cp "${MNT}"/trk/bootlogo.jpg "${WORK}"/boot/isolinux/trklogo.jpg #Boot logo
@@ -57,8 +57,7 @@ sed -i '/memtest/d' "${WORK}"/boot/isolinux/trk.menu #Remove memtest part3
 echo "
 label back
 menu label ^Back to main menu
-com32 menu.c32
-append isolinux.cfg" >> "${WORK}"/boot/isolinux/trk.menu
+config /boot/isolinux/isolinux.cfg" >> "${WORK}"/boot/isolinux/trk.menu
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
