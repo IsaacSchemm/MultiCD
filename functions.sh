@@ -26,7 +26,7 @@ mcdmount () {
 		OUTPATH=$(cygpath -wa "${MNT}"/$1)
 		"${WIN7ZSEARCHPATH}/7z.exe" x -o"$OUTPATH" "$(cygpath -wa $1.iso)"
 	elif [ $EXTRACTOR = mount ];then
-		mount -o loop,ro $1.iso "${MNT}"/$1/
+		mount -o loop,ro,uid=$(id -u) $1.iso "${MNT}"/$1/
 	elif [ $EXTRACTOR = fuseiso ];then
 		fuseiso $1.iso "${MNT}"/$1 -orw,umask=0000
 	else
