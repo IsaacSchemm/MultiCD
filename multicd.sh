@@ -49,7 +49,6 @@ mcdclean() {
 			rm "$i"
 		fi
 	done
-	echo
 	if [ '*.defaultname' != "$(echo *.defaultname)" ];then
 		for i in *.defaultname;do
 			rm $i
@@ -120,10 +119,10 @@ for i do
 		-i) shift;export INTERACTIVE=true;;
 		-m) shift;export MEMTEST=false;;
 		-o) shift;export OUTPUT="$1";shift;;
-		-t) shift;export TESTISO=true;shift;;
+		-t) shift;export TESTISO=true;;
 		-v) shift;export VERBOSE=true;;
 		-V) shift;echo $MCDVERSION;exit 0;; #quit program
-		-w) shift;export WAIT=true;shift;;
+		-w) shift;export WAIT=true;;
 	esac
 done
 
@@ -166,24 +165,6 @@ mkdir -p "${TAGS}"
 mkdir "${TAGS}"/puppies
 mkdir "${TAGS}"/debians
 chmod -R 777 "${TAGS}"
-
-#START PREPARE#
-
-#Plugin check currently disabled because it seems like more of a distraction than it's worth.
-#One parenthesis is for md5sums that don't match; the other is for plugins that are not listed in plugins.md5
-#UNKNOWNS="$(md5sum -c "${MCDDIR}"/plugins.md5|grep FAILED|awk -F: '{print $1}') $(for i in "${MCDDIR}"/plugins/*.sh;do grep -q $(basename $i) "${MCDDIR}"/plugins.md5||echo $i;done)"
-#if [ "$UNKNOWNS" != " " ];then
-#	echo
-#	echo "Plugins that are not from the official release: $UNKNOWNS"
-#	if [ $(whoami) = root ];then
-#		echo "Make sure you trust every script in the plugins folder - all these scripts will get root access!"
-#	fi
-#	echo "Press Ctrl+C to cancel"
-#	echo
-#	sleep 2
-#fi
-
-#END PREPARE#
 
 isoaliases #This function is in functions.sh
 

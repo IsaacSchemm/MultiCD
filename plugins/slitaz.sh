@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #SliTaz plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2011 Isaac Schemm
+#version 20150721
+#Copyright (c) 2015 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,9 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "slitaz-*.iso slitaz.iso none"
+elif [ $1 = scan ];then
 	if [ -f slitaz.iso ];then
 		echo "SliTaz"
 	fi
@@ -31,52 +33,26 @@ elif [ $1 = copy ];then
 		echo "Copying SliTaz..."
 		mcdmount slitaz
 		mkdir -p "${WORK}"/boot/slitaz
-		cp "${MNT}"/slitaz/boot/bzImage "${WORK}"/boot/slitaz/bzImage #Kernel
-		cp "${MNT}"/slitaz/boot/rootfs1.gz "${WORK}"/boot/slitaz/rootfs1.gz #Root filesystem 1
-		cp "${MNT}"/slitaz/boot/rootfs2.gz "${WORK}"/boot/slitaz/rootfs2.gz #Root filesystem 2
-		cp "${MNT}"/slitaz/boot/rootfs3.gz "${WORK}"/boot/slitaz/rootfs3.gz #Root filesystem 3
-		cp "${MNT}"/slitaz/boot/rootfs4.gz "${WORK}"/boot/slitaz/rootfs4.gz #Root filesystem 4
-		cp "${MNT}"/slitaz/boot/gpxe "${WORK}"/boot/slitaz/gpxe #PXE bootloader
+		mcdcp "${MNT}"/slitaz/boot/bzImage "${WORK}"/boot/slitaz/bzImage #Kernel
+		mcdcp "${MNT}"/slitaz/boot/rootfs.gz "${WORK}"/boot/slitaz/rootfs.gz #Root filesystem
+		mcdcp "${MNT}"/slitaz/boot/ipxe "${WORK}"/boot/slitaz/ipxe #PXE bootloader
 		umcdmount slitaz
 	fi
 elif [ $1 = writecfg ];then
 if [ -f slitaz.iso ];then
-cat >> "${WORK}"/boot/isolinux/isolinux.cfg << "EOF"
-menu begin --> SliTaz GNU/Linux
-
-label core
-	menu label SliTaz core Live
-	kernel /boot/slitaz/bzImage
-	append initrd=/boot/slitaz/rootfs4.gz,/boot/slitaz/rootfs3.gz,/boot/slitaz/rootfs2.gz,/boot/slitaz/rootfs1.gz rw root=/dev/null vga=normal autologin
-
-label gtkonly
-	menu label SliTaz gtkonly Live
-	kernel /boot/slitaz/bzImage
-	append initrd=/boot/slitaz/rootfs4.gz,/boot/slitaz/rootfs3.gz,/boot/slitaz/rootfs2.gz rw root=/dev/null vga=normal autologin
-
-label justx
-	menu label SliTaz justx Live
-	kernel /boot/slitaz/bzImage
-	append initrd=/boot/slitaz/rootfs4.gz,/boot/slitaz/rootfs3.gz rw root=/dev/null vga=normal autologin
-
-label base
-	menu label SliTaz base Live
-	kernel /boot/slitaz/bzImage
-	append initrd=/boot/slitaz/rootfs4.gz rw root=/dev/null vga=normal autologin
-
-label web zeb
-	menu label Web Boot
-	kernel /boot/slitaz/gpxe
-
-label back
-	menu label Back to main menu
-	com32 menu.c32
-
-menu end
-EOF
+	if [ -f "${TAGS}"/lang-full ];then
+		LANGCODE=$(cat "${TAGS}"/lang-full)
+	else
+		LANGCODE=en
+	fi
+echo "LABEL slitaz
+	MENU LABEL ^SliTaz Live
+	KERNEL /boot/slitaz/bzImage
+	APPEND initrd=/boot/slitaz/rootfs.gz rw root=/dev/null autologin lang=$LANGCODE
+	" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi

@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Kapersky Rescue Disk 10 plugin for multicd.sh
-#version 20120325
-#Copyright (c) 2012 Isaac Schemm
+#version 20150721
+#Copyright (c) 2015 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -34,10 +34,10 @@ elif [ $1 = copy ];then
 		mcdmount kav
 		mkdir "${WORK}"/boot/rescue
 		# Kernel, initrd
-		cp -r "${MNT}"/kav/boot/rescue "${WORK}"/boot/rescue/rescue
-		cp -r "${MNT}"/kav/boot/rescue.igz "${WORK}"/boot/rescue/rescue.igz
+		mcdcp -r "${MNT}"/kav/boot/rescue "${WORK}"/boot/rescue/rescue
+		mcdcp -r "${MNT}"/kav/boot/rescue.igz "${WORK}"/boot/rescue/rescue.igz
 		# Filesystem
-		cp -r "${MNT}"/kav/rescue "${WORK}"
+		mcdcp -r "${MNT}"/kav/rescue "${WORK}"
 		umcdmount kav
 	fi
 elif [ $1 = writecfg ];then
@@ -54,19 +54,19 @@ elif [ $1 = writecfg ];then
 		menu label ^Kaspersky Rescue Disk - Graphic Mode
 		kernel /boot/rescue/rescue
 		initrd /boot/rescue/rescue.igz
-		append root=live:CDLABEL=$CDLABEL rootfstype=auto vga=791 init=/init initrd=rescue.igz kav_lang=$LANGCODE udev liveimg splash quiet doscsi nomodeset
+		append root=live:CDLABEL=$CDLABEL rootfstype=auto vga=791 init=/init kav_lang=$LANGCODE udev liveimg splash quiet doscsi nomodeset
 
 		label kav-rescue-text
 		menu label ^Kaspersky Rescue Disk - Text Mode
 		kernel /boot/rescue/rescue
 		initrd /boot/rescue/rescue.igz
-		append root=live:CDLABEL=$CDLABEL rootfstype=auto vga=791 init=/init initrd=rescue.igz kav_lang=$LANGCODE udev liveimg quiet nox kavshell noresume doscsi nomodeset
+		append root=live:CDLABEL=$CDLABEL rootfstype=auto vga=791 init=/init kav_lang=$LANGCODE udev liveimg quiet nox kavshell noresume doscsi nomodeset
 
 		label hardware-info
 		menu label (Kapersky) Hardware Info
 		kernel /boot/rescue/rescue
 		initrd /boot/rescue/rescue.igz
-		append root=live:CDLABEL=$CDLABEL rootfstype=auto vga=791 init=/init initrd=rescue.igz kav_lang=$LANGCODE udev liveimg quiet softlevel=boot nox hwinfo noresume doscsi nomodeset
+		append root=live:CDLABEL=$CDLABEL rootfstype=auto vga=791 init=/init kav_lang=$LANGCODE udev liveimg quiet softlevel=boot nox hwinfo noresume doscsi nomodeset
 
 		label back
 		menu label ^Back to main menu
