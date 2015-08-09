@@ -206,7 +206,7 @@ ubuntucommon () {
 		sed -i "s^KERNEL /casper/^KERNEL /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #For uppercase KERNEL
 
 		#Equivalents for Mint Debian
-		sed -i "s^initrd=/live/^live-media-path=/boot/$1 initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg
+		sed -i "s^initrd=/live/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg
 		sed -i "s^kernel /live/^kernel /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg
 		sed -i "s^KERNEL /live/^KERNEL /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg
 
