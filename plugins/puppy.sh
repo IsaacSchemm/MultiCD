@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Puppy Linux plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2011 Isaac Schemm
+#version 20150816
+#Copyright (c) 2015 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,8 @@ puppyExists () {
 if [ $1 = links ];then
 	echo "lupu-*.iso lupu.puppy.iso none"
 	echo "racy-*.iso racy.puppy.iso none"
+	echo "slacko-*.iso slacko.puppy.iso Slacko_*"
+	echo "tahr-*.iso tahr.puppy.iso Tahrpup_*"
 elif [ $1 = scan ];then
 	if $(puppyExists);then for i in *.puppy.iso;do
 		echo "Puppy Linux"
