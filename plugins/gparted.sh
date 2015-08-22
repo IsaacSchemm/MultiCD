@@ -35,9 +35,19 @@ elif [ $1 = copy ];then
 		echo "Copying GParted Live for $2..."
 		mcdmount gparted$2
 		mkdir "${WORK}"/boot/gparted$2
-		mcdcp -r "${MNT}"/gparted$2/live/* "${WORK}"/boot/gparted$2 #Compressed filesystem and kernel/initrd
-		rm "${WORK}"/boot/gparted$2/memtest || true #Remember how we needed to do this with Debian Live? They use the same framework
+		mcdcp -r "${MNT}"/gparted$2/live "${WORK}"/boot/gparted$2 #Compressed filesystem and kernel/initrd
+		mcdcp -r "${MNT}"/gparted$2/syslinux "${WORK}"/boot/gparted$2
+		rm "${WORK}"/boot/gparted$2/live/memtest || true #Remember how we needed to do this with Debian Live? They use the same framework
 		umcdmount gparted$2
+		sed -i 's|/live/vmlinuz|/boot/gparted/live/vmlinuz|g' "${WORK}"/boot/gparted$2/syslinux/syslinux.cfg
+		sed -i 's|initrd=/live/initrd.img|initrd=/boot/gparted/live/initrd.img|g' "${WORK}"/boot/gparted$2/syslinux/syslinux.cfg
+		sed -i 's/label local/# &/' "${WORK}"/boot/gparted$2/syslinux/syslinux.cfg
+		sed -i 's/label memtest/# &/' "${WORK}"/boot/gparted$2/syslinux/syslinux.cfg
+		sed -i 's/timeout/# &/' "${WORK}"/boot/gparted$2/syslinux/syslinux.cfg
+		sed -i 's/ vga=791//g' "${WORK}"/boot/gparted$2/syslinux/syslinux.cfg
+		sed -i 's/ vga=normal//g' "${WORK}"/boot/gparted$2/syslinux/syslinux.cfg
+		sed -i 's/ quiet//g' "${WORK}"/boot/gparted$2/syslinux/syslinux.cfg
+		sed -i 's|nosplash|& vga=792 nomodeset live-media-path=/boot/gparted/live|' "${WORK}"/boot/gparted$2/syslinux/syslinux.cfg
 	fi
 elif [ $1 = writecfg ];then
 if [ -f gparted$2.iso ];then
@@ -46,56 +56,13 @@ if [ -f gparted$2.iso ];then
 	else
 		AP=""
 	fi
-echo "menu begin >> GParted Live $2
+cat <<EOF >> "${WORK}"/boot/isolinux/isolinux.cfg
 
-# Since no network setting in the squashfs image, therefore if ip=frommedia, the network is disabled. That's what we want.
-label GParted Live
-  # MENU HIDE
-  MENU LABEL GParted Live for $2 (Default settings)
-  # MENU PASSWD
-  kernel /boot/gparted$2/vmlinuz$AP
-  append initrd=/boot/gparted$2/initrd$AP.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset vga=788 ip=frommedia nosplash live-media-path=/boot/gparted$2
-  TEXT HELP
-  * GParted live version: $(cat gparted$2.version). Live version maintainer: Steven Shiau
-  * Disclaimer: GParted live comes with ABSOLUTELY NO WARRANTY
-  ENDTEXT
+label gparted
+menu label GParted LiveCD
+config /boot/gparted/syslinux/syslinux.cfg
 
-label GParted Live (To RAM)
-  # MENU DEFAULT
-  # MENU HIDE
-  MENU LABEL GParted Live for $2 (To RAM. Boot media can be removed later)
-  # MENU PASSWD
-  kernel /boot/gparted$2/vmlinuz$AP
-  append initrd=/boot/gparted$2/initrd$AP.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset noprompt vga=788 toram=filesystem.squashfs live-media-path=/boot/gparted$2 ip=frommedia  nosplash
-  TEXT HELP
-  All the programs will be copied to RAM, so you can
-  remove boot media (CD or USB flash drive) later
-  ENDTEXT
-
-label GParted Live without framebuffer
-  # MENU DEFAULT
-  # MENU HIDE
-  MENU LABEL GParted Live for $2 (Safe graphic settings, vga=normal)
-  # MENU PASSWD
-  kernel /boot/gparted$2/vmlinuz$AP
-  append initrd=/boot/gparted$2/initrd$AP.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset ip=frommedia vga=normal nosplash live-media-path=/boot/gparted$2
-  TEXT HELP
-  Disable console frame buffer support
-  ENDTEXT
-
-label GParted Live failsafe mode
-  # MENU DEFAULT
-  # MENU HIDE
-  MENU LABEL GParted Live for $2 (Failsafe mode)
-  # MENU PASSWD
-  kernel /boot/gparted$2/vmlinuz$AP
-  append initrd=/boot/gparted$2/initrd$AP.img boot=live config i915.modeset=0 xforcevesa radeon.modeset=0 noswap nomodeset acpi=off irqpoll noapic noapm nodma nomce nolapic nosmp ip=frommedia vga=normal nosplash live-media-path=/boot/gparted$2
-  TEXT HELP
-  acpi=off irqpoll noapic noapm nodma nomce nolapic 
-  nosmp vga=normal nosplash
-  ENDTEXT
-MENU END
-" >> "${WORK}"/boot/isolinux/isolinux.cfg
+EOF
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

@@ -34,9 +34,9 @@ elif [ $1 = copy ];then
 		mcdmount rescatux
 		cp "${MNT}"/rescatux/isolinux/live.cfg "${WORK}"/boot/isolinux/rescatux.cfg
 		cp -r "${MNT}"/rescatux/live "${WORK}"/rescatux
-
 		umcdmount rescatux
 		#rm rescatux.iso
+		sed -i 's/label rescatux-autodetect/# &/' "${WORK}"/boot/isolinux/rescatux.cfg
 	fi
 elif [ $1 = writecfg ];then
 	if [ -f rescatux.iso ];then

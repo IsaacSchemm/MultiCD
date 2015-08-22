@@ -54,6 +54,7 @@ if [ -f hirens.iso ];then
 echo "label hirens
 menu label --> ^$(cat "${TAGS}"/hirens.name) - main menu
 com32 menu.c32
+chainload /HBCD/isolinux.bin
 append /HBCD/isolinux.cfg" >> "${WORK}"/boot/isolinux/isolinux.cfg
 rm "${TAGS}"/hirens.name
 fi
