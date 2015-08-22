@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #SliTaz plugin for multicd.sh
-#version 20150721
+#version 20150821
 #Copyright (c) 2015 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,8 +34,8 @@ elif [ $1 = copy ];then
 		mcdmount slitaz
 		mkdir -p "${WORK}"/boot/slitaz
 		mcdcp "${MNT}"/slitaz/boot/bzImage "${WORK}"/boot/slitaz/bzImage #Kernel
-		mcdcp "${MNT}"/slitaz/boot/rootfs.gz "${WORK}"/boot/slitaz/rootfs.gz #Root filesystem
-		mcdcp "${MNT}"/slitaz/boot/ipxe "${WORK}"/boot/slitaz/ipxe #PXE bootloader
+		mcdcp "${MNT}"/slitaz/boot/rootfs*.gz "${WORK}"/boot/slitaz/ #Root filesystem
+		mcdcp "${MNT}"/slitaz/boot/*pxe "${WORK}"/boot/slitaz/ #PXE bootloader
 		umcdmount slitaz
 	fi
 elif [ $1 = writecfg ];then
@@ -45,11 +45,52 @@ if [ -f slitaz.iso ];then
 	else
 		LANGCODE=en
 	fi
-echo "LABEL slitaz
-	MENU LABEL ^SliTaz Live
-	KERNEL /boot/slitaz/bzImage
-	APPEND initrd=/boot/slitaz/rootfs.gz rw root=/dev/null autologin lang=$LANGCODE
-	" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	if [ -f "${WORK}/boot/slitaz/rootfs.gz" ];then
+		# new version 5.0
+		echo "LABEL slitaz
+			MENU LABEL ^SliTaz Live
+			KERNEL /boot/slitaz/bzImage
+			APPEND initrd=/boot/slitaz/rootfs.gz rw root=/dev/null autologin lang=$LANGCODE
+
+		label web zeb
+			menu label Web Boot
+			kernel /boot/slitaz/ipxe" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	else
+		#old version 4.0
+		cat >> "${WORK}"/boot/isolinux/isolinux.cfg << "EOF"
+		menu begin --> SliTaz GNU/Linux
+
+		label core
+			menu label SliTaz core Live
+			kernel /boot/slitaz/bzImage
+			append initrd=/boot/slitaz/rootfs4.gz,/boot/slitaz/rootfs3.gz,/boot/slitaz/rootfs2.gz,/boot/slitaz/rootfs1.gz rw root=/dev/null vga=normal autologin
+
+		label gtkonly
+			menu label SliTaz gtkonly Live
+			kernel /boot/slitaz/bzImage
+			append initrd=/boot/slitaz/rootfs4.gz,/boot/slitaz/rootfs3.gz,/boot/slitaz/rootfs2.gz rw root=/dev/null vga=normal autologin
+
+		label justx
+			menu label SliTaz justx Live
+			kernel /boot/slitaz/bzImage
+			append initrd=/boot/slitaz/rootfs4.gz,/boot/slitaz/rootfs3.gz rw root=/dev/null vga=normal autologin
+
+		label base
+			menu label SliTaz base Live
+			kernel /boot/slitaz/bzImage
+			append initrd=/boot/slitaz/rootfs4.gz rw root=/dev/null vga=normal autologin
+
+		label web zeb
+			menu label Web Boot
+			kernel /boot/slitaz/gpxe
+
+		label back
+			menu label Back to main menu
+			com32 menu.c32
+
+		menu end
+EOF
+	fi
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
