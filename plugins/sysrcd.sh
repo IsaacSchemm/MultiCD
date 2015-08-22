@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #SystemRescueCd plugin for multicd.sh
-#version 20150816
+#version 20150821
 #Copyright (c) 2010-2015 Isaac Schemm and Pascal De Vuyst
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -56,7 +56,7 @@ append sysrcd.cfg
 #GNU sed syntax
 sed -i -e 's/LINUX /LINUX \/boot\/sysrcd\//g' -e 's/INITRD /INITRD \/boot\/sysrcd\//g' -e 's/\/bootdisk/\/boot\/sysrcd\/bootdisk/g' -e 's/\/ntpasswd/\/boot\/sysrcd\/ntpasswd/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV Change directory to /boot/sysrcd
 sed -i -e 's/APPEND maps/append maps/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV don't change APPEND maps lines
-sed -i -e 's/APPEND rescue64.*rescue32/APPEND initrd=\/boot\/sysrcd\/initram.igz/g' -e 's/ifcpu64.c32/\/boot\/sysrcd\/rescue32/g' "${WORK}"/boot/isolinux/sysrcd.cfg # Remove ifcpu64.c32; just use 32-bit kernel by default
+sed -i -e 's/APPEND rescue64.*rescue32/APPEND initrd=\/boot\/sysrcd\/initram.igz/g' -e 's/ifcpu64.c32/\/boot\/sysrcd\/rescue64/g' "${WORK}"/boot/isolinux/sysrcd.cfg # Remove ifcpu64.c32; just use 32-bit kernel by default
 sed -i -e 's/APPEND/APPEND subdir=\/boot\/sysrcd/g' "${WORK}"/boot/isolinux/sysrcd.cfg #PDV Tell the kernel we moved it
 sed -i -e 's/1. SystemRescueCd with default options/1. SystemRescueCd with default options\nAPPEND subdir=\/boot\/sysrcd/g' "${WORK}"/boot/isolinux/sysrcd.cfg #Tell the kernel we moved it (when no existing options)
 if [ -f "${TAGS}"/country ];then #PDV
