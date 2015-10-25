@@ -1,8 +1,7 @@
 #!/bin/bash
 trap exit ERR
 
-#MCDDIR: directory where functions.sh, plugins.md5 and plugins folder are
-#expected to be. Not used in a combined .sh file.
+#MCDDIR: directory where functions.sh, plugins.md5 and plugins folder are expected to be.
 
 ( ionice -c 2 -n 6 -p $$ || true ) 2> /dev/null
 
@@ -10,8 +9,8 @@ export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
-MCDVERSION="20150517"
-#multicd.sh May 17, 2015
+MCDVERSION="20151025"
+#multicd.sh Oct. 25, 2015
 #Copyright (c) 2015 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -240,22 +239,6 @@ Examples: fr_FR = Francais (France); es_ES = Espanol (Espana)" 12 50 "${LANGFULL
 Leaving this blank will typically default to QWERTY (US).\n\
 Examples: fr (AZERTY France), fr_CH (QWERTZ Switzerland)" 12 50 "${COUNTRY}" 2> "${TAGS}"/country
 
-	if [ -f slax.iso ];then
-		dialog --checklist "Slax modules to include:" 13 45 6 \
-		002 Xorg on \
-		003 KDE on \
-		004 "KDE applications" on \
-		005 "KDE Office" on \
-		006 Development on \
-		007 Firefox on \
-		2> "${TAGS}"/slaxlist0
-		echo >> "${TAGS}"/slaxlist0
-		cat "${TAGS}"/slaxlist0|sed -e 's/"//g' -e 's/ /\n/g'>"${TAGS}"/slaxlist
-		rm "${TAGS}"/slaxlist0
-		if wc -c "${TAGS}"/slaxlist|grep -q 24;then #24 bytes means they are all checked
-			rm "${TAGS}"/slaxlist #If they are all checked, delete the file
-		fi
-	fi
 	if [ -f porteus.iso ];then
 		dialog --checklist "Porteus modules to include:" 13 45 6 \
 		002 Xorg on \
