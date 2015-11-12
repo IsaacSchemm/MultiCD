@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #GParted Live plugin for multicd.sh
-#version 20150821
+#version 20151111
 #Copyright (c) 2011-2015 Isaac Schemm and others
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,44 +22,65 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = links ];then
-	echo "gparted-live-*.iso gparted.iso none"
-elif [ $1 = scan ];then
-	if [ -f gparted.iso ];then
-		echo "GParted Live"
-	fi
-elif [ $1 = copy ];then
-	if [ -f gparted.iso ];then
-		echo "Copying GParted Live..."
-		mcdmount gparted
-		mkdir "${WORK}"/boot/gparted
-		mcdcp -r "${MNT}"/gparted*/live "${WORK}"/boot/gparted #Compressed filesystem and kernel/initrd
-		mcdcp -r "${MNT}"/gparted*/syslinux "${WORK}"/boot/gparted
-		rm "${WORK}"/boot/gparted*/live/memtest || true #Remember how we needed to do this with Debian Live? They use the same framework
-		umcdmount gparted
-		sed -i 's|/live/vmlinuz|/boot/gparted/live/vmlinuz|g' "${WORK}"/boot/gparted/syslinux/syslinux.cfg
-		sed -i 's|initrd=/live/initrd.img|initrd=/boot/gparted/live/initrd.img|g' "${WORK}"/boot/gparted/syslinux/syslinux.cfg
-		sed -i 's/label local/# &/' "${WORK}"/boot/gparted/syslinux/syslinux.cfg
-		sed -i 's/label memtest/# &/' "${WORK}"/boot/gparted/syslinux/syslinux.cfg
-		sed -i 's/timeout/# &/' "${WORK}"/boot/gparted/syslinux/syslinux.cfg
-		sed -i 's/ vga=791//g' "${WORK}"/boot/gparted/syslinux/syslinux.cfg
-		sed -i 's/ vga=normal//g' "${WORK}"/boot/gparted/syslinux/syslinux.cfg
-		sed -i 's/ quiet//g' "${WORK}"/boot/gparted/syslinux/syslinux.cfg
-		sed -i 's|nosplash|& vga=792 nomodeset live-media-path=/boot/gparted/live|' "${WORK}"/boot/gparted/syslinux/syslinux.cfg
-	fi
-elif [ $1 = writecfg ];then
-if [ -f gparted.iso ];then
-	if [ -f "${WORK}"/gparted/vmlinuz1 ];then
-		AP="1"
-	else
-		AP=""
-	fi
-echo "label gparted
-menu label GParted LiveCD
-config /boot/gparted/syslinux/syslinux.cfg
 
-" >> "${WORK}"/boot/isolinux/isolinux.cfg
-fi
+getName () {
+	BASENAME=$(echo $i|sed -e 's/\.iso//g')
+	#get name
+	if [ -f "${TAGS}"/$BASENAME.name ] && [ "$(cat "${TAGS}"/$BASENAME.name)" != "" ];then
+		NAME=$(cat "${TAGS}"/$BASENAME.name)
+	elif [ -f $BASENAME.defaultname ] && [ "$(cat $BASENAME.defaultname)" != "" ];then
+		NAME="$(cat $BASENAME.defaultname)"
+	else
+		NAME="GParted Live"
+	fi
+	#return
+	echo ${NAME}
+}
+
+if [ $1 = links ];then
+	echo "gparted.iso auto.gparted.iso none"
+	echo "gparted-live-*.iso auto.gparted.iso GParted_*"
+elif [ $1 = scan ];then
+	for i in *.gparted.iso; do
+		if [ -f $i ];then
+			getName
+		fi
+	done
+elif [ $1 = copy ];then
+	for i in *.gparted.iso; do
+		if [ -f $i ];then
+			echo "Copying GParted Live ($i)..."
+			BASENAME=$(echo $i|sed -e 's/\.iso//g')
+			mcdmount $BASENAME
+			mkdir "${WORK}"/boot/$BASENAME
+			mcdcp -r "${MNT}"/$BASENAME/live "${WORK}"/boot/$BASENAME #Compressed filesystem and kernel/initrd
+			mcdcp -r "${MNT}"/$BASENAME/syslinux "${WORK}"/boot/$BASENAME
+			rm "${WORK}"/boot/$BASENAME/live/memtest || true
+			umcdmount $BASENAME
+			sed -i "s|/live/vmlinuz|/boot/$BASENAME/live/vmlinuz|g" "${WORK}"/boot/$BASENAME/syslinux/syslinux.cfg
+			sed -i "s|initrd=/live/initrd.img|initrd=/boot/$BASENAME/live/initrd.img|g" "${WORK}"/boot/$BASENAME/syslinux/syslinux.cfg
+			sed -i 's/label local/# &/' "${WORK}"/boot/$BASENAME/syslinux/syslinux.cfg
+			sed -i 's/label memtest/# &/' "${WORK}"/boot/$BASENAME/syslinux/syslinux.cfg
+			sed -i 's/timeout/# &/' "${WORK}"/boot/$BASENAME/syslinux/syslinux.cfg
+			sed -i 's/ vga=791//g' "${WORK}"/boot/$BASENAME/syslinux/syslinux.cfg
+			sed -i 's/ vga=normal//g' "${WORK}"/boot/$BASENAME/syslinux/syslinux.cfg
+			sed -i 's/ quiet//g' "${WORK}"/boot/$BASENAME/syslinux/syslinux.cfg
+			sed -i "s|nosplash|& vga=792 nomodeset live-media-path=/boot/$BASENAME/live|" "${WORK}"/boot/$BASENAME/syslinux/syslinux.cfg
+		fi
+	done
+elif [ $1 = writecfg ];then
+	j=0
+	for i in *.gparted.iso; do
+		j=$(($j+1))
+		if [ -f $i ];then
+			BASENAME=$(echo $i|sed -e 's/\.iso//g')
+			echo "label gparted$j
+			menu label ^$(getName)
+			config /boot/$BASENAME/syslinux/syslinux.cfg
+
+			" >> "${WORK}"/boot/isolinux/isolinux.cfg
+		fi
+	done
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
