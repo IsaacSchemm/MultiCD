@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 . "${MCDDIR}"/functions.sh
 #Caine plugin for multicd.sh

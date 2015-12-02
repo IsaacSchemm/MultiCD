@@ -9,8 +9,8 @@ export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
-MCDVERSION="20151025"
-#multicd.sh Oct. 25, 2015
+MCDVERSION="20151201"
+#multicd.sh Dec. 1, 2015
 #Copyright (c) 2015 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -137,6 +137,8 @@ if [ $(whoami) = root ] && uname|grep -q Linux;then
 	export EXTRACTOR=mount #When possible, loop-mount is preferred because it is faster (files are copied once, not twice, before the ISO is generated) and because it runs without an X server. However, it is only available to root, which opens up security risks.
 elif which fuseiso &> /dev/null; then
 	export EXTRACTOR=fuseiso
+elif which bsdtar &> /dev/null;then
+	export EXTRACTOR=bsdtar #bsdtar is a command line application
 elif [ -f "$WIN7ZSEARCHPATH/7z.exe" ];then
 	export EXTRACTOR=win7z
 elif which 7z &> /dev/null;then
@@ -147,10 +149,10 @@ elif which file-roller &> /dev/null;then
 	export EXTRACTOR=file-roller #file-roller is a GNOME application
 else
 	if !(uname|grep -q Linux);then
-		echo "Unless fuseiso, 7z, file-roller or ark is installed to extract ISOs, only Linux kernels are supported (due to the use of \"-o loop\")."
+		echo "Unless bsdtar, 7z, file-roller or ark is installed to extract ISOs, only Linux kernels are supported."
 		exit 1
 	elif [ $(whoami) != "root" ];then
-		echo "Unless file-roller, ark or 7z is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
+		echo "Unless bsdtar, file-roller, ark or 7z is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
 		exit 1
 	fi
 fi

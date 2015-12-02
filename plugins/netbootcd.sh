@@ -56,7 +56,7 @@ elif [ $1 = copy ];then
 			cp "${MNT}"/netbootcd/boot/core.gz "${WORK}"/boot/nbcd/
 			VERSION="$(cat netbootcd.version)"
 		fi
-		cat "${MNT}"/netbootcd/boot/isolinux/isolinux.cfg | grep -A 1000 "LABEL nbcd" | grep -B 1000 "LABEL grub4dos" | head -n -1 | sed -e 's^/boot/^/boot/nbcd/^g' | sed -e 's/$NBCDVER/6.1/g' | sed -e '/menu default/d' > "${WORK}"/boot/nbcd/include.cfg
+		cat "${MNT}"/netbootcd/boot/isolinux/isolinux.cfg | grep -A 1000 "LABEL nbcd" | grep -B 1000 "LABEL grub4dos" | sed -e 's/LABEL grub4dos//g' | sed -e 's^/boot/^/boot/nbcd/^g' | sed -e 's/$NBCDVER/6.1/g' | sed -e '/menu default/d' > "${WORK}"/boot/nbcd/include.cfg
 		sleep 1;umcdmount netbootcd
 	fi
 elif [ $1 = writecfg ];then
