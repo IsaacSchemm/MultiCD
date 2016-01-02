@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #NetbootCD 4.8+ plugin for multicd.sh
-#version 20150411
-#Copyright (c) 2015 Isaac Schemm
+#version 20160102
+#Copyright (c) 2016 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -54,6 +54,9 @@ elif [ $1 = copy ];then
 				echo $(basename "$i") >> "${WORK}"/cde/onboot.lst
 			done
 			cp "${MNT}"/netbootcd/boot/core.gz "${WORK}"/boot/nbcd/
+			if [ -f "${MNT}"/netbootcd/boot/ipxe.krn ];then
+				cp "${MNT}"/netbootcd/boot/ipxe.krn "${WORK}"/boot/nbcd/
+			fi
 			VERSION="$(cat netbootcd.version)"
 		fi
 		cat "${MNT}"/netbootcd/boot/isolinux/isolinux.cfg | grep -A 1000 "LABEL nbcd" | grep -B 1000 "LABEL grub4dos" | sed -e 's/LABEL grub4dos//g' | sed -e 's^/boot/^/boot/nbcd/^g' | sed -e 's/$NBCDVER/6.1/g' | sed -e '/menu default/d' > "${WORK}"/boot/nbcd/include.cfg
