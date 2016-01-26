@@ -437,18 +437,22 @@ chmod +x "${TAGS}"/isohybrid
 rm -r /tmp/syslinux-*/
 
 if $MEMTEST;then
+	if [ -f memtest ] && [ -f memtestver ] && [ "$(cat memtestver)" = "v4.20" ];then
+		rm memtest
+		rm memtestver
+	fi
 	if [ -f memtest ] && [ "$(wc -c memtest)" != "0" ];then
 		cp memtest "${WORK}"/boot/memtest
 	else
-		echo "Downloading memtest86+ 4.20 from memtest.org..."
+		echo "Downloading memtest86+ 5.01 from memtest.org..."
 		if $VERBOSE;then
-			wget -O- http://memtest.org/download/4.20/memtest86+-4.20.bin.gz|gzip -cd>memtest
+			wget -O- http://www.memtest.org/download/5.01/memtest86+-5.01.bin.gz|gzip -cd>memtest
 		else
-			wget -qO- http://memtest.org/download/4.20/memtest86+-4.20.bin.gz|gzip -cd>memtest
+			wget -qO- http://www.memtest.org/download/5.01/memtest86+-5.01.bin.gz|gzip -cd>memtest
 		fi
 		if [ -f memtest ] && [ "$(wc -c memtest)" != "0 memtest" ];then
 			cp memtest "${WORK}"/boot/memtest
-			echo 'v4.20' > memtestver
+			echo 'v5.01' > memtestver
 		else
 			echo "Download of memtest failed."
 		fi
