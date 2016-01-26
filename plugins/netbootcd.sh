@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #NetbootCD 4.8+ plugin for multicd.sh
-#version 20160102
+#version 20160126
 #Copyright (c) 2016 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,6 +24,8 @@ set -e
 #THE SOFTWARE.
 if [ $1 = links ];then
 	echo "NetbootCD-*.iso netbootcd.iso none"
+	echo "NetbootCD.iso netbootcd.iso none"
+	echo "NetbootCD+CorePlus.iso netbootcd.iso none"
 elif [ $1 = scan ];then
 	if [ -f netbootcd.iso ];then
 		echo "NetbootCD"
@@ -35,7 +37,8 @@ elif [ $1 = copy ];then
 		mkdir -p "${WORK}"/boot/nbcd
 		if [ -f "${MNT}"/netbootcd/boot/kexec.bzI ];then
 			cp "${MNT}"/netbootcd/boot/kexec.bzI "${WORK}"/boot/nbcd/kexec.bzI
-		else # I renamed the kernel back to vmlinuz in 6.1
+		else
+			# Using the Tiny Core kernel since 6.1 - it already has kexec support
 			cp "${MNT}"/netbootcd/boot/vmlinuz "${WORK}"/boot/nbcd/vmlinuz
 		fi
 		cp "${MNT}"/netbootcd/boot/nbinit4.gz "${WORK}"/boot/nbcd/nbinit4.gz
@@ -44,6 +47,7 @@ elif [ $1 = copy ];then
 				echo "NOTE: combining TCZ folders of TinyCore and NetbootCD+CorePlus."
 			fi
 			cp -r "${MNT}"/netbootcd/cde "${WORK}"
+			#copy additional tcz files from multicd folder, if any
 			for i in `ls -1 *.tcz 2> /dev/null;true`;do
 				echo "Copying: $i"
 				cp $i "${WORK}"/cde/optional/"$i"
@@ -54,12 +58,18 @@ elif [ $1 = copy ];then
 				echo $(basename "$i") >> "${WORK}"/cde/onboot.lst
 			done
 			cp "${MNT}"/netbootcd/boot/core.gz "${WORK}"/boot/nbcd/
-			if [ -f "${MNT}"/netbootcd/boot/ipxe.krn ];then
+			if [ -f "${MNT}"/netbootcd/boot/ipxe ];then
+				# 7.0
+				cp "${MNT}"/netbootcd/boot/ipxe "${WORK}"/boot/nbcd/
+			elif [ -f "${MNT}"/netbootcd/boot/ipxe.krn ];then
+				# 6.4.1
 				cp "${MNT}"/netbootcd/boot/ipxe.krn "${WORK}"/boot/nbcd/
 			fi
-			VERSION="$(cat netbootcd.version)"
+			if [ -f "${MNT}"/netbootcd/boot/grub.exe ];then
+				cp "${MNT}"/netbootcd/boot/grub.exe "${WORK}"/boot/nbcd/
+			fi
 		fi
-		cat "${MNT}"/netbootcd/boot/isolinux/isolinux.cfg | grep -A 1000 "LABEL nbcd" | grep -B 1000 "LABEL grub4dos" | sed -e 's/LABEL grub4dos//g' | sed -e 's^/boot/^/boot/nbcd/^g' | sed -e 's/$NBCDVER/6.1/g' | sed -e '/menu default/d' > "${WORK}"/boot/nbcd/include.cfg
+		cat "${MNT}"/netbootcd/boot/isolinux/isolinux.cfg | grep -A 1000 "LABEL nbcd" | sed -e 's/LABEL grub4dos/LABEL nbcd-grub4dos/g' | sed -e 's/menu label ^GRUB4DOS/menu label (NetbootCD) ^GRUB4DOS/g' | sed -e 's^/boot/^/boot/nbcd/^g' | sed -e 's/$NBCDVER/6.1/g' | sed -e '/menu default/d' > "${WORK}"/boot/nbcd/include.cfg
 		sleep 1;umcdmount netbootcd
 	fi
 elif [ $1 = writecfg ];then
