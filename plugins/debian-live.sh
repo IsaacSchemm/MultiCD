@@ -83,7 +83,7 @@ elif [ $1 = copy ];then
 					echo "Warning: You selected $BASENAME to be installable, but there is no \"install\" folder on the disk."
 				fi
 			fi
-			mcdcp -rv "${MNT}"/$BASENAME/live "${WORK}"/$BASENAME
+			mcdcp -rv "${MNT}"/$BASENAME/live "${WORK}"/$LIVEFOLDER
 			umcdmount $BASENAME
 		done
 		if [ -f "${WORK}"/live/memtest ];then
