@@ -26,6 +26,7 @@ if [ $1 = links ];then
 	echo "NetbootCD-*.iso netbootcd.iso none"
 	echo "NetbootCD.iso netbootcd.iso none"
 	echo "NetbootCD+CorePlus.iso netbootcd.iso none"
+	echo "NetbootCD.CorePlus.iso netbootcd.iso none"
 elif [ $1 = scan ];then
 	if [ -f netbootcd.iso ];then
 		echo "NetbootCD"
