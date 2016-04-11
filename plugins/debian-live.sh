@@ -70,7 +70,8 @@ elif [ $1 = copy ];then
 			echo "Copying $(getDebianName)..."
 			BASENAME=$(echo $i|sed -e 's/\.iso//g')
 			mcdmount $BASENAME
-			cp "${MNT}"/$BASENAME/isolinux/live.cfg "${WORK}"/boot/isolinux/$BASENAME.cfg
+			cp "${MNT}"/$BASENAME/isolinux/live.cfg "${WORK}"/boot/isolinux/$BASENAME.cfg ||
+				cp "${MNT}"/$BASENAME/boot/live.cfg "${WORK}"/boot/isolinux/$BASENAME.cfg
 			LIVEFOLDER=$BASENAME
 			if [ -f "$TAGS"/debians/$BASENAME.inroot ];then
 				LIVEFOLDER=live
@@ -83,7 +84,8 @@ elif [ $1 = copy ];then
 					echo "Warning: You selected $BASENAME to be installable, but there is no \"install\" folder on the disk."
 				fi
 			fi
-			mcdcp -rv "${MNT}"/$BASENAME/live "${WORK}"/$LIVEFOLDER
+			mkdir "${WORK}"/$LIVEFOLDER
+			mcdcp -rv "${MNT}"/$BASENAME/live/* "${WORK}"/$LIVEFOLDER
 			umcdmount $BASENAME
 		done
 		if [ -f "${WORK}"/live/memtest ];then
