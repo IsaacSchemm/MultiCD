@@ -9,9 +9,9 @@ export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
-MCDVERSION="20151201"
-#multicd.sh Dec. 1, 2015
-#Copyright (c) 2015 Isaac Schemm
+MCDVERSION="20160715"
+#multicd.sh July 15, 2016
+#Copyright (c) 2016 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -441,7 +441,7 @@ if $MEMTEST;then
 		rm memtest
 		rm memtestver
 	fi
-	if [ -f memtest ] && [ "$(wc -c memtest)" != "0" ];then
+	if [ -f memtest ] && [ -f memtestver ] && [ "$(wc -c memtest)" != "0" ];then
 		cp memtest "${WORK}"/boot/memtest
 	else
 		echo "Downloading memtest86+ 5.01 from memtest.org..."
@@ -603,7 +603,7 @@ if $DEBUG;then
 	chmod -R a+w "${WORK}"/boot/isolinux #So regular users can edit menus
 	echo "    Dropping to $(whoami) prompt. Type \"exit\" to build the ISO image."
 	echo "    Don't do anything hasty."
-	echo "PS1=\"    mcd debug# \"">/tmp/mcdprompt
+	echo "PS1=\"multicd:\$PS1\"">/tmp/mcdprompt
 	bash --rcfile /tmp/mcdprompt
 	rm /tmp/mcdprompt || true
 fi
