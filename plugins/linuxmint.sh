@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 . "${MCDDIR}"/functions.sh
 #Linux Mint plugin for multicd.sh
@@ -54,7 +54,12 @@ getLinuxmintName () {
 #END FUNCTIONS#
 
 if [ $1 = links ];then
-	echo "linuxmint-*.iso mint.linuxmint.iso Linux_Mint"
+	for i in linuxmint-*.iso; do
+		read BNAME VERS < <(getLinuxmintName $i)
+		[ "$VERS" == "" ] && VERS=" $(echo $BNAME | sed -e "s/linuxmint-//")"
+		VERS=$(echo $VERS | tr '-' '_')
+		echo "$i $BNAME.linuxmint.iso Linux_Mint_$VERS"
+	done
 elif [ $1 = scan ];then
 	if $(linuxmintExists);then
 		for i in *.linuxmint.iso; do
