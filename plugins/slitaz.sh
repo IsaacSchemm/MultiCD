@@ -33,7 +33,6 @@ elif [ $1 = copy ];then
 		echo "Copying SliTaz..."
 		mcdmount slitaz
 		mkdir -p "${WORK}"/boot/slitaz
-		sleep 1
 		mcdcp "${MNT}"/slitaz/boot/bzImage* "${WORK}"/boot/slitaz/bzImage #Kernel
 		mcdcp "${MNT}"/slitaz/boot/rootfs*.gz "${WORK}"/boot/slitaz/ #Root filesystem
 		mcdcp "${MNT}"/slitaz/boot/*pxe "${WORK}"/boot/slitaz/ #PXE bootloader

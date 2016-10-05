@@ -9,8 +9,8 @@ export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
-MCDVERSION="20160715"
-#multicd.sh July 15, 2016
+MCDVERSION="20161005"
+#multicd.sh October 5, 2016
 #Copyright (c) 2016 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -145,14 +145,14 @@ elif which 7z &> /dev/null;then
 	export EXTRACTOR=7z #7z is a command line application
 elif which ark &> /dev/null;then
 	export EXTRACTOR=ark #Ark is a KDE application
-elif which file-roller &> /dev/null;then
-	export EXTRACTOR=file-roller #file-roller is a GNOME application
+#elif which file-roller &> /dev/null;then
+#	export EXTRACTOR=file-roller #file-roller is a GNOME application
 else
 	if !(uname|grep -q Linux);then
-		echo "Unless bsdtar, 7z, file-roller or ark is installed to extract ISOs, only Linux kernels are supported."
+		echo "Unless bsdtar, 7z, or ark is installed to extract ISOs, only Linux kernels are supported."
 		exit 1
 	elif [ $(whoami) != "root" ];then
-		echo "Unless bsdtar, file-roller, ark or 7z is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
+		echo "Unless bsdtar, ark or 7z is installed to extract ISOs, this script must be run as root, so it can mount ISO images on the filesystem during the building process."
 		exit 1
 	fi
 fi
