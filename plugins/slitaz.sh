@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #SliTaz plugin for multicd.sh
-#version 20150821
-#Copyright (c) 2015 Isaac Schemm
+#version 20161005
+#Copyright (c) 2016 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,8 @@ elif [ $1 = copy ];then
 		echo "Copying SliTaz..."
 		mcdmount slitaz
 		mkdir -p "${WORK}"/boot/slitaz
-		mcdcp "${MNT}"/slitaz/boot/bzImage "${WORK}"/boot/slitaz/bzImage #Kernel
+		sleep 1
+		mcdcp "${MNT}"/slitaz/boot/bzImage* "${WORK}"/boot/slitaz/bzImage #Kernel
 		mcdcp "${MNT}"/slitaz/boot/rootfs*.gz "${WORK}"/boot/slitaz/ #Root filesystem
 		mcdcp "${MNT}"/slitaz/boot/*pxe "${WORK}"/boot/slitaz/ #PXE bootloader
 		umcdmount slitaz
@@ -50,7 +51,7 @@ if [ -f slitaz.iso ];then
 		echo "LABEL slitaz
 			MENU LABEL ^SliTaz Live
 			KERNEL /boot/slitaz/bzImage
-			APPEND initrd=/boot/slitaz/rootfs.gz rw root=/dev/null autologin lang=$LANGCODE
+			APPEND initrd=/boot/slitaz/rootfs.gz rw root=/dev/null video=-32 autologin lang=$LANGCODE
 
 		label web zeb
 			menu label Web Boot
