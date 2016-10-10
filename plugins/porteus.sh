@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Porteus plugin for multicd.sh
-#version 20130602
-#Copyright (c) 2011-2013 Isaac Schemm
+#version 20161010
+#Copyright (c) 2016 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -32,40 +32,71 @@ elif [ $1 = copy ];then
 	if [ -f porteus.iso ];then
 		echo "Copying Porteus..."
 		mcdmount porteus
-		if [ -f "${TAGS}"/porteuslist ];then
-			mkdir "${WORK}"/porteus
-			for i in `ls "${MNT}"/porteus/porteus|sed -e '/^base$/ d'`;do
-				cp -r "${MNT}"/porteus/porteus/$i "${WORK}"/porteus/ #Copy everything but the base modules
-			done
-			mkdir "${WORK}"/porteus/base
-			for i in `cat "${TAGS}"/porteuslist`;do
-				cp "${MNT}"/porteus/porteus/base/${i}* "${WORK}"/porteus/base/ #Copy only the modules you wanted
-			done
-			cp "${MNT}"/porteus/porteus/base/000-* "${WORK}"/porteus/base/ #kernel is required
-			cp "${MNT}"/porteus/porteus/base/001-* "${WORK}"/porteus/base/ #core module is required
-			rm "${TAGS}"/porteuslist
-		else
-			cp -r "${MNT}"/porteus/porteus "${WORK}"/ #Copy everything
-		fi
-		mkdir -p "${WORK}"/boot/porteus
-		cp "${MNT}"/porteus/boot/syslinux/vmlinuz "${WORK}"/boot/porteus/vmlinuz
-		cp "${MNT}"/porteus/boot/syslinux/initrd.xz "${WORK}"/boot/porteus/initrd.xz
-		umcdmount porteus
-		##########
-		if [ "$(ls -1 *.xzm 2> /dev/null;true)" != "" ];then
-			echo "Copying Porteus modules..."
-			mkdir -p "${WORK}/porteus/modules"
-		fi
-		for i in `ls -1 *.xzm 2> /dev/null;true`; do
-			cp "${i}" "${WORK}"/porteus/modules/ #Copy the .xzm module to the modules folder
-			if $VERBOSE;then
-				echo \(Copied $i\)
+		if [ -d "${MNT}"/porteus/porteus ];then
+			if [ -f "${TAGS}"/porteuslist ];then
+				mkdir "${WORK}"/porteus
+				for i in `ls "${MNT}"/porteus/porteus|sed -e '/^base$/ d'`;do
+					cp -r "${MNT}"/porteus/porteus/$i "${WORK}"/porteus/ #Copy everything but the base modules
+				done
+				mkdir "${WORK}"/porteus/base
+				for i in `cat "${TAGS}"/porteuslist`;do
+					cp "${MNT}"/porteus/porteus/base/${i}* "${WORK}"/porteus/base/ #Copy only the modules you wanted
+				done
+				cp "${MNT}"/porteus/porteus/base/000-* "${WORK}"/porteus/base/ #kernel is required
+				cp "${MNT}"/porteus/porteus/base/001-* "${WORK}"/porteus/base/ #core module is required
+				rm "${TAGS}"/porteuslist
+			else
+				cp -r "${MNT}"/porteus/porteus "${WORK}"/ #Copy everything
 			fi
-		done
+			mkdir -p "${WORK}"/boot/porteus
+			cp "${MNT}"/porteus/boot/syslinux/vmlinuz "${WORK}"/boot/porteus/vmlinuz
+			cp "${MNT}"/porteus/boot/syslinux/initrd.xz "${WORK}"/boot/porteus/initrd.xz
+			##########
+			if [ "$(ls -1 *.xzm 2> /dev/null;true)" != "" ];then
+				echo "Copying Porteus modules..."
+				mkdir -p "${WORK}/porteus/modules"
+			fi
+			for i in `ls -1 *.xzm 2> /dev/null;true`; do
+				cp "${i}" "${WORK}"/porteus/modules/ #Copy the .xzm module to the modules folder
+				if $VERBOSE;then
+					echo \(Copied $i\)
+				fi
+			done
+		else
+			mkdir -p "${WORK}"/boot/porteus-kiosk
+			mcdcp "${MNT}"/porteus/boot/vmlinuz "${WORK}"/boot/porteus-kiosk/vmlinuz
+			mkdir -p "${WORK}"/xzm
+			mcdcp -r "${MNT}"/porteus/xzm/* "${WORK}"/xzm
+			mkdir -p "${WORK}"/docs
+			mcdcp -r "${MNT}"/porteus/docs/* "${WORK}"/docs
+			
+			xz -cd "${MNT}"/porteus/boot/initrd.xz | sed -e "s/LABEL=\"\.\*Kiosk\"/LABEL=\"$CDLABEL\"/g" > "${WORK}"/boot/porteus-kiosk/initrd.img
+
+			if [ "$(ls -1 *.xzm 2> /dev/null;true)" != "" ];then
+				echo "Copying Porteus modules..."
+			fi
+			for i in `ls -1 *.xzm 2> /dev/null;true`; do
+				cp "${i}" "${WORK}"/porteus/xzm/ #Copy the .xzm module to the xzm folder (not tested with kiosk ISO)
+				if $VERBOSE;then
+					echo \(Copied $i\)
+				fi
+			done
+		fi
+		umcdmount porteus
 	fi
 elif [ $1 = writecfg ];then
 	if [ -f porteus.iso ];then
-		if [ -f "${WORK}"/porteus/base/002-xorg.xzm ];then
+		if [ -d "${WORK}"/boot/porteus-kiosk ];then
+			PORTEUSVER=""
+			if [ -f "${WORK}"/docs/version ];then
+				PORTEUSVER="$(cat "${WORK}"/docs/version)"
+			fi
+			echo "LABEL porteus-kiosk
+				MENU LABEL ^Porteus Kiosk $PORTEUSVER
+				KERNEL /boot/porteus-kiosk/vmlinuz
+				APPEND initrd=/boot/porteus-kiosk/initrd.img quiet first_run vga=1
+				" >> "${WORK}"/boot/isolinux/isolinux.cfg
+		elif [ -f "${WORK}"/porteus/base/002-xorg.xzm ];then
 			if [ -f porteus.version ] && [ "$(cat porteus.version)" != "" ];then
 				PORTEUSVER=" $(cat porteus.version)"
 			else
