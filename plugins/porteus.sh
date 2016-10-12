@@ -33,21 +33,7 @@ elif [ $1 = copy ];then
 		echo "Copying Porteus..."
 		mcdmount porteus
 		if [ -d "${MNT}"/porteus/porteus ];then
-			if [ -f "${TAGS}"/porteuslist ];then
-				mkdir "${WORK}"/porteus
-				for i in `ls "${MNT}"/porteus/porteus|sed -e '/^base$/ d'`;do
-					cp -r "${MNT}"/porteus/porteus/$i "${WORK}"/porteus/ #Copy everything but the base modules
-				done
-				mkdir "${WORK}"/porteus/base
-				for i in `cat "${TAGS}"/porteuslist`;do
-					cp "${MNT}"/porteus/porteus/base/${i}* "${WORK}"/porteus/base/ #Copy only the modules you wanted
-				done
-				cp "${MNT}"/porteus/porteus/base/000-* "${WORK}"/porteus/base/ #kernel is required
-				cp "${MNT}"/porteus/porteus/base/001-* "${WORK}"/porteus/base/ #core module is required
-				rm "${TAGS}"/porteuslist
-			else
-				cp -r "${MNT}"/porteus/porteus "${WORK}"/ #Copy everything
-			fi
+			mcdcp -r "${MNT}"/porteus/porteus "${WORK}"/ #Copy everything
 			mkdir -p "${WORK}"/boot/porteus
 			cp "${MNT}"/porteus/boot/syslinux/vmlinuz "${WORK}"/boot/porteus/vmlinuz
 			cp "${MNT}"/porteus/boot/syslinux/initrd.xz "${WORK}"/boot/porteus/initrd.xz
@@ -96,7 +82,7 @@ elif [ $1 = writecfg ];then
 			echo "LABEL porteus-kiosk
 				MENU LABEL ^Porteus Kiosk $PORTEUSVER
 				KERNEL /boot/porteus-kiosk/vmlinuz
-				APPEND initrd=/boot/porteus-kiosk/initrd.img quiet first_run vga=1
+				APPEND initrd=/boot/porteus-kiosk/initrd.img quiet first_run
 				" >> "${WORK}"/boot/isolinux/isolinux.cfg
 		elif [ -f "${WORK}"/porteus/base/002-xorg.xzm ];then
 			if [ -f porteus.version ] && [ "$(cat porteus.version)" != "" ];then

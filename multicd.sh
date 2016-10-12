@@ -244,23 +244,6 @@ Examples: fr_FR = Francais (France); es_ES = Espanol (Espana)" 12 50 "${LANGFULL
 Leaving this blank will typically default to QWERTY (US).\n\
 Examples: fr (AZERTY France), fr_CH (QWERTZ Switzerland)" 12 50 "${COUNTRY}" 2> "${TAGS}"/country
 
-	if [ -f porteus.iso ];then
-		dialog --checklist "Porteus modules to include:" 13 45 6 \
-		002 Xorg on \
-		003 LXDE on \
-		004 KDE on \
-		005 "KDE apps" on \
-		006 KOffice on \
-		007 Development on \
-		008 Firefox on \
-		2> "${TAGS}"/porteuslist0
-		echo >> "${TAGS}"/porteuslist0
-		cat "${TAGS}"/porteuslist0|sed -e 's/"//g' -e 's/ /\n/g'>"${TAGS}"/porteuslist
-		rm "${TAGS}"/porteuslist0
-		if wc -c "${TAGS}"/porteuslist|grep -q 28;then #28 bytes means they are all checked
-			rm "${TAGS}"/porteuslist #If they are all checked, delete the file
-		fi
-	fi
 	if [ -f win98se.iso ] || [ -f winme.iso ];then
 		if dialog --yesno "Would you like to copy the \"tools\" and \"add-ons\" folders from the Windows 9x/Me CD?" 0 0;then
 			touch "${TAGS}"/9xextras
