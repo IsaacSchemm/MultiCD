@@ -49,22 +49,28 @@ umcdmount () {
 
 isoaliases () {
 	true > "${TAGS}"/linklist #Clears the file that keeps track of the links.
+	if $MCD_CYGWIN;then
+		echo "    Since MultiCD runs more slowly on Cygwin than on other systems, it will"
+		echo "    print out which plugins are being accessed so you can keep track of its"
+		echo "    progress."
+		echo
+	fi
 
-	#The data from START LINKS to END LINKS is not copied when combine.sh makes a single file.
-	#In that case, this is instead handled by adding " >> "${TAGS}"/linklist" to each line in the "links" section of a plugin.
 	#START LINKS#
 	for i in "${MCDDIR}"/plugins/*;do
-		if ! ("$i" links|grep -q Usage);then
-			"$i" links >> "${TAGS}"/linklist
+		if $MCD_CYGWIN;then echo "    $i";fi
+		LINKSOUT="$("$i" links)"
+		if [ -n "$LINKSOUT" ];then
+			if ! (echo "$LINKSOUT"|grep -q Usage);then
+				echo "$LINKSOUT" >> "${TAGS}"/linklist
+			fi
 		fi
 	done
 	#END LINKS#
 
 	cat "${TAGS}"/linklist|while read i;do
-
-		DEFAULTNAME=$(echo "$i"|awk '{print $NF}')
-		LINKNAME=$(echo "$i"|awk '{LESS=NF-1; print $LESS}') #What should be linked to
-		MATCHING_ISOS=$(echo $i|awk '{LESS=NF-1; for (i=1; i<LESS; i++) print $i }') #Prints all except the last 2 fields. $i is NOT surrounded by quotes, so wildcards are expanded.
+		MATCHING_ISOS=$(echo $i|sed -e 's/ [^ ]* [^ ]*$//g') #Prints all except the last 2 fields. $i is NOT surrounded by quotes, so wildcards are expanded.
+		if $MCD_CYGWIN;then echo "    $MATCHING_ISOS";fi
 
 		FOUND=false
 		if [ -f "$MATCHING_ISOS" ];then
@@ -78,6 +84,8 @@ isoaliases () {
 		fi
 
 		if $FOUND;then
+			DEFAULTNAME=$(echo "$i"|awk '{print $NF}')
+			LINKNAME=$(echo "$i"|awk '{LESS=NF-1; print $LESS}') #What should be linked to
 			COUNTER=0
 			for j in $MATCHING_ISOS;do
 				#This is done for each matching ISO.

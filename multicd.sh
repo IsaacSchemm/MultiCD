@@ -9,8 +9,8 @@ export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
-MCDVERSION="20161005"
-#multicd.sh October 5, 2016
+MCDVERSION="20161012"
+#multicd.sh October 12, 2016
 #Copyright (c) 2016 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -132,6 +132,7 @@ else
 	rm "${OUTPUT}"
 fi
 
+export MCD_CYGWIN=false
 export WIN7ZSEARCHPATH="/cygdrive/c/Program Files/7-Zip"
 if [ $(whoami) = root ] && uname|grep -q Linux;then
 	export EXTRACTOR=mount #When possible, loop-mount is preferred because it is faster (files are copied once, not twice, before the ISO is generated) and because it runs without an X server. However, it is only available to root, which opens up security risks.
@@ -141,6 +142,7 @@ elif which bsdtar &> /dev/null;then
 	export EXTRACTOR=bsdtar #bsdtar is a command line application
 elif [ -f "$WIN7ZSEARCHPATH/7z.exe" ];then
 	export EXTRACTOR=win7z
+	export MCD_CYGWIN=true
 elif which 7z &> /dev/null;then
 	export EXTRACTOR=7z #7z is a command line application
 elif which ark &> /dev/null;then
@@ -176,6 +178,7 @@ echo
 
 #START SCAN
 for i in "${MCDDIR}"/plugins/*.sh;do
+	if $MCD_CYGWIN;then echo "    $i";fi
 	"$i" scan
 done
 #END SCAN
@@ -362,6 +365,7 @@ mkdir -p "${WORK}"/boot/isolinux
 #START COPY
 echo "Copying files for each plugin...";
 for i in "${MCDDIR}"/plugins/*.sh;do
+	if $MCD_CYGWIN;then echo "    $i";fi
 	[ ! -x "$i" ]&&chmod +x "$i"
 	"$i" copy
 done
@@ -515,6 +519,7 @@ append hd0" >> "${WORK}"/boot/isolinux/isolinux.cfg
 #END HD BOOT OPTION#
 #START WRITE
 for i in "${MCDDIR}"/plugins/*.sh;do
+	if $MCD_CYGWIN;then echo "    $i";fi
 	[ ! -x "$i" ]&&chmod +x "$i"
 	"$i" writecfg
 done
