@@ -178,10 +178,10 @@ ubuntucommon () {
 		mkdir -p "${WORK}"/boot/$1
 		if [ -d "${MNT}"/$1/casper ];then
 			mcdcp -R "${MNT}"/$1/casper/* "${WORK}"/boot/$1/ #Live system
-		elif [ -d "${MNT}/$1/live" ];then
-			mcdcp -R "${MNT}"/$1/live/* "${WORK}"/boot/$1/ #Debian live (for Linux Mint Debian)
+		#elif [ -d "${MNT}/$1/live" ];then
+		#	mcdcp -R "${MNT}"/$1/live/* "${WORK}"/boot/$1/ #Debian live (for Linux Mint Debian)
 		else
-			echo "Could not find a \"casper\" or \"live\" folder in "${MNT}"/$1."
+			echo "Could not find a \"casper\" folder in "${MNT}"/$1."
 			return 1
 		fi
 		if [ -d "${MNT}"/$1/preseed ];then
@@ -217,9 +217,9 @@ ubuntucommon () {
 		sed -i "s^KERNEL /casper/^KERNEL /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #For uppercase KERNEL
 
 		#Equivalents for Mint Debian
-		sed -i "s^initrd=/live/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg
-		sed -i "s^kernel /live/^kernel /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg
-		sed -i "s^KERNEL /live/^KERNEL /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg
+		#sed -i "s^initrd=/live/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg
+		#sed -i "s^kernel /live/^kernel /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg
+		#sed -i "s^KERNEL /live/^KERNEL /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg
 
 		if [ -f "${TAGS}"/lang ];then
 			echo added lang
