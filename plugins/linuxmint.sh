@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Linux Mint plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2011 Isaac Schemm
+#version 20161012
+#Copyright (c) 2016 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -56,7 +56,10 @@ getLinuxmintName () {
 if [ $1 = links ];then
 	for i in linuxmint-*.iso; do
 		read BNAME VERS < <(getLinuxmintName $i)
-		[ "$VERS" == "" ] && VERS=" $(echo $BNAME | sed -e "s/linuxmint-//")"
+		
+		if [ "$VERS" == "" ];then VERS=" $(echo $BNAME | sed -e "s/linuxmint-//")";fi
+		if [ "$VERS" == ' *' ];then exit 0;fi
+		
 		VERS=$(echo $VERS | tr '-' '_')
 		echo "$i $BNAME.linuxmint.iso Linux_Mint_$VERS"
 	done
