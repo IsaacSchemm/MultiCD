@@ -70,7 +70,9 @@ elif [ $1 = copy ];then
 			mkdir -p "${WORK}"/docs
 			mcdcp -r "${MNT}"/porteus/docs/* "${WORK}"/docs
 			
-			xz -cd "${MNT}"/porteus/boot/initrd.xz | sed -e "s/LABEL=\"\.\*Kiosk\"/LABEL=\"$CDLABEL\"/g" > "${WORK}"/boot/porteus-kiosk/initrd.img
+			#Replace string "Kiosk" with last 5 characters of CD label
+			LAST5=$(echo -n .?.?.?"$CDLABEL"|tail -c 5)
+			xz -cd "${MNT}"/porteus/boot/initrd.xz | sed -e "s/LABEL=\"\.\*Kiosk\"/LABEL=\"\.\*$LAST5\"/g" > "${WORK}"/boot/porteus-kiosk/initrd.img
 
 			if [ "$(ls -1 *.xzm 2> /dev/null;true)" != "" ];then
 				echo "Copying Porteus modules..."
