@@ -69,7 +69,7 @@ isoaliases () {
 	#END LINKS#
 
 	cat "${TAGS}"/linklist|while read i;do
-		MATCHING_ISOS=$(echo $i|sed -e 's/ [^ ]* [^ ]*$//g') #Prints all except the last 2 fields. $i is NOT surrounded by quotes, so wildcards are expanded.
+		MATCHING_ISOS=$(echo "$i"|sed -e 's/ [^ ]* [^ ]*$//g') #Prints all except the last 2 fields. $i is NOT surrounded by quotes, so wildcards are expanded.
 		if $MCD_CYGWIN;then echo "    $MATCHING_ISOS";fi
 
 		FOUND=false
