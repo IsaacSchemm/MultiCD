@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 . "${MCDDIR}"/functions.sh
-#Mandriva Linux plugin for multicd.sh
-#version 20140911
-#Copyright (c) 2014 Isaac Schemm
+#Mageia plugin for multicd.sh
+#version 20161025
+#Copyright (c) 2016 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -24,39 +24,48 @@ set -e
 #THE SOFTWARE.
 
 if [ $1 = links ];then
-	echo "Mageia-*.iso mageia.iso none"
+	echo "Mageia-*.iso mageia.mageia.iso none"
 elif [ $1 = scan ];then
-	if [ -f mageia.iso ];then
-		echo "Mageia"
-	fi
-elif [ $1 = copy ];then
-	if [ -f mageia.iso ];then
-		echo "Copying Mageia..."
-		mcdmount mageia
-		if [ -d "${WORK}"/loopbacks ];then
-			echo "Warning: \$WORK/loopbacks exists. Mageia conflicts with another CD on the ISO."
+	for i in *.mageia.iso;do
+		if [ -f $i.iso ];then
+			echo "Mageia ($i)"
 		fi
-		cp -r "${MNT}"/mageia/loopbacks "${WORK}"/
-		mkdir -p "${WORK}"/boot/mageia
-		cp "${MNT}"/mageia/boot/vmlinuz "${WORK}"/boot/mageia
-		cp "${MNT}"/mageia/boot/cdrom/initrd* "${WORK}"/boot/mageia
-		umcdmount mageia
-	fi
+	done
+elif [ $1 = copy ];then
+	for i in *.mageia.iso;do
+		if [ -f $i ];then
+			echo "Copying Mageia..."
+			BASENAME=$(echo $i|sed -e 's/\.iso//g')
+			mcdmount $BASENAME
+			if [ -d "${MNT}"/$BASENAME/loopbacks ];then
+				if [ -d "${WORK}"/loopbacks ];then
+					echo "Error: \$WORK/loopbacks already exists. This Mageia ISO conflicts with another ISO and cannot be added."
+					exit 1
+				fi
+				cp -r "${MNT}"/$BASENAME/loopbacks "${WORK}"/
+				mkdir -p "${WORK}"/boot/$BASENAME
+				cp "${MNT}"/$BASENAME/boot/vmlinuz "${WORK}"/boot/$BASENAME
+				cp "${MNT}"/$BASENAME/boot/cdrom/initrd* "${WORK}"/boot/$BASENAME
+			else
+				echo "Error: Mageia traditional installation ISOs are not supported yet. Only live CD/DVDs will work."
+				exit 1
+			fi
+			umcdmount $BASENAME
+		fi
+	done
 elif [ $1 = writecfg ];then
-	if [ -z "$CDLABEL" ];then
-		#this should not happen
-		CDLABEL=MCDtest
-		echo "$0: warning: \$CDLABEL is empty."
-	fi
-	if [ -f mageia.iso ];then
-		echo "label mageia-live
-    menu label Boot ^Mageia
-    kernel /boot/mageia/vmlinuz
-    append initrd=/boot/mageia/initrd.gz root=mgalive:LABEL=$CDLABEL splash quiet rd.luks=0 rd.lvm=0 rd.md=0 rd.dm=0 vga=788 
-label mageia-linux
-    menu label Install Mageia
-    kernel /boot/mageia/mlinuz
-    append initrd=/boot/mageia/initrd.gz root=mgalive:LABEL=$CDLABEL splash quiet rd.luks=0 rd.lvm=0 rd.md=0 rd.dm=0 vga=788 install" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	MAGEIADIR=$(basename "${WORK}"/boot/*.mageia)
+	if [ -d "${WORK}"/boot/$MAGEIADIR ];then
+		echo "
+		label mageia-live
+		menu label Boot ^Mageia
+		kernel /boot/$MAGEIADIR/vmlinuz
+		append initrd=/boot/$MAGEIADIR/initrd.gz root=mgalive:LABEL=$CDLABEL splash quiet rd.luks=0 rd.lvm=0 rd.md=0 rd.dm=0 vga=788
+		
+		label mageia-linux
+		menu label Install Mageia
+		kernel /boot/$MAGEIADIR/mlinuz
+		append initrd=/boot/$MAGEIADIR/initrd.gz root=mgalive:LABEL=$CDLABEL splash quiet rd.luks=0 rd.lvm=0 rd.md=0 rd.dm=0 vga=788 install" >> "${WORK}"/boot/isolinux/isolinux.cfg
 	fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
