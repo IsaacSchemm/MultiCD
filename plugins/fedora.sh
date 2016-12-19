@@ -66,6 +66,7 @@ fedoracommon () {
 		" >> "${WORK}"/boot/$1/isolinux.cfg
 		sed -i "s,kernel vmlinuz,kernel /boot/$1/vmlinuz,g" "${WORK}"/boot/$1/isolinux.cfg
 		sed -i "s,^menu background ,menu background /boot/$1/,g" "${WORK}"/boot/$1/isolinux.cfg
+		sed -i 's/rd.live.check//g' "${WORK}"/boot/$1/isolinux.cfg
 		sed -i "s,initrd=,rd.live.dir=/boot/$1 initrd=/boot/$1/,g" "${WORK}"/boot/$1/isolinux.cfg
 		sed -i "s,CDLABEL=[^ ]* ,CDLABEL=$CDLABEL ,g" "${WORK}"/boot/$1/isolinux.cfg
 		#if [ -f "${TAGS}"/lang ];then
@@ -85,7 +86,7 @@ fedoracommon () {
 #END FUNCTIONS#
 
 if [ $1 = links ];then
-	echo "Fedora-Live-*-1.iso live.fedora.iso Fedora_(*)"
+	echo "Fedora-Workstation-Live-*.iso workstation.fedora.iso Fedora_Workstation_(*)"echo "Fedora-Workstation-Live-*.iso workstation.fedora.iso Fedora_Workstation_(*)"
 elif [ $1 = scan ];then
 	if $(fedoraExists);then
 		for i in *.fedora.iso; do
