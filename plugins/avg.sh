@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #AVG Rescue CD plugin for multicd.sh
-#version 6.9
-#Copyright for this script (c) 2010 Isaac Schemm
+#version 20161227
+#Copyright (c) 2016 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -54,19 +54,19 @@ label arl
 	menu default
 	kernel /boot/avg/vmlinuz
 	initrd /boot/avg/initrd.lzm
-	append max_loop=255 vga=791 init=linuxrc
+	append max_loop=255 vga=791 video=vesafb init=linuxrc reboot=bios
 
 label nofb
 	menu label AVG Rescue CD with Disabled Framebuffer
 	kernel /boot/avg/vmlinuz
 	initrd /boot/avg/initrd.lzm
-	append max_loop=255 video=vesafb:off init=linuxrc
+	append max_loop=255 video=vesafb:off init=linuxrc reboot=bios
 
 label vgask
 	menu label AVG Rescue CD with Resolution Selection
 	kernel /boot/avg/vmlinuz
 	initrd /boot/avg/initrd.lzm
-	append max_loop=255 init=linuxrc vga=ask
+	append max_loop=255 init=linuxrc vga=ask reboot=bios
 
 label back
 	menu label Back to main menu
