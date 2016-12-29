@@ -75,7 +75,68 @@ elif [ $1 = copy ];then
 	if $(ubuntuExists);then
 		for i in *.ubuntu.iso; do
 			echo "Copying $(getUbuntuName)..."
-			ubuntucommon $(echo $i|sed -e 's/\.iso//g')
+			BASENAME=$(echo $i|sed -e 's/\.iso//g')
+			if [ ! -z "$BASENAME" ] && [ -f $BASENAME.iso ];then
+				mcdmount $BASENAME
+				mkdir -p "${WORK}"/boot/$BASENAME
+				if [ -d "${MNT}"/$BASENAME/casper ];then
+					mcdcp -R "${MNT}"/$BASENAME/casper/* "${WORK}"/boot/$BASENAME/ #Live system
+				#elif [ -d "${MNT}/$BASENAME/live" ];then
+				#	mcdcp -R "${MNT}"/$BASENAME/live/* "${WORK}"/boot/$BASENAME/ #Debian live (for Linux Mint Debian)
+				else
+					echo "Could not find a \"casper\" folder in "${MNT}"/$BASENAME."
+					return 1
+				fi
+				if [ -d "${MNT}"/$BASENAME/preseed ];then
+					cp -R "${MNT}"/$BASENAME/preseed "${WORK}"/boot/$BASENAME
+				fi
+				# Fix the isolinux.cfg
+				if [ -f "${MNT}"/$BASENAME/isolinux/text.cfg ];then
+					UBUCFG=text.cfg
+				elif [ -f "${MNT}"/$BASENAME/isolinux/txt.cfg ];then
+					UBUCFG=txt.cfg
+				else
+					UBUCFG=isolinux.cfg #For custom-made live CDs like Weaknet and Zorin
+				fi
+				cp "${MNT}"/$BASENAME/isolinux/splash.* \
+				"${MNT}"/$BASENAME/isolinux/bg_redo.png \
+				"${WORK}"/boot/$BASENAME/ 2> /dev/null || true #Splash screen - only if the filename is splash.something or bg_redo.png
+				cp "${MNT}"/$BASENAME/isolinux/$UBUCFG "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+				echo "label back
+				menu label Back to main menu
+				com32 menu.c32
+				append /boot/isolinux/isolinux.cfg
+				" >> "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+				sed -i "s@menu background @menu background /boot/$BASENAME/@g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #If it uses a splash screen, update the .cfg to show the new location
+				sed -i "s@MENU BACKGROUND @MENU BACKGROUND /boot/$BASENAME/@g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #uppercase
+				sed -i "s@default live@default menu.c32@g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #Show menu instead of boot: prompt
+				sed -i "s@file=/cdrom/preseed/@file=/cdrom/boot/$BASENAME/preseed/@g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #Preseed folder moved - not sure if ubiquity uses this
+
+				#Remove reference to previous live media path
+				sed -i "s^live-media-path=[^ ]*^^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+
+				sed -i "s^initrd=/casper/^live-media-path=/boot/$BASENAME ignore_uuid initrd=/boot/$BASENAME/^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #Initrd moved, ignore_uuid added
+				sed -i "s^kernel /casper/^kernel /boot/$BASENAME/^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #Kernel moved
+				sed -i "s^KERNEL /casper/^KERNEL /boot/$BASENAME/^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #For uppercase KERNEL
+
+				#Equivalents for Mint Debian
+				#sed -i "s^initrd=/live/^live-media-path=/boot/$BASENAME ignore_uuid initrd=/boot/$BASENAME/^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+				#sed -i "s^kernel /live/^kernel /boot/$BASENAME/^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+				#sed -i "s^KERNEL /live/^KERNEL /boot/$BASENAME/^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+
+				if [ -f "${TAGS}"/lang ];then
+					echo added lang
+					sed -i "s^initrd=/boot/$BASENAME/^debian-installer/language=$(cat "${TAGS}"/lang) initrd=/boot/$BASENAME/^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #Add language codes to cmdline
+				fi
+				if [ -f "${TAGS}"/country ];then
+					echo added country
+					sed -i "s^initrd=/boot/$BASENAME/^console-setup/layoutcode?=$(cat "${TAGS}"/country) initrd=/boot/$BASENAME/^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #Add language codes to cmdline
+				fi
+				umcdmount $BASENAME
+			else
+				echo "$0: \"$BASENAME\" is empty or not an ISO"
+				exit 1
+			fi
 		done
 	fi
 elif [ $1 = writecfg ];then

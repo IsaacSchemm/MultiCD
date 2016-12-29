@@ -172,69 +172,6 @@ puppycommon () {
 		exit 1
 	fi
 }
-ubuntucommon () {
-	if [ ! -z "$1" ] && [ -f $1.iso ];then
-		mcdmount $1
-		mkdir -p "${WORK}"/boot/$1
-		if [ -d "${MNT}"/$1/casper ];then
-			mcdcp -R "${MNT}"/$1/casper/* "${WORK}"/boot/$1/ #Live system
-		#elif [ -d "${MNT}/$1/live" ];then
-		#	mcdcp -R "${MNT}"/$1/live/* "${WORK}"/boot/$1/ #Debian live (for Linux Mint Debian)
-		else
-			echo "Could not find a \"casper\" folder in "${MNT}"/$1."
-			return 1
-		fi
-		if [ -d "${MNT}"/$1/preseed ];then
-			cp -R "${MNT}"/$1/preseed "${WORK}"/boot/$1
-		fi
-		# Fix the isolinux.cfg
-		if [ -f "${MNT}"/$1/isolinux/text.cfg ];then
-			UBUCFG=text.cfg
-		elif [ -f "${MNT}"/$1/isolinux/txt.cfg ];then
-			UBUCFG=txt.cfg
-		else
-			UBUCFG=isolinux.cfg #For custom-made live CDs like Weaknet and Zorin
-		fi
-		cp "${MNT}"/$1/isolinux/splash.* \
-		"${MNT}"/$1/isolinux/bg_redo.png \
-		"${WORK}"/boot/$1/ 2> /dev/null || true #Splash screen - only if the filename is splash.something or bg_redo.png
-		cp "${MNT}"/$1/isolinux/$UBUCFG "${WORK}"/boot/$1/$1.cfg
-		echo "label back
-		menu label Back to main menu
-		com32 menu.c32
-		append /boot/isolinux/isolinux.cfg
-		" >> "${WORK}"/boot/$1/$1.cfg
-		sed -i "s@menu background @menu background /boot/$1/@g" "${WORK}"/boot/$1/$1.cfg #If it uses a splash screen, update the .cfg to show the new location
-		sed -i "s@MENU BACKGROUND @MENU BACKGROUND /boot/$1/@g" "${WORK}"/boot/$1/$1.cfg #uppercase
-		sed -i "s@default live@default menu.c32@g" "${WORK}"/boot/$1/$1.cfg #Show menu instead of boot: prompt
-		sed -i "s@file=/cdrom/preseed/@file=/cdrom/boot/$1/preseed/@g" "${WORK}"/boot/$1/$1.cfg #Preseed folder moved - not sure if ubiquity uses this
-
-		#Remove reference to previous live media path
-		sed -i "s^live-media-path=[^ ]*^^g" "${WORK}"/boot/$1/$1.cfg
-
-		sed -i "s^initrd=/casper/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #Initrd moved, ignore_uuid added
-		sed -i "s^kernel /casper/^kernel /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #Kernel moved
-		sed -i "s^KERNEL /casper/^KERNEL /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #For uppercase KERNEL
-
-		#Equivalents for Mint Debian
-		#sed -i "s^initrd=/live/^live-media-path=/boot/$1 ignore_uuid initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg
-		#sed -i "s^kernel /live/^kernel /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg
-		#sed -i "s^KERNEL /live/^KERNEL /boot/$1/^g" "${WORK}"/boot/$1/$1.cfg
-
-		if [ -f "${TAGS}"/lang ];then
-			echo added lang
-			sed -i "s^initrd=/boot/$1/^debian-installer/language=$(cat "${TAGS}"/lang) initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #Add language codes to cmdline
-		fi
-		if [ -f "${TAGS}"/country ];then
-			echo added country
-			sed -i "s^initrd=/boot/$1/^console-setup/layoutcode?=$(cat "${TAGS}"/country) initrd=/boot/$1/^g" "${WORK}"/boot/$1/$1.cfg #Add language codes to cmdline
-		fi
-		umcdmount $1
-	else
-		echo "$0: \"$1\" is empty or not an ISO"
-		exit 1
-	fi
-}
 
 #Returns the version saved by the isoaliases function. For use in writing the menu.
 getVersion() {
