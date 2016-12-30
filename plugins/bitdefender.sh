@@ -43,10 +43,12 @@ elif [ $1 = copy ];then
 		umcdmount bitdefender-rescue-cd
 	fi
 elif [ $1 = writecfg ];then
-	echo "label bitdefender-rescue-cd
-	menu label ^Bitdefender Rescue CD
-	kernel /boot/grubi386.pc
-	" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	if [ -f bitdefender-rescue-cd.iso ];then
+		echo "label bitdefender-rescue-cd
+		menu label ^Bitdefender Rescue CD
+		kernel /boot/grubi386.pc
+		" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
