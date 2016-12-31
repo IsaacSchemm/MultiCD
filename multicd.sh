@@ -43,13 +43,11 @@ mcdclean() {
 		rm -r "$WORK"
 	fi
 	echo "Cleaning up - removing symlinks to files in current directory"
-	if which readlink;then
-		for i in *;do
-			if [ -n "$(readlink "$i"|grep -v '/')" ];then
-				rm "$i"
-			fi
-		done
-	fi
+	for i in *;do
+		if [ -n "$(readlink "$i"|grep -v '/')" ];then
+			rm "$i"
+		fi
+	done
 	if [ '*.defaultname' != "$(echo *.defaultname)" ];then
 		for i in *.defaultname;do
 			rm $i
@@ -590,19 +588,29 @@ if [ -d includes ] && [ "$(echo empty/.* empty/*)" != 'empty/. empty/.. empty/*'
 fi
 
 for i in "${WORK}"/boot/isolinux/*.cfg;do
-	if grep -e '[АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяЁёЄєЇїЎў]' $i;then
-		if [ -f /usr/share/consolefonts/Cyr_a8x16.psf.gz ];then
-			gzip -cd /usr/share/consolefonts/Cyr_a8x16.psf.gz > "${WORK}"/boot/isolinux/Cyr_a8x16.psf
-		elif [ -f Cyr_a8x16.psf.gz ];then
-			gzip -cd Cyr_a8x16.psf.gz > "${WORK}"/boot/isolinux/Cyr_a8x16.psf
-		elif [ -f Cyr_a8x16.psf ];then
-			cp Cyr_a8x16.psf "${WORK}"/boot/isolinux
+	TOFONT=""
+	TOENC=""
+	if grep -q -e '[АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяЁёЄєЇїЎў]' $i;then
+		TOFONT=Cyr_a8x16.psf
+		TOENC=CP866
+		echo "Found Cyrillic text"
+	elif grep -q -e '[ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρσςτυφχψωάέήϊίόύϋώΆΈΉΊΌΎΏΪΫ]' $i;then
+		TOFONT=gr8x16.psf
+		TOENC=CP737
+		echo "Found Greek text"
+	fi
+	if [ "$TOFONT" != "" ];then
+		if [ -f /usr/share/consolefonts/$TOFONT.gz ];then
+			gzip -cd /usr/share/consolefonts/$TOFONT.gz > "${WORK}"/boot/isolinux/$TOFONT
+		elif [ -f $TOFONT.gz ];then
+			gzip -cd $TOFONT.gz > "${WORK}"/boot/isolinux/$TOFONT
+		elif [ -f $TOFONT ];then
+			cp $TOFONT "${WORK}"/boot/isolinux
 		else
-			echo "WARNING: Found Cyrillic text in $i, but Cyr_a8x16.psf was not found."
+			echo "WARNING: Found non-Latin text in $i, but $TOFONT was not found."
 		fi
-		echo >> $1
-		echo "FONT Cyr_a8x16.psf" >> $i
-		iconv -t CP866 $i > $i.out
+		echo "FONT $TOFONT" >> $i
+		iconv -t $TOENC $i > $i.out
 		mv $i.out $i
 	fi
 done
