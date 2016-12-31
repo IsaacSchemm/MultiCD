@@ -218,7 +218,7 @@ if $INTERACTIVE;then
 		exit 1
 	fi
 
-	dialog --inputbox "What would you like the title of the CD's main menu to be?" 8 70 "MultiCD - Created $(LANG=C date +"%b %d, %Y")" 2> /tmp/cdtitle
+	dialog --inputbox "What would you like the title of the CD's main menu to be?" 8 70 "MultiCD - Created $(date +"%b %d, %Y")" 2> /tmp/cdtitle
 	CDTITLE=$(cat /tmp/cdtitle)
 	rm /tmp/cdtitle
 
@@ -301,7 +301,7 @@ Examples: fr (AZERTY France), fr_CH (QWERTZ Switzerland)" 12 50 "${COUNTRY}" 2> 
 	fi
 else
 	#Do these things if interactive options are not enabled with "-i"
-	CDTITLE="MultiCD - Created $(LANG=C date +"%b %d, %Y")"
+	CDTITLE="MultiCD - Created $(date +"%b %d, %Y")"
 	export CDLABEL=MultiCD
 	MENUCOLOR=44
 	TEXTCOLOR=37
@@ -609,6 +609,20 @@ if $MD5;then
 	else
 		find "${WORK}"/ -type f -not -name md5sum.txt -not -name boot.cat -not -name isolinux.bin\
 		-exec $MD5SUM '{}' \; | sed "s^"${WORK}"^^g" > "${WORK}"/md5sum.txt
+	fi
+fi
+
+for i in "${WORK}"/boot/isolinux/*.cfg;do
+	if grep -e '[АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяЁёЄєЇїЎў]' $i;then
+		if [ -f /usr/share/consolefonts/Cyr_a8x16.psf.gz ];then
+			gzip -cd /usr/share/consolefonts/Cyr_a8x16.psf.gz > "${WORK}"/boot/isolinux/Cyr_a8x16.psf
+		elif [ -f Cyr_a8x16.psf ];then
+			cp Cyr_a8x16.psf "${WORK}"/boot/isolinux
+		else
+			echo "Found Cyrillic text in $i, but Cyr_a8x16.psf was not found in the current directory, and Cyr_a8x16.psf.gz was not found in /usr/share/consolefonts."
+		fi
+		echo "FONT Cyr_a8x16.psf" >> $i
+		iconv -t CP866 $i > $i
 	fi
 fi
 
