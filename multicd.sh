@@ -9,8 +9,8 @@ export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
-MCDVERSION="20161012"
-#multicd.sh October 12, 2016
+MCDVERSION="20161230"
+#multicd.sh December 30, 2016
 #Copyright (c) 2016 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -218,7 +218,7 @@ if $INTERACTIVE;then
 		exit 1
 	fi
 
-	dialog --inputbox "What would you like the title of the CD's main menu to be?" 8 70 "MultiCD - Created $(LANG=C date +"%b %d, %Y")" 2> /tmp/cdtitle
+	dialog --inputbox "What would you like the title of the CD's main menu to be?" 8 70 "MultiCD - Created $(date +"%b %d, %Y")" 2> /tmp/cdtitle
 	CDTITLE=$(cat /tmp/cdtitle)
 	rm /tmp/cdtitle
 
@@ -301,7 +301,7 @@ Examples: fr (AZERTY France), fr_CH (QWERTZ Switzerland)" 12 50 "${COUNTRY}" 2> 
 	fi
 else
 	#Do these things if interactive options are not enabled with "-i"
-	CDTITLE="MultiCD - Created $(LANG=C date +"%b %d, %Y")"
+	CDTITLE="MultiCD - Created $(date +"%b %d, %Y")"
 	export CDLABEL=MultiCD
 	MENUCOLOR=44
 	TEXTCOLOR=37
@@ -586,6 +586,21 @@ if [ -d includes ] && [ "$(echo empty/.* empty/*)" != 'empty/. empty/.. empty/*'
  echo "Copying includes..."
  cp -r includes/* "${WORK}"/
 fi
+
+for i in "${WORK}"/boot/isolinux/*.cfg;do
+	if grep -e '[АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяЁёЄєЇїЎў]' $i;then
+		if [ -f /usr/share/consolefonts/Cyr_a8x16.psf.gz ];then
+			gzip -cd /usr/share/consolefonts/Cyr_a8x16.psf.gz > "${WORK}"/boot/isolinux/Cyr_a8x16.psf
+		elif [ -f Cyr_a8x16.psf ];then
+			cp Cyr_a8x16.psf "${WORK}"/boot/isolinux
+		else
+			echo "WARNING: Found Cyrillic text in $i, but Cyr_a8x16.psf was not found."
+		fi
+		echo >> $1
+		echo "FONT Cyr_a8x16.psf" >> $i
+		iconv -t CP866 $i -o $i
+	fi
+done
 
 if $DEBUG;then
 	chmod -R a+w "${WORK}"/boot/isolinux #So regular users can edit menus
