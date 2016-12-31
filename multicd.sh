@@ -587,6 +587,21 @@ if [ -d includes ] && [ "$(echo empty/.* empty/*)" != 'empty/. empty/.. empty/*'
  cp -r includes/* "${WORK}"/
 fi
 
+for i in "${WORK}"/boot/isolinux/*.cfg;do
+	if grep -e '[АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяЁёЄєЇїЎў]' $i;then
+		if [ -f /usr/share/consolefonts/Cyr_a8x16.psf.gz ];then
+			gzip -cd /usr/share/consolefonts/Cyr_a8x16.psf.gz > "${WORK}"/boot/isolinux/Cyr_a8x16.psf
+		elif [ -f Cyr_a8x16.psf ];then
+			cp Cyr_a8x16.psf "${WORK}"/boot/isolinux
+		else
+			echo "Found Cyrillic text in $i, but Cyr_a8x16.psf was not found in the current directory, and Cyr_a8x16.psf.gz was not found in /usr/share/consolefonts."
+		fi
+		echo >> $1
+		echo "FONT Cyr_a8x16.psf" >> $i
+		iconv -t CP866 $i > $i
+	fi
+done
+
 if $DEBUG;then
 	chmod -R a+w "${WORK}"/boot/isolinux #So regular users can edit menus
 	echo "    Dropping to $(whoami) prompt. Type \"exit\" to build the ISO image."
@@ -611,20 +626,6 @@ if $MD5;then
 		-exec $MD5SUM '{}' \; | sed "s^"${WORK}"^^g" > "${WORK}"/md5sum.txt
 	fi
 fi
-
-for i in "${WORK}"/boot/isolinux/*.cfg;do
-	if grep -e '[АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяЁёЄєЇїЎў]' $i;then
-		if [ -f /usr/share/consolefonts/Cyr_a8x16.psf.gz ];then
-			gzip -cd /usr/share/consolefonts/Cyr_a8x16.psf.gz > "${WORK}"/boot/isolinux/Cyr_a8x16.psf
-		elif [ -f Cyr_a8x16.psf ];then
-			cp Cyr_a8x16.psf "${WORK}"/boot/isolinux
-		else
-			echo "Found Cyrillic text in $i, but Cyr_a8x16.psf was not found in the current directory, and Cyr_a8x16.psf.gz was not found in /usr/share/consolefonts."
-		fi
-		echo "FONT Cyr_a8x16.psf" >> $i
-		iconv -t CP866 $i > $i
-	fi
-done
 
 if which genisoimage > /dev/null;then
  GENERATOR="genisoimage"
