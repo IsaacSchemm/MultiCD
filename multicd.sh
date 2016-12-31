@@ -624,7 +624,7 @@ for i in "${WORK}"/boot/isolinux/*.cfg;do
 		echo "FONT Cyr_a8x16.psf" >> $i
 		iconv -t CP866 $i > $i
 	fi
-fi
+done
 
 if which genisoimage > /dev/null;then
  GENERATOR="genisoimage"
