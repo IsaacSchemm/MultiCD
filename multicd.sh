@@ -43,11 +43,13 @@ mcdclean() {
 		rm -r "$WORK"
 	fi
 	echo "Cleaning up - removing symlinks to files in current directory"
-	for i in *;do
-		if [ -n "$(readlink "$i"|grep -v '/')" ];then
-			rm "$i"
-		fi
-	done
+	if which readlink;then
+		for i in *;do
+			if [ -n "$(readlink "$i"|grep -v '/')" ];then
+				rm "$i"
+			fi
+		done
+	fi
 	if [ '*.defaultname' != "$(echo *.defaultname)" ];then
 		for i in *.defaultname;do
 			rm $i
@@ -591,6 +593,8 @@ for i in "${WORK}"/boot/isolinux/*.cfg;do
 	if grep -e '[АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяЁёЄєЇїЎў]' $i;then
 		if [ -f /usr/share/consolefonts/Cyr_a8x16.psf.gz ];then
 			gzip -cd /usr/share/consolefonts/Cyr_a8x16.psf.gz > "${WORK}"/boot/isolinux/Cyr_a8x16.psf
+		elif [ -f Cyr_a8x16.psf.gz ];then
+			gzip -cd Cyr_a8x16.psf.gz > "${WORK}"/boot/isolinux/Cyr_a8x16.psf
 		elif [ -f Cyr_a8x16.psf ];then
 			cp Cyr_a8x16.psf "${WORK}"/boot/isolinux
 		else
@@ -598,7 +602,8 @@ for i in "${WORK}"/boot/isolinux/*.cfg;do
 		fi
 		echo >> $1
 		echo "FONT Cyr_a8x16.psf" >> $i
-		iconv -t CP866 $i -o $i
+		iconv -t CP866 $i > $i.out
+		mv $i.out $i
 	fi
 done
 
