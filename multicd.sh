@@ -598,7 +598,7 @@ for i in "${WORK}"/boot/isolinux/*.cfg;do
 		fi
 		echo >> $1
 		echo "FONT Cyr_a8x16.psf" >> $i
-		iconv -t CP866 $i > $i
+		iconv -t CP866 $i -o $i
 	fi
 done
 
