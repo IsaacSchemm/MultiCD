@@ -24,6 +24,7 @@ set -e
 #THE SOFTWARE.
 if [ $1 = links ];then
 	echo "antiX-*.iso antix.iso none"
+	echo "MX-*.iso antix.iso antiX_MX-*"
 elif [ $1 = scan ];then
 	if [ -f antix.iso ];then
 		echo "AntiX"

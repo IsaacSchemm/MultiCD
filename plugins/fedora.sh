@@ -86,7 +86,7 @@ fedoracommon () {
 #END FUNCTIONS#
 
 if [ $1 = links ];then
-	echo "Fedora-Workstation-Live-*.iso workstation.fedora.iso Fedora_Workstation_(*)"echo "Fedora-Workstation-Live-*.iso workstation.fedora.iso Fedora_Workstation_(*)"
+	echo "Fedora-Workstation-Live-*.iso workstation.fedora.iso Fedora_Workstation_(*)"
 elif [ $1 = scan ];then
 	if $(fedoraExists);then
 		for i in *.fedora.iso; do
