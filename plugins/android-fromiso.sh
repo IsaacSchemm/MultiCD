@@ -2,6 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Android-x86 (from iso) plugin for multicd.sh
+#http://www.android-x86.org/
 #version 20151010
 #Copyright (c) 2015 Isaac Schemm
 #

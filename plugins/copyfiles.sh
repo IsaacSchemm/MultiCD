@@ -2,8 +2,10 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Custom file copy plugin for multicd.sh
-#version 20150606
-if [ $1 = scan ];then
+#version 20150606.
+if [ $1 = links ];then
+	exit 0
+elif [ $1 = scan ];then
 	if [ -d "${MCDDIR}/backup" ];then
         echo "Adding files from backup folder"
         ls -l "backup"
