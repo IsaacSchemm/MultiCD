@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Arch Linux installer plugin for multicd.sh
-#version 20120426
-#Copyright (c) 2012 Isaac Schemm
+#version 20170116
+#Copyright (c) 2017 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,7 @@ set -e
 #THE SOFTWARE.
 if [ $1 = links ];then
 	#Only one will be included
-	echo "archlinux-*-netinstall-dual.iso arch.iso none"
-	echo "archlinux-*-core-dual.iso arch.iso none"
+	echo "archlinux-*-dual.iso arch.iso none"
 	echo "archlinux-*-netinstall-i686.iso arch.iso none"
 	echo "archlinux-*-netinstall-x86_64.iso arch.iso none"
 	echo "archlinux-*-core-i686.iso arch.iso none"
@@ -38,7 +37,7 @@ elif [ $1 = copy ];then
 	if [ -f arch.iso ];then
 		echo "Copying Arch Linux..."
 		mcdmount arch
-		cp -r "${MNT}"/arch/arch "${WORK}"
+		mcdcp -r -T "${MNT}"/arch/arch "${WORK}"/arch
 		umcdmount arch
 	fi
 elif [ $1 = writecfg ];then
