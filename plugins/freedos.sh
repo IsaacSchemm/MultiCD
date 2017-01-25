@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #FreeDOS installer plugin for multicd.sh
-#version 20121017
+#version 20170125
 #Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,6 +24,7 @@ set -e
 #THE SOFTWARE.
 if [ $1 = links ];then
 	#Only one will be included
+	echo "FD12CD.iso freedos.iso FreeDOS_1.2"
 	echo "fd11src.iso freedos.iso FreeDOS_1.1"
 	echo "fdfullcd.iso freedos.iso FreeDOS_Full_CD"
 	echo "fdbasecd.iso freedos.iso FreeDOS_Base_CD"
@@ -36,41 +37,58 @@ elif [ $1 = copy ];then
 		echo "Copying FreeDOS..."
 		mcdmount freedos
 		mkdir "${WORK}"/boot/freedos
-		if [ -d "${MNT}"/freedos/FREEDOS ];then
-			cp -r "${MNT}"/freedos/FREEDOS "${WORK}"/ #Core directory with the packages
-			cp "${MNT}"/freedos/SETUP.BAT "${WORK}"/setup.bat #FreeDOS setup
+		if [ -d "${MNT}"/freedos/ISOLINUX ];then
 			if [ -f "${MNT}"/freedos/ISOLINUX/FDBOOT.IMG ];then
 				cp "${MNT}"/freedos/ISOLINUX/FDBOOT.IMG "${WORK}"/boot/freedos/fdboot.img #Initial DOS boot image
 			else
 				cp "${MNT}"/freedos/DATA/FDBOOT.IMG "${WORK}"/boot/freedos/fdboot.img
 			fi
-			if [ -d "${MNT}"/freedos/FDOS ];then
-				cp -r "${MNT}"/freedos/FDOS "${WORK}"/ #Live CD
-			fi
-			if [ -d "${MNT}"/freedos/GEMAPPS ];then
-				cp -r "${MNT}"/freedos/GEMAPPS "${WORK}"/ #OpenGEM
-			fi
-			if [ -f "${MNT}"/freedos/GEM.BAT ];then
-				cp -r "${MNT}"/freedos/GEM.BAT "${WORK}"/ #OpenGEM setup
+			if [ -d "${MNT}"/freedos/FREEDOS ];then
+				#FreeDOS 1.1 or earlier
+				cp -r "${MNT}"/freedos/FREEDOS "${WORK}"/ #Core directory with the packages
+				cp "${MNT}"/freedos/SETUP.BAT "${WORK}"/setup.bat #FreeDOS setup
+				if [ -d "${MNT}"/freedos/FDOS ];then
+					cp -r "${MNT}"/freedos/FDOS "${WORK}"/ #Live CD
+				fi
+				if [ -d "${MNT}"/freedos/GEMAPPS ];then
+					cp -r "${MNT}"/freedos/GEMAPPS "${WORK}"/ #OpenGEM
+				fi
+				if [ -f "${MNT}"/freedos/GEM.BAT ];then
+					cp -r "${MNT}"/freedos/GEM.BAT "${WORK}"/ #OpenGEM setup
+				fi
 			fi
 		else
-			cp -r "${MNT}"/freedos/freedos "${WORK}"/ #Core directory with the packages
-			cp "${MNT}"/freedos/setup.bat "${WORK}"/setup.bat #FreeDOS setup
 			if [ -f "${MNT}"/freedos/isolinux/fdboot.img ];then
 				cp "${MNT}"/freedos/isolinux/fdboot.img "${WORK}"/boot/freedos/fdboot.img #Initial DOS boot image
 			else
 				cp "${MNT}"/freedos/data/fdboot.img "${WORK}"/boot/freedos/fdboot.img
 			fi
-			if [ -d "${MNT}"/freedos/fdos ];then
-				cp -r "${MNT}"/freedos/fdos "${WORK}"/ #Live CD
-			fi
-			if [ -d "${MNT}"/freedos/gemapps ];then
-				cp -r "${MNT}"/freedos/gemapps "${WORK}"/ #OpenGEM
-			fi
-			if [ -f "${MNT}"/freedos/gem.bat ];then
-				cp -r "${MNT}"/freedos/gem.bat "${WORK}"/ #OpenGEM setup
+			if [ -d "${MNT}"/freedos/FREEDOS ];then
+				#FreeDOS 1.1 or earlier
+				cp -r "${MNT}"/freedos/freedos "${WORK}"/ #Core directory with the packages
+				cp "${MNT}"/freedos/setup.bat "${WORK}"/setup.bat #FreeDOS setup
+				if [ -d "${MNT}"/freedos/fdos ];then
+					cp -r "${MNT}"/freedos/fdos "${WORK}"/ #Live CD
+				fi
+				if [ -d "${MNT}"/freedos/gemapps ];then
+					cp -r "${MNT}"/freedos/gemapps "${WORK}"/ #OpenGEM
+				fi
+				if [ -f "${MNT}"/freedos/gem.bat ];then
+					cp -r "${MNT}"/freedos/gem.bat "${WORK}"/ #OpenGEM setup
+				fi
 			fi
 		fi
+		for u in ARCHIVER BASE BOOT DEVEL EDIT GAMES NET PKGINFO SOUND UTIL;do
+			#FreeDOS 1.2
+			l=$(echo $x | tr '[:upper:]' '[:lower:]')
+			if [ -d "${MNT}"/freedos/$u ];then
+				mkdir -p "${WORK}"/$l
+				cp -r "${MNT}"/freedos/$u "${WORK}"/$l
+			elif [ -d "${MNT}"/freedos/$l ];then
+				mkdir -p "${WORK}"/$l
+				cp -r "${MNT}"/freedos/$l "${WORK}"/$l
+			fi
+		done
 		umcdmount freedos
 	fi
 elif [ $1 = writecfg ];then
