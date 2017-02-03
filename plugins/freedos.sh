@@ -40,6 +40,8 @@ elif [ $1 = copy ];then
 		if [ -d "${MNT}"/freedos/ISOLINUX ];then
 			if [ -f "${MNT}"/freedos/ISOLINUX/FDBOOT.IMG ];then
 				cp "${MNT}"/freedos/ISOLINUX/FDBOOT.IMG "${WORK}"/boot/freedos/fdboot.img #Initial DOS boot image
+			elif [ -f "${MNT}"/freedos/ISOLINUX/FDBOOT.img ];then
+				cp "${MNT}"/freedos/ISOLINUX/FDBOOT.img "${WORK}"/boot/freedos/fdboot.img #Initial DOS boot image
 			else
 				cp "${MNT}"/freedos/DATA/FDBOOT.IMG "${WORK}"/boot/freedos/fdboot.img
 			fi
