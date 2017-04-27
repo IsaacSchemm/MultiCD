@@ -9,9 +9,9 @@ export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
-MCDVERSION="20161230"
-#multicd.sh December 30, 2016
-#Copyright (c) 2016 Isaac Schemm
+MCDVERSION="20170427"
+#multicd.sh April 27, 2017
+#Copyright (c) 2017 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -37,6 +37,11 @@ RECENT_SYSLINUX="6.03"
 mcdclean() {
 	if [ -d "$MNT" ];then
 		umount "$MNT"/* 2>/dev/null
+		if which fusermount > /dev/null;then
+			for i in "$MNT"/*;do
+				fusermount -u "$i" 2>/dev/null
+			done
+		fi
 		rm -r "$MNT"
 	fi
 	if [ -d "$WORK" ];then
