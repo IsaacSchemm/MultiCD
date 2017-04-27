@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #SystemRescueCd plugin for multicd.sh
-#version 20150821
-#Copyright (c) 2010-2015 Isaac Schemm and Pascal De Vuyst
+#version 20170427
+#Copyright (c) 2010-2017 Isaac Schemm and Pascal De Vuyst
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,9 @@ elif [ $1 = copy ];then
 		cp "${MNT}"/sysrcd/sysrcd.* "${WORK}"/boot/sysrcd/ #Compressed filesystem
 		cp -r "${MNT}"/sysrcd/bootdisk "${WORK}"/boot/sysrcd/ #PDV system tools from floppy disk image
 		cp -r "${MNT}"/sysrcd/ntpasswd "${WORK}"/boot/sysrcd/ #PDV NTPASSWD
-		cp "${MNT}"/sysrcd/isolinux/altker* "${WORK}"/boot/sysrcd/ #Kernels
+		if [ -f "${MNT}"/sysrcd/isolinux/altker* ];then
+			cp "${MNT}"/sysrcd/isolinux/altker* "${WORK}"/boot/sysrcd/ #Kernels
+		fi
 		cp "${MNT}"/sysrcd/isolinux/rescue* "${WORK}"/boot/sysrcd/ #Kernels
 		cp "${MNT}"/sysrcd/isolinux/initram.igz "${WORK}"/boot/sysrcd/initram.igz #Initrd
 		cp "${MNT}"/sysrcd/version "${WORK}"/boot/sysrcd/version
