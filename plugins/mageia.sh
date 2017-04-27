@@ -89,10 +89,8 @@ label back
 	done
 elif [ $1 = writecfg ];then
 	MAGEIADIRS="${WORK}"/boot/*.mageia
-	echo $MAGEIADIRS
-	for i in $MAGEIADIRS;do
-		echo "$i"
-		BASENAME="$(basename $i)"
+	for i in "$MAGEIADIRS";do
+		BASENAME="$(basename "$i")"
 		if [ -d "${WORK}"/boot/$BASENAME ];then
 			VER=""
 			if [ -f $BASENAME.version ] && [ "$(cat $BASENAME.version)" != "" ];then

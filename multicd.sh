@@ -595,11 +595,11 @@ fi
 for i in "${WORK}"/boot/isolinux/*.cfg;do
 	TOFONT=""
 	TOENC=""
-	if grep -q -e '[АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяЁёЄєЇїЎў]' $i;then
+	if grep -q -e '[АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяЁёЄєЇїЎў]' "$i";then
 		TOFONT=Cyr_a8x16.psf
 		TOENC=CP866
 		echo "Found Cyrillic text"
-	elif grep -q -e '[ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρσςτυφχψωάέήϊίόύϋώΆΈΉΊΌΎΏΪΫ]' $i;then
+	elif grep -q -e '[ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρσςτυφχψωάέήϊίόύϋώΆΈΉΊΌΎΏΪΫ]' "$i";then
 		TOFONT=gr8x16.psf
 		TOENC=CP737
 		echo "Found Greek text"
