@@ -2,7 +2,7 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Ubuntu alternate install CD plugin for multicd.sh
-#version 20121113
+#version 20170608
 #Copyright (c) 2012 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,8 +32,6 @@ if [ $1 = links ];then
 	echo "xubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Xubuntu_alternate_installer_(64-bit)"
 	echo "lubuntu-*-alternate-i386.iso ubuntu-alternate.iso Lubuntu_alternate_installer_(32-bit)"
 	echo "lubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Lubuntu_alternate_installer_(64-bit)"
-	echo "ubuntu-*-server-i386.iso ubuntu-alternate.iso Ubuntu_server_(32-bit)"
-	echo "ubuntu-*-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
 elif [ $1 = scan ];then
 	if [ -f ubuntu-alternate.iso ];then
 		echo "Ubuntu alternate installer"
