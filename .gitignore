@@ -1,5 +1,6 @@
 *.iso
 *.tar.gz
 **/backup/**
+**/build/**
 memtest
 memtestver

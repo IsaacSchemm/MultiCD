@@ -9,8 +9,8 @@ export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
-MCDVERSION="20170427"
-#multicd.sh April 27, 2017
+MCDVERSION="20170609"
+#multicd.sh June 9, 2017
 #Copyright (c) 2017 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,7 +37,7 @@ RECENT_SYSLINUX="6.03"
 mcdclean() {
 	if [ -d "$MNT" ];then
 		umount "$MNT"/* 2>/dev/null
-		if which fusermount > /dev/null;then
+		if which fusermount &> /dev/null;then
 			for i in "$MNT"/*;do
 				fusermount -u "$i" 2>/dev/null
 			done
@@ -112,7 +112,7 @@ export MEMTEST=true
 export VERBOSE=true
 export INTERACTIVE=false
 export DEBUG=false
-export OUTPUT='multicd.iso'
+export OUTPUT='multicd'
 export TESTISO=false
 export WAIT=false
 eval set -- $ARGS
@@ -129,6 +129,23 @@ for i do
 		-w) shift;export WAIT=true;;
 	esac
 done
+
+if echo "${OUTPUT}" | grep -q "/";then
+	# Path
+	if [ $(echo "${OUTPUT}" | head -c 1) != "/" ];then
+		echo "The -o option must be either a filename without an extension (.iso will be appended) or an absolute path."
+		exit 1
+	fi
+	OUTPUTPATH="${OUTPUT}"
+else
+	# Filename
+	if echo "${OUTPUT}" | grep -q -e '\.iso$';then
+		echo "The output ISO file are now placed in the build folder by default. You shouldn't include the .iso extension in the filename (unless you specify a relative path instead.)"
+		exit 1
+	fi
+	OUTPUTPATH="build/${OUTPUT}.iso"
+	mkdir -p build
+fi
 
 if ! touch "${OUTPUT}" 2> /dev/null;then
 	echo "Error: cannot write to "${OUTPUT}""
@@ -661,7 +678,7 @@ if [ ! -f "${TAGS}"/win9x ];then
 	EXTRAARGS="$EXTRAARGS -iso-level 4" #To ensure that Windows 9x installation CDs boot properly
 fi
 echo "Building CD image..."
-$GENERATOR -o ""${OUTPUT}"" \
+$GENERATOR -o "${OUTPUTPATH}" \
 -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
 -no-emul-boot -boot-load-size 4 -boot-info-table \
 -r -J $EXTRAARGS \
@@ -692,7 +709,7 @@ if [ -f "${TAGS}/isohybrid" ];then
 fi
 
 if [ $(whoami) == "root" ];then
-	chmod 666 ""${OUTPUT}""
+	chmod 666 "${OUTPUTPATH}"
 fi
 rm -r "${TAGS}" "${MNT}"
 
@@ -709,11 +726,11 @@ if $TESTISO;then
 		RAM_TO_USE=128
 	fi
 	if which qemu-system-x86_64 &> /dev/null;then
-		qemu-system-x86_64 -m $RAM_TO_USE -cdrom ""${OUTPUT}""&
+		qemu-system-x86_64 -m $RAM_TO_USE -cdrom "${OUTPUTPATH}"&
 	elif which qemu &> /dev/null;then
-		qemu -m $RAM_TO_USE -cdrom ""${OUTPUT}""&
+		qemu -m $RAM_TO_USE -cdrom "${OUTPUTPATH}"&
 	else
-		echo "Cannot test "${OUTPUT}" in a VM. Please install qemu or qemu-system-x86_64."
+		echo "Cannot test "${OUTPUTPATH}" in a VM. Please install qemu or qemu-system-x86_64."
 	fi
 fi
 
