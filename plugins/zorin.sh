@@ -4,5 +4,5 @@ set -e
 #Zorin OS plugin for multicd.sh
 #version 20161022
 if [ $1 = links ];then
-	echo "zorin-os-*.iso zorin.ubuntu.iso Zorin_OS"
+	echo "zorin-os-*.iso zorin.casper.iso Zorin_OS"
 fi

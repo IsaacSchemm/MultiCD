@@ -4,5 +4,5 @@
 #version 20160524
 set -e
 if [ $1 = links ];then
-	echo "linux-lite-*.iso linux-lite.ubuntu.iso Linux_Lite_*"
+	echo "linux-lite-*.iso linux-lite.casper.iso Linux_Lite_*"
 fi

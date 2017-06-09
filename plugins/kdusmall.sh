@@ -4,5 +4,5 @@ set -e
 #KDu-Small plugin for multicd.sh
 #version 20161229
 if [ $1 = links ];then
-	echo "KDu-Small-*.iso kdusmall.ubuntu.iso KDu-Small"
+	echo "KDu-Small-*.iso kdusmall.casper.iso KDu-Small"
 fi
