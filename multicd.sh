@@ -9,7 +9,7 @@ export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 
-MCDVERSION="20170427"
+MCDVERSION="20170608"
 #multicd.sh April 27, 2017
 #Copyright (c) 2017 Isaac Schemm
 #
@@ -661,7 +661,10 @@ if [ ! -f "${TAGS}"/win9x ];then
 	EXTRAARGS="$EXTRAARGS -iso-level 4" #To ensure that Windows 9x installation CDs boot properly
 fi
 echo "Building CD image..."
-$GENERATOR -o ""${OUTPUT}"" \
+if [ ! -d "build" ];then
+	mkdir build
+fi
+$GENERATOR -o "./build/"${OUTPUT}"" \
 -b boot/isolinux/isolinux.bin -c boot/isolinux/boot.cat \
 -no-emul-boot -boot-load-size 4 -boot-info-table \
 -r -J $EXTRAARGS \
@@ -687,12 +690,12 @@ ISOHYBRID="${TAGS}/isohybrid"
 }
 if [ -f "${TAGS}/isohybrid" ];then
 	echo "Running isohybrid..."
-	"${TAGS}/isohybrid" ""${OUTPUT}"" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a flash drive."
+	"${TAGS}/isohybrid" "./build/"${OUTPUT}"" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a flash drive."
 	rm "${TAGS}"/isohybrid
 fi
 
 if [ $(whoami) == "root" ];then
-	chmod 666 ""${OUTPUT}""
+	chmod -R 666 "./build"
 fi
 rm -r "${TAGS}" "${MNT}"
 
@@ -709,11 +712,11 @@ if $TESTISO;then
 		RAM_TO_USE=128
 	fi
 	if which qemu-system-x86_64 &> /dev/null;then
-		qemu-system-x86_64 -m $RAM_TO_USE -cdrom ""${OUTPUT}""&
+		qemu-system-x86_64 -m $RAM_TO_USE -cdrom "./build/"${OUTPUT}""&
 	elif which qemu &> /dev/null;then
-		qemu -m $RAM_TO_USE -cdrom ""${OUTPUT}""&
+		qemu -m $RAM_TO_USE -cdrom "./build/"${OUTPUT}""&
 	else
-		echo "Cannot test "${OUTPUT}" in a VM. Please install qemu or qemu-system-x86_64."
+		echo "Cannot test ./build/"${OUTPUT}" in a VM. Please install qemu or qemu-system-x86_64."
 	fi
 fi
 
