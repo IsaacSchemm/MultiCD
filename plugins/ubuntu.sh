@@ -80,11 +80,20 @@ if [ $1 = links ];then
 			ARCHLABEL=""
 		fi
 		# stheno - writes temp file to parse new menu title.
-		echo "${TYPELABEL}buntu_${VERSIONPOST}_${PLATPOST}_${ARCHLABEL}" > "${VERSIONPOST}.${ARCHPOST}.${PLATPOST}".ubuntu.title
-		# stheno - This covers ALL links available on discovered files.
-		# No need to write entries that do not exist and be bound to only them.
-		# This facilitates multiple iso files of similar flavor but different versions or arch.
-		echo "${TYPETEMP}ubuntu-${VERSIONPOST}-${PLATPOST}-${ARCHPOST}.iso ${VERSIONPOST}.${ARCHPOST}.${PLATPOST}.${TYPE}ubuntu.iso ${TYPELABEL}buntu_${VERSIONPOST}_${PLATPOST}_${ARCHLABEL}"
+		case "$BASENAME" in
+			*desktop*)
+				if [ ! "${PLATPOST}" = "server" ];then
+					echo "${TYPELABEL}buntu_${VERSIONPOST}_${PLATPOST}_${ARCHLABEL}" > "${VERSIONPOST}.${ARCHPOST}.${PLATPOST}".ubuntu.title
+					# stheno - This covers ALL links available on discovered files.
+					# No need to write entries that do not exist and be bound to only them.
+					# This facilitates multiple iso files of similar flavor but different versions or arch.
+					echo "${TYPETEMP}ubuntu-${VERSIONPOST}-${PLATPOST}-${ARCHPOST}.iso ${VERSIONPOST}.${ARCHPOST}.${PLATPOST}.${TYPE}ubuntu.iso ${TYPELABEL}buntu_${VERSIONPOST}_${PLATPOST}_${ARCHLABEL}"
+				fi
+			;;
+
+			*server*)
+			;;
+		esac
 	done
 
 elif [ $1 = scan ];then
@@ -131,7 +140,6 @@ elif [ $1 = copy ];then
 						cp "${MNT}"/$BASENAME/isolinux/$UBUCFG "${WORK}"/boot/$BASENAME/$BASENAME.cfg
 						
 						MENUTITLETEMP=`cat $BASENAME.title`
-						rm $BASENAME.title
 						MENUTITLE=$(echo "$MENUTITLETEMP" | sed 's/_/ /g')
 						
 						CFGFILE=`cat "${WORK}""/boot/$BASENAME/$BASENAME".cfg`
@@ -189,6 +197,7 @@ elif [ $1 = copy ];then
 				echo "$0: \"$BASENAME\" is empty or not an ISO"
 				exit 1
 			fi
+			rm *.title
 		done
 	fi
 elif [ $1 = writecfg ];then
