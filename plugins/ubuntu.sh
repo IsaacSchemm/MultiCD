@@ -155,14 +155,17 @@ elif [ $1 = copy ];then
 							sed 's/\/install\//\/boot\/'"$BASENAME"'\//g' | \
 							sed '$ a label back' | \
 							sed '$ a menu label Back to main menu' | \
-							sed '$ a \\tcom32 menu.c32' | \
-							sed 's/menu title/\\tmenu title/g' | \
-							sed 's/menu label/\\tmenu label/g' | \
-							sed 's/kernel /\\tkernel /g' | \
-							sed 's/KERNEL /\\tKERNEL /g' | \
-							sed 's/localboot/\\tlocalboot/g' | \
-							sed 's/append  /\\tappend /g' | \
-							sed '$ a \\tappend /boot/isolinux/isolinux.cfg'
+							sed '$ a com32 menu.c32' | \
+							sed 's/menu title/    menu title/g' | \
+							sed 's/menu label/  menu label/g' | \
+							sed 's/kernel /  kernel /g' | \
+							sed 's/KERNEL /  KERNEL /g' | \
+							sed 's/localboot/  localboot/g' | \
+							sed 's/append  /  append /g' | \
+							sed '$ a append /boot/isolinux/isolinux.cfg' | \
+							sed 's/append \/boot/    append \/boot/g' | \
+							sed 's/menu label Back/  menu label Back/g' | \
+							sed 's/com32 menu.c32/    com32 menu.c32/g'
 						)
 						echo "$EDITS" > "${WORK}"/boot/$BASENAME/$BASENAME.cfg
 						
