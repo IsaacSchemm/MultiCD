@@ -3,7 +3,7 @@ set -e
 . "${MCDDIR}"/functions.sh
 #Ubuntu plugin for multicd.sh
 #version 20170609
-#Copyright (c) 2012 Isaac Schemm
+#Copyright (c) 2012-2017 Isaac Schemm et al
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -83,7 +83,7 @@ if [ $1 = links ];then
 		case "$BASENAME" in
 			*desktop*)
 				if [ ! "${PLATPOST}" = "server" ];then
-					echo "${TYPELABEL}buntu_${VERSIONPOST}_${PLATPOST}_${ARCHLABEL}" > "${VERSIONPOST}.${ARCHPOST}.${PLATPOST}".ubuntu.title
+					echo "${TYPELABEL}buntu_${VERSIONPOST}_${PLATPOST}_${ARCHLABEL}" > "${VERSIONPOST}.${ARCHPOST}.${PLATPOST}.${TYPE}ubuntu.title"
 					# stheno - This covers ALL links available on discovered files.
 					# No need to write entries that do not exist and be bound to only them.
 					# This facilitates multiple iso files of similar flavor but different versions or arch.
@@ -168,18 +168,6 @@ elif [ $1 = copy ];then
 							sed 's/com32 menu.c32/    com32 menu.c32/g'
 						)
 						echo "$EDITS" > "${WORK}"/boot/$BASENAME/$BASENAME.cfg
-						
-						# stheno - I left the in but commented, not sure if there are use cases still?
-						#sed -i "s@menu background @menu background /boot/$BASENAME/@g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #If it uses a splash screen, update the .cfg to show the new location
-						#sed -i "s@MENU BACKGROUND @MENU BACKGROUND /boot/$BASENAME/@g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #uppercase
-						
-						##Remove reference to previous live media path
-						#sed -i "s^live-media-path=[^ ]*^^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg
-
-						##Equivalents for Mint Debian
-						##sed -i "s^initrd=/live/^live-media-path=/boot/$BASENAME ignore_uuid initrd=/boot/$BASENAME/^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg
-						##sed -i "s^kernel /live/^kernel /boot/$BASENAME/^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg
-						##sed -i "s^KERNEL /live/^KERNEL /boot/$BASENAME/^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg
 
 						if [ -f "${TAGS}"/lang ];then
 							echo added lang
@@ -200,7 +188,7 @@ elif [ $1 = copy ];then
 				echo "$0: \"$BASENAME\" is empty or not an ISO"
 				exit 1
 			fi
-			rm *.title
+			rm $BASENAME.title
 		done
 	fi
 elif [ $1 = writecfg ];then
