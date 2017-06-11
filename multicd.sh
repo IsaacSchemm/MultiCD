@@ -8,6 +8,7 @@ trap exit ERR
 export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
+. downloader.sh
 
 MCDVERSION="20170609"
 #multicd.sh June 9, 2017
@@ -99,6 +100,10 @@ if [ "$1" = "give-error" ];then
 	echo "Press ENTER to continue..."
 	read
 	exit 1
+fi
+
+if [ "$1" = "download" ];then
+	downloadisos
 fi
 
 #if getopt -T > /dev/null;then
