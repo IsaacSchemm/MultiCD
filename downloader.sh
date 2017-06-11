@@ -8,8 +8,9 @@ getISO() {
 	echo "Downloading $2..."
 	if ! wget -t 1 -O "${3}" "${4}";then
 		echo "Error: could not download $4. Please update the URL in downloader.sh."
+		### Left in the loop to main menu commented incase one wants to just loop back on error.
 		exit 1
-		downloadisos
+		#downloadisos
 	fi
 	
 	case $1 in
