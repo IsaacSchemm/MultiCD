@@ -107,6 +107,7 @@ elif [ $1 = copy ];then
 				com32 menu.c32
 				append /boot/isolinux/isolinux.cfg
 				" >> "${WORK}"/boot/$BASENAME/$BASENAME.cfg
+				cp "${WORK}"/boot/$BASENAME/$BASENAME.cfg a.cfg
 				sed -i "s@menu background @menu background /boot/$BASENAME/@g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #If it uses a splash screen, update the .cfg to show the new location
 				sed -i "s@MENU BACKGROUND @MENU BACKGROUND /boot/$BASENAME/@g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #uppercase
 				sed -i "s@default live@default menu.c32@g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #Show menu instead of boot: prompt
@@ -132,6 +133,7 @@ elif [ $1 = copy ];then
 					echo added country
 					sed -i "s^initrd=/boot/$BASENAME/^console-setup/layoutcode?=$(cat "${TAGS}"/country) initrd=/boot/$BASENAME/^g" "${WORK}"/boot/$BASENAME/$BASENAME.cfg #Add language codes to cmdline
 				fi
+				cp "${WORK}"/boot/$BASENAME/$BASENAME.cfg b.cfg
 				umcdmount $BASENAME
 			else
 				echo "$0: \"$BASENAME\" is empty or not an ISO"
