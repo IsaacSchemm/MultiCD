@@ -21,6 +21,9 @@ getISO() {
 failed() {
 	error="No $1 entries yet.";
 }
+cancelled() {
+	cancel="Selection from $1 cancelled.";
+}
 ### Important:
 ### This is the blank entry template for distros
 ### we support but don't have or can't provide links for.
@@ -31,17 +34,23 @@ failed() {
 # }
 select_debian() {
 	failed "$1"
+	cancelled "$1"
 	return=$error
+	exit=$cancel
 	downloadisos "$return"
 }
 select_fedora() {
 	failed "$1"
+	cancelled "$1"
 	return=$error
+	exit=$cancel
 	downloadisos "$return"
 }
 select_ubuntu() {
 	failed "$1"
+	cancelled "$1"
 	return=$error
+	exit=$cancel
 	
 	HEIGHT=50
 	WIDTH=70
@@ -75,7 +84,7 @@ select_ubuntu() {
 		  '17.04 Server 64bit'
 		  );
 
-	COUNT=0
+	COUNT=1
 	OPTIONS=()
 	for i in "${ISOS[@]}"; do
 		OPTIONS+=($COUNT "$i")
@@ -95,10 +104,10 @@ select_ubuntu() {
 				2>&1 >/dev/tty
 			)
 	
-	if [ $CHOICE = $[COUNT-1] ];then
+	if [[ $CHOICE = $[COUNT-1] ]];then
 		downloadisos "Returned from $1"
 	fi
-	if [ $CHOICE = $COUNT ];then
+	if [[ $CHOICE = $COUNT ]];then
 		echo "Leaving Distro Downloader from $1 menu."
 		exit 1
 	fi
@@ -108,101 +117,106 @@ select_ubuntu() {
 	URL=""
 
 	case $CHOICE in
-		0)
+		1)
 			FILE="ubuntu-12.04.5-alternate-i386.iso"
 			URL="${COMMON}12.04/${FILE}"
 		;;
-		1)
+		2)
 			FILE="ubuntu-12.04.5-alternate-amd64.iso"
 			URL="${COMMON}12.04/${FILE}"
 		;;
-		2)
+		3)
 			FILE="ubuntu-12.04.5-desktop-i386.iso"
 			URL="${COMMON}12.04/${FILE}"
 		;;
-		3)
+		4)
 			FILE="ubuntu-12.04.5-desktop-amd64.iso"
 			URL="${COMMON}12.04/${FILE}"
 		;;
-		4)
+		5)
 			FILE="ubuntu-12.04.5-server-i386.iso"
 			URL="${COMMON}12.04/${FILE}"
 		;;
-		5)
+		6)
 			FILE="ubuntu-12.04.5-server-amd64.iso"
 			URL="${COMMON}12.04/${FILE}"
 		;;
 		
-		6)
+		7)
 			FILE="ubuntu-14.04.5-desktop-i386.iso"
 			URL="${COMMON}14.04/${FILE}"
 		;;
-		7)
+		8)
 			FILE="ubuntu-14.04.5-desktop-amd64.iso"
 			URL="${COMMON}14.04/${FILE}"
 		;;
-		8)
+		9)
 			FILE="ubuntu-14.04.5-server-i386.iso"
 			URL="${COMMON}14.04/${FILE}"
 		;;
-		9)
+		10)
 			FILE="ubuntu-14.04.5-server-amd64.iso"
 			URL="${COMMON}14.04/${FILE}"
 		;;
 		
-		10)
+		11)
 			FILE="ubuntu-16.04.2-desktop-i386.iso"
 			URL="${COMMON}16.04/${FILE}"
 		;;
-		11)
+		12)
 			FILE="ubuntu-16.04.2-desktop-amd64.iso"
 			URL="${COMMON}16.04/${FILE}"
 		;;
-		12)
+		13)
 			FILE="ubuntu-16.04.2-server-i386.iso"
 			URL="${COMMON}16.04/${FILE}"
 		;;
-		13)
+		14)
 			FILE="ubuntu-16.04.2-server-amd64.iso"
 			URL="${COMMON}16.04/${FILE}"
 		;;
 		
-		14)
+		15)
 			FILE="ubuntu-16.10-desktop-i386.iso"
 			URL="${COMMON}16.10/${FILE}"
 		;;
-		15)
+		16)
 			FILE="ubuntu-16.10-desktop-amd64.iso"
 			URL="${COMMON}16.10/${FILE}"
 		;;
-		16)
+		17)
 			FILE="ubuntu-16.10-server-i386.iso"
 			URL="${COMMON}16.10/${FILE}"
 		;;
-		17)
+		18)
 			FILE="ubuntu-16.10-server-amd64.iso"
 			URL="${COMMON}16.10/${FILE}"
 		;;
 		
-		18)
+		19)
 			FILE="ubuntu-17.04-desktop-i386.iso"
 			URL="${COMMON}17.04/${FILE}"
 		;;
-		19)
+		20)
 			FILE="ubuntu-17.04-desktop-amd64.iso"
 			URL="${COMMON}17.04/${FILE}"
 		;;
-		20)
+		21)
 			FILE="ubuntu-17.04-server-i386.iso"
 			URL="${COMMON}17.04/${FILE}"
 		;;
-		21)
+		22)
 			FILE="ubuntu-17.04-server-amd64.iso"
 			URL="${COMMON}17.04/${FILE}"
 		;;
 	esac
 	
-	getISO $1 "${ISOS[$CHOICE]}" "$FILE" "$URL"
+	if [[ -z $CHOICE ]];then
+		downloadisos "$exit"
+	else
+		GETNAME=$CHOICE-1
+		getISO $1 "${ISOS[$GETNAME]}" "$FILE" "$URL"
+	fi	
 	
 	### If menu fails, drop to main menu.
 	downloadisos "$return"
@@ -256,11 +270,17 @@ downloadisos() {
 				2>&1 >/dev/tty
 			)
 	
-	if [ $CHOICE = $COUNT ];then
+	if [[ $CHOICE = $COUNT ]];then
 		echo "Leaving Distro Downloader from main menu."
 		exit 1
+	fi	
+	
+	if [[ -z $CHOICE ]];then
+		echo "Cancelled Distro Downloader from main menu."
+		exit 1
+	else
+		distrochoice ${DISTROS[$CHOICE]}
 	fi
-	distrochoice ${DISTROS[$CHOICE]}
 	
 	## Clean exit on menu fail.
 	exit 1
