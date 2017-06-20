@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Windows 7 Disc plugin for multicd.sh
-#version 6.9
-#Copyright for this script (c) 2011 Isaac Schemm
+#version 20170620
+#Copyright for this script (c) 2011-2017 Isaac Schemm et al
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,11 @@ elif [ $1 = copy ];then
 	if [ -f win7.iso ];then
 		echo "Copying Windows 7 Disc..."
 		mcdmount win7
+		if [ ! -d "${MNT}"/win7/boot ];then
+			echo "Could not find \"boot\" folder - maybe it wasn't extracted properly." >&2
+			echo "On Linux, running this script again as root should fix it." >&2
+			exit 1
+		fi
 		cp -r "${MNT}"/win7/boot/* "${WORK}"/boot/
 		cp -r "${MNT}"/win7/sources "${WORK}"/
 		cp "${MNT}"/win7/bootmgr "${WORK}"/
