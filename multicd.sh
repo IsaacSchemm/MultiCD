@@ -141,6 +141,10 @@ if echo "${OUTPUT}" | grep -q "/";then
 		echo "The -o option must be either a filename without an extension (.iso will be appended) or an absolute path."
 		exit 1
 	fi
+	if ! (echo "${OUTPUT}" | tail -c 4 | grep -q iso);then
+		echo "The -o option does not accept paths with spaces. If an absolute path is used, the .iso extension is required."
+		exit 1
+	fi
 	OUTPUTPATH="${OUTPUT}"
 else
 	# Filename
