@@ -58,19 +58,24 @@ if [ $1 = links ];then
 		# stheno - This processes the iso name into usable chunks for other purposes.
 		# This is key in the start for allowing multiple Ubuntu desktop flavors.
 		BASENAME=$(echo $i|sed -e 's/\.iso//g')
-		TYPETEMP=`echo $BASENAME | sed 's/ubuntu.*//g'`
-		VERSIONPRE=`echo $BASENAME | sed 's/.*ubuntu-//g'`
+		TYPETEMP1=`echo $BASENAME | sed 's/ubuntu.*//g'`
+		TYPETEMP2=`echo $BASENAME | sed 's/.*ubuntu-//g' | sed 's/[0-9].*//g' | sed 's/\-//g'`
+		VERSIONPRE=`echo $BASENAME | sed 's/.*ubuntu-[^0-9]*//g'`
 		VERSIONPOST=`echo $VERSIONPRE | sed 's/-.*//g'`
-		ARCHPRE=`echo $BASENAME | sed "s/.*ubuntu-"${VERSIONPOST}"-//g"`
+		ARCHPRE=`echo $BASENAME | sed "s/.*ubuntu-[^0-9]*"${VERSIONPOST}"-//g"`
 		ARCHPOST=`echo $ARCHPRE | sed 's/.*-//g'`
-		PLATPRE=`echo $BASENAME | sed "s/.*ubuntu-"${VERSIONPOST}"-//g"`
+		PLATPRE=`echo $BASENAME | sed "s/.*ubuntu-[^0-9]*"${VERSIONPOST}"-//g"`
 		PLATPOST=`echo $PLATPRE | sed 's/-.*//g'`
-		if [ "${TYPETEMP}" ];then
-			TYPE="${TYPETEMP}."
-			TYPELABEL=$(echo $TYPETEMP | sed 's/./\U&/')u
+		if [ "${TYPETEMP1}" ];then
+			TYPE="${TYPETEMP1}."
+			TYPELABEL=$(echo $TYPETEMP1 | sed 's/./\U&/')ubuntu
+		elif [ "${TYPETEMP2}" ];then
+			TYPE="${TYPETEMP2}."
+			TYPELABEL="Ubuntu-$(echo $TYPETEMP2 | sed 's/\-//g')"
+			TYPETEMP2="-${TYPETEMP2}"
 		else
 			TYPE=""
-			TYPELABEL="U"
+			TYPELABEL="Ubuntu"
 		fi
 		if [ "${ARCHPOST}" = "i386" ];then
 			ARCHLABEL="(32-bit)"
@@ -83,11 +88,11 @@ if [ $1 = links ];then
 		case "$BASENAME" in
 			*desktop*)
 				if [ ! "${PLATPOST}" = "server" ];then
-					echo "${TYPELABEL}buntu_${VERSIONPOST}_${PLATPOST}_${ARCHLABEL}" > "${VERSIONPOST}.${ARCHPOST}.${PLATPOST}.${TYPE}ubuntu.title"
+					echo "${TYPELABEL}_${VERSIONPOST}_${PLATPOST}_${ARCHLABEL}" > "${VERSIONPOST}.${ARCHPOST}.${PLATPOST}.${TYPE}ubuntu.title"
 					# stheno - This covers ALL links available on discovered files.
 					# No need to write entries that do not exist and be bound to only them.
 					# This facilitates multiple iso files of similar flavor but different versions or arch.
-					echo "${TYPETEMP}ubuntu-${VERSIONPOST}-${PLATPOST}-${ARCHPOST}.iso ${VERSIONPOST}.${ARCHPOST}.${PLATPOST}.${TYPE}ubuntu.iso ${TYPELABEL}buntu_${VERSIONPOST}_${PLATPOST}_${ARCHLABEL}"
+					echo "${TYPETEMP1}ubuntu${TYPETEMP2}-${VERSIONPOST}-${PLATPOST}-${ARCHPOST}.iso ${VERSIONPOST}.${ARCHPOST}.${PLATPOST}.${TYPE}ubuntu.iso ${TYPELABEL}_${VERSIONPOST}_${PLATPOST}_${ARCHLABEL}"
 				fi
 			;;
 
