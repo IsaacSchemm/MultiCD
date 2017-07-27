@@ -55,6 +55,9 @@ getUbuntuName () {
 
 if [ $1 = links ];then
 	for i in *ubuntu*.iso; do
+		if [ "$i" = '*ubuntu*.iso' ];then
+			continue
+		fi
 		# stheno - This processes the iso name into usable chunks for other purposes.
 		# This is key in the start for allowing multiple Ubuntu desktop flavors.
 		BASENAME=$(echo $i|sed -e 's/\.iso//g')

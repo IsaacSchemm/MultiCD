@@ -713,7 +713,7 @@ ISOHYBRID="${TAGS}/isohybrid"
 }
 if [ -f "${TAGS}/isohybrid" ];then
 	echo "Running isohybrid..."
-	"${TAGS}/isohybrid" "./build/"${OUTPUT}"" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a flash drive."
+	"${TAGS}/isohybrid" "${OUTPUTPATH}" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a flash drive."
 	rm "${TAGS}"/isohybrid
 fi
 
