@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Debian Live plugin for multicd.sh
-#version 20140410
-#Copyright (c) 2014 Isaac Schemm
+#version 20180130
+#Copyright (c) 2018 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -72,6 +72,7 @@ elif [ $1 = copy ];then
 			mcdmount $BASENAME
 			cp "${MNT}"/$BASENAME/isolinux/live.cfg "${WORK}"/boot/isolinux/$BASENAME.cfg ||
 				cp "${MNT}"/$BASENAME/boot/live.cfg "${WORK}"/boot/isolinux/$BASENAME.cfg ||
+				cp "${MNT}"/$BASENAME/isolinux/menu.cfg "${WORK}"/boot/isolinux/$BASENAME.cfg ||
 				cp "${MNT}"/$BASENAME/isolinux/isolinux.cfg "${WORK}"/boot/isolinux/$BASENAME.cfg
 			sed -i -e 's/default vesamenu.c32/default menu.c32/g' "${WORK}"/boot/isolinux/$BASENAME.cfg
 			LIVEFOLDER=$BASENAME
@@ -87,7 +88,7 @@ elif [ $1 = copy ];then
 				fi
 			fi
 			mkdir "${WORK}"/$LIVEFOLDER
-			mcdcp -rv "${MNT}"/$BASENAME/live/* "${WORK}"/$LIVEFOLDER
+			mcdcp -r "${MNT}"/$BASENAME/live/* "${WORK}"/$LIVEFOLDER
 			umcdmount $BASENAME
 		done
 		if [ -f "${WORK}"/live/memtest ];then
