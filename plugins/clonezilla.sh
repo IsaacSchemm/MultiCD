@@ -54,7 +54,8 @@ elif [ $1 = copy ];then
 			mcdmount $BASENAME
 			cp "${MNT}"/$BASENAME/*linux/ocswp.png "${WORK}"/boot/isolinux/ocswp.png #Boot menu logo
 			cp -r "${MNT}"/$BASENAME/live "${WORK}"/boot/$BASENAME #Another Debian Live-based ISO
-			cp "${MNT}"/$BASENAME/C* "${WORK}"/boot/$BASENAME #PDV Clonezilla-Live-Version and COPYING files
+			cp "${MNT}"/$BASENAME/Clonezilla-Live-Version "${WORK}"/boot/$BASENAME #PDV Clonezilla-Live-Version file
+			cp "${MNT}"/$BASENAME/GPL "${WORK}"/boot/$BASENAME #PDV GPL file
 			cp "${MNT}"/$BASENAME/*linux/isolinux.cfg "${WORK}"/boot/isolinux/cz-$BASENAME.cfg #PDV
 			umcdmount $BASENAME
 		fi
@@ -68,15 +69,12 @@ elif [ $1 = writecfg ];then
 			sed -i -e 's/\/live\//\/boot\/'$BASENAME'\//g' "${WORK}"/boot/isolinux/cz-$BASENAME.cfg #Change directory to /boot/clonezilla
 			sed -i -e 's/append initrd=/append live-media-path=\/boot\/'$BASENAME' initrd=/g' "${WORK}"/boot/isolinux/cz-$BASENAME.cfg #Tell the kernel we moved it
 			if [ -f "${TAGS}"/country ]; then #PDV
-				if [ $(cat "${TAGS}"/country) = "be" ];then
-					sed -i -e 's/ocs_live_keymap=""/ocs_live_keymap="\/usr\/share\/keymaps\/i386\/azerty\/be2-latin1.kmap.gz"/' "${WORK}"/boot/isolinux/cz-$BASENAME.cfg #set keymap
-				fi
+				sed -i -e 's/keyboard-layouts=/keyboard-layouts="'$(cat "${TAGS}"/country)'"/' "${WORK}"/boot/isolinux/cz-$BASENAME.cfg #set keymap
 			fi
 			if [ -f "${TAGS}"/lang-full ]; then #PDV
-				sed -i -e 's/ocs_lang=""/ocs_lang="'$(cat "${TAGS}"/lang-full)'.UTF-8"/' "${WORK}"/boot/isolinux/cz-$BASENAME.cfg #menu language
+				sed -i -e 's/locales=/locales="'$(cat "${TAGS}"/lang-full)'.UTF-8"/' "${WORK}"/boot/isolinux/cz-$BASENAME.cfg #menu language
 			fi
 			ls "${WORK}"/boot/isolinux/cz-$BASENAME.cfg
-			##sed -i -e 's/[[:blank:]]ip=frommedia[[:blank:]]/ /' "${WORK}"/boot/isolinux/clonezil$BASENAME.cfg #PDV get ip via dhcp
 			if $MEMTEST; then #PDV remove memtest if already in main menu
 				sed -i -e '/MENU BEGIN Memtest/,/MENU END/ s/MENU END//' -e '/MENU BEGIN Memtest/,/ENDTEXT/d' -e '/./,/^$/!d' "${WORK}"/boot/isolinux/cz-$BASENAME.cfg
 				rm "${WORK}"/boot/$BASENAME/memtest
