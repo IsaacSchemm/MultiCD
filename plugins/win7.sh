@@ -22,37 +22,41 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
+if [ $1 = links ];then
+	echo "HBCD_PE_*.iso win7.iso Hiren's_BootCD_PE"
+elif [ $1 = scan ];then
 	if [ -f win7.iso ];then
-		echo "Windows 7 Disc (Not open source)"
+		echo "Windows 7+"
+		touch "${TAGS}/win7.needsname"
 	fi
 elif [ $1 = copy ];then
 	if [ -f win7.iso ];then
-		echo "Copying Windows 7 Disc..."
+		echo "Copying Windows 7+..."
 		mcdmount win7
-		if [ ! -d "${MNT}"/win7/boot ];then
-			echo "Could not find \"boot\" folder - maybe it wasn't extracted properly." >&2
-			echo "On Linux, running this script again as root should fix it." >&2
-			exit 1
+		if [ -d "${MNT}"/win7/HBCD_PE.ini ];then
+			cp "${MNT}"/win7/HBCD_PE.ini "${WORK}"/
+			cp "${MNT}"/win7/Version.txt "${WORK}"/hirens.txt || true
 		fi
-		cp -r "${MNT}"/win7/boot/* "${WORK}"/boot/
+		cp -r "${MNT}"/win7/[Bb]oot/* "${WORK}"/boot/
 		cp -r "${MNT}"/win7/sources "${WORK}"/
 		cp "${MNT}"/win7/bootmgr "${WORK}"/
 		umcdmount win7
 	fi
 elif [ $1 = writecfg ];then
 if [ -f win7.iso ];then
-	if which isoinfo &> /dev/null;then
-		if isoinfo -d -i win7.iso;then
-			TYPE=" 64-bit"
-		else
-			TYPE=" 32-bit"
+	DISPLAYNAME="$(cat "${TAGS}"/win7.name)"
+	if [ -z "$DISPLAYNAME" ];then
+	DISPLAYNAME="Windows 7+"
+		if which isoinfo &> /dev/null;then
+			if isoinfo -d -i win7.iso;then
+				DISPLAYNAME="Windows 7+ (64-bit)"
+			else
+				DISPLAYNAME="Windows 7+ (32-bit)"
+			fi
 		fi
-	else
-		TYPE=""
 	fi
 	echo "label win7
-	menu label Windows ^7$TYPE Disc (direct from CD)
+	menu label $DISPLAYNAME
 	kernel chain.c32
 	append boot ntldr=/bootmgr">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
