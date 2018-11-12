@@ -30,9 +30,9 @@ elif [ $1 = copy ];then
 	if [ -f debian-mini64.iso ];then
 		echo "Copying Debian netboot installer (amd64)..."
 		mcdmount debian-mini64
-		mkdir "${WORK}"/boot/debian
-		cp "${MNT}"/debian-mini64/linux "${WORK}"/boot/debian/linux
-		cp "${MNT}"/debian-mini64/initrd.gz "${WORK}"/boot/debian/initrd.gz
+		mkdir -p "${WORK}"/boot/debian64
+		cp "${MNT}"/debian-mini64/linux "${WORK}"/boot/debian64/linux
+		cp "${MNT}"/debian-mini64/initrd.gz "${WORK}"/boot/debian64/initrd.gz
 		umcdmount debian-mini64
 	fi
 elif [ $1 = writecfg ];then
@@ -41,11 +41,11 @@ DEBNAME="Debian GNU/Linux mini netinst (amd64)"
 echo "menu begin -->^$DEBNAME
 
 label ^Install Debian
-	kernel /boot/debian/linux
-	append vga=normal initrd=/boot/debian/initrd.gz -- quiet 
+	kernel /boot/debian64/linux
+	append vga=normal initrd=/boot/debian64/initrd.gz -- quiet
 label ^Install Debian - expert mode
-	kernel /boot/debian/linux
-	append priority=low vga=normal initrd=/boot/debian/initrd.gz -- 
+	kernel /boot/debian64/linux
+	append priority=low vga=normal initrd=/boot/debian64/initrd.gz --
 
 menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
