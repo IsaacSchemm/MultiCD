@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Ubuntu alternate install CD plugin for multicd.sh
-#version 20121113
-#Copyright (c) 2012 Isaac Schemm
+#version 20181226
+#Copyright (c) 2012-2018 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,16 @@ if [ $1 = links ];then
 	echo "lubuntu-*-alternate-i386.iso ubuntu-alternate.iso Lubuntu_alternate_installer_(32-bit)"
 	echo "lubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Lubuntu_alternate_installer_(64-bit)"
 	echo "ubuntu-*-server-i386.iso ubuntu-alternate.iso Ubuntu_server_(32-bit)"
-	echo "ubuntu-*-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
+	echo "ubuntu-*0-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
+	echo "ubuntu-*1-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
+	echo "ubuntu-*2-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
+	echo "ubuntu-*3-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
+	echo "ubuntu-*4-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
+	echo "ubuntu-*5-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
+	echo "ubuntu-*6-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
+	echo "ubuntu-*7-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
+	echo "ubuntu-*8-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
+	echo "ubuntu-*9-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
 elif [ $1 = scan ];then
 	if [ -f ubuntu-alternate.iso ];then
 		echo "Ubuntu alternate installer"

@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Ubuntu plugin for multicd.sh
-#version 20170609
-#Copyright (c) 2012-2017 Isaac Schemm et al
+#version 20181226
+#Copyright (c) 2012-2018 Isaac Schemm et al
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -68,7 +68,7 @@ if [ $1 = links ];then
 		ARCHPRE=`echo $BASENAME | sed "s/.*ubuntu-[^0-9]*"${VERSIONPOST}"-//g"`
 		ARCHPOST=`echo $ARCHPRE | sed 's/.*-//g'`
 		PLATPRE=`echo $BASENAME | sed "s/.*ubuntu-[^0-9]*"${VERSIONPOST}"-//g"`
-		PLATPOST=`echo $PLATPRE | sed 's/-.*//g'`
+		PLATPOST=`echo $PLATPRE | sed "s/-$ARCHPOST*//g"`
 		if [ "${TYPETEMP1}" ];then
 			TYPE="${TYPETEMP1}."
 			TYPELABEL=$(echo $TYPETEMP1 | sed 's/./\U&/')ubuntu
