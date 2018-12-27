@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 . "${MCDDIR}"/functions.sh
-#Ubuntu alternate install CD plugin for multicd.sh
-#version 20181226
+#Ubuntu alternate/server install CD plugin for multicd.sh
+#version 20181227
 #Copyright (c) 2012-2018 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,16 +33,7 @@ if [ $1 = links ];then
 	echo "lubuntu-*-alternate-i386.iso ubuntu-alternate.iso Lubuntu_alternate_installer_(32-bit)"
 	echo "lubuntu-*-alternate-amd64.iso ubuntu-alternate.iso Lubuntu_alternate_installer_(64-bit)"
 	echo "ubuntu-*-server-i386.iso ubuntu-alternate.iso Ubuntu_server_(32-bit)"
-	echo "ubuntu-*0-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
-	echo "ubuntu-*1-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
-	echo "ubuntu-*2-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
-	echo "ubuntu-*3-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
-	echo "ubuntu-*4-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
-	echo "ubuntu-*5-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
-	echo "ubuntu-*6-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
-	echo "ubuntu-*7-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
-	echo "ubuntu-*8-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
-	echo "ubuntu-*9-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
+	echo "ubuntu-*-server-amd64.iso ubuntu-alternate.iso Ubuntu_server_(64-bit)"
 elif [ $1 = scan ];then
 	if [ -f ubuntu-alternate.iso ];then
 		echo "Ubuntu alternate installer"
@@ -55,8 +46,11 @@ elif [ $1 = copy ];then
 		else
 			echo "Copying Ubuntu alternate installer..."
 			mcdmount ubuntu-alternate
-			cp "${MNT}"/ubuntu-alternate/cdromupgrade "${WORK}" 2>&1 || true #Not essential
+			cp "${MNT}"/ubuntu-alternate/cdromupgrade "${WORK}" 2>/dev/null || true #Not essential
 			cp -r "${MNT}"/ubuntu-alternate/.disk "${WORK}"
+			if [ -d "${MNT}"/ubuntu-alternate/casper ];then
+				cp -r "${MNT}"/ubuntu-alternate/casper "${WORK}"
+			fi
 			cp -r "${MNT}"/ubuntu-alternate/dists "${WORK}"
 			cp -r "${MNT}"/ubuntu-alternate/doc "${WORK}" || true
 			cp -r "${MNT}"/ubuntu-alternate/install "${WORK}"
@@ -67,6 +61,7 @@ elif [ $1 = copy ];then
 			if [ ! -e "${MNT}"/ubuntu-alternate/ubuntu ];then
 				ln -s . "${MNT}"/ubuntu-alternate/ubuntu
 			fi
+			cp "${MNT}"/ubuntu-alternate/isolinux/txt.cfg "${WORK}"/boot/isolinux/ubuntu-alternate.cfg
 			umcdmount ubuntu-alternate
 		fi
 	fi
@@ -80,23 +75,9 @@ if [ -f "${WORK}"/README.diskdefines ];then
 else
 	CDNAME="Ubuntu alternate installer"
 fi
-echo "menu begin --> ^$CDNAME
-
-label install
-  menu label ^Install Ubuntu
-  kernel /install/vmlinuz
-  append  file=/cdrom/$PRESEED vga=788 initrd=/install/initrd.gz quiet --
-
-label expert
-  menu label ^Expert install
-  kernel /install/vmlinuz
-  append  file=/cdrom/$PRESEED priority=low vga=788 initrd=/install/initrd.gz --
-label rescue
-  menu label ^Rescue a broken system
-  kernel /install/vmlinuz
-  append  rescue/enable=true vga=788 initrd=/install/initrd.gz --
-
-menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
+echo "menu begin --> ^$CDNAME" >> "${WORK}"/boot/isolinux/isolinux.cfg
+cat "${WORK}"/boot/isolinux/ubuntu-alternate.cfg | sed -e 's/^default .*//g' >> "${WORK}"/boot/isolinux/isolinux.cfg
+echo "menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"
