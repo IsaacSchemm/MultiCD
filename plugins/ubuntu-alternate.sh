@@ -41,15 +41,21 @@ elif [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f ubuntu-alternate.iso ];then
 		if [ -d "${WORK}"/pool ];then
-			echo "NOT copying Ubuntu alternate installer - some sort of Ubuntu/Debian installer is already present."
-			touch "${TAGS}"/ubuntu-not-copied
+			echo "Not copying Ubuntu alternate/server installer - some sort of Ubuntu/Debian installer is already present."
+			exit 1
 		else
 			echo "Copying Ubuntu alternate installer..."
 			mcdmount ubuntu-alternate
 			cp "${MNT}"/ubuntu-alternate/cdromupgrade "${WORK}" 2>/dev/null || true #Not essential
 			cp -r "${MNT}"/ubuntu-alternate/.disk "${WORK}"
+			echo "Ubuntu (MultiCD)" > "${WORK}"/.disk/info
 			if [ -d "${MNT}"/ubuntu-alternate/casper ];then
-				cp -r "${MNT}"/ubuntu-alternate/casper "${WORK}"
+				if [ -d "${WORK}"/casper ];then
+					echo "There is a conflict on the live CD. The Ubuntu alternate/server installer needs to use /casper folder, but it already exists."
+					exit 1
+				fi
+				mkdir "${WORK}"/casper
+				cp -r "${MNT}"/ubuntu-alternate/casper/* "${WORK}"/casper
 			fi
 			cp -r "${MNT}"/ubuntu-alternate/dists "${WORK}"
 			cp -r "${MNT}"/ubuntu-alternate/doc "${WORK}" || true
@@ -66,7 +72,7 @@ elif [ $1 = copy ];then
 		fi
 	fi
 elif [ $1 = writecfg ];then
-if [ -f ubuntu-alternate.iso ] && [ ! -f "${TAGS}"/ubuntu-not-copied ];then
+if [ -f ubuntu-alternate.iso ];then
 cd "$WORK"
 PRESEED=$(echo preseed/*ubuntu*|awk '{print $1}')
 cd -
