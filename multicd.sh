@@ -10,9 +10,9 @@ PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 . downloader.sh
 
-MCDVERSION="20170609"
-#multicd.sh June 9, 2017
-#Copyright (c) 2017 Isaac Schemm
+MCDVERSION="20190303"
+#multicd.sh March 3, 2019
+#Copyright (c) 2019 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -449,9 +449,7 @@ cp /tmp/syslinux-*/bios/com32/elflink/ldlinux/ldlinux.c32 "${WORK}"/boot/isolinu
 cp /tmp/syslinux-*/bios/com32/chain/chain.c32 "${WORK}"/boot/isolinux/
 cp /tmp/syslinux-*/bios/com32/libutil/libutil.c32 "${WORK}"/boot/isolinux/
 cp /tmp/syslinux-*/bios/com32/lib/libcom32.c32 "${WORK}"/boot/isolinux/
-cp /tmp/syslinux-*/bios/utils/isohybrid "${TAGS}"/isohybrid
 chmod -R +w "$WORK/boot/isolinux"
-chmod +x "${TAGS}"/isohybrid
 rm -r /tmp/syslinux-*/
 
 if $MEMTEST;then
@@ -694,27 +692,12 @@ $GENERATOR -o "${OUTPUTPATH}" \
 -V "$CDLABEL" "${WORK}"/
 rm -rf "${WORK}"/
 
-# try to find a working version of isohybrid
-ISOHYBRID="${TAGS}/isohybrid"
-{
-	trap '' ERR
-	"${TAGS}"/isohybrid &> /dev/null
-	if [ $? = 127 ];then
-		echo "Could not run downloaded isohybrid (it's probably 32-bit) - looking for installed version..."
-		rm "$TAGS"/isohybrid
-		ihpath="$(which isohybrid)"
-		if [ -z "$ihpath" ];then
-			echo "WARNING: isohybrid not found."
-			echo "Install isohybrid (syslinux) to use your multicd on a USB drive"
-		else
-			ln -s $ihpath "$TAGS"/isohybrid
-		fi
-	fi
-}
-if [ -f "${TAGS}/isohybrid" ];then
+if [ -n "$(which isohybrid)" ];then
 	echo "Running isohybrid..."
-	"${TAGS}/isohybrid" "${OUTPUTPATH}" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a flash drive."
-	rm "${TAGS}"/isohybrid
+	isohybrid "${OUTPUTPATH}" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a flash drive."
+else
+	echo "WARNING: isohybrid not found."
+	echo "Install isohybrid (from the syslinux-utils package) to use your multicd on a USB drive"
 fi
 
 if [ $(whoami) == "root" ];then
