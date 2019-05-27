@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Caine plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2011 Isaac Schemm
+#version 20190527
+#Copyright (c) 2019 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,37 +22,28 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
-    if [ -f caine.iso ];then
-        echo "Caine"
-    fi
+if [ $1 = links ];then
+	echo "caine*.iso caine.casper.iso Caine_*"
+elif [ $1 = scan ];then
+	true
 elif [ $1 = copy ];then
-    if [ -f caine.iso ];then
-        echo "Copying Caine..."
-        mcdmount caine
-        cp -r "${MNT}"/caine/casper "${WORK}"/boot/caine #Live system
-        cp "${MNT}"/caine/README.diskdefines "${WORK}"/
+    if [ -f caine.casper.iso ];then
+        echo "Copying Caine (extra files/folders)..."
+        mcdmount caine.casper
         mkdir "${WORK}"/CaineFiles
-        for item in AutoPlay autorun.exe autorun.inf comdlg32.ocx files license.txt page5 preseed Programs RegOcx4Vista.bat rw_common tabctl32.ocx vbrun60.exe WinTaylor.exe; do
-            [[ -a "${MNT}"/caine/$item ]] && cp -r "${MNT}"/caine/$item "${WORK}"/CaineFiles
-        done
-        umcdmount caine
+        ls "${MNT}"/caine.casper | while read i;do
+			if [ "$i" = "casper" ];then
+				true
+			else
+				mcdcp -r "${MNT}/caine.casper/${i}" "${WORK}"/CaineFiles
+			fi
+		done
+        umcdmount caine.casper
     fi
 elif [ $1 = writecfg ];then
-    if [ -f "${TAGS}"/lang ];then
-        LANGCODE=$(cat "${TAGS}"/lang)
-    else
-        LANGCODE=en
-    fi
-    if [ -f caine.iso ];then
-        echo "label caine2 (Computer Aided Investigative Environment)
-        kernel /boot/caine/vmlinuz
-        initrd /boot/caine/initrd.gz
-        append live-media-path=/boot/caine ignore_uuid noprompt persistent BOOT_IMAGE=/casper/vmlinuz file=/cdrom/CaineFiles/custom.seed boot=casper -- debian-installer/language=$LANGCODE console-setup/layoutcode=$LANGCODE
-        " >> "${WORK}"/boot/isolinux/isolinux.cfg
-    fi
+	true
 else
-    echo "Usage: $0 {scan|copy|writecfg}"
+    echo "Usage: $0 {links|scan|copy|writecfg}"
     echo "Use only from within multicd.sh or a compatible script!"
     echo "Don't use this plugin script on its own!"
 fi
