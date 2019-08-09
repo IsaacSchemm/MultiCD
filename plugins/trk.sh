@@ -2,7 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Trinity Rescue Kit plugin for multicd.sh
-#version 20150622
+#version 20150622+
+#edited to fit newer version of trk
 #Copyright (c) 2015 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,6 +23,7 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
+
 if [ $1 = links ];then
 	echo "trinity-rescue-kit.*.iso trk.iso none"
 elif [ $1 = scan ];then
@@ -30,15 +32,26 @@ elif [ $1 = scan ];then
 	fi
 elif [ $1 = copy ];then
 	if [ -f trk.iso ];then
-		echo "Copying Trinity Rescue Kit..."
+        echo "Copying Trinity Rescue Kit..."
 		mcdmount trk
 		cp -r "${MNT}"/trk/trk3 "${WORK}"/ #TRK files
-		mkdir "${WORK}"/boot/trinity
-		cp "${MNT}"/trk/syslinux.cfg "${WORK}"/boot/isolinux/trk.menu
-		cp "${MNT}"/trk/kernel.trk "${WORK}"/boot/trinity/kernel.trk
-		cp "${MNT}"/trk/initrd.trk "${WORK}"/boot/trinity/initrd.trk
-		cp "${MNT}"/trk/bootlogo.jpg "${WORK}"/boot/isolinux/trklogo.jpg #Boot logo
-		umcdmount trk
+        if [ ! -f "${MNT}"/trk/disableautorun.exe ];then
+            echo New Build Detected
+            mkdir "${WORK}"/boot/trinity
+            cp "${MNT}"/trk/isolinux/syslinux.cfg "${WORK}"/boot/isolinux/trk.menu
+		    cp "${MNT}"/trk/isolinux/kernel.trk "${WORK}"/boot/trinity/kernel.trk
+		    cp "${MNT}"/trk/isolinux/initrd.trk "${WORK}"/boot/trinity/initrd.trk
+		    cp "${MNT}"/trk/isolinux/bootlogo.jpg "${WORK}"/boot/isolinux/trklogo.jpg #Boot logo
+        else
+            echo Old Build Detected
+		    mkdir "${WORK}"/boot/trinity
+		    cp "${MNT}"/trk/syslinux.cfg "${WORK}"/boot/isolinux/trk.menu
+		    cp "${MNT}"/trk/kernel.trk "${WORK}"/boot/trinity/kernel.trk
+		    cp "${MNT}"/trk/initrd.trk "${WORK}"/boot/trinity/initrd.trk
+		    cp "${MNT}"/trk/bootlogo.jpg "${WORK}"/boot/isolinux/trklogo.jpg #Boot logo
+        fi
+        
+        umcdmount trk
 	fi
 elif [ $1 = writecfg ];then
 if [ -f trk.iso ];then
