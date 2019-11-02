@@ -10,8 +10,8 @@ PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 . downloader.sh
 
-MCDVERSION="20190303"
-#multicd.sh March 3, 2019
+MCDVERSION="20191102"
+#multicd.sh November 2, 2019
 #Copyright (c) 2019 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -458,7 +458,7 @@ if $MEMTEST;then
 		rm memtestver
 	fi
 	if [ -f memtest ] && [ -f memtestver ] && [ "$(wc -c memtest)" != "0" ];then
-		cp memtest "${WORK}"/boot/memtest
+		cp memtest "${WORK}"/boot/memtest || true
 	else
 		echo "Downloading memtest86+ 5.01 from memtest.org..."
 		if $VERBOSE;then
@@ -467,7 +467,7 @@ if $MEMTEST;then
 			wget -qO- http://www.memtest.org/download/5.01/memtest86+-5.01.bin.gz|gzip -cd>memtest
 		fi
 		if [ -f memtest ] && [ "$(wc -c memtest)" != "0 memtest" ];then
-			cp memtest "${WORK}"/boot/memtest
+			cp memtest "${WORK}"/boot/memtest || true
 			echo 'v5.01' > memtestver
 		else
 			echo "Download of memtest failed."
