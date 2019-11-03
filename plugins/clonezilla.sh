@@ -52,7 +52,7 @@ elif [ $1 = copy ];then
 			echo "Copying Clonezilla ($i)..."
 			BASENAME=$(echo $i|sed -e 's/\.iso//g')
 			mcdmount $BASENAME
-			cp "${MNT}"/$BASENAME/*linux/ocswp.png "${WORK}"/boot/isolinux/ocswp.png #Boot menu logo
+			cp "${MNT}"/$BASENAME/*linux/ocswp.png "${WORK}"/boot/isolinux/ocswp.png || true #Boot menu logo
 			cp -r "${MNT}"/$BASENAME/live "${WORK}"/boot/$BASENAME #Another Debian Live-based ISO
 			cp "${MNT}"/$BASENAME/Clonezilla-Live-Version "${WORK}"/boot/$BASENAME #PDV Clonezilla-Live-Version file
 			cp "${MNT}"/$BASENAME/GPL "${WORK}"/boot/$BASENAME #PDV GPL file
