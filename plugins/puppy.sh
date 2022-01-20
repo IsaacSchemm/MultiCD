@@ -36,6 +36,7 @@ if [ $1 = links ];then
 	echo "racy-*.iso racy.puppy.iso none"
 	echo "slacko-*.iso slacko.puppy.iso Slacko_*"
 	echo "tahr-*.iso tahr.puppy.iso Tahrpup_*"
+	echo "fossa-*.iso fossa.puppy.iso Fossapup_*"
 elif [ $1 = scan ];then
 	if $(puppyExists);then for i in *.puppy.iso;do
 		echo "Puppy Linux"

@@ -38,6 +38,7 @@ elif [ $1 = copy ];then
 		echo "Copying Arch Linux..."
 		mcdmount arch
 		mcdcp -r -T "${MNT}"/arch/arch "${WORK}"/arch
+		mcdcp -r "${MNT}"/arch/syslinux "${WORK}"/arch/boot/
 		umcdmount arch
 	fi
 elif [ $1 = writecfg ];then
