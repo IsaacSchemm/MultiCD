@@ -10,9 +10,9 @@ PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
 . downloader.sh
 
-MCDVERSION="20191102"
-#multicd.sh November 2, 2019
-#Copyright (c) 2019 Isaac Schemm
+MCDVERSION="20221119"
+#multicd.sh November 19, 2022
+#Copyright (c) 2022 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
