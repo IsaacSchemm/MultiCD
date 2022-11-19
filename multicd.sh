@@ -113,7 +113,7 @@ fi
 #	ARGS=$(getopt cdmviVo:tw "$@")
 #fi
 export MD5=false
-export MEMTEST=true
+export MEMTEST=false
 export VERBOSE=true
 export INTERACTIVE=false
 export DEBUG=false
@@ -126,7 +126,6 @@ for i do
 		-c) shift;export MD5=true;;
 		-d) shift;export DEBUG=true;;
 		-i) shift;export INTERACTIVE=true;;
-		-m) shift;export MEMTEST=false;;
 		-o) shift;export OUTPUT="$1";shift;;
 		-t) shift;export TESTISO=true;;
 		-v) shift;export VERBOSE=true;;
@@ -226,9 +225,6 @@ for i in games/*.im[agz]; do
 done
 if [ -f grub.exe ];then
 	echo "GRUB4DOS"
-fi
-if $MEMTEST;then
-	echo "Memtest86+"
 fi
 
 if [ $EXTRACTOR == file-roller ];then
@@ -452,29 +448,6 @@ cp /tmp/syslinux-*/bios/com32/lib/libcom32.c32 "${WORK}"/boot/isolinux/
 chmod -R +w "$WORK/boot/isolinux"
 rm -r /tmp/syslinux-*/
 
-if $MEMTEST;then
-	if [ -f memtest ] && [ -f memtestver ] && [ "$(cat memtestver)" = "v4.20" ];then
-		rm memtest
-		rm memtestver
-	fi
-	if [ -f memtest ] && [ -f memtestver ] && [ "$(wc -c memtest)" != "0" ];then
-		cp memtest "${WORK}"/boot/memtest || true
-	else
-		echo "Downloading memtest86+ 5.01 from memtest.org..."
-		if $VERBOSE;then
-			wget -O- http://www.memtest.org/download/5.01/memtest86+-5.01.bin.gz|gzip -cd>memtest
-		else
-			wget -qO- http://www.memtest.org/download/5.01/memtest86+-5.01.bin.gz|gzip -cd>memtest
-		fi
-		if [ -f memtest ] && [ "$(wc -c memtest)" != "0 memtest" ];then
-			cp memtest "${WORK}"/boot/memtest || true
-			echo 'v5.01' > memtestver
-		else
-			echo "Download of memtest failed."
-		fi
-	fi
-fi
-
 echo "Writing isolinux.cfg..."
 
 ##BEGIN ISOLINUX MENU CODE##
@@ -574,14 +547,6 @@ com32 menu.c32
 append games.cfg">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
 #END GAMES ENTRY#
-
-#BEGIN MEMTEST ENTRY#
-if [ -f "${WORK}"/boot/memtest ];then
-echo "label memtest
-menu label ^Memtest86+ $(cat memtestver)
-kernel /boot/memtest">>"${WORK}"/boot/isolinux/isolinux.cfg
-fi
-#END MEMTEST ENTRY#
 ##END ISOLINUX MENU CODE##
 
 if [ $GAMES = 1 ];then
