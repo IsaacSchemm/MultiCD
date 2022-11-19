@@ -2,8 +2,8 @@
 set -e
 . "${MCDDIR}"/functions.sh
 #Casper plugin for multicd.sh
-#version 20121113
-#Copyright (c) 2012 Isaac Schemm
+#version 20221119
+#Copyright (c) 2022 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -84,8 +84,10 @@ elif [ $1 = copy ];then
 					UBUCFG=text.cfg
 				elif [ -f "${MNT}"/$BASENAME/isolinux/txt.cfg ];then
 					UBUCFG=txt.cfg
+				elif [ -f "${MNT}"/$BASENAME/isolinux/menuentries.cfg ];then
+					UBUCFG=menuentries.cfg #e.g. Zorin
 				else
-					UBUCFG=isolinux.cfg #For custom-made live CDs like Weaknet and Zorin
+					UBUCFG=isolinux.cfg
 				fi
 				cp "${MNT}"/$BASENAME/isolinux/splash.* \
 				"${MNT}"/$BASENAME/isolinux/bg_redo.png \
