@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 . "${MCDDIR}"/functions.sh
-#Ubuntu alternate install CD plugin for multicd.sh
-#version 20121113
-#Copyright (c) 2012 Isaac Schemm
+#Ubuntu alternate/server install CD plugin for multicd.sh
+#version 20181227
+#Copyright (c) 2012-2018 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -41,13 +41,22 @@ elif [ $1 = scan ];then
 elif [ $1 = copy ];then
 	if [ -f ubuntu-alternate.iso ];then
 		if [ -d "${WORK}"/pool ];then
-			echo "NOT copying Ubuntu alternate installer - some sort of Ubuntu/Debian installer is already present."
-			touch "${TAGS}"/ubuntu-not-copied
+			echo "Not copying Ubuntu alternate/server installer - some sort of Ubuntu/Debian installer is already present."
+			exit 1
 		else
 			echo "Copying Ubuntu alternate installer..."
 			mcdmount ubuntu-alternate
-			cp "${MNT}"/ubuntu-alternate/cdromupgrade "${WORK}" 2>&1 || true #Not essential
+			cp "${MNT}"/ubuntu-alternate/cdromupgrade "${WORK}" 2>/dev/null || true #Not essential
 			cp -r "${MNT}"/ubuntu-alternate/.disk "${WORK}"
+			echo "Ubuntu (MultiCD)" > "${WORK}"/.disk/info
+			if [ -d "${MNT}"/ubuntu-alternate/casper ];then
+				if [ -d "${WORK}"/casper ];then
+					echo "There is a conflict on the live CD. The Ubuntu alternate/server installer needs to use /casper folder, but it already exists."
+					exit 1
+				fi
+				mkdir "${WORK}"/casper
+				cp -r "${MNT}"/ubuntu-alternate/casper/* "${WORK}"/casper
+			fi
 			cp -r "${MNT}"/ubuntu-alternate/dists "${WORK}"
 			cp -r "${MNT}"/ubuntu-alternate/doc "${WORK}" || true
 			cp -r "${MNT}"/ubuntu-alternate/install "${WORK}"
@@ -58,11 +67,12 @@ elif [ $1 = copy ];then
 			if [ ! -e "${MNT}"/ubuntu-alternate/ubuntu ];then
 				ln -s . "${MNT}"/ubuntu-alternate/ubuntu
 			fi
+			cp "${MNT}"/ubuntu-alternate/isolinux/txt.cfg "${WORK}"/boot/isolinux/ubuntu-alternate.cfg
 			umcdmount ubuntu-alternate
 		fi
 	fi
 elif [ $1 = writecfg ];then
-if [ -f ubuntu-alternate.iso ] && [ ! -f "${TAGS}"/ubuntu-not-copied ];then
+if [ -f ubuntu-alternate.iso ];then
 cd "$WORK"
 PRESEED=$(echo preseed/*ubuntu*|awk '{print $1}')
 cd -
@@ -71,23 +81,9 @@ if [ -f "${WORK}"/README.diskdefines ];then
 else
 	CDNAME="Ubuntu alternate installer"
 fi
-echo "menu begin --> ^$CDNAME
-
-label install
-  menu label ^Install Ubuntu
-  kernel /install/vmlinuz
-  append  file=/cdrom/$PRESEED vga=788 initrd=/install/initrd.gz quiet --
-
-label expert
-  menu label ^Expert install
-  kernel /install/vmlinuz
-  append  file=/cdrom/$PRESEED priority=low vga=788 initrd=/install/initrd.gz --
-label rescue
-  menu label ^Rescue a broken system
-  kernel /install/vmlinuz
-  append  rescue/enable=true vga=788 initrd=/install/initrd.gz --
-
-menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
+echo "menu begin --> ^$CDNAME" >> "${WORK}"/boot/isolinux/isolinux.cfg
+cat "${WORK}"/boot/isolinux/ubuntu-alternate.cfg | sed -e 's/^default .*//g' >> "${WORK}"/boot/isolinux/isolinux.cfg
+echo "menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {links|scan|copy|writecfg}"

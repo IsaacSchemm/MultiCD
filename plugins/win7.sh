@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 . "${MCDDIR}"/functions.sh
-#Debian installer plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2010 Isaac Schemm
+#Windows 7 Disc plugin for multicd.sh
+#version 20170620
+#Copyright for this script (c) 2011-2017 Isaac Schemm et al
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,32 +22,43 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
-	if [ -f debian-mini64.iso ];then
-		echo "Debian netboot installer (amd64)"
+if [ $1 = links ];then
+	echo "HBCD_PE_*.iso win7.iso Hiren's_BootCD_PE"
+elif [ $1 = scan ];then
+	if [ -f win7.iso ];then
+		echo "Windows 7+"
+		touch "${TAGS}/win7.needsname"
 	fi
 elif [ $1 = copy ];then
-	if [ -f debian-mini64.iso ];then
-		echo "Copying Debian netboot installer (amd64)..."
-		mcdmount debian-mini64
-		mkdir -p "${WORK}"/boot/debian64
-		cp "${MNT}"/debian-mini64/linux "${WORK}"/boot/debian64/linux
-		cp "${MNT}"/debian-mini64/initrd.gz "${WORK}"/boot/debian64/initrd.gz
-		umcdmount debian-mini64
+	if [ -f win7.iso ];then
+		echo "Copying Windows 7+..."
+		mcdmount win7
+		if [ -d "${MNT}"/win7/HBCD_PE.ini ];then
+			cp "${MNT}"/win7/HBCD_PE.ini "${WORK}"/
+			cp "${MNT}"/win7/Version.txt "${WORK}"/hirens.txt || true
+		fi
+		cp -r "${MNT}"/win7/[Bb]oot/* "${WORK}"/boot/
+		cp -r "${MNT}"/win7/sources "${WORK}"/
+		cp "${MNT}"/win7/bootmgr "${WORK}"/
+		umcdmount win7
 	fi
 elif [ $1 = writecfg ];then
-if [ -f debian-mini64.iso ];then
-DEBNAME="Debian GNU/Linux mini netinst (amd64)"
-echo "menu begin -->^$DEBNAME
-
-label ^Install Debian
-	kernel /boot/debian64/linux
-	append vga=normal initrd=/boot/debian64/initrd.gz -- quiet
-label ^Install Debian - expert mode
-	kernel /boot/debian64/linux
-	append priority=low vga=normal initrd=/boot/debian64/initrd.gz --
-
-menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
+if [ -f win7.iso ];then
+	DISPLAYNAME="$(cat "${TAGS}"/win7.name)"
+	if [ -z "$DISPLAYNAME" ];then
+	DISPLAYNAME="Windows 7+"
+		if which isoinfo &> /dev/null;then
+			if isoinfo -d -i win7.iso;then
+				DISPLAYNAME="Windows 7+ (64-bit)"
+			else
+				DISPLAYNAME="Windows 7+ (32-bit)"
+			fi
+		fi
+	fi
+	echo "label win7
+	menu label $DISPLAYNAME
+	kernel chain.c32
+	append boot ntldr=/bootmgr">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
 	echo "Usage: $0 {scan|copy|writecfg}"

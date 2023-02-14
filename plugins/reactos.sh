@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 . "${MCDDIR}"/functions.sh
-#Debian installer plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2010 Isaac Schemm
+#ReactOS plugin for multicd.sh
+#version 20190608
+#Copyright (c) 2019 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,35 +22,30 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
-	if [ -f debian-mini64.iso ];then
-		echo "Debian netboot installer (amd64)"
+if [ $1 = links ];then
+	echo "ReactOS-*.iso reactos.iso ReactOS"
+elif [ $1 = scan ];then
+	if [ -f reactos.iso ];then
+		echo "ReactOS"
 	fi
 elif [ $1 = copy ];then
-	if [ -f debian-mini64.iso ];then
-		echo "Copying Debian netboot installer (amd64)..."
-		mcdmount debian-mini64
-		mkdir -p "${WORK}"/boot/debian64
-		cp "${MNT}"/debian-mini64/linux "${WORK}"/boot/debian64/linux
-		cp "${MNT}"/debian-mini64/initrd.gz "${WORK}"/boot/debian64/initrd.gz
-		umcdmount debian-mini64
+	if [ -f reactos.iso ];then
+		echo "Copying ReactOS..."
+		mcdmount reactos
+		mcdcp -r -n "${MNT}"/reactos/loader "${WORK}"/
+		if [ -d "${MNT}"/reactos/Profiles ];then
+			mcdcp -r -n "${MNT}"/reactos/Profiles "${WORK}"/
+		fi
+		mcdcp -r -n "${MNT}"/reactos/reactos "${WORK}"/
+		cp -n "${MNT}"/reactos/freeldr.ini "${WORK}"/
+		umcdmount reactos
 	fi
 elif [ $1 = writecfg ];then
-if [ -f debian-mini64.iso ];then
-DEBNAME="Debian GNU/Linux mini netinst (amd64)"
-echo "menu begin -->^$DEBNAME
-
-label ^Install Debian
-	kernel /boot/debian64/linux
-	append vga=normal initrd=/boot/debian64/initrd.gz -- quiet
-label ^Install Debian - expert mode
-	kernel /boot/debian64/linux
-	append priority=low vga=normal initrd=/boot/debian64/initrd.gz --
-
-menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
-fi
+	if [ -f reactos.iso ];then
+		echo "label reactos
+		menu label ^ReactOS $(getVersion reactos)
+		kernel /loader/isoboot.bin" >> "${WORK}"/boot/isolinux/isolinux.cfg
+	fi
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
-	echo "Use only from within multicd.sh or a compatible script!"
-	echo "Don't use this plugin script on its own!"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 fi

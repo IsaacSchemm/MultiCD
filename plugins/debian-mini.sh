@@ -38,7 +38,7 @@ elif [ $1 = copy ];then
 elif [ $1 = writecfg ];then
 if [ -f debian-mini.iso ];then
 DEBNAME="Debian GNU/Linux mini netinst (i386)"
-echo "menu begin -->^DEBNAME
+echo "menu begin -->^$DEBNAME
 
 label ^Install Debian
 	kernel /boot/debian/linux

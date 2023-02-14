@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 . "${MCDDIR}"/functions.sh
-#Debian installer plugin for multicd.sh
-#version 6.9
-#Copyright (c) 2010 Isaac Schemm
+#SystemRescueCd plugin for multicd.sh
+#version 20190303
+#Copyright (c) 2010-2019 Isaac Schemm and Pascal De Vuyst
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -22,35 +22,32 @@ set -e
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-if [ $1 = scan ];then
-	if [ -f debian-mini64.iso ];then
-		echo "Debian netboot installer (amd64)"
+if [ $1 = links ];then
+	echo "systemrescuecd-6*.iso sysresccd.iso none"
+elif [ $1 = scan ];then
+	if [ -f sysresccd.iso ];then
+		echo "SystemRescueCd"
 	fi
 elif [ $1 = copy ];then
-	if [ -f debian-mini64.iso ];then
-		echo "Copying Debian netboot installer (amd64)..."
-		mcdmount debian-mini64
-		mkdir -p "${WORK}"/boot/debian64
-		cp "${MNT}"/debian-mini64/linux "${WORK}"/boot/debian64/linux
-		cp "${MNT}"/debian-mini64/initrd.gz "${WORK}"/boot/debian64/initrd.gz
-		umcdmount debian-mini64
+	if [ -f sysresccd.iso ];then
+		echo "Copying SystemRescueCd..."
+		mcdmount sysresccd
+		mkdir "${WORK}"/sysresccd
+		mcdcp -r "${MNT}"/sysresccd/sysresccd/* "${WORK}"/sysresccd
+		for i in "${WORK}"/sysresccd/boot/syslinux/*.cfg;do
+			sed -i -e "s/archisolabel=/archisolabel=$CDLABEL originalwas=/g" "$i"
+		done
+		umcdmount sysresccd
 	fi
 elif [ $1 = writecfg ];then
-if [ -f debian-mini64.iso ];then
-DEBNAME="Debian GNU/Linux mini netinst (amd64)"
-echo "menu begin -->^$DEBNAME
-
-label ^Install Debian
-	kernel /boot/debian64/linux
-	append vga=normal initrd=/boot/debian64/initrd.gz -- quiet
-label ^Install Debian - expert mode
-	kernel /boot/debian64/linux
-	append priority=low vga=normal initrd=/boot/debian64/initrd.gz --
-
-menu end" >> "${WORK}"/boot/isolinux/isolinux.cfg
+if [ -f sysresccd.iso ];then
+echo "label sysresccd
+menu label --> ^SystemRescueCd
+config /sysresccd/boot/syslinux/sysresccd.cfg /sysresccd
+" >> "${WORK}"/boot/isolinux/isolinux.cfg
 fi
 else
-	echo "Usage: $0 {scan|copy|writecfg}"
+	echo "Usage: $0 {links|scan|copy|writecfg}"
 	echo "Use only from within multicd.sh or a compatible script!"
 	echo "Don't use this plugin script on its own!"
 fi

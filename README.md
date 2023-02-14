@@ -1,5 +1,6 @@
 MultiCD
 ========
 
-Official site: http://multicd.us
-Updates are posted at http://blog.multicd.us and http://twitter.com/multicd
+Official site: [https://www.lakora.us/multicd/](https://www.lakora.us/multicd/)
+
+Updates are posted at http://twitter.com/multicd

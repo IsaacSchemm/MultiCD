@@ -8,10 +8,11 @@ trap exit ERR
 export MCDDIR=$(cd "$(dirname "$0")" && pwd)
 PATH=$PATH:$MCDDIR:$MCDDIR/plugins
 . functions.sh
+. downloader.sh
 
-MCDVERSION="20170609"
-#multicd.sh June 9, 2017
-#Copyright (c) 2017 Isaac Schemm
+MCDVERSION="20221119"
+#multicd.sh November 19, 2022
+#Copyright (c) 2022 Isaac Schemm
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -101,6 +102,10 @@ if [ "$1" = "give-error" ];then
 	exit 1
 fi
 
+if [ "$1" = "download" ];then
+	downloadisos
+fi
+
 #if getopt -T > /dev/null;then
 #	echo "You have a non-GNU getopt. Don't use an output path with spaces in it."
 	ARGS=$(getopt cdmviVo:tw $*)
@@ -108,7 +113,7 @@ fi
 #	ARGS=$(getopt cdmviVo:tw "$@")
 #fi
 export MD5=false
-export MEMTEST=true
+export MEMTEST=false
 export VERBOSE=true
 export INTERACTIVE=false
 export DEBUG=false
@@ -121,7 +126,6 @@ for i do
 		-c) shift;export MD5=true;;
 		-d) shift;export DEBUG=true;;
 		-i) shift;export INTERACTIVE=true;;
-		-m) shift;export MEMTEST=false;;
 		-o) shift;export OUTPUT="$1";shift;;
 		-t) shift;export TESTISO=true;;
 		-v) shift;export VERBOSE=true;;
@@ -134,6 +138,10 @@ if echo "${OUTPUT}" | grep -q "/";then
 	# Path
 	if [ $(echo "${OUTPUT}" | head -c 1) != "/" ];then
 		echo "The -o option must be either a filename without an extension (.iso will be appended) or an absolute path."
+		exit 1
+	fi
+	if ! (echo "${OUTPUT}" | tail -c 4 | grep -q iso);then
+		echo "The -o option does not accept paths with spaces. If an absolute path is used, the .iso extension is required."
 		exit 1
 	fi
 	OUTPUTPATH="${OUTPUT}"
@@ -217,9 +225,6 @@ for i in games/*.im[agz]; do
 done
 if [ -f grub.exe ];then
 	echo "GRUB4DOS"
-fi
-if $MEMTEST;then
-	echo "Memtest86+"
 fi
 
 if [ $EXTRACTOR == file-roller ];then
@@ -440,33 +445,8 @@ cp /tmp/syslinux-*/bios/com32/elflink/ldlinux/ldlinux.c32 "${WORK}"/boot/isolinu
 cp /tmp/syslinux-*/bios/com32/chain/chain.c32 "${WORK}"/boot/isolinux/
 cp /tmp/syslinux-*/bios/com32/libutil/libutil.c32 "${WORK}"/boot/isolinux/
 cp /tmp/syslinux-*/bios/com32/lib/libcom32.c32 "${WORK}"/boot/isolinux/
-cp /tmp/syslinux-*/bios/utils/isohybrid "${TAGS}"/isohybrid
 chmod -R +w "$WORK/boot/isolinux"
-chmod +x "${TAGS}"/isohybrid
 rm -r /tmp/syslinux-*/
-
-if $MEMTEST;then
-	if [ -f memtest ] && [ -f memtestver ] && [ "$(cat memtestver)" = "v4.20" ];then
-		rm memtest
-		rm memtestver
-	fi
-	if [ -f memtest ] && [ -f memtestver ] && [ "$(wc -c memtest)" != "0" ];then
-		cp memtest "${WORK}"/boot/memtest
-	else
-		echo "Downloading memtest86+ 5.01 from memtest.org..."
-		if $VERBOSE;then
-			wget -O- http://www.memtest.org/download/5.01/memtest86+-5.01.bin.gz|gzip -cd>memtest
-		else
-			wget -qO- http://www.memtest.org/download/5.01/memtest86+-5.01.bin.gz|gzip -cd>memtest
-		fi
-		if [ -f memtest ] && [ "$(wc -c memtest)" != "0 memtest" ];then
-			cp memtest "${WORK}"/boot/memtest
-			echo 'v5.01' > memtestver
-		else
-			echo "Download of memtest failed."
-		fi
-	fi
-fi
 
 echo "Writing isolinux.cfg..."
 
@@ -567,14 +547,6 @@ com32 menu.c32
 append games.cfg">>"${WORK}"/boot/isolinux/isolinux.cfg
 fi
 #END GAMES ENTRY#
-
-#BEGIN MEMTEST ENTRY#
-if [ -f "${WORK}"/boot/memtest ];then
-echo "label memtest
-menu label ^Memtest86+ $(cat memtestver)
-kernel /boot/memtest">>"${WORK}"/boot/isolinux/isolinux.cfg
-fi
-#END MEMTEST ENTRY#
 ##END ISOLINUX MENU CODE##
 
 if [ $GAMES = 1 ];then
@@ -685,27 +657,12 @@ $GENERATOR -o "${OUTPUTPATH}" \
 -V "$CDLABEL" "${WORK}"/
 rm -rf "${WORK}"/
 
-# try to find a working version of isohybrid
-ISOHYBRID="${TAGS}/isohybrid"
-{
-	trap '' ERR
-	"${TAGS}"/isohybrid &> /dev/null
-	if [ $? = 127 ];then
-		echo "Could not run downloaded isohybrid (it's probably 32-bit) - looking for installed version..."
-		rm "$TAGS"/isohybrid
-		ihpath="$(which isohybrid)"
-		if [ -z "$ihpath" ];then
-			echo "WARNING: isohybrid not found."
-			echo "Install isohybrid (syslinux) to use your multicd on a USB drive"
-		else
-			ln -s $ihpath "$TAGS"/isohybrid
-		fi
-	fi
-}
-if [ -f "${TAGS}/isohybrid" ];then
+if [ -n "$(which isohybrid)" ];then
 	echo "Running isohybrid..."
-	"${TAGS}/isohybrid" ""${OUTPUT}"" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a flash drive."
-	rm "${TAGS}"/isohybrid
+	isohybrid "${OUTPUTPATH}" 2> /dev/null || echo "isohybrid gave an error status of $?. The ISO might not work on a flash drive."
+else
+	echo "WARNING: isohybrid not found."
+	echo "Install isohybrid (from the syslinux-utils package) to use your multicd on a USB drive"
 fi
 
 if [ $(whoami) == "root" ];then
